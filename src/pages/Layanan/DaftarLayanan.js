@@ -35,7 +35,6 @@ const DaftarPelayanan = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Implement search functionality
         console.log('Searching for:', searchTerm);
     };
 
@@ -109,7 +108,7 @@ const DaftarPelayanan = () => {
                         </div>
                     )}
 
-                    <div className="flex items-center justify-between space-x-2 mb-4">
+<div className="flex items-center justify-between space-x-2 mb-4">
                         <form onSubmit={handleSearch} className="flex flex-grow">
                             <input
                                 type="search"

@@ -24,7 +24,6 @@ import CreateSuratMasuk from './pages/Surat/CreateSuratMasuk';
 import CreateSuratKeluar from './pages/Surat/CreateSuratKeluar';
 import Permohonan from './pages/Permohonan/Permohonan';
 import EditProfile from './pages/User/Profile/Edit';
-// import Dashboard from './pages/User/Dashboard';
 import Settings from './pages/User/Settings/Edit';
 import UsersIndex from './pages/User/Users/Index';
 import DaftarPeran from './pages/User/Users/DaftarPeran';
@@ -62,7 +61,6 @@ function App() {
         <Route path="/surat/create-surat-keluar" element={<CreateSuratKeluar />} />
         <Route path="/permohonan" element={<Permohonan />} />
         <Route path="/profile/edit" element={<EditProfile />} />
-        {/* <Route path="/user/dashboard" element={<Dashboard />} /> */}
         <Route path="/user/settings" element={<Settings />} />
         <Route path="/user/users" element={<UsersIndex />} />
         <Route path="/user/users/daftar-peran" element={<DaftarPeran />} />

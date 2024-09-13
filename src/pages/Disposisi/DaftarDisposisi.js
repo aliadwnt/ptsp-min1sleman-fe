@@ -30,6 +30,10 @@ const DaftarDisposisi = ({
         }
     };
 
+    const handleAdd = () => {
+        console.log('Add new item');
+    };
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Sidebar */}
@@ -48,25 +52,24 @@ const DaftarDisposisi = ({
                             <span className="font-medium">Sukses: </span>{message}
                         </div>
                     )}
-
-<div className="flex items-center space-x-2">
-                        <input
-                            type="search"
-                            id="default-search"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            placeholder="Search..."
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="p-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700"
-                            onClick={handleSearch}
-                        >
-                            Search
-                        </button>
-                        <button className="w-40 flex items-center justify-center bg-green-600 text-white rounded-lg py-2 hover:bg-green-700">
+                    <div className="flex items-center justify-between space-x-2 mb-4">
+                        <form onSubmit={handleSearch} className="flex flex-grow">
+                            <input
+                                type="search"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Search..."
+                                required
+                            />
+                            <button 
+                                type="submit" 
+                                className="ml-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+                            >
+                                <i className="fas fa-search"></i>
+                            </button>
+                        </form>
+                        <button onClick={handleAdd} className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700">
                             <i className="fas fa-plus mr-2"></i>Tambah
                         </button>
                     </div>
@@ -112,7 +115,7 @@ const DaftarDisposisi = ({
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {dataPelayanan.length > 0 ? (
                                                 dataPelayanan.map((item, index) => (
-                                                    <tr key={index}>
+                                                    <tr key={item.id}> {/* Use item.id as the key */}
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
                                                             {index + 1}
                                                         </td>
