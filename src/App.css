@@ -1,38 +1,630 @@
-.App {
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+.jumbotron {
+  position: relative;
+  padding: 1rem;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.jumbotron-bg {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.heading {
+  position: relative;
+  z-index: 0;
+  padding: 0.5rem;
+}
+
+.txt {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-family: 'Poppins', sans-serif;
+  font-style: bold; 
+}
+.mt22 {
+  text-align: start; 
+  display: flex;
+}
+
+.main {
+  /* padding: 2rem; */
+  font-family: 'Poppins', sans-serif;
+  margin-left: 60px;
+  margin-right: 190px;
+  margin-top: 20px;
+}
+.main1 {
+  /* padding: 2rem; */
+  font-family: 'Poppins', sans-serif;
+  margin-left: 60px;
+  margin-right: 190px;
+  margin-top: 0px;
+}
+.bodyadmin{
+  background-color: rgb(236, 236, 236);
+}
+/* styles.css */
+.texttitle {
+  font-size: 1.25rem; /* setara dengan text-xl */
+  font-weight: 600; /* setara dengan font-semibold */
+  line-height: 1.25; /* setara dengan leading-tight */
+  color: #1f2937; /* setara dengan text-gray-800 */
+  padding-top: 1rem; /* setara dengan py-4 */
+  padding-bottom: 1rem; /* setara dengan py-4 */
+  padding-left: 0.5rem; /* setara dengan px-2 */
+  padding-right: 0.5rem; /* setara dengan px-2 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .texttitle {
+      color: #e5e7eb; /* setara dengan dark:text-gray-200 */
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.headerr {
+  background-color: #11ad00; /* Warna hijau (bg-green-500) */
+  width: 100%; /* Lebar penuh */
+  padding-left: 1.5rem; /* Padding kiri 1.5rem (px-6) */
+  padding-right: 1.5rem; /* Padding kanan 1.5rem (px-6) */
+  padding-top: 1.25rem; /* Padding atas 1.25rem (py-5) */
+  padding-bottom: 2.4rem; /* Padding bawah 1.25rem (py-5) */
+  display: flex; /* Flexbox */
+  justify-content: space-between; /* Jarak antara elemen */
+  align-items: center; /* Vertikal di tengah */
+  color: white; /* Teks putih */
+}
+
+.cont {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  max-width: 1300px;
+}
+.selamat-datang-di-ptsp {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-size: 50px;
+  font-weight: 600;
+}
+
+.ptsp-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* Adjust spacing as needed */
+}
+
+.ptsp,
+.man-1 {
+  color: #1875ff;
+  font-family: "Poppins", sans-serif;
+  font-size: 50px;
+  font-weight: 600;
+  -webkit-text-stroke: 3px #ffffff;
+}
+
+.ptsp {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+}
+
+.man-1 {
+  -webkit-text-stroke: 3px #ffffff;
+  /* Apply text stroke for this part */
+}
+
+.pelayanan-terpadu-satu-pintu {
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+  margin-top: 1rem;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 100px;
+  margin-bottom: 2rem;
+  z-index: 1;
+  position: relative;
+}
+
+.cont-1,
+.cont-2,
+.cont-3,
+.cont-4 {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 300px;
+}
+
+.group,
+.vector,
+.group2,
+.vector2 {
+  width: 20px;
+  height: 25px;
+}
+
+.daftar-pelayanan,
+.lacak-permohonan,
+.buat-permohonan-layanan,
+.help-desk {
+  color: #000000;
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.description {
+  color: #000000;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .selamat-datang-di-ptsp,
+  .sma-cerdas-mandiri {
+      font-size: 35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .selamat-datang-di-ptsp,
+  .sma-cerdas-mandiri {
+      font-size: 25px;
+  }
+
+  .daftar-pelayanan,
+  .lacak-permohonan,
+  .buat-permohonan-layanan,
+  .help-desk {
+      font-size: 18px;
+  }
+
+  .description {
+      font-size: 14px;
+  }
+}
+.mb4 {
+  text-align: left;
+}
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 5px;
+        background-color: #1f2937;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #4b5563;
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #3730a3;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 5px;
+        background-color: #ffffff;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #d1d5db;
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #a5b4fc;
+    }
+}
+/* App.css or any other CSS file */
+.nav-des {
+  background-color: var(--primary-color); /* Assuming you use a CSS variable for primary color */
   color: white;
+  padding: 1rem; /* 4 units of padding */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Medium shadow */
 }
 
-.App-link {
-  color: #61dafb;
+/* styles.css or App.css */
+.sidebar-header {
+  background-color: #11ad00; /* Tailwind's green-600 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6rem; /* Tailwind's h-16 */
+  flex-direction: column; /* Arrange children vertically */
+  align-items: center; /* Center align items horizontally */
+  font-style: 'poppins', 'sans-serif';
+}
+.inline-flex{
+  font-family: 'poppins', 'sans-serif';
+}
+.origin-top-right{
+font-family: 'Poppins', sans-serif;
+}
+.flex-1 {
+  font-family: 'poppins', 'sans-serif';
+}
+.sidebar-header text {
+    display: block; /* Ensure the text is displayed as a block element */
+    color: #ffffff; /* Adjust text color as needed */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Optional: Define --primary-color if using CSS variables */
+:root {
+  --primary-color: #007bff; /* Adjust this value as needed */
+}
+
+.nav {
+  font-family: 'Poppins';
+}
+
+/* Styles for PTSP and MAN 1 Yogyakarta login page */
+
+/* Unique styles for the page title */
+.site-title-ptsp {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  color: #333333;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 80px;
+}
+
+.site-title-man1 {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  color: #555555;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Login page container */
+.login-page-ptsp {
+  text-align: center;
+}
+
+/* Styles for login form */
+.login-form-ptsp {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin: 20px auto;
+  margin-top: 60px;
+}
+
+/* Styles for login heading */
+.login-heading {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #333333;
+  font-weight: bold;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.signup {
+  margin-top: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+/* Form group styles */
+.form-group-ptsp {
+  margin-bottom: 15px;
+}
+
+/* Label styles */
+.label-ptsp {
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  color: #333333;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Input styles */
+.input-ptsp {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Button styles */
+.login-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  font-family: "poppins", sans-serif;
+}
+/* Centering text horizontally */
+.unmember {
+  text-align: center; /* Center text horizontally */
+}
+.backhome {
+  margin-top: 10px;
+  text-align: center;
+  color: #0056b3;
+  font-family: 'Poppins', sans-serif; /* Pastikan font 'Poppins' tersedia atau gunakan font fallback */
+  text-decoration: underline; /* Menambahkan garis bawah pada teks */
+}
+/* styles.css */
+
+.login-button-navbar {
+  font-weight: 700; /* Menggunakan font-weight untuk bold */
+  background-color: #ffffff; /* Tetap putih sebagai warna background */
+  color: #000000; /* Tetap hitam sebagai warna teks */
+  padding: 0.5rem 1rem; /* Padding tetap */
+  border-radius: 0.5rem; /* Tetap rounded */
+  font-family: 'Poppins', sans-serif; /* Menggunakan Poppins sebagai font */
+  text-decoration: none; /* Hilangkan underline */
+  display: inline-block; /* Agar padding bekerja */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Tambahkan transisi juga untuk warna teks */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Menambahkan shadow agar tombol lebih menonjol */
+}
+
+.login-button-navbar:hover {
+  background-color: #000000; /* Warna background berubah ke hitam saat hover */
+  color: #ffffff; /* Warna teks berubah menjadi putih */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Shadow saat hover */
+}
+
+.login-title {
+  text-align: center;
+  font-family: "poppins", sans-serif;
+  margin-bottom: 20px;
+  margin-top: opx;
+}
+
+.login-button-navbar:hover {
+  background-color: #4a4a4a; 
+}
+
+.signup {
+  display: inline-block; /* Ensure block-level elements are centered horizontally */
+  font-size: 16px; /* Adjust font size as needed */
+  color: #333; /* Adjust text color as needed */
+}
+
+.login-button:hover {
+  background-color: #0056b3;
+}
+/* Styles for the back-button */
+.back-button {
+  position: absolute; /* Position relative to nearest positioned ancestor */
+  top: 20px; /* Adjust the distance from the top of the container */
+  left: 120px; /* Adjust the distance from the left of the container */
+  padding: 10px 20px; /* Add padding to make the button more clickable */
+  font-size: 16px; /* Adjust the font size of the button text */
+  background-color: #007bff; /* Button background color */
+  color: white; /* Button text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Round the corners of the button */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  z-index: 1000; /* Ensure button appears above other content */
+}
+
+.back-button:hover {
+  background-color: #0056b3; /* Change color on hover for better UX */
+}
+/* Navbar container */
+nav {
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Navigation links */
+nav .navbar-brand img {
+  width: 48px;
+  height: 48px;
+}
+
+nav .text-white {
+  color: #ffffff;
+}
+
+nav .text-gray-500 {
+  color: #6b7280;
+}
+
+nav .bg-white {
+  background-color: #ffffff;
+}
+
+nav .hover\:bg-white:hover {
+  background-color: #ffffff;
+}
+
+nav .hover\:text-gray-500:hover {
+  color: #6b7280;
+}
+
+nav .rounded-md {
+  border-radius: 0.375rem;
+}
+
+/* Links styling */
+nav .space-x-8 > * {
+  margin-left: 2rem;
+}
+
+nav .sm\:hidden {
+  display: none;
+}
+
+nav .block {
+  display: block;
+}
+
+nav .inline-flex {
+  display: inline-flex;
+}
+
+nav .hover\:text-gray-500:hover {
+  color: #6b7280;
+}
+
+nav .hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+nav .focus\:outline-none:focus {
+  outline: none;
+}
+
+nav .focus\:bg-gray-50:focus {
+  background-color: #f9fafb;
+}
+
+nav .focus\:text-gray-800:focus {
+  color: #1f2937;
+}
+
+/* Button styling */
+nav button {
+  background: none;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+nav button svg {
+  width: 24px;
+  height: 24px;
+}
+
+nav button:focus {
+  outline: none;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  nav .sm\:hidden {
+    display: block;
   }
-  to {
-    transform: rotate(360deg);
-  }
+}
+/* UserProfileMenu.css */
+
+/* General styles for header */
+
+
+header h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.overflow-y-auto{
+  font-family: 'poppins', 'sans-serif';
+}
+
+button {
+  display: inline-flex;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a5568; /* Gray text */
+  background-color: white;
+  border: 1px solid #d2d6dc; /* Gray border */
+  border-radius: 0.375rem; /* Rounded corners */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* Light shadow */
+}
+
+button:hover {
+  background-color: #f7fafc; /* Light hover background */
+}
+
+/* Dropdown menu styling */
+.relative .absolute {
+  position: absolute;
+  right: 0;
+  margin-top: 8px;
+  width: 14rem; /* Dropdown width */
+  background-color: white;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Dropdown shadow */
+  z-index: 10;
+}
+
+.relative .absolute .py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+/* Menu item styling */
+.relative .absolute button {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  color: #4a5568;
+  text-align: left;
+}
+
+.relative .absolute button:hover {
+  background-color: #edf2f7; /* Hover color */
+}
+
+/* User name and email styling */
+.relative .absolute .text-base {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.relative .absolute .text-sm {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #718096; /* Lighter gray for email */
+}
+
+/* Border separator between items */
+.relative .absolute .border-t {
+  border-top: 1px solid #f1f5f9;
 }
