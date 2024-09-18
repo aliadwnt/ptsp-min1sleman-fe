@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
+
 .jumbotron {
   position: relative;
   padding: 1rem;
@@ -396,6 +397,12 @@ font-family: 'Poppins', sans-serif;
   text-decoration: underline; /* Menambahkan garis bawah pada teks */
 }
 /* styles.css */
+/* Sidebar */
+.scrollable-content {
+  overflow-y: hidden; /* Menghilangkan scrollbar vertikal */
+  overflow-x: hidden; /* Menghilangkan scrollbar horizontal jika ada */
+}
+
 
 .login-button-navbar {
   font-weight: 700; /* Menggunakan font-weight untuk bold */

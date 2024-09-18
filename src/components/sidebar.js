@@ -1,26 +1,25 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Import useLocation
-import logo from '../images/logo_man_1.png'; 
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../images/logo_man_1.png';
 import '../App.css';
 
 const Sidebar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [openDropdown, setOpenDropdown] = useState(null); // State to track open dropdown
-    const location = useLocation(); // Get current location
+    const [openDropdown, setOpenDropdown] = useState(null);
+    const location = useLocation();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
     const toggleDropdown = (dropdown) => {
-        // Toggle dropdown state; close others
         setOpenDropdown(openDropdown === dropdown ? null : dropdown);
     };
 
     const getLinkClass = (path) => {
         return location.pathname === path 
-            ? 'block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white' // Active
-            : 'block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'; // Inactive
+            ? 'block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white'
+            : 'block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700';
     };
 
     return (
@@ -53,14 +52,16 @@ const Sidebar = () => {
                 className={`top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
                 aria-label="Sidebar"
             >
-                <div className="overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-700">
-                    <Link to="/" className="sidebar-header block p-4">
-                        <img src={logo} alt="Logo" className="h-14" />
-                        <div>
-                            <p className="text-center font-bold text-white">PTSP MAN 1 Yogyakarta</p>
-                        </div>
-                    </Link>
+                {/* Header (Logo and Title) */}
+                <Link to="/" className="sidebar-header block p-4">
+                    <img src={logo} alt="Logo" className="h-14" />
+                    <div>
+                        <p className="text-center font-bold text-white">PTSP MAN 1 Yogyakarta</p>
+                    </div>
+                </Link>
 
+                {/* Scrollable Content */}
+                <div className="overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 56px)' }}>
                     {/* Menu Items */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">

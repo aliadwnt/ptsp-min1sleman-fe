@@ -1,22 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { fetchDaftarDisposisi, deleteDaftarDisposisi } from '../../services/daftardisposisi.service';
 import Sidebar from '../../components/sidebar';
 import Header from '../../components/header';
 import "../../App.css";
 
-const DaftarDisposisi = ({
-    dataPelayanan = [],
-    countAll,
-    countBaru,
-    countProses,
-    countSelesai,
-    countAmbil,
-    user
-}) => {
+const DaftarDisposisi = () => {
+    const [dataPelayanan, setDataPelayanan] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Disposisi`;
+        document.title = 'PTSP MAN 1 YOGYAKARTA - Daftar Disposisi';
+
+        // Fetch data from API
+        const getData = async () => {
+            try {
+                const fetchedData = await fetchDaftarDisposisi();
+                setDataPelayanan(fetchedData); // Update state with fetched data
+            } catch (error) {
+                console.error('Failed to fetch daftar disposisi:', error);
+            }
+        };
+
+        getData();
     }, []);
 
     const handleSearch = (e) => {
@@ -24,9 +30,15 @@ const DaftarDisposisi = ({
         console.log('Searching for:', searchTerm);
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (window.confirm('Yakin mau di hapus?')) {
-            console.log('Delete ID:', id);
+            try {
+                await deleteDaftarDisposisi(id); // Call API to delete
+                setDataPelayanan(dataPelayanan.filter(item => item.id !== id)); // Remove item from state
+                setMessage('Data berhasil dihapus');
+            } catch (error) {
+                console.error('Error deleting daftar disposisi:', error);
+            }
         }
     };
 
@@ -114,7 +126,7 @@ const DaftarDisposisi = ({
                                         <tbody className="bg-white divide-y divide-gray-200">
                                             {dataPelayanan.length > 0 ? (
                                                 dataPelayanan.map((item, index) => (
-                                                    <tr key={item.id}> {/* Use item.id as the key */}
+                                                    <tr key={item.id}>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
                                                             {index + 1}
                                                         </td>
@@ -122,7 +134,7 @@ const DaftarDisposisi = ({
                                                             {item.status}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
-                                                            {item.waktu_masuk}
+                                                            {item.waktu}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
                                                             {item.perihal}
@@ -134,13 +146,13 @@ const DaftarDisposisi = ({
                                                             {item.penerima}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
-                                                            {item.disposisi_masuk}
+                                                            {item.dis_masuk}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
-                                                            {item.disposisi_keluar}
+                                                            {item.dis_keluar}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center text-gray-900">
-                                                            {item.diteruskan_kepada}
+                                                            {item.diteruskan}
                                                         </td>
                                                         <td className="px-6 py-4 text-sm text-center">
                                                             <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-500 transition-colors duration-200">

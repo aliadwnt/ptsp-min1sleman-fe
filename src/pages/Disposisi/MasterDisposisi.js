@@ -145,7 +145,7 @@ const MasterDisposisi = () => {
                     {index + 1}
                 </td>
                 <td className="px-6 py-4 text-sm text-center text-gray-900">
-                    {item.name} {/* Ubah item.status menjadi item.name */}
+                    {item.name} 
                 </td>
                 <td className="px-6 py-4 text-sm text-center">
                     <button onClick={() => {
