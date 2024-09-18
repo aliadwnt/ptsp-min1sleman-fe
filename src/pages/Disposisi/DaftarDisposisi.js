@@ -36,7 +36,6 @@ const DaftarDisposisi = ({
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            {/* Sidebar */}
             <div className="w-64">
                 <Sidebar />
             </div>
