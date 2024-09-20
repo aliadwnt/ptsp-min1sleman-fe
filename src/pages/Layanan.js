@@ -50,16 +50,6 @@ const FormLayanan = () => {
             Cetak Bukti Permohonan
           </button>
         </div>
-
-        {/* Success message */}
-        {/* 
-          {session('sukses') && (
-            <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-              <span className="font-medium">Sukses</span> Data berhasil disimpan.
-            </div>
-          )}
-        */}
-
         <div className="bg-white shadow rounded-lg mx-8 py-8">
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">

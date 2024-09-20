@@ -1,13 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link if using React Router
+import { Link } from 'react-router-dom'; 
 import logo from '../images/logo_man_1.png'
 const Footer = () => {
   return (
     <footer className="bg-white-800 text-center text-blue lg:text-left" style={{ fontFamily: 'Poppins, sans-serif' }}>
-      {/* Main container div: holds the entire content of the footer */}
       <div className="mx-16 py-10 text-center md:text-left">
         <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Tailwind Elements section */}
           <div>
             <div className="flex">
             <img src={logo} alt="PTSP Logo" className="w-12 h-12 rounded-full center" />
@@ -52,7 +50,6 @@ const Footer = () => {
             </h5>
           </div>
 
-          {/* Related Websites section */}
           <div className="ml-10">
             <h6 className="mb-4 flex justify-center font-bold uppercase md:justify-start">
               WEBSITE TERKAIT
@@ -71,7 +68,6 @@ const Footer = () => {
             </h5>
           </div>
 
-          {/* Related Information section */}
           <div className="ml-10">
             <h6 className="mb-4 flex items-start justify-start font-bold text-left md:justify-start">
               INFORMASI TERKAIT
@@ -85,7 +81,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright section */}
       <div className="bg-blue-100 p-6 text-center">
         <span>© Copyright</span>
         <a className="font-semibold text-blue ml-1 mr-1" href="#">

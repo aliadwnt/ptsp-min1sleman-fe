@@ -1,47 +1,47 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../components/sidebar";
-import Header from "../../components/header";
+import Sidebar from "../../../components/sidebar";
+import Header from "../../../components/header";
 import {
-  fetchDaftarLayanan,
-  createDaftarLayanan,
-  updateDaftarLayanan,
-  deleteDaftarLayanan,
-} from "../../services/daftarLayananService";
-import "../../App.css";
+  fetchDaftarPengguna,
+  createDaftarPengguna,
+  updateDaftarPengguna,
+  deleteDaftarPengguna,
+} from "../../../services/daftarPenggunaService";
+import "../../../App.css";
 
-const DaftarLayanan = () => {
-  const [dataDaftarLayanan, setDataDaftarLayanan] = useState([]);
+const DaftarPengguna = () => {
+  const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
+  const [currentDaftarPengguna, setCurrentDaftarPengguna] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Daftar Layanan`;
+    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Pengguna`;
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await fetchDaftarLayanan();
-      setDataDaftarLayanan(response);
+      const response = await fetchDaftarPengguna();
+      setDataDaftarPengguna(response);
     } catch (error) {
-      console.error("Error fetching Daftar Layanan:", error);
+      console.error("Error fetching Daftar Pengguna:", error);
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-    const filteredData = dataDaftarLayanan.filter((item) =>
+    const filteredData = dataDaftarPengguna.filter((item) =>
       String(item.name || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setDataDaftarLayanan(filteredData);
+    setDataDaftarPengguna(filteredData);
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Yakin mau dihapus?")) {
       try {
-        await deleteDaftarLayanan(id);
+        await deleteDaftarPengguna(id);
         setMessage("Data berhasil dihapus");
         fetchData();
       } catch (error) {
@@ -52,37 +52,29 @@ const DaftarLayanan = () => {
   };
 
   const handleAdd = () => {
-    setCurrentDaftarLayanan(null);
+    setCurrentDaftarPengguna(null);
     setModalOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const {
-         unit, 
-         name, 
-         jenis, 
-         output, 
-         duration 
-        } = e.target.elements;
+    
+    const formData = new FormData();
+    const { id, isAdmin } = e.target.elements;
 
-    const DaftarLayanan = {
-      unit: unit.value,
-      name: name.value,
-      jenis: jenis.value,
-      output: output.value,
-      duration: duration.value
-    };
+    formData.append("id", id.value);
+    formData.append("isAdmin", isAdmin.value);
+
     try {
-      if (currentDaftarLayanan) {
-        await updateDaftarLayanan(currentDaftarLayanan.id, DaftarLayanan);
+      if (currentDaftarPengguna) {
+        await updateDaftarPengguna(currentDaftarPengguna.id, formData);
         setMessage("Data berhasil diupdate");
       } else {
-        await createDaftarLayanan(DaftarLayanan);
+        await createDaftarPengguna(formData);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); // Refresh data setelah tambah atau update
-      setModalOpen(false); // Tutup modal
+      fetchData();
+      setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -91,7 +83,7 @@ const DaftarLayanan = () => {
 
   const handleModalClose = () => {
     setModalOpen(false);
-    setCurrentDaftarLayanan(null);
+    setCurrentDaftarPengguna(null);
   };
 
   return (
@@ -102,7 +94,7 @@ const DaftarLayanan = () => {
       <div className="flex-1">
         <Header />
         <div className="bodyadmin">
-          <div className="texttitle">Daftar Layanan</div>
+          <div className="texttitle">Daftar Pengguna</div>
 
           {message && (
             <div
@@ -147,37 +139,31 @@ const DaftarLayanan = () => {
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Pengolah</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Output Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Layanan</th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No ID Pengguna</th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Peran</th>
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                      {dataDaftarLayanan.length > 0 ? (
-                        dataDaftarLayanan.map((item, index) => (
+                      {dataDaftarPengguna.length > 0 ? (
+                        dataDaftarPengguna.map((item, index) => (
                           <tr key={item.id}>
                             <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.jenis}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.output}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.duration}</td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.id}</td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.isAdmin}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-  <button onClick={() => { setCurrentDaftarLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-    <i className="fas fa-edit"></i>
-  </button>
-  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-    <i className="fas fa-trash"></i>
-  </button>
-</td>
-
+                              <button onClick={() => { setCurrentDaftarPengguna(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                                <i className="fas fa-edit"></i>
+                              </button>
+                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="7" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
+                          <td colSpan="10" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
                         </tr>
                       )}
                     </tbody>
@@ -191,16 +177,13 @@ const DaftarLayanan = () => {
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-                <h2 className="text-xl font-semibold mb-4">{currentDaftarLayanan ? "Edit Daftar Layanan" : "Tambah Daftar Layanan"}</h2>
+                <h2 className="text-xl font-semibold mb-4">{currentDaftarPengguna ? "Edit Pengguna" : "Tambah Pengguna"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="unit" defaultValue={currentDaftarLayanan?.unit || ""} placeholder="Unit" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="name" defaultValue={currentDaftarLayanan?.name || ""} placeholder="Name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="jenis" defaultValue={currentDaftarLayanan?.jenis || ""} placeholder="Jenis" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="output" defaultValue={currentDaftarLayanan?.output || ""} placeholder="Output" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="duration" defaultValue={currentDaftarLayanan?.duration || ""} placeholder="Duration" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="id" defaultValue={currentDaftarPengguna?.id || ""} placeholder="id" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="isAdmin" defaultValue={currentDaftarPengguna?.isAdmin || ""} placeholder="isAdmin" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
-                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentDaftarLayanan ? "Update" : "Tambah"}</button>
+                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentDaftarPengguna ? "Update" : "Tambah"}</button>
                   </div>
                 </form>
               </div>
@@ -212,4 +195,4 @@ const DaftarLayanan = () => {
   );
 };
 
-export default DaftarLayanan;
+export default DaftarPengguna;

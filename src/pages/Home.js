@@ -101,7 +101,7 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
               </div>
             ))
           ) : (
-            <p className='notfound text-center'>No data available.</p>
+            <p className='notfound text-center'>No data available</p>
           )}
         </div>
 

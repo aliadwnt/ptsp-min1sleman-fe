@@ -17,7 +17,7 @@ const Navbar = () => {
             <li><a href="/" className="txt ">Beranda</a></li>
             <li><a href="/layanan" className="txt">Layanan</a></li>
             <li><a href="/visi-misi" className="txt">Visi Misi</a></li>
-            <li><a href="/lacak-permohonan" className="txt">Lacak Berkas</a></li>
+            <li><a href="/lacak-berkas" className="txt">Lacak Berkas</a></li>
             <li><a href="/zona-integritas" className="txt">Zona Integritas</a></li>
           </ul>
           <a href="/login" className="login-button-navbar">

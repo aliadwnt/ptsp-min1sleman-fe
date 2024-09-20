@@ -77,7 +77,7 @@ const Sidebar = () => {
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Pelayanan</b>
                         </div>
-                        <Link to="/layanan/daftar-layanan" className={getLinkClass('/layanan/daftar-layanan')}>
+                        <Link to="/layanan/daftar-pelayanan" className={getLinkClass('/layanan/daftar-pelayanan')}>
                             <i className="fas fa-list mr-2"></i> Daftar Pelayanan
                         </Link>
                         <Link to="/layanan/arsip-layanan" className={getLinkClass('/layanan/arsip-layanan')}>
@@ -137,7 +137,7 @@ const Sidebar = () => {
                         <Link to="/layanan/jenis-layanan" className={getLinkClass('/layanan/jenis-layanan')}>
                             <i className="fas fa-tags mr-2"></i> Jenis Layanan
                         </Link>
-                        <Link to="/layanan/list-layanan" className={getLinkClass('/layanan/list-layanan')}>
+                        <Link to="/layanan/daftar-layanan" className={getLinkClass('/layanan/daftar-layanan')}>
                             <i className="fas fa-th-list mr-2"></i> Daftar Layanan
                         </Link>
                         <Link to="/layanan/output-layanan" className={getLinkClass('/layanan/output-layanan')}>
