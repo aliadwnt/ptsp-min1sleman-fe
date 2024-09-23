@@ -109,29 +109,30 @@ const UnitPengolah = () => {
             </div>
           )}
 
-          <div className="flex items-center justify-between space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow">
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search..."
-                required
-              />
+<div className="flex items-center justify-center space-x-2 mb-4">
+  <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+    <input
+      type="search"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      placeholder="Search..."
+      required
+    />
+
               <button
                 type="submit"
-                className="ml-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
               >
                 <i className="fas fa-search"></i>
               </button>
-            </form>
             <button
               onClick={handleAdd}
               className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
             >
               <i className="fas fa-plus mr-2"></i>Tambah
             </button>
+            </form>
           </div>
 
           <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
