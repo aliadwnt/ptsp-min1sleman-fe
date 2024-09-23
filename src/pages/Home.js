@@ -25,23 +25,24 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
       <Jumbotron /> 
       <div className="main">
         <h1 className="text-3xl text-center font-semibold">Tentang PTSP</h1>
-        <div className="additional-content mt-5 text-center">
+        <div className="additional-content mt-4 ml-9 text-start">
           <p className="text-black  font-family-poppins text-start ">
             Pelayanan Terpadu Satu Pintu (PTSP) merupakan salah satu program pemerintah dalam rangka peningkatan pelayanan publik, memangkas birokrasi pelayanan perizinan dan non perizinan, sebagai upaya mencapai good governance/ kepemerintahan yang baik. PTSP dapat meminimalisir interaksi antara pengguna layanan dengan petugas dalam rangka terciptanya tata kelola pemerintahan yang baik dan bersih
           </p>
           <div className="mt-5 flex flex-wrap">
-  <div className="w-full md:w-1/2 p-2 text-start margin-left:5px">
+  <div className="w-full md:w-1/2 p-2 text-start">
     <span>
       Dengan konsep ini, pengguna layanan cukup datang ke PTSP dan bertemu dengan petugas front office (FO) kemudian menunggu proses selanjutnya.
       <br />
-      Adapun Tujuan dari PTSP Adalah:
+      <br></br>
+      Adapun Tujuan dari PTSP Adalah :
       <br />
     </span>
     <ul className="list-disc ml-5 mt-2 text-start">
       <li>Mendekatkan Pelayanan Kepada Masyarakat</li>
       <li>Menyederhanakan Proses Pelayanan</li>
       <li>
-        Mewujudkan Proses Pelayanan yang: cepat, mudah, transparan, pasti, dan akuntabel
+        Mewujudkan Proses Pelayanan yang cepat, mudah, transparan, pasti, dan akuntabel
       </li>
       <li>
         Memberikan Akses yang lebih baik kepada masyarakat untuk memperoleh pelayanan

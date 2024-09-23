@@ -28,28 +28,28 @@ const Jumbotron = () => {
           <div className="cont-1">
             <img className="group" src={groupImage} alt="Group Icon" />
             <div className="daftar-pelayanan">Daftar Pelayanan</div>
-            <div className="description">
+            <div className="description mr-5">
               Pelajari dan persiapkan kelengkapan dokumen sebelum melakukan Pengajuan Permohonan
             </div>
           </div>
           <div className="cont-2">
             <img className="vector" src={vectorImage} alt="Vector Icon" />
             <div className="lacak-permohonan">Lacak Permohonan</div>
-            <div className="description">
+            <div className="description mr-5">
               Lacak dan Pantau kemajuan Proses permohonan yang anda ajukan dari manapun kapanpun
             </div>
           </div>
           <div className="cont-3">
             <img className="group2" src={groupImage} alt="Group Icon" />
             <div className="buat-permohonan-layanan">Buat Permohonan Layanan</div>
-            <div className="description">
+            <div className="description mr-5">
               Pelajari dan persiapkan kelengkapan dokumen sebelum melakukan Pengajuan Permohonan
             </div>
           </div>
           <div className="cont-4">
             <img className="vector2" src={vectorImage2} alt="Vector Icon" />
             <div className="help-desk">Help Desk</div>
-            <div className="description">
+            <div className="description mr-5">
               Pelajari dan persiapkan kelengkapan dokumen sebelum melakukan Pengajuan Permohonan
             </div>
           </div>

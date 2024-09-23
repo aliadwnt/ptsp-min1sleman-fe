@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
+import "../App"
 
 const FormLayanan = () => {
     <Navbar/>
@@ -40,10 +41,10 @@ const FormLayanan = () => {
         {/* Replace this with your navigation component */}
         {/* <MainNavigation /> */}
       </div>
-
+<div className= "BodyLayanan">
       <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
         <div className="flex justify-between items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+          <h2 className="font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             Buat Permohonan Layanan
           </h2>
           <button className="bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded">
@@ -54,7 +55,7 @@ const FormLayanan = () => {
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="register">
+                <label className="text-poppins block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="register">
                   No Registrasi
                 </label>
                 <input
@@ -85,7 +86,6 @@ const FormLayanan = () => {
                 </select>
               </div>
             </div>
-
             <div className="w-full mb-6">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="perihal">
                 Perihal
@@ -221,7 +221,7 @@ const FormLayanan = () => {
             <div className="flex justify-end">
               <button
                 type="button"
-                className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-4 py-2 text-center mr-2 mb-2"
+                className="text-white bg-red-700 hover:bg-red-800 text-poppins focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-4 py-2 text-center mr-2 mb-2"
                 onClick={() => window.location.href = '/layanan'}
               >
                 Batal
@@ -237,6 +237,7 @@ const FormLayanan = () => {
         </div>
       </div>
       <Footer/>
+    </div>
     </div>
   );
 };

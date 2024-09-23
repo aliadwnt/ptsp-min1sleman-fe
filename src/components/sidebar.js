@@ -46,13 +46,11 @@ const Sidebar = () => {
                 </svg>
             </button>
 
-            {/* Sidebar */}
             <aside 
                 id="sidebar-multi-level-sidebar"
                 className={`top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
                 aria-label="Sidebar"
             >
-                {/* Header (Logo and Title) */}
                 <Link to="/" className="sidebar-header block p-4">
                     <img src={logo} alt="Logo" className="h-14" />
                     <div>
@@ -60,9 +58,7 @@ const Sidebar = () => {
                     </div>
                 </Link>
 
-                {/* Scrollable Content */}
                 <div className="overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 56px)' }}>
-                    {/* Menu Items */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Home</b>
@@ -72,7 +68,6 @@ const Sidebar = () => {
                         </Link>
                     </div>
                     
-                    {/* Kelola Pelayanan Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Pelayanan</b>
@@ -129,7 +124,6 @@ const Sidebar = () => {
                         </Link>
                     </div>
 
-                    {/* Kelola Master Layanan Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Master Layanan</b>
@@ -145,7 +139,6 @@ const Sidebar = () => {
                         </Link>
                     </div>
 
-                    {/* Kelola Master Syarat Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Master Syarat</b>
