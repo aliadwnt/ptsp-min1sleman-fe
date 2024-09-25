@@ -85,7 +85,7 @@ const ArsipLayanan = () => {
         setMessage("Data berhasil ditambahkan");
       }
       fetchData(); 
-      setModalOpen(false); // Tutup modal
+      setModalOpen(false); 
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -98,12 +98,10 @@ const ArsipLayanan = () => {
   };
 
   const handlePreview = (arsip) => {
-    // Logic untuk preview arsip
     console.log("Previewing:", arsip);
   };
 
   const handleUpload = (arsip) => {
-    // Logic untuk upload arsip
     console.log("Uploading:", arsip);
   };
 
@@ -177,20 +175,7 @@ const ArsipLayanan = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.no_reg}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-                            <td className="px-1 py-1 text-xs text-center">
-                              <button 
-                                className="bg-gray-300 text-gray-900 hover:bg-gray-400 px-2 py-1 rounded"
-                                onClick={() => handlePreview(item.arsip_masuk)}
-                              >
-                                Preview
-                              </button>
-                              <button 
-                                className="bg-green-600 text-white hover:bg-green-700 px-2 py-1 rounded ml-2"
-                                onClick={() => handleUpload(item.arsip_masuk)}
-                              >
-                                Upload
-                              </button>
-                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_masuk}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_keluar}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

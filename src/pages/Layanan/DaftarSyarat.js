@@ -17,7 +17,7 @@ const DaftarSyarat = () => {
   const [currentDaftarSyarat, setCurrentDaftarSyarat] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Dafggtar Master Syarat`;
+    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Syarat`;
     fetchData();
   }, []);
 
@@ -77,8 +77,8 @@ const DaftarSyarat = () => {
         await createDaftarSyarat(DaftarSyarat);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); // Refresh data setelah tambah atau update
-      setModalOpen(false); // Tutup modal
+      fetchData(); 
+      setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");

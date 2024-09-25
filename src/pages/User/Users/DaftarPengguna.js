@@ -16,13 +16,14 @@ const DaftarPengguna = () => {
   const fetchData = async () => {
     try {
       const response = await fetchDaftarPengguna();
+      console.log(response);  // Log response to see the data structure
       setDataDaftarPengguna(response);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="bodyadmin flex">

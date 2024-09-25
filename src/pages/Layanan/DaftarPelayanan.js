@@ -8,6 +8,7 @@ import {
   deleteDaftarPelayanan,
 } from "../../services/daftarPelayananService";
 import "../../App.css";
+import axios from 'axios';
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -33,7 +34,7 @@ const DaftarPelayanan = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const filteredData = dataDaftarPelayanan.filter((item) =>
-      String(item.no_reg || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    String(item.no_reg || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
     String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase())||
     String(item.perihal || "").toLowerCase().includes(searchTerm.toLowerCase())||
     String(item.kelengkapan || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,6 +61,32 @@ const DaftarPelayanan = () => {
     setModalOpen(true);
   };
 
+  const handleDocument = (id) => {
+    console.log(`Menampilkan dokumen untuk item dengan id ${id}`);
+    // 
+  };
+  
+  const handleDownload = async (id) => {
+    try {
+      const response = await axios.get(`${'http://localhost:3000/api_s/layanan'}/${id}/download`, {
+        responseType: 'blob', 
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+  
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `file_${id}.pdf`); 
+      document.body.appendChild(link);
+      link.click();
+  
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {
@@ -85,8 +112,8 @@ const DaftarPelayanan = () => {
         await createDaftarPelayanan(DaftarPelayanan);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); // Refresh data setelah tambah atau update
-      setModalOpen(false); // Tutup modal
+      fetchData(); 
+      setModalOpen(false); 
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -170,14 +197,20 @@ const DaftarPelayanan = () => {
                               <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
                               <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.kelengkapan}</td>
                               <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
-                              <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-  <button onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-    <i className="fas fa-edit"></i>
-  </button>
-  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-    <i className="fas fa-trash"></i>
-  </button>
-</td>
+                              <button onClick={() => handleDocument(item.id)} className="text-blue-600 hover:text-blue-900">
+                                <i className="fas fa-file-alt"></i> 
+                              </button>
+                              <button onClick={() => handleDownload(item.id)} className="text-yellow-600 hover:text-yellow-900">
+                                <i className="fas fa-download"></i> 
+                              </button>
+                                                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                              <button onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                                <i className="fas fa-edit"></i>
+                              </button>
+                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
 
                           </tr>
                         ))
@@ -200,7 +233,7 @@ const DaftarPelayanan = () => {
                 <h2 className="text-xl font-semibold mb-4">{currentDaftarPelayanan ? "Edit Daftar Pelayanan" : "Tambah Daftar Pelayanan"}</h2>
                 <form onSubmit={handleSubmit}>
                 <input type="text" name="no_reg" defaultValue={currentDaftarPelayanan?.no_reg || ""} placeholder="Nomor Registrasi" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="nama_pelayanan" defaultValue={currentDaftarPelayanan?.nama_pelayanan || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="nama_pelayanan" defaultValue={currentDaftarPelayanan?.nama_pelayanan || ""} placeholder="Nama Pelayanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <textarea name="perihal" defaultValue={currentDaftarPelayanan?.perihal || ""} placeholder="Perihal" required className="block w-full p-2 border border-gray-300 rounded mb-4"></textarea>
                   <input type="text" name="kelengkapan" defaultValue={currentDaftarPelayanan?.kelengkapan || ""} placeholder="Kelengkapan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <input type="text" name="status" defaultValue={currentDaftarPelayanan?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
