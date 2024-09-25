@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/arsip-layanan'; 
+const API_URL = 'http://localhost:3000/api_s/surat'; 
 
 export const fetchArsipLayanan = async () => {
     try {

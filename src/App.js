@@ -61,7 +61,7 @@ function App() {
         <Route path="/layanan/daftar-layanan" element={<DaftarLayanan />} />
         <Route path="/layanan/output-layanan" element={<OutputLayanan />} />
 
-        <Route path="/layanan/syarat-layanan" element={<MasterSyarat />} />
+        <Route path="/layanan/master-syarat" element={<MasterSyarat />} />
         <Route path="/layanan/daftar-syarat" element={<DaftarSyarat />} />
 
         <Route path="/user/settings" element={<Settings />} />

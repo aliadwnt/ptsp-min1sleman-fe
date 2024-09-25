@@ -143,10 +143,10 @@ const Sidebar = () => {
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Master Syarat</b>
                         </div>
-                        <Link to="/layanan/daftar-syarat" className={getLinkClass('/layanan/daftar-syarat')}>
+                        <Link to="/layanan/master-syarat" className={getLinkClass('/layanan/master-syarat')}>
                             <i className="fas fa-check-circle mr-2"></i> Master Syarat
                         </Link>
-                        <Link to="/layanan/syarat-layanan" className={getLinkClass('/layanan/syarat-layanan')}>
+                        <Link to="/layanan/daftar-syarat" className={getLinkClass('/layanan/daftar-syarat')}>
                             <i className="fas fa-list-check mr-2"></i> Daftar Syarat
                         </Link>
                     </div>

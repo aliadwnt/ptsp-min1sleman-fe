@@ -65,9 +65,17 @@
   margin-right: 190px;
   margin-top: 0px;
 }
-.bodyadmin{
-  background-color: rgb(236, 236, 236);
+html, body {
+  height: 100%;
+  margin: 0;
 }
+
+.bodyadmin {
+  min-height: 100vh; /* Menjamin elemen bodyadmin mencapai setidaknya 100% dari tinggi viewport */
+  background-color: rgb(238, 238, 238);
+  padding-bottom: 20px; /* Opsional: memberi jarak agar konten tidak terlalu rapat dengan bagian bawah */
+}
+
 /* styles.css */
 .texttitle {
   font-size: 1.25rem; /* setara dengan text-xl */

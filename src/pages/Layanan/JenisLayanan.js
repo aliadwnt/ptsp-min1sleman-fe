@@ -85,13 +85,13 @@ const JenisLayanan = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="bodyadmin flex">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
+        <div>
           <div className="texttitle">Daftar Jenis Layanan</div>
 
           {message && (
@@ -177,7 +177,7 @@ const JenisLayanan = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentJenisLayanan ? "Edit Jenis Layanan" : "Tambah Jenis Layanan"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="name" defaultValue={currentJenisLayanan?.name || ""} placeholder="Name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="name" defaultValue={currentJenisLayanan?.name || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentJenisLayanan ? "Update" : "Tambah"}</button>

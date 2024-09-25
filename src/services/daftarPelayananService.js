@@ -2,54 +2,54 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api_s/layanan'; 
 
-export const fetchLayanan = async () => {
+export const fetchDaftarPelayanan = async () => {
     try {
         const response = await axios.get(API_URL); 
         return response.data; 
     } catch (error) {
-        console.error('Error fetching layanan:', error);
+        console.error('Error fetching DaftarPelayanan:', error);
         throw error; 
     }
 };
 
-// Buat layanan baru
-export const createLayanan = async (layanan) => {
+// Buat DaftarPelayanan baru
+export const createDaftarPelayanan = async (DaftarPelayanan) => {
     try {
-        const response = await axios.post(API_URL, layanan, {
+        const response = await axios.post(API_URL, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log('Created layanan:', response.data);
+        console.log('Created DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Failed to add layanan:', error);
+        console.error('Failed to add DaftarPelayanan:', error);
         throw error; 
     }
 };
 
-export const updateLayanan = async (id, layanan) => {
+export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, layanan, {
+        const response = await axios.put(`${API_URL}/${id}`, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log('Updated layanan:', response.data);
+        console.log('Updated DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Error updating layanan:', error);
+        console.error('Error updating DaftarPelayanan:', error);
         throw error; 
     }
 };
 
-export const deleteLayanan = async (id) => {
+export const deleteDaftarPelayanan = async (id) => {
     try {
         const response = await axios.delete(`${API_URL}/${id}`);
-        console.log('Deleted layanan:', response.data);
+        console.log('Deleted DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Error deleting layanan:', error);
+        console.error('Error deleting DaftarPelayanan:', error);
         throw error; 
     }
 };

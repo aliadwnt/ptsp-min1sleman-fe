@@ -33,7 +33,7 @@ const ArsipLayanan = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const filteredData = dataArsipLayanan.filter((item) =>
-      String(item.name || "").toLowerCase().includes(searchTerm.toLowerCase())
+      String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
     setDataArsipLayanan(filteredData);
   };
@@ -55,6 +55,7 @@ const ArsipLayanan = () => {
     setCurrentArsipLayanan(null);
     setModalOpen(true);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { 
@@ -63,17 +64,18 @@ const ArsipLayanan = () => {
         perihal, 
         arsip_masuk, 
         arsip_keluar, 
-        status
+        status 
     } = e.target.elements;
 
     const ArsipLayanan = {
-      no_reg:no_reg.value,
-      nama_pelayanan:nama_pelayanan.value,
-      perihal:perihal.value,
-      arsip_masuk:arsip_masuk.value,
-      arsip_keluar:arsip_keluar.value,
-      status:status.value,
+      no_reg: no_reg.value,
+      nama_pelayanan: nama_pelayanan.value,
+      perihal: perihal.value,
+      arsip_masuk: arsip_masuk.value,
+      arsip_keluar: arsip_keluar.value,
+      status: status.value,
     };
+    
     try {
       if (currentArsipLayanan) {
         await updateArsipLayanan(currentArsipLayanan.id, ArsipLayanan);
@@ -95,14 +97,24 @@ const ArsipLayanan = () => {
     setCurrentArsipLayanan(null);
   };
 
+  const handlePreview = (arsip) => {
+    // Logic untuk preview arsip
+    console.log("Previewing:", arsip);
+  };
+
+  const handleUpload = (arsip) => {
+    // Logic untuk upload arsip
+    console.log("Uploading:", arsip);
+  };
+
   return (
-    <div className="flex">
+    <div className="bodyadmin flex">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
+        <div>
           <div className="texttitle">Daftar Arsip Layanan</div>
 
           {message && (
@@ -115,29 +127,28 @@ const ArsipLayanan = () => {
             </div>
           )}
 
-<div className="flex items-center justify-center space-x-2 mb-4">
-  <form onSubmit={handleSearch} className="flex flex-grow justify-center">
-    <input
-      type="search"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Search..."
-      required
-    />
-
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search..."
+                required
+              />
               <button
                 type="submit"
                 className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
               >
                 <i className="fas fa-search"></i>
               </button>
-            <button
-              onClick={handleAdd}
-              className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
-            >
-              <i className="fas fa-plus mr-2"></i>Tambah
-            </button>
+              <button
+                onClick={handleAdd}
+                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
+              >
+                <i className="fas fa-plus mr-2"></i>Tambah
+              </button>
             </form>
           </div>
 
@@ -166,18 +177,30 @@ const ArsipLayanan = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.no_reg}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_masuk}</td>
+                            <td className="px-1 py-1 text-xs text-center">
+                              <button 
+                                className="bg-gray-300 text-gray-900 hover:bg-gray-400 px-2 py-1 rounded"
+                                onClick={() => handlePreview(item.arsip_masuk)}
+                              >
+                                Preview
+                              </button>
+                              <button 
+                                className="bg-green-600 text-white hover:bg-green-700 px-2 py-1 rounded ml-2"
+                                onClick={() => handleUpload(item.arsip_masuk)}
+                              >
+                                Upload
+                              </button>
+                            </td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_keluar}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-  <button onClick={() => { setCurrentArsipLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-    <i className="fas fa-edit"></i>
-  </button>
-  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-    <i className="fas fa-trash"></i>
-  </button>
-</td>
-
+                              <button onClick={() => { setCurrentArsipLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                                <i className="fas fa-edit"></i>
+                              </button>
+                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
                           </tr>
                         ))
                       ) : (
@@ -198,7 +221,12 @@ const ArsipLayanan = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentArsipLayanan ? "Edit Arsip Layanan" : "Tambah Arsip Layanan"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="name" defaultValue={currentArsipLayanan?.name || ""} placeholder="Name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="no_reg" defaultValue={currentArsipLayanan?.no_reg || ""} placeholder="Nomor Registrasi" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="nama_pelayanan" defaultValue={currentArsipLayanan?.nama_pelayanan || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="perihal" defaultValue={currentArsipLayanan?.perihal || ""} placeholder="Perihal" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="arsip_masuk" defaultValue={currentArsipLayanan?.arsip_masuk || ""} placeholder="Arsip Masuk" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="arsip_keluar" defaultValue={currentArsipLayanan?.arsip_keluar || ""} placeholder="Arsip Keluar" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="status" defaultValue={currentArsipLayanan?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentArsipLayanan ? "Update" : "Tambah"}</button>

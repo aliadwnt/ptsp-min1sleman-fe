@@ -87,13 +87,13 @@ const SuratKeluar = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="bodyadmin flex">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
+        <div>
           <div className="texttitle">Daftar Surat Keluar</div>
 
           {message && (

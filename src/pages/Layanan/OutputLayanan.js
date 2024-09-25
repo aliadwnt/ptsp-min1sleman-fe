@@ -88,13 +88,13 @@ const OutputLayanan = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="bodyadmin flex">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
+        <div>
           <div className="texttitle">Output Layanan</div>
 
           {message && (
@@ -150,7 +150,7 @@ const OutputLayanan = () => {
     dataOutputLayanan.map((item, index) => (
       <tr key={item.id}>
         <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.outputlayanan}</td>
+        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
         <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
           <button onClick={() => { setCurrentOutputLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
             <i className="fas fa-edit"></i>
@@ -180,7 +180,7 @@ const OutputLayanan = () => {
             <div className="bg-white rounded-lg shadow-lg p-6 w-50">
               <h2 className="text-xl font-semibold mb-4">{currentOutputLayanan ? "Edit Output Layanan" : "Tambah Output Layanan"}</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" name="name" defaultValue={currentOutputLayanan?.name || ""} placeholder="status" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="name" defaultValue={currentOutputLayanan?.name || ""} placeholder="Output Pelayanan" required className="block w-full p-2 border border-gray-300 rounded" />
                 
                 <div className="flex justify-end col-span-2 space-x-2">
                   <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>

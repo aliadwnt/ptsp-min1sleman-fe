@@ -17,7 +17,7 @@ const MasterSyarat = () => {
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Dafggtar Master Syarat`;
+    document.title = `PTSP MAN 1 YOGYAKARTA - Master Syarat Layanan`;
     fetchData();
   }, []);
 
@@ -58,7 +58,9 @@ const MasterSyarat = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name } = e.target.elements;
+    const { 
+      name
+     } = e.target.elements;
 
     const MasterSyarat = {
       name: name.value,
@@ -85,14 +87,14 @@ const MasterSyarat = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="bodyadmin flex">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
-          <div className="texttitle">Daftar Master Syarat</div>
+        <div>
+          <div className="texttitle">Daftar Master Syarat Layanan</div>
 
           {message && (
             <div
@@ -161,7 +163,7 @@ const MasterSyarat = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="3" className="text-center text-gray-500">No data available</td>
+                          <td colSpan="3" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
                         </tr>
                       )}
                     </tbody>
@@ -177,7 +179,7 @@ const MasterSyarat = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentMasterSyarat ? "Edit Master Syarat" : "Tambah Master Syarat"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="name" defaultValue={currentMasterSyarat?.name || ""} placeholder="Name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="name" defaultValue={currentMasterSyarat?.name || ""} placeholder="name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentMasterSyarat ? "Update" : "Tambah"}</button>

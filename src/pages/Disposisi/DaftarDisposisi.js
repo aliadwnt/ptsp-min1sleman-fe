@@ -97,8 +97,8 @@ const DaftarDisposisi = () => {
         await createDaftarDisposisi(DaftarDisposisi);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); // Refresh data setelah tambah atau update
-      setModalOpen(false); // Tutup modal
+      fetchData(); 
+      setModalOpen(false); 
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -111,13 +111,13 @@ const DaftarDisposisi = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="bodyadmin flex overflow-x-auto">
       <div className="w-64">
         <Sidebar />
       </div>
       <div className="flex-1">
         <Header />
-        <div className="bodyadmin">
+        <div>
           <div className="texttitle">Daftar Disposisi</div>
 
           {message && (
@@ -155,61 +155,57 @@ const DaftarDisposisi = () => {
             </button>
             </form>
           </div>
-
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
-                      <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Masuk</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Perihal</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Penerima</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Disposisi Masuk</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Disposisi Keluar</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Diteruskan Kepada</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-  {dataDaftarDisposisi.length > 0 ? (
-    dataDaftarDisposisi.map((item, index) => (
-      <tr key={item.id}>
-        <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.waktu}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.pengirim}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.penerima}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_masuk}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_keluar}</td>
-        <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.diteruskan}</td>
-        <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-          <button onClick={() => { setCurrentDaftarDisposisi(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-            <i className="fas fa-edit"></i>
-          </button>
-          <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-            <i className="fas fa-trash"></i>
-          </button>
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="10" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
-    </tr>
-  )}
-</tbody>
-
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div className="flex justify-center">
+  <div className="w-full max-w-7xl"> {/* Berikan batasan lebar */}
+    <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+      <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700">
+        <thead className="bg-gray-50 dark:bg-gray-800">
+          <tr>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Masuk</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Perihal</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Penerima</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Disposisi Masuk</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Disposisi Keluar</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Diteruskan Kepada</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+          {dataDaftarDisposisi.length > 0 ? (
+            dataDaftarDisposisi.map((item, index) => (
+              <tr key={item.id}>
+                <td className="px-2 py-2 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.waktu}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.pengirim}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.penerima}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_masuk}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_keluar}</td>
+                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.diteruskan}</td>
+                <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
+                  <button onClick={() => { setCurrentDaftarDisposisi(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="10" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -230,8 +226,7 @@ const DaftarDisposisi = () => {
                 </div>
               </form>
             </div>
-          </div>
-          
+          </div>    
           )}
         </div>
       </div>
