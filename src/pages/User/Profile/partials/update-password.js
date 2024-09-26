@@ -45,77 +45,81 @@ const UpdatePassword = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10">
-            <h2 className="text-lg font-semibold">{'Update Password'}</h2>
-            <p className="text-sm text-gray-600">{'Ensure your account is using a long, random password to stay secure.'}</p>
-            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-                {/* Current Password */}
-                <div>
-                    <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
-                        {'Current Password'}
-                    </label>
-                    <input
-                        type="password"
-                        id="currentPassword"
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
-                        value={currentPassword}
-                        onChange={(e) => setCurrentPassword(e.target.value)}
-                        required
-                    />
-                    {errorMessages.currentPassword && (
-                        <p className="mt-1 text-sm text-red-600">{errorMessages.currentPassword}</p>
-                    )}
-                </div>
+        <div className="container mx-auto px-4 py-8">
+            <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto mt-10">
+                <h2 className="text-lg font-semibold">{'Update Password'}</h2>
+                <p className="text-sm text-gray-600">{'Ensure your account is using a long, random password to stay secure.'}</p>
+                <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+                    {/* Current Password */}
+                    <div>
+                        <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                            {'Current Password'}
+                        </label>
+                        <input
+                            type="password"
+                            id="currentPassword"
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            required
+                        />
+                        {errorMessages.currentPassword && (
+                            <p className="mt-1 text-sm text-red-600">{errorMessages.currentPassword}</p>
+                        )}
+                    </div>
 
-                {/* New Password */}
-                <div>
-                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
-                        {'New Password'}
-                    </label>
-                    <input
-                        type="password"
-                        id="newPassword"
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                    />
-                    {errorMessages.newPassword && (
-                        <p className="mt-1 text-sm text-red-600">{errorMessages.newPassword}</p>
-                    )}
-                </div>
+                    {/* New Password */}
+                    <div>
+                        <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                            {'New Password'}
+                        </label>
+                        <input
+                            type="password"
+                            id="newPassword"
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            required
+                        />
+                        {errorMessages.newPassword && (
+                            <p className="mt-1 text-sm text-red-600">{errorMessages.newPassword}</p>
+                        )}
+                    </div>
 
-                {/* New Password Confirmation */}
-                <div>
-                    <label htmlFor="newPasswordConfirmation" className="block text-sm font-medium text-gray-700">
-                        {'New Password Confirmation'}
-                    </label>
-                    <input
-                        type="password"
-                        id="newPasswordConfirmation"
-                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
-                        value={newPasswordConfirmation}
-                        onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-                        required
-                    />
-                    {errorMessages.newPasswordConfirmation && (
-                        <p className="mt-1 text-sm text-red-600">{errorMessages.newPasswordConfirmation}</p>
-                    )}
-                </div>
+                    {/* New Password Confirmation */}
+                    <div>
+                        <label htmlFor="newPasswordConfirmation" className="block text-sm font-medium text-gray-700">
+                            {'New Password Confirmation'}
+                        </label>
+                        <input
+                            type="password"
+                            id="newPasswordConfirmation"
+                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
+                            value={newPasswordConfirmation}
+                            onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+                            required
+                        />
+                        {errorMessages.newPasswordConfirmation && (
+                            <p className="mt-1 text-sm text-red-600">{errorMessages.newPasswordConfirmation}</p>
+                        )}
+                    </div>
 
-                {/* Actions */}
-                <div className="flex items-center justify-between">
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                        {loading ? 'Saving...' : 'Save'}
-                    </button>
-                    {successMessage && <p className="text-sm text-green-600">{successMessage}</p>}
-                    {errorMessages.api && <p className="text-sm text-red-600">{errorMessages.api}</p>}
-                </div>
-            </form>
+                    {/* Actions */}
+                    <div className="flex items-center justify-between">
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-200 ${
+                                loading ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                        >
+                            {loading ? 'Saving...' : 'Save'}
+                        </button>
+                        {successMessage && <p className="text-sm text-green-600">{successMessage}</p>}
+                        {errorMessages.api && <p className="text-sm text-red-600">{errorMessages.api}</p>}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
