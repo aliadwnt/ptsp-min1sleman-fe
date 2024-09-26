@@ -116,7 +116,7 @@ const DaftarSyarat = () => {
       type="search"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-1/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      className="w-2/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
       placeholder="Search..."
       required
     />
@@ -128,8 +128,8 @@ const DaftarSyarat = () => {
       <i className="fas fa-search"></i>
     </button>
 
-    <select className="w-1/3 ml-2 p-2 border text-gray-100  border-gray-300 rounded-lg bg-green-600 focus:ring-blue-500 focus:border-blue-500">
-      <option value="">Select Option</option>
+    <select className="w-2/5 p-2 pl-4 text-sm border text-gray-400  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+      <option value="">Pilih Unit Pengolah</option>
       <option value="option1">Option 1</option>
       <option value="option2">Option 2</option>
       <option value="option3">Option 3</option>

@@ -154,9 +154,9 @@ const UnitPengolah = () => {
                             <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                              <button onClick={() => { setCurrentUnitPengolah(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                              {/* <button onClick={() => { setCurrentUnitPengolah(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
                                 <i className="fas fa-edit"></i>
-                              </button>
+                              </button> */}
                               <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
                                 <i className="fas fa-trash"></i>
                               </button>

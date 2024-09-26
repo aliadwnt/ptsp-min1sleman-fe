@@ -24,7 +24,6 @@ import DaftarPeran from './pages/User/Users/DaftarPeran';
 import UnitPengolah from './pages/User/Users/UnitPengolah';
 
 import JenisLayanan from './pages/Layanan/JenisLayanan';
-import DaftarLayanan from './pages/Layanan/DaftarLayanan';
 import OutputLayanan from './pages/Layanan/OutputLayanan';
 
 import MasterSyarat from './pages/Layanan/MasterSyarat';
@@ -32,6 +31,8 @@ import DaftarSyarat from './pages/Layanan/DaftarSyarat';
 
 import Settings from './pages/User/Settings/Edit';
 import EditProfile from './pages/User/Profile/Edit';
+
+import CreateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/CreateDaftarPelayanan'; // Changed to uppercase
 
 function App() {
   return (
@@ -59,14 +60,14 @@ function App() {
         <Route path="/user/unit-pengolah" element={<UnitPengolah />} />
 
         <Route path="/layanan/jenis-layanan" element={<JenisLayanan />} />
-        <Route path="/layanan/daftar-layanan" element={<DaftarLayanan />} />
         <Route path="/layanan/output-layanan" element={<OutputLayanan />} />
-
         <Route path="/layanan/master-syarat" element={<MasterSyarat />} />
         <Route path="/layanan/daftar-syarat" element={<DaftarSyarat />} />
 
         <Route path="/user/settings" element={<Settings />} />
-        <Route path="/profile/edit" element={<EditProfile/>} />
+        <Route path="/profile/edit" element={<EditProfile />} />
+
+        <Route path="/create-daftar-pelayanan" element={<CreateDaftarPelayanan />} /> {/* Changed to uppercase */}
       </Routes>
     </Router>
   );

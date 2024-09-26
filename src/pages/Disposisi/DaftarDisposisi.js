@@ -212,14 +212,14 @@ const DaftarDisposisi = () => {
             <div className="bg-white rounded-lg shadow-lg p-6 w-50">
               <h2 className="text-xl font-semibold mb-4">{currentDaftarDisposisi ? "Edit Master Disposisi" : "Tambah Master Disposisi"}</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" name="status" defaultValue={currentDaftarDisposisi?.status || ""} placeholder="status" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="waktu" defaultValue={currentDaftarDisposisi?.waktu || ""} placeholder="waktu" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="perihal" defaultValue={currentDaftarDisposisi?.perihal || ""} placeholder="perihal" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="pengirim" defaultValue={currentDaftarDisposisi?.pengirim || ""} placeholder="pengirim" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="penerima" defaultValue={currentDaftarDisposisi?.penerima || ""} placeholder="penerima" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="dis_masuk" defaultValue={currentDaftarDisposisi?.dis_masuk || ""} placeholder="dis_masuk" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="dis_keluar" defaultValue={currentDaftarDisposisi?.dis_keluar || ""} placeholder="dis_keluar" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="diteruskan" defaultValue={currentDaftarDisposisi?.diteruskan || ""} placeholder="diteruskan" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="status" defaultValue={currentDaftarDisposisi?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="waktu" defaultValue={currentDaftarDisposisi?.waktu || ""} placeholder="Waktu" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="perihal" defaultValue={currentDaftarDisposisi?.perihal || ""} placeholder="Perihal" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="pengirim" defaultValue={currentDaftarDisposisi?.pengirim || ""} placeholder="Pengirim" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="penerima" defaultValue={currentDaftarDisposisi?.penerima || ""} placeholder="Penerima" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="dis_masuk" defaultValue={currentDaftarDisposisi?.dis_masuk || ""} placeholder="Disposisi Masuk" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="dis_keluar" defaultValue={currentDaftarDisposisi?.dis_keluar || ""} placeholder="Disposisi Keluar" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="diteruskan" defaultValue={currentDaftarDisposisi?.diteruskan || ""} placeholder="Diteruskan Kepada" required className="block w-full p-2 border border-gray-300 rounded" />
                 <div className="flex justify-end col-span-2 space-x-2">
                   <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                   <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentDaftarDisposisi ? "Update" : "Tambah"}</button>

@@ -9,6 +9,7 @@ import {
 } from "../../services/daftarPelayananService";
 import "../../App.css";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -16,6 +17,7 @@ const DaftarPelayanan = () => {
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarPelayanan, setCurrentDaftarPelayanan] = useState(null);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Pelayanan`;
@@ -59,6 +61,7 @@ const DaftarPelayanan = () => {
   const handleAdd = () => {
     setCurrentDaftarPelayanan(null);
     setModalOpen(true);
+    navigate('/create-daftar-pelayanan');
   };
 
   const handleDocument = (id) => {
@@ -191,26 +194,28 @@ const DaftarPelayanan = () => {
                       {dataDaftarPelayanan.length > 0 ? (
                         dataDaftarPelayanan.map((item, index) => (
                           <tr key={item.id}>
-                              <td className="px-1 py-1 text-xs font-medium text-center text-gray-900  dark:text-white">{index + 1}</td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.no_reg}</td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.kelengkapan}</td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
-                              <button onClick={() => handleDocument(item.id)} className="text-blue-600 hover:text-blue-900">
-                                <i className="fas fa-file-alt"></i> 
-                              </button>
-                              <button onClick={() => handleDownload(item.id)} className="text-yellow-600 hover:text-yellow-900">
-                                <i className="fas fa-download"></i> 
-                              </button>
-                                                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                              <button onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-                                <i className="fas fa-edit"></i>
-                              </button>
-                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-                                <i className="fas fa-trash"></i>
-                              </button>
-                            </td>
+                              <td className="px-6 py-3 text-xs font-medium text-center text-gray-900  dark:text-white">{index + 1}</td>
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.no_reg}</td>
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.kelengkapan}</td>
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
+                              <td className="text-center">
+  <div className="flex justify-center space-x-2">
+    <button onClick={() => handleDocument(item.id)} className="text-blue-600 hover:text-blue-900">
+      <i className="fas fa-file-alt"></i> 
+    </button>
+    <button onClick={() => handleDownload(item.id)} className="text-yellow-600 hover:text-yellow-900">
+      <i className="fas fa-download"></i> 
+    </button>
+    <button onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+      <i className="fas fa-edit"></i>
+    </button>
+    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+      <i className="fas fa-trash"></i>
+    </button>
+  </div>
+</td>
 
                           </tr>
                         ))

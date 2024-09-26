@@ -114,31 +114,30 @@ const DaftarLayanan = () => {
             </div>
           )}
 
-          <div className="flex items-center justify-between space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow">
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search..."
-                required
-              />
+<div className="flex items-center justify-center space-x-2 mb-4">
+  <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+    <input
+      type="search"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      placeholder="Search..."
+      required
+    />
               <button
                 type="submit"
-                className="ml-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
               >
                 <i className="fas fa-search"></i>
               </button>
-            </form>
             <button
               onClick={handleAdd}
               className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
             >
               <i className="fas fa-plus mr-2"></i>Tambah
             </button>
+            </form>
           </div>
-
           <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -166,13 +165,13 @@ const DaftarLayanan = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.output}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.duration}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-  <button onClick={() => { setCurrentDaftarLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-    <i className="fas fa-edit"></i>
-  </button>
-  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-    <i className="fas fa-trash"></i>
-  </button>
-</td>
+                              <button onClick={() => { setCurrentDaftarLayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
+                                <i className="fas fa-edit"></i>
+                              </button>
+                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </td>
 
                           </tr>
                         ))
@@ -194,11 +193,11 @@ const DaftarLayanan = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentDaftarLayanan ? "Edit Daftar Layanan" : "Tambah Daftar Layanan"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="unit" defaultValue={currentDaftarLayanan?.unit || ""} placeholder="Unit" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="name" defaultValue={currentDaftarLayanan?.name || ""} placeholder="Name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="jenis" defaultValue={currentDaftarLayanan?.jenis || ""} placeholder="Jenis" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="output" defaultValue={currentDaftarLayanan?.output || ""} placeholder="Output" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="duration" defaultValue={currentDaftarLayanan?.duration || ""} placeholder="Duration" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="unit" defaultValue={currentDaftarLayanan?.unit || ""} placeholder="Unit Pengolah" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="name" defaultValue={currentDaftarLayanan?.name || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="jenis" defaultValue={currentDaftarLayanan?.jenis || ""} placeholder="Jenis Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="output" defaultValue={currentDaftarLayanan?.output || ""} placeholder="Output Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="duration" defaultValue={currentDaftarLayanan?.duration || ""} placeholder="Durasi Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentDaftarLayanan ? "Update" : "Tambah"}</button>

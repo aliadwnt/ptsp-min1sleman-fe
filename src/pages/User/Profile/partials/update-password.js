@@ -50,7 +50,6 @@ const UpdatePassword = () => {
                 <h2 className="text-lg font-semibold">{'Update Password'}</h2>
                 <p className="text-sm text-gray-600">{'Ensure your account is using a long, random password to stay secure.'}</p>
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-                    {/* Current Password */}
                     <div>
                         <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
                             {'Current Password'}
