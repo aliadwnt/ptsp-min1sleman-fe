@@ -1,38 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getUserData, updateUserData, sendEmailVerification } from "../../../../services/daftarPenggunaService";
 
-function UpdateProfile({ user, sendEmailVerification }) {
+function UpdateProfile() {
     // State for form fields
-    const [name, setName] = useState(user.name || "");
-    const [email, setEmail] = useState(user.email || "");
-    const [emailVerified, setEmailVerified] = useState(user.hasVerifiedEmail);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [emailVerified, setEmailVerified] = useState(false);
     const [saved, setSaved] = useState(false);
     const [nothingChanged, setNothingChanged] = useState(false);
     const [resent, setResent] = useState(false);
 
+    // Fetch user data when the component mounts
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userData = await getUserData();
+                setName(userData.name);
+                setEmail(userData.email);
+                setEmailVerified(userData.hasVerifiedEmail);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
     // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (name === user.name && email === user.email) {
+        const userData = { name, email };
+
+        // Check if the data has changed
+        if (name === userData.name && email === userData.email) {
             setNothingChanged(true);
             setSaved(false);
         } else {
-            // Logic to handle profile update (e.g., API call)
-            console.log("Profile updated:", { name, email });
-            setSaved(true);
-            setNothingChanged(false);
+            try {
+                await updateUserData(userData); // Update user data via service
+                setSaved(true);
+                setNothingChanged(false);
+            } catch (error) {
+                console.error("Error updating user data:", error);
+                setSaved(false); // Reset saved state if update fails
+            }
         }
     };
 
     // Resend email verification
-    const handleResendVerification = () => {
-        sendEmailVerification();
-        setResent(true);
+    const handleResendVerification = async () => {
+        try {
+            await sendEmailVerification(); // Trigger email verification via service
+            setResent(true);
+        } catch (error) {
+            console.error("Error resending verification email:", error);
+            setResent(false); // Reset resent state if resend fails
+        }
     };
 
     return (
-        <div className="form-card">
-            <div className="card-title">
+        <div className="max-w-md mx-auto mt-10">
+            <div className="text-lg font-semibold">
                 <h2>Profile Information</h2>
             </div>
 
@@ -44,11 +73,11 @@ function UpdateProfile({ user, sendEmailVerification }) {
             <form onSubmit={handleSubmit}>
                 {/* Name */}
                 <div className="col-span-6 sm:col-span-4">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
                     <input
                         id="name"
                         type="text"
-                        className="block w-full mt-1"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
@@ -58,11 +87,11 @@ function UpdateProfile({ user, sendEmailVerification }) {
 
                 {/* Email */}
                 <div className="col-span-6 sm:col-span-4 mt-4">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                     <input
                         id="email"
                         type="email"
-                        className="block w-full mt-1"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -73,11 +102,11 @@ function UpdateProfile({ user, sendEmailVerification }) {
                 {/* Email Verification */}
                 {!emailVerified && (
                     <div className="mt-4">
-                        <p className="text-sm text-gray-600 dark:text-white">
+                        <p className="text-sm text-gray-600">
                             Your email address is unverified.
                             <button
                                 type="button"
-                                className="text-sm text-gray-600 underline rounded-md dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                className="text-sm text-green-600 underline hover:text-green-900"
                                 onClick={handleResendVerification}
                             >
                                 Click here to re-send the verification email.
@@ -85,7 +114,7 @@ function UpdateProfile({ user, sendEmailVerification }) {
                         </p>
 
                         {resent && (
-                            <p className="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
+                            <p className="mt-2 text-sm font-medium text-green-600">
                                 A new verification link has been sent to your email address.
                             </p>
                         )}
@@ -94,18 +123,18 @@ function UpdateProfile({ user, sendEmailVerification }) {
 
                 {/* Actions */}
                 <div className="actions mt-4">
-                    <button type="submit" className="button">
+                    <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">
                         Save
                     </button>
 
                     {/* Success messages */}
                     {saved && (
-                        <span className="action-message ml-3">
+                        <span className="action-message ml-3 text-green-600">
                             Saved.
                         </span>
                     )}
                     {nothingChanged && (
-                        <span className="action-message ml-3">
+                        <span className="action-message ml-3 text-yellow-600">
                             Nothing Changed.
                         </span>
                     )}

@@ -31,6 +31,7 @@ import MasterSyarat from './pages/Layanan/MasterSyarat';
 import DaftarSyarat from './pages/Layanan/DaftarSyarat';
 
 import Settings from './pages/User/Settings/Edit';
+import EditProfile from './pages/User/Profile/Edit';
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
         <Route path="/layanan/daftar-syarat" element={<DaftarSyarat />} />
 
         <Route path="/user/settings" element={<Settings />} />
+        <Route path="/profile/edit" element={<EditProfile/>} />
       </Routes>
     </Router>
   );

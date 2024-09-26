@@ -4,8 +4,8 @@ import '../App.css';
 
 // Placeholder for Authenticated User Data
 const user = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
+    name: '(name user)',
+    email: '(email user)',
     isImpersonating: true,
 };
 
@@ -66,7 +66,7 @@ const UserProfileMenu = () => {
                             </button>
                             <button
                                 className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                onClick={() => navigate('/setting')}
+                                onClick={() => navigate('/user/settings')}
                             >
                                 Settings
                             </button>

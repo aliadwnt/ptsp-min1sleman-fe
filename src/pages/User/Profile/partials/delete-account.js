@@ -3,26 +3,32 @@ import React, { useState } from "react";
 function DeleteAccount() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [password, setPassword] = useState("");
-    
+    const [error, setError] = useState(""); // State for error messages
+    const [success, setSuccess] = useState(""); // State for success messages
+
     // Function to handle the confirmation of deletion
     const confirmUserDeletion = () => {
         setIsModalOpen(true);
+        setError(""); // Reset any previous error messages
+        setSuccess(""); // Reset any previous success messages
     };
 
     // Function to handle the actual deletion
     const deleteUser = () => {
         if (password) {
-            // Logic to delete the user account
-            console.log("Account deleted");
+            // Logic to delete the user account (mocked for this example)
+            console.log("Account deleted"); // Replace this with actual deletion logic
+            setSuccess("Your account has been successfully deleted."); // Set success message
             setIsModalOpen(false); // Close modal after deletion
+            setPassword(""); // Clear the password field
         } else {
-            console.log("Password is required");
+            setError("Password is required to delete your account."); // Set error message
         }
     };
 
     return (
-        <div className="app-card">
-            <div className="card-title">
+        <div className="max-w-md mx-auto mt-10">
+            <div className="text-lg font-semibold">
                 <h2>Delete Account</h2>
             </div>
 
@@ -57,16 +63,17 @@ function DeleteAccount() {
                             </div>
 
                             <div className="mt-4">
-                                <label htmlFor="password">Password</label>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                                 <input 
                                     id="password" 
                                     type="password" 
-                                    className="block w-full mt-1" 
+                                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required 
-                                    autoComplete="password" 
+                                    autoComplete="current-password" 
                                 />
+                                {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                             </div>
                         </div>
 
@@ -86,6 +93,8 @@ function DeleteAccount() {
                         </div>
                     </div>
                 )}
+
+                {success && <p className="mt-4 text-sm text-green-600">{success}</p>} {/* Success message after deletion */}
             </div>
         </div>
     );

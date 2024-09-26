@@ -1,97 +1,123 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-function UpdatePassword() {
-    // State management for passwords
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
-    const [updated, setUpdated] = useState(false); // For success message
+const UpdatePassword = () => {
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [newPasswordConfirmation, setNewPasswordConfirmation] = useState('');
+    const [errorMessages, setErrorMessages] = useState({});
+    const [successMessage, setSuccessMessage] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setErrorMessages({});
+        setSuccessMessage('');
+
+        // Form validation (you can customize this as needed)
+        const errors = {};
+        if (!currentPassword) errors.currentPassword = 'Current password is required.';
+        if (!newPassword) errors.newPassword = 'New password is required.';
         if (newPassword !== newPasswordConfirmation) {
-            alert("New password and confirmation do not match!");
+            errors.newPasswordConfirmation = 'New passwords do not match.';
+        }
+
+        if (Object.keys(errors).length > 0) {
+            setErrorMessages(errors);
+            setLoading(false);
             return;
         }
-        // Logic to handle password update here, e.g., API call to update password
-        console.log("Password updated successfully");
-        setUpdated(true); // Show success message
-        // Clear form fields
-        setCurrentPassword("");
-        setNewPassword("");
-        setNewPasswordConfirmation("");
+
+        // Simulating API call
+        try {
+            // Replace with your API call
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setSuccessMessage('Password updated successfully.');
+            // Reset form fields if needed
+            setCurrentPassword('');
+            setNewPassword('');
+            setNewPasswordConfirmation('');
+        } catch (error) {
+            setErrorMessages({ api: 'Failed to update password.' });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className="form-card">
-            <div className="card-title">
-                <h2>Update Password</h2>
-            </div>
-
-            <div className="card-description">
-                <p>Ensure your account is using a long, random password to stay secure.</p>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleSubmit}>
+        <div className="max-w-md mx-auto mt-10">
+            <h2 className="text-lg font-semibold">{'Update Password'}</h2>
+            <p className="text-sm text-gray-600">{'Ensure your account is using a long, random password to stay secure.'}</p>
+            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                 {/* Current Password */}
-                <div className="col-span-6 sm:col-span-4">
-                    <label htmlFor="currentPassword">Current Password</label>
+                <div>
+                    <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700">
+                        {'Current Password'}
+                    </label>
                     <input
-                        id="currentPassword"
                         type="password"
-                        className="block w-full mt-1"
+                        id="currentPassword"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
                         required
-                        autoComplete="current-password"
                     />
+                    {errorMessages.currentPassword && (
+                        <p className="mt-1 text-sm text-red-600">{errorMessages.currentPassword}</p>
+                    )}
                 </div>
 
                 {/* New Password */}
-                <div className="col-span-6 sm:col-span-4 mt-4">
-                    <label htmlFor="newPassword">New Password</label>
+                <div>
+                    <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
+                        {'New Password'}
+                    </label>
                     <input
-                        id="newPassword"
                         type="password"
-                        className="block w-full mt-1"
+                        id="newPassword"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
-                        autoComplete="new-password"
                     />
+                    {errorMessages.newPassword && (
+                        <p className="mt-1 text-sm text-red-600">{errorMessages.newPassword}</p>
+                    )}
                 </div>
 
                 {/* New Password Confirmation */}
-                <div className="col-span-6 sm:col-span-4 mt-4">
-                    <label htmlFor="newPasswordConfirmation">New Password Confirmation</label>
+                <div>
+                    <label htmlFor="newPasswordConfirmation" className="block text-sm font-medium text-gray-700">
+                        {'New Password Confirmation'}
+                    </label>
                     <input
-                        id="newPasswordConfirmation"
                         type="password"
-                        className="block w-full mt-1"
+                        id="newPasswordConfirmation"
+                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
                         value={newPasswordConfirmation}
                         onChange={(e) => setNewPasswordConfirmation(e.target.value)}
                         required
                     />
+                    {errorMessages.newPasswordConfirmation && (
+                        <p className="mt-1 text-sm text-red-600">{errorMessages.newPasswordConfirmation}</p>
+                    )}
                 </div>
 
                 {/* Actions */}
-                <div className="actions mt-4">
-                    <button type="submit" className="button" disabled={!currentPassword || !newPassword || !newPasswordConfirmation}>
-                        Save
+                <div className="flex items-center justify-between">
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                        {loading ? 'Saving...' : 'Save'}
                     </button>
-
-                    {/* Success message */}
-                    {updated && (
-                        <span className="action-message ml-3">
-                            Updated.
-                        </span>
-                    )}
+                    {successMessage && <p className="text-sm text-green-600">{successMessage}</p>}
+                    {errorMessages.api && <p className="text-sm text-red-600">{errorMessages.api}</p>}
                 </div>
             </form>
         </div>
     );
-}
+};
 
 export default UpdatePassword;

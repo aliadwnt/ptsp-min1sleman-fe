@@ -11,7 +11,7 @@ export const useAuth = () => {
         const fetchAuthData = async () => {
             // Example: const response = await fetch('/api/auth/status');
             // const data = await response.json();
-            const data = { isAuthenticated: true, user: { firstName: 'John', name: 'John Doe', email: 'john.doe@example.com' } };
+            const data = { isAuthenticated: true, user: { firstName: 'User', name: 'User Name', email: 'user.name@example.com' } };
             
             setIsAuthenticated(data.isAuthenticated);
             setUser(data.user);

@@ -3,6 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 
 const MainNavigation = ({ user, logout }) => {
   const [open, setOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false); // New state for dropdown visibility
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
     <nav className="bg-opacity-0 text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
@@ -42,6 +47,7 @@ const MainNavigation = ({ user, logout }) => {
                 <div className="inline-flex rounded-md">
                   <button
                     type="button"
+                    onClick={toggleDropdown}
                     className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md"
                   >
                     {user.firstName}
@@ -51,17 +57,19 @@ const MainNavigation = ({ user, logout }) => {
                   </button>
                 </div>
                 {/* Dropdown Menu */}
-                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                  <div className="block px-4 py-2">
-                    <div className="text-sm text-gray-700">{user.name}</div>
-                    <div className="text-xs text-gray-400">{user.email}</div>
+                {dropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white">
+                    <div className="block px-4 py-2">
+                      <div className="text-sm text-gray-700">{user.name}</div>
+                      <div className="text-xs text-gray-400">{user.email}</div>
+                    </div>
+                    <NavLink to="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100">Dashboard</NavLink>
+                    <NavLink to="/user/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</NavLink>
+                    <button onClick={logout} className="block w-full py-2 text-left hover:bg-gray-100">
+                      Log Out
+                    </button>
                   </div>
-                  <NavLink to="/user/dashboard">Dashboard</NavLink>
-                  <NavLink to="/user/settings">Settings</NavLink>
-                  <button onClick={logout} className="block w-full py-2 text-left">
-                    Log Out
-                  </button>
-                </div>
+                )}
               </div>
             ) : (
               <div className="space-x-2">
@@ -106,9 +114,9 @@ const MainNavigation = ({ user, logout }) => {
                   <div className="text-sm font-medium text-gray-500">{user.email}</div>
                 </div>
               </div>
-              <NavLink to="/user/dashboard">Dashboard</NavLink>
-              <NavLink to="/user/settings">Settings</NavLink>
-              <button onClick={logout} className="block w-full py-2 text-left">
+              <NavLink to="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100">Dashboard</NavLink>
+              <NavLink to="/user/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</NavLink>
+              <button onClick={logout} className="block w-full py-2 text-left hover:bg-gray-100">
                 Log Out
               </button>
             </div>

@@ -53,3 +53,25 @@ export const deleteDaftarPengguna = async (id) => {
         throw error; 
     }
 };
+
+// daftarPenggunaService.js
+export const getUserData = async () => {
+    // Simulasi pengambilan data dari API atau database
+    return {
+        name: "User Name",
+        email: "user.name@example.com",
+        hasVerifiedEmail: false
+    };
+};
+
+export const updateUserData = async (userData) => {
+    // Simulasi API call untuk memperbarui data pengguna
+    console.log("Data pengguna diperbarui:", userData);
+    return true; // Simulasi respons sukses
+};
+
+export const sendEmailVerification = async () => {
+    // Simulasi pengiriman email verifikasi
+    console.log("Verifikasi email dikirim");
+    return true; // Simulasi respons sukses
+};
