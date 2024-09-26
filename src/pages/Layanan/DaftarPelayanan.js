@@ -202,18 +202,36 @@ const DaftarPelayanan = () => {
                               <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
                               <td className="text-center">
   <div className="flex justify-center space-x-2">
-    <button onClick={() => handleDocument(item.id)} className="text-blue-600 hover:text-blue-900">
-      <i className="fas fa-file-alt"></i> 
-    </button>
-    <button onClick={() => handleDownload(item.id)} className="text-yellow-600 hover:text-yellow-900">
-      <i className="fas fa-download"></i> 
-    </button>
-    <button onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-      <i className="fas fa-edit"></i>
-    </button>
-    <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-      <i className="fas fa-trash"></i>
-    </button>
+  <div className="flex justify-center space-x-2">
+  <button
+    onClick={() => handleDocument(item.id)}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-file-alt text-blue-600 hover:text-blue-900"></i>
+  </button>
+  <button
+    onClick={() => handleDownload(item.id)}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-download text-yellow-600 hover:text-yellow-900"></i>
+  </button>
+  <button
+    onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+  </button>
+  <button
+    onClick={() => handleDelete(item.id)}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+  </button>
+</div>
   </div>
 </td>
 

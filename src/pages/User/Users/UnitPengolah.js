@@ -157,8 +157,12 @@ const UnitPengolah = () => {
                               {/* <button onClick={() => { setCurrentUnitPengolah(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
                                 <i className="fas fa-edit"></i>
                               </button> */}
-                              <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-                                <i className="fas fa-trash"></i>
+                             <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{ background: 'none', border: 'none', padding: 0 }}
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
                               </button>
                             </td>
                           </tr>

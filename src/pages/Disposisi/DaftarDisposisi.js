@@ -187,12 +187,20 @@ const DaftarDisposisi = () => {
                 <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_keluar}</td>
                 <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.diteruskan}</td>
                 <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
-                  <button onClick={() => { setCurrentDaftarDisposisi(item); setModalOpen(true); }} className="text-green-600 hover:text-green-900">
-                    <i className="fas fa-edit"></i>
-                  </button>
-                  <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">
-                    <i className="fas fa-trash"></i>
-                  </button>
+                <button
+    onClick={() => { setCurrentDaftarDisposisi(item); setModalOpen(true); }}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+  </button>
+  <button
+    onClick={() => handleDelete(item.id)}
+    className="focus:outline-none"
+    style={{ background: 'none', border: 'none', padding: 0 }}
+  >
+    <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+  </button>
                 </td>
               </tr>
             ))

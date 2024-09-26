@@ -112,8 +112,12 @@ const DaftarPeran = ({
                                                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-400">{item.nama_pengguna}</td>
                                                             <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-400">{item.peran}</td>
                                                             <td className="px-6 py-4 text-sm font-medium text-center">
-                                                                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-500 transition-colors duration-200 rounded-lg">
-                                                                    <i className="fas fa-trash"></i>
+                                                                <button
+                                                                    onClick={() => handleDelete(item.id)}
+                                                                    className="focus:outline-none"
+                                                                    style={{ background: 'none', border: 'none', padding: 0 }}
+                                                                >
+                                                                    <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
