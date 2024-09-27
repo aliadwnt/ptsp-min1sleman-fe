@@ -11,6 +11,7 @@ import "../../App.css";
 
 const DaftarSyarat = () => {
   const [dataDaftarSyarat, setDataDaftarSyarat] = useState([]);
+  const [unit, setUnit] = useState([]); // Menambahkan state untuk unit
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,6 +20,7 @@ const DaftarSyarat = () => {
   useEffect(() => {
     document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Syarat`;
     fetchData();
+    fetchUnit(); // Mem-fetch unit saat pertama kali load
   }, []);
 
   const fetchData = async () => {
@@ -27,6 +29,15 @@ const DaftarSyarat = () => {
       setDataDaftarSyarat(response);
     } catch (error) {
       console.error("Error fetching Master Syarat:", error);
+    }
+  };
+
+  const fetchUnit = async () => { // Menambahkan fungsi untuk fetch unit
+    try {
+      const response = await fetchDaftarSyarat(); // Sesuaikan dengan API untuk mendapatkan unit
+      setUnit(response.map(item => item.unit));
+    } catch (error) {
+      console.error("Error fetching unit:", error);
     }
   };
 
@@ -62,13 +73,14 @@ const DaftarSyarat = () => {
       unit,
       name,
       syarat_layanan
-   } = e.target.elements;
+    } = e.target.elements;
 
     const DaftarSyarat = {
       unit: unit.value,
       name: name.value,
       syarat_layanan: syarat_layanan.value
     };
+
     try {
       if (currentDaftarSyarat) {
         await updateDaftarSyarat(currentDaftarSyarat.id, DaftarSyarat);
@@ -111,32 +123,38 @@ const DaftarSyarat = () => {
           )}
 
           <div className="flex items-center justify-between space-x-2 mb-4">
-  <form onSubmit={handleSearch} className="flex flex-grow justify-center">
-    <input
-      type="search"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-2/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-      placeholder="Search..."
-      required
-    />
+            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-2/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search..."
+                required
+              />
 
-    <button
-      type="submit"
-      className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-    >
-      <i className="fas fa-search"></i>
-    </button>
+              <button
+                type="submit"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+              >
+                <i className="fas fa-search"></i>
+              </button>
 
-    <select className="w-2/5 p-2 pl-4 text-sm border text-gray-400  border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-      <option value="">Pilih Unit Pengolah</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
-    </select>
+              <select className="w-2/5 p-2 pl-4 text-sm border text-gray-400 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Pilih Unit Pengolah</option>
+                {unit.length > 0 ? (
+                  unit.map((unit, index) => (
+                    <option key={index} value={unit}>
+                      {unit}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>Loading unit...</option>
+                )}
+              </select>
 
-  </form>
-</div>
+            </form>
+          </div>
 
           <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -161,22 +179,21 @@ const DaftarSyarat = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.syarat_layanan}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <button
-    onClick={() => { setCurrentDaftarSyarat(item); setModalOpen(true); }}
-    className="focus:outline-none"
-    style={{ background: 'none', border: 'none', padding: 0 }}
-  >
-    <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-  </button>
-  <button
-    onClick={() => handleDelete(item.id)}
-    className="focus:outline-none"
-    style={{ background: 'none', border: 'none', padding: 0 }}
-  >
-    <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-  </button>
+                              <button
+                                onClick={() => { setCurrentDaftarSyarat(item); setModalOpen(true); }}
+                                className="focus:outline-none"
+                                style={{ background: 'none', border: 'none', padding: 0 }}
+                              >
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{ background: 'none', border: 'none', padding: 0 }}
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
                             </td>
-
                           </tr>
                         ))
                       ) : (
@@ -197,9 +214,9 @@ const DaftarSyarat = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentDaftarSyarat ? "Edit Master Syarat" : "Tambah Master Syarat"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="name" defaultValue={currentDaftarSyarat?.unit || ""} placeholder="Unit" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="unit" defaultValue={currentDaftarSyarat?.unit || ""} placeholder="Unit" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <input type="text" name="name" defaultValue={currentDaftarSyarat?.nama_layanan || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="name" defaultValue={currentDaftarSyarat?.syarat_layanan || ""} placeholder="Syarat Llayanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="syarat_layanan" defaultValue={currentDaftarSyarat?.syarat_layanan || ""} placeholder="Syarat Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentDaftarSyarat ? "Update" : "Tambah"}</button>

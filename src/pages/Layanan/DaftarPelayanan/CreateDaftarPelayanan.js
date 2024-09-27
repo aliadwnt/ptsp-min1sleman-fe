@@ -31,7 +31,7 @@ const FormPelayanan = ({ dataLayanan = [], onSubmit }) => {
     formData.append('catatan', catatan);
     formData.append('filename', filename);
 
-    onSubmit(formData); // Simpan atau kirim data
+    onSubmit(formData); 
   };
 
   return (

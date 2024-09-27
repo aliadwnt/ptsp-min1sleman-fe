@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
-import axios from 'axios';
 
 import {
   fetchDaftarDisposisi,
@@ -218,7 +217,7 @@ const DaftarDisposisi = () => {
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-              <h2 className="text-xl font-semibold mb-4">{currentDaftarDisposisi ? "Edit Master Disposisi" : "Tambah Master Disposisi"}</h2>
+              <h2 className="text-xl font-semibold mb-4">{currentDaftarDisposisi ? "Edit Daftar Disposisi" : "Tambah Daftar Disposisi"}</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input type="text" name="status" defaultValue={currentDaftarDisposisi?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded" />
                 <input type="text" name="waktu" defaultValue={currentDaftarDisposisi?.waktu || ""} placeholder="Waktu" required className="block w-full p-2 border border-gray-300 rounded" />
