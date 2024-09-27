@@ -63,8 +63,8 @@ function UpdateProfile() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto mt-10">
+        <div className="container mx-auto px-4 py-2">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-auto">
                 <div className="text-lg font-semibold">
                     <h2>Profile Information</h2>
                 </div>

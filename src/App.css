@@ -71,14 +71,17 @@ html, body {
 }
 
 .bodyadmin {
-  min-height: 100vh; /* Menjamin elemen bodyadmin mencapai setidaknya 100% dari tinggi viewport */
-  background-color: rgb(238, 238, 238);
-  padding-bottom: 20px; /* Opsional: memberi jarak agar konten tidak terlalu rapat dengan bagian bawah */
+  min-height: 100vh; 
+  background-color: rgb(244, 244, 244);
+  padding-bottom: 0;
+  margin: 0; /* Pastikan tidak ada margin */
 }
 
 /* styles.css */
 .texttitle {
-  font-size: 1.25rem; /* setara dengan text-xl */
+  font-size: 1.25rem;
+  margin-top: 10px;
+  margin-left: 60px;
   font-weight: 600; /* setara dengan font-semibold */
   line-height: 1.25; /* setara dengan leading-tight */
   color: #1f2937; /* setara dengan text-gray-800 */
@@ -281,16 +284,19 @@ html, body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Medium shadow */
 }
 
-/* styles.css or App.css */
 .sidebar-header {
-  background-color: #11ad00; /* Tailwind's green-600 */
+  background-color: #11ad00;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 6rem; /* Tailwind's h-16 */
-  flex-direction: column; /* Arrange children vertically */
-  align-items: center; /* Center align items horizontally */
+  height: 6rem; 
+  flex-direction: column; 
+  align-items: center; 
   font-style: 'poppins', 'sans-serif';
+}
+.sidebar-header text {
+  display: block; 
+  color: #ffffff; 
 }
 .inline-flex{
   font-family: 'poppins', 'sans-serif';
@@ -300,10 +306,6 @@ font-family: 'Poppins', sans-serif;
 }
 .flex-1 {
   font-family: 'poppins', 'sans-serif';
-}
-.sidebar-header text {
-    display: block; /* Ensure the text is displayed as a block element */
-    color: #ffffff; /* Adjust text color as needed */
 }
 
 /* Optional: Define --primary-color if using CSS variables */
@@ -418,7 +420,6 @@ font-family: 'Poppins', sans-serif;
   text-decoration: underline; /* Menambahkan garis bawah pada teks */
 }
 /* styles.css */
-/* Sidebar */
 .scrollable-content {
   overflow-y: hidden; /* Menghilangkan scrollbar vertikal */
   overflow-x: hidden; /* Menghilangkan scrollbar horizontal jika ada */

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
-import "../App"
+import { createDaftarPelayanan } from '../services/daftarPelayananService';
+import { fetchJenisLayanan } from '../services/jenisLayananService'; 
+import "../App";
 
-const FormLayanan = () => {
-    <Navbar/>
+const Layanan = () => {
   const [formData, setFormData] = useState({
     no_reg: '',
     nama_pelayanan: '',
@@ -18,44 +19,110 @@ const FormLayanan = () => {
     catatan: '',
     filename: [],
   });
-
+  
+  const [layananOptions, setLayananOptions] = useState([]);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false); 
+  const fetchData = async () => {
+    try {
+      const data = await fetchJenisLayanan();
+      console.log(data); // Debugging data yang diambil
+      if (Array.isArray(data)) {
+        setLayananOptions(data);
+        console.log(layananOptions); // Debugging setelah set
+      } else {
+        throw new Error('Data is not an array');
+      }
+    } catch (error) {
+      setError('Error fetching Jenis Layanan: ' + error.message);
+      console.error('Error fetching Jenis Layanan:', error);
+    }
+  };
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await fetchJenisLayanan();
+        if (Array.isArray(data)) {
+          setLayananOptions(data);
+        } else {
+          throw new Error('Data is not an array');
+        }
+      } catch (error) {
+        setError('Error fetching Jenis Layanan: ' + error.message);
+        console.error('Error fetching Jenis Layanan:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'filename') {
-      setFormData({ ...formData, [name]: files });
+      setFormData({ ...formData, [name]: Array.from(files) });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log(formData);
+    setError(null);
+    setSuccessMessage('');
+    setLoading(true); 
+
+    try {
+      const formDataToSend = new FormData();
+      for (const key in formData) {
+        if (Array.isArray(formData[key])) {
+          for (const file of formData[key]) {
+            formDataToSend.append(key, file);
+          }
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      }
+      
+      await createDaftarPelayanan(formDataToSend);
+      setSuccessMessage('Data berhasil disimpan!');
+      setFormData({
+        no_reg: '',
+        nama_pelayanan: '',
+        perihal: '',
+        no_surat: '',
+        tgl: '',
+        nama_pemohon: '',
+        alamat: '',
+        no_hp: '',
+        nama_pengirim: '',
+        catatan: '',
+        filename: [],
+      });
+    } catch (error) {
+      setError('Gagal menyimpan data: ' + error.message);
+      console.error('Gagal menyimpan data:', error);
+    } finally {
+      setLoading(false); 
+    }
   };
 
   return (
     <div>
-            <Navbar/>
-      <div className="bg-blue-600">
-        {/* Replace this with your navigation component */}
-        {/* <MainNavigation /> */}
-      </div>
-<div className= "BodyLayanan">
-      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-        <div className="flex justify-between items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <h2 className="font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+      <Navbar />
+      <div className="bg-blue-600"></div>
+      <div className="BodyLayanan">
+        <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
+          <h2 className="ml-48 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             Buat Permohonan Layanan
           </h2>
-          <button className="bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded">
-            Cetak Bukti Permohonan
-          </button>
-        </div>
-        <div className="bg-white shadow rounded-lg mx-8 py-8">
+          {error && <div className="text-red-600">{error}</div>} 
+          {successMessage && <div className="text-green-600">{successMessage}</div>} 
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="text-poppins block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="register">
+                <label className="text-poppins block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_reg">
                   No Registrasi
                 </label>
                 <input
@@ -65,25 +132,28 @@ const FormLayanan = () => {
                   placeholder="Nomor Registrasi"
                   value={formData.no_reg}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="layanan">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
                   Nama Layanan
                 </label>
                 <select
-                  className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="nama_pelayanan"
-                  value={formData.nama_pelayanan}
-                  onChange={handleChange}
-                >
-                  <option value="">Pilih Layanan</option>
-                  <option value="Pelayanan dan Informasi Umum">Pelayanan dan Informasi Umum</option>
-                  <option value="Permohonan Cuti">Permohonan Cuti</option>
-                  <option value="Peminjaman Ruang">Peminjaman Ruang</option>
-                  <option value="Permohonan Surat Tugas Guru">Permohonan Surat Tugas Guru</option>
-                  <option value="Permohonan Surat Tugas Siswa">Permohonan Surat Tugas Siswa</option>
-                </select>
+  className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+  name="nama_pelayanan"
+  value={formData.nama_pelayanan} // Pastikan ini sesuai
+  onChange={handleChange}
+  required
+>
+  <option value="">Pilih Layanan</option>
+  {layananOptions.map((layanan) => (
+    <option key={layanan.id} value={layanan.name}> 
+      {layanan.name}
+    </option>
+  ))}
+</select>
+
               </div>
             </div>
             <div className="w-full mb-6">
@@ -97,12 +167,13 @@ const FormLayanan = () => {
                 placeholder="Perihal"
                 value={formData.perihal}
                 onChange={handleChange}
+                required
               />
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nomor">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_surat">
                   No. Surat Permohonan
                 </label>
                 <input
@@ -112,26 +183,27 @@ const FormLayanan = () => {
                   placeholder="Nomor Surat"
                   value={formData.no_surat}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="tanggal">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="tgl">
                   Tanggal Surat Permohonan
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="tgl"
                   type="date"
-                  placeholder="Tanggal"
                   value={formData.tgl}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pemohon">
                   Nama Pemohon
                 </label>
                 <input
@@ -141,11 +213,29 @@ const FormLayanan = () => {
                   placeholder="Nama Pemohon"
                   value={formData.nama_pemohon}
                   onChange={handleChange}
+                  required
                 />
               </div>
               <div className="w-full md:w-1/2 px-3">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_hp">
+                  Nomor Handphone
+                </label>
+                <input
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  name="no_hp"
+                  type="tel"
+                  placeholder="Nomor HP"
+                  value={formData.no_hp}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="alamat">
-                  Alamat Pemohon
+                  Alamat
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -154,26 +244,11 @@ const FormLayanan = () => {
                   placeholder="Alamat"
                   value={formData.alamat}
                   onChange={handleChange}
+                  required
                 />
               </div>
-            </div>
-
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-2/4 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="telp">
-                  No. HP Pemohon
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="no_hp"
-                  type="number"
-                  placeholder="Nomor HP Pemohon"
-                  value={formData.no_hp}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="w-full md:w-2/4 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="pengirim">
+              <div className="w-full md:w-1/2 px-3">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pengirim">
                   Nama Pengirim
                 </label>
                 <input
@@ -183,12 +258,13 @@ const FormLayanan = () => {
                   placeholder="Nama Pengirim"
                   value={formData.nama_pengirim}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="catatan">
                   Catatan
                 </label>
@@ -198,48 +274,38 @@ const FormLayanan = () => {
                   placeholder="Catatan"
                   value={formData.catatan}
                   onChange={handleChange}
-                ></textarea>
+                />
               </div>
-            </div>
-
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full px-3">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="filename">
-                  Upload Berkas (pdf)
+                  Upload File
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="filename"
                   type="file"
-                  placeholder="Upload Berkas"
                   onChange={handleChange}
                   multiple
+                  required
                 />
               </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between">
               <button
-                type="button"
-                className="text-white bg-red-700 hover:bg-red-800 text-poppins focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-4 py-2 text-center mr-2 mb-2"
-                onClick={() => window.location.href = '/layanan'}
-              >
-                Batal
-              </button>
-              <button
+                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 type="submit"
-                className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-4 py-2 text-center mr-2 mb-2"
+                disabled={loading} // Disable the button while loading
               >
-                Kirim
+                {loading ? 'Loading...' : 'Simpan'}
               </button>
             </div>
           </form>
         </div>
       </div>
-      <Footer/>
-    </div>
+      <Footer />
     </div>
   );
 };
 
-export default FormLayanan;
+export default Layanan;

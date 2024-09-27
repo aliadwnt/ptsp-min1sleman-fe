@@ -27,8 +27,8 @@ function DeleteAccount() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto mt-10">
+        <div className="container mx-auto px-4 py-2">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-auto">
                 <h2 className="text-lg font-semibold">Delete Account</h2>
                 <p className="text-sm text-gray-600">
                     Permanently delete your account.

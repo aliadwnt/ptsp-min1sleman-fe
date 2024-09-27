@@ -45,8 +45,8 @@ const UpdatePassword = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="bg-white shadow-lg rounded-lg p-6 max-w-md mx-auto mt-10">
+        <div className="container mx-auto px-4 py-2">
+            <div className="bg-white shadow-lg rounded-lg p-6 max-w-full mx-auto">
                 <h2 className="text-lg font-semibold">{'Update Password'}</h2>
                 <p className="text-sm text-gray-600">{'Ensure your account is using a long, random password to stay secure.'}</p>
                 <form onSubmit={handleSubmit} className="mt-4 space-y-4">

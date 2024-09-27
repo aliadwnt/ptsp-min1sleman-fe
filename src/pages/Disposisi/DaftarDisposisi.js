@@ -135,7 +135,7 @@ const DaftarDisposisi = () => {
       type="search"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
-      className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+      className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
       placeholder="Search..."
       required
     />
