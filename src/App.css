@@ -4,6 +4,108 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
+/* General styles for form container */
+.register-form-ptsp {
+  max-width: 400px; /* Maximum width of the form */
+  margin: 50px auto; /* Centering the form on the page */
+  padding: 20px; /* Inner spacing */
+  border: 1px solid #dcdcdc; /* Light grey border */
+  border-radius: 8px; /* Rounded corners */
+  background-color: #f7f7f7; /* Light background color */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+  font-family: poppins;
+}
+
+/* Heading styles */
+.register-heading {
+  font-size: 24px; /* Size of the main heading */
+  text-align: center; /* Center the heading */
+  color: #333; /* Dark grey color */
+  margin-bottom: 10px; /* Space below heading */
+  font-family: poppins;
+}
+
+.register-title {
+  font-size: 16px; /* Size of the subtitle */
+  text-align: center; /* Center the subtitle */
+  color: #666; /* Medium grey color */
+  margin-bottom: 20px; /* Space below subtitle */
+  font-family: poppins;
+}
+
+/* Form group styles */
+.form-group-ptsp {
+  margin-bottom: 15px; /* Space below each form group */
+  font-family: poppins;
+}
+
+/* Label styles */
+.label-ptsp {
+  display: block; /* Block level for labels */
+  margin-bottom: 5px; /* Space below label */
+  font-weight: bold; /* Bold labels */
+  font-family: poppins;
+  color: #333; /* Dark grey color */
+}
+
+/* Input styles */
+.input-ptsp {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Inner spacing */
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.input-ptsp:focus {
+  border-color: #007bff; /* Blue border on focus */
+  outline: none; /* Remove default outline */
+}
+
+/* Button styles */
+.register-button {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Inner spacing */
+  background-color: #007bff; /* Blue background color */
+  color: white; /* White text color */
+  border: none; /* No border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.register-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Message styles */
+.error-message {
+  color: red; /* Red color for error messages */
+  margin-bottom: 10px; /* Space below error message */
+  font-weight: bold; /* Bold text */
+}
+
+.success-message {
+  color: green; /* Green color for success messages */
+  margin-bottom: 10px; /* Space below success message */
+  font-weight: bold; /* Bold text */
+}
+
+/* Back to login link styles */
+.backlogin {
+  margin-top: 10px; /* Space above the link */
+  text-align: center; /* Center the text */
+  font-size: 14px; /* Font size for the link */
+  color: #007bff; /* Blue color for the link */
+  cursor: pointer; /* Pointer cursor */
+  text-decoration: underline; /* Underline for links */
+}
+
+.backlogin:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
 
 .jumbotron {
   position: relative;

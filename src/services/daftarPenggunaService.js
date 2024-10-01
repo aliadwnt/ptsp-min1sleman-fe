@@ -12,10 +12,24 @@ export const fetchDaftarPengguna = async () => {
     }
 };
 
-// Buat Pengguna baru
+export const loginPengguna = async ({ email, password }) => { 
+    try {
+        const response = await axios.post(`${API_URL}/login`, { email, password }, { 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log('Login:', response.data);
+        return response.data; 
+    } catch (error) {
+        console.error('Failed to login:', error);
+        throw new Error(error.response?.data?.message || 'Failed to login user'); 
+    }
+};
+
 export const createDaftarPengguna = async (DaftarPengguna) => {
     try {
-        const response = await axios.post(API_URL, DaftarPengguna, {
+        const response = await axios.post(`${API_URL}/register`, DaftarPengguna, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -24,9 +38,10 @@ export const createDaftarPengguna = async (DaftarPengguna) => {
         return response.data; 
     } catch (error) {
         console.error('Failed to add pengguna:', error);
-        throw error; 
+        throw new Error(error.response?.data?.message || 'Failed to register user'); // Provide a more descriptive error message
     }
 };
+
 
 export const updateDaftarPengguna = async (id, DaftarPengguna) => {
     try {

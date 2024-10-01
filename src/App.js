@@ -9,6 +9,7 @@ import LacakBerkas from './pages/LacakBerkas';
 import ZonaIntegritas from './pages/ZonaIntegritas';
 
 import Login from './pages/User/Login';
+import Register from './pages/User/Register';
 import Dashboard from './pages/User/Dashboard';
 
 import DaftarPelayanan from './pages/Layanan/DaftarPelayanan';
@@ -46,6 +47,7 @@ function App() {
         <Route path="/zona-integritas" element={<ZonaIntegritas />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/layanan/daftar-pelayanan" element={<DaftarPelayanan />} />

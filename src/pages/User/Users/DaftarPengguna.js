@@ -89,17 +89,17 @@ const DaftarPengguna = () => {
                     {dataDaftarPengguna.length > 0 ? (
                       dataDaftarPengguna.map((item, index) => (
                         <tr key={item.id}>
-                          <td className="px-2 py-2 text-xs font-medium text-center text-gray-900 dark:text-white">
+                          <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.id}
                           </td>
-                          <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.name}
                           </td>
-                          <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.is_admin}
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            {item.is_admin === 1 ? 'ADMIN' : 'USER'}
                           </td>
                           <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
                           </td>

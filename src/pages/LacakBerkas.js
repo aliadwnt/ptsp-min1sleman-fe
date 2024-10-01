@@ -27,6 +27,7 @@ const LacakBerkas = () => {
 
     // Handlers for actions
     const handleSearch = () => {
+        
     };
 
     const handleLoadArsip = () => {
