@@ -1,40 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-
-// Placeholder for Authenticated User Data
-const user = {
-    name: '(name user)',
-    email: '(email user)',
-    isImpersonating: true,
-};
+import fetchDaftarPengguna from '../services/daftarPenggunaService';
 
 const UserProfileMenu = () => {
-    const [isOpen, setIsOpen] = useState(false); 
+    const [isOpen, setIsOpen] = useState(false);
+    const [user, setUser] = useState({ name: '(name user)', email: '(email user)', isImpersonating: false });
     const navigate = useNavigate();
 
+    // Mengambil data pengguna saat komponen pertama kali dimuat
+    useEffect(() => {
+        const fetchDaftarPengguna = async () => {
+            try {
+                const userData = await fetchDaftarPengguna(); // Ambil data pengguna
+                setUser({
+                    name: userData.name || '(name user)', // Atur nama pengguna
+                    email: userData.email || '(email user)', // Atur email pengguna
+                    isImpersonating: userData.isImpersonating || false, // Atur status impersonasi
+                });
+            } catch (error) {
+                console.error('Failed to fetch user data:', error);
+            }
+        };
+
+        fetchDaftarPengguna();
+    }, []); // Hanya dijalankan sekali saat komponen dimuat
+
     const toggleDropdown = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(prev => !prev); // Gunakan fungsi updater untuk memperbarui state
     };
 
     const handleLogout = () => {
         console.log('User logged out');
-        navigate('/');
+        // Hapus data pengguna dari localStorage (jika diperlukan)
+        localStorage.removeItem('first_name');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        navigate('/'); // Arahkan ke halaman utama setelah logout
     };
 
     return (
-<header className="headerr">
-
+        <header className="headerr">
             {/* Left side: Title or logo */}
-            <div className="textheader">
-                </div>
+            <div className="textheader"></div>
             {/* Right side: Button */}
             <div className="relative inline-block text-left">
                 <button
                     onClick={toggleDropdown}
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    @username
+                    {user.name} 
                     <svg
                         className="-mr-1 ml-2 h-5 w-5"
                         xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +95,7 @@ const UserProfileMenu = () => {
                             </button>
                             <div className="border-t border-gray-100"></div>
                             <button
-                                onClick={() => navigate('/')}
+                                onClick={handleLogout}
                                 className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                             >
                                 Log Out

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../../../components/header';
 import Sidebar from '../../../components/sidebar';
-import { createDaftarPelayanan } from '../../../services/daftarPelayananService';
+import { fetchDaftarPelayananById, updateDaftarPelayanan } from '../../../services/daftarPelayananService'; 
 import { fetchJenisLayanan } from '../../../services/jenisLayananService'; 
 import "../../../App";
 
-const Layanan = () => {
+const LayananUpdate = () => {
   const [formData, setFormData] = useState({
     no_reg: '',
     nama_pelayanan: '',
@@ -25,16 +25,32 @@ const Layanan = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); 
-  const fetchData = async () => {
+  
+  const navigate = useNavigate();
+  const { id } = useParams(); // Mengambil ID layanan dari URL
+  
+  // Fetch data layanan berdasarkan ID
+  const fetchLayanan = async () => {
+    try {
+      const layanan = await fetchDaftarPelayananById(id); // Fetch layanan by ID
+      if (layanan) {
+        setFormData(layanan);
+      } else {
+        throw new Error('Data layanan tidak ditemukan');
+      }
+    } catch (error) {
+      setError('Error fetching layanan: ' + error.message);
+      console.error('Error fetching layanan:', error);
+    }
+  };
+
+  const fetchJenisLayananData = async () => {
     try {
       const data = await fetchJenisLayanan();
-      console.log(data); // Debugging data yang diambil
       if (Array.isArray(data)) {
         setLayananOptions(data);
-        console.log(layananOptions); // Debugging setelah set
       } else {
-        throw new Error('Data is not an array');
+        throw new Error('Data jenis layanan is not an array');
       }
     } catch (error) {
       setError('Error fetching Jenis Layanan: ' + error.message);
@@ -43,22 +59,9 @@ const Layanan = () => {
   };
   
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchJenisLayanan();
-        if (Array.isArray(data)) {
-          setLayananOptions(data);
-        } else {
-          throw new Error('Data is not an array');
-        }
-      } catch (error) {
-        setError('Error fetching Jenis Layanan: ' + error.message);
-        console.error('Error fetching Jenis Layanan:', error);
-      }
-    };
-  
-    fetchData();
-  }, []);
+    fetchLayanan(); // Fetch data layanan untuk update
+    fetchJenisLayananData(); // Fetch data jenis layanan
+  }, [id]); // Jalankan fetch ketika komponen mount atau `id` berubah
   
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -87,15 +90,15 @@ const Layanan = () => {
         }
       }
 
-      await createDaftarPelayanan(formDataToSend);
-      setSuccessMessage('Data berhasil disimpan!');
-
+      await updateDaftarPelayanan(id, formDataToSend); // Update layanan by ID
+      setSuccessMessage('Data berhasil diperbarui!');
+      
       // Redirect ke halaman /layanan/daftar-layanan setelah sukses
       navigate('/layanan/daftar-pelayanan');
-
+      
     } catch (error) {
-      setError('Gagal menyimpan data: ' + error.message);
-      console.error('Gagal menyimpan data:', error);
+      setError('Gagal memperbarui data: ' + error.message);
+      console.error('Gagal memperbarui data:', error);
     } finally {
       setLoading(false);
     }
@@ -105,15 +108,15 @@ const Layanan = () => {
     <div>
       <div className="bg-blue-600"></div>
       <div className="BodyLayanan">
-      <Header />
+        <Header />
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            Buat Permohonan Layanan
+            Update Permohonan Layanan
           </h2>
           {error && <div className="text-red-600">{error}</div>} 
           {successMessage && <div className="text-green-600">{successMessage}</div>} 
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
-            <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
                   Nama Layanan
@@ -269,14 +272,13 @@ const Layanan = () => {
                 />
               </div>
             </div>
-
             <div className="flex items-center justify-between">
               <button
                 className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 type="submit"
                 disabled={loading} 
               >
-                {loading ? 'Loading...' : 'Simpan'}
+                {loading ? 'Loading...' : 'Perbarui'}
               </button>
             </div>
           </form>
@@ -287,4 +289,4 @@ const Layanan = () => {
   );
 };
 
-export default Layanan;
+export default LayananUpdate;

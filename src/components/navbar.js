@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';  // Import Link dan useLocation
 import logo from '../images/logo_man_1.png'; 
 import '../App.css'; 
+import UserNav from '../components/user-nav'
 
 const Navbar = () => {
   const location = useLocation();  // Mendapatkan path saat ini
@@ -57,9 +58,7 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-          <Link to="/login" className="login-button-navbar">
-            LOG IN
-          </Link>
+          <UserNav/>
         </div>
       </div>
     </nav>

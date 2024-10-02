@@ -527,20 +527,6 @@ font-family: 'Poppins', sans-serif;
   overflow-x: hidden; /* Menghilangkan scrollbar horizontal jika ada */
 }
 
-
-.login-button-navbar {
-  font-weight: 700; /* Menggunakan font-weight untuk bold */
-  background-color: #ffffff; /* Tetap putih sebagai warna background */
-  color: #000000; /* Tetap hitam sebagai warna teks */
-  padding: 0.5rem 1rem; /* Padding tetap */
-  border-radius: 0.5rem; /* Tetap rounded */
-  font-family: 'Poppins', sans-serif; /* Menggunakan Poppins sebagai font */
-  text-decoration: none; /* Hilangkan underline */
-  display: inline-block; /* Agar padding bekerja */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Tambahkan transisi juga untuk warna teks */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Menambahkan shadow agar tombol lebih menonjol */
-}
-
 .login-button-navbar:hover {
   background-color: #000000; /* Warna background berubah ke hitam saat hover */
   color: #ffffff; /* Warna teks berubah menjadi putih */

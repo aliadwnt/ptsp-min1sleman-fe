@@ -114,27 +114,13 @@ const Layanan = () => {
       <div className="bg-blue-600"></div>
       <div className="BodyLayanan">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-          <h2 className="ml-48 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+          <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
             Buat Permohonan Layanan
           </h2>
           {error && <div className="text-red-600">{error}</div>} 
           {successMessage && <div className="text-green-600">{successMessage}</div>} 
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="text-poppins block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_reg">
-                  No Registrasi
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="no_reg"
-                  type="text"
-                  placeholder="Nomor Registrasi"
-                  value={formData.no_reg}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
                   Nama Layanan
@@ -155,8 +141,7 @@ const Layanan = () => {
 </select>
 
               </div>
-            </div>
-            <div className="w-full mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="perihal">
                 Perihal
               </label>
@@ -171,6 +156,7 @@ const Layanan = () => {
               />
             </div>
 
+            </div>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_surat">
@@ -286,7 +272,7 @@ const Layanan = () => {
                   type="file"
                   onChange={handleChange}
                   multiple
-                  required
+                  // required
                 />
               </div>
             </div>

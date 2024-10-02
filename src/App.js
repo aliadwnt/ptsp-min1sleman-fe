@@ -34,7 +34,8 @@ import DaftarSyarat from './pages/Layanan/DaftarSyarat';
 import Settings from './pages/User/Settings/Edit';
 import EditProfile from './pages/User/Profile/Edit';
 
-import CreateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/CreateDaftarPelayanan'; // Changed to uppercase
+import CreateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/CreateDaftarPelayanan'; 
+import UpdateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/UpdateDaftarPelayanan';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
         <Route path="/profile/edit" element={<EditProfile />} />
 
         <Route path="/create-daftar-pelayanan" element={<CreateDaftarPelayanan />} />
+        <Route path="/update-daftar-pelayanan/:id" element={<UpdateDaftarPelayanan />} />
       </Routes>
     </Router>
   );

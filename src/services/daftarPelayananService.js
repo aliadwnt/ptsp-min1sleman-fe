@@ -1,18 +1,27 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/layanan/daftar-layanan'; 
+const API_URL = 'http://localhost:3000/api_s/layanan'; 
 
 export const fetchDaftarPelayanan = async () => {
     try {
         const response = await axios.get(API_URL); 
         return response.data; 
     } catch (error) {
-        console.error('Error fetching DaftarPelayanan:', error);
+        console.error('Error fetching Daftar Pelayanan:', error);
         throw error; 
     }
 };
 
-// Buat DaftarPelayanan baru
+export const fetchDaftarPelayananById = async (id) => {
+    try {
+        const response = await axios.get(`http://localhost:3000/api_s/layanan/${id}`); 
+        return response.data; 
+    } catch (error) {
+        console.error('Error fetching Daftar Pelayanan By Id:', error);
+        throw error; 
+    }
+};
+
 export const createDaftarPelayanan = async (DaftarPelayanan) => {
     try {
         const response = await axios.post(API_URL, DaftarPelayanan, {

@@ -218,12 +218,12 @@ const DaftarPelayanan = () => {
     <i className="fas fa-download text-yellow-600 hover:text-yellow-900"></i>
   </button>
   <button
-    onClick={() => { setCurrentDaftarPelayanan(item); setModalOpen(true); }}
-    className="focus:outline-none"
-    style={{ background: 'none', border: 'none', padding: 0 }}
-  >
-    <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-  </button>
+      onClick={() => navigate(`/update-daftar-pelayanan/${item.id}`)}
+      className="focus:outline-none"
+      style={{ background: 'none', border: 'none', padding: 0 }}
+    >
+      <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+    </button>
   <button
     onClick={() => handleDelete(item.id)}
     className="focus:outline-none"
