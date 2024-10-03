@@ -7,6 +7,7 @@ import Layanan from './pages/Layanan';
 import VisiMisi from './pages/VisiMisi';
 import LacakBerkas from './pages/LacakBerkas';
 import ZonaIntegritas from './pages/ZonaIntegritas';
+import LacakPermohonan from './pages/LacakPermohonan';
 
 import Login from './pages/User/Login';
 import Register from './pages/User/Register';
@@ -46,6 +47,8 @@ function App() {
         <Route path="/visi-misi" element={<VisiMisi />} />
         <Route path="/lacak-berkas" element={<LacakBerkas />} />
         <Route path="/zona-integritas" element={<ZonaIntegritas />} />
+        <Route path="/lacak-permohonan" element={<LacakPermohonan />} />
+        <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

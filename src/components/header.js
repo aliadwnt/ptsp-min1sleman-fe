@@ -5,7 +5,7 @@ import fetchDaftarPengguna from '../services/daftarPenggunaService';
 
 const UserProfileMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState({ name: '(name user)', email: '(email user)', isImpersonating: false });
+    const [user, setUser] = useState({ name: '()', email: '()', isImpersonating: false });
     const navigate = useNavigate();
 
     // Mengambil data pengguna saat komponen pertama kali dimuat
@@ -14,8 +14,8 @@ const UserProfileMenu = () => {
             try {
                 const userData = await fetchDaftarPengguna(); // Ambil data pengguna
                 setUser({
-                    name: userData.name || '(name user)', // Atur nama pengguna
-                    email: userData.email || '(email user)', // Atur email pengguna
+                    name: userData.name || '()', // Atur nama pengguna
+                    email: userData.email || '()', // Atur email pengguna
                     isImpersonating: userData.isImpersonating || false, // Atur status impersonasi
                 });
             } catch (error) {

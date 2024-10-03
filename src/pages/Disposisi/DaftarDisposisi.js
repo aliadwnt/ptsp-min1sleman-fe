@@ -220,7 +220,7 @@ const DaftarDisposisi = () => {
               <h2 className="text-xl font-semibold mb-4">{currentDaftarDisposisi ? "Edit Daftar Disposisi" : "Tambah Daftar Disposisi"}</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input type="text" name="status" defaultValue={currentDaftarDisposisi?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded" />
-                <input type="text" name="waktu" defaultValue={currentDaftarDisposisi?.waktu || ""} placeholder="Waktu" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="time"  name="waktu"  defaultValue={currentDaftarDisposisi?.waktu || ""}  placeholder="Waktu"  required  className="block w-full p-2 border border-gray-300 rounded"/>
                 <input type="text" name="perihal" defaultValue={currentDaftarDisposisi?.perihal || ""} placeholder="Perihal" required className="block w-full p-2 border border-gray-300 rounded" />
                 <input type="text" name="pengirim" defaultValue={currentDaftarDisposisi?.pengirim || ""} placeholder="Pengirim" required className="block w-full p-2 border border-gray-300 rounded" />
                 <input type="text" name="penerima" defaultValue={currentDaftarDisposisi?.penerima || ""} placeholder="Penerima" required className="block w-full p-2 border border-gray-300 rounded" />

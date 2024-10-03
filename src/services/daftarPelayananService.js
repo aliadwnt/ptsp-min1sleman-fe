@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:3000/api_s/layanan';
 
 export const fetchDaftarPelayanan = async () => {
     try {
-        const response = await axios.get(API_URL); 
+        const response = await axios.get(`${API_URL}/daftar-layanan`); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan:', error);
@@ -14,7 +14,7 @@ export const fetchDaftarPelayanan = async () => {
 
 export const fetchDaftarPelayananById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:3000/api_s/layanan/${id}`); 
+        const response = await axios.get(`http://localhost:3000/api_s/layanan/daftar-layanan/${id}`); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan By Id:', error);
@@ -39,7 +39,7 @@ export const createDaftarPelayanan = async (DaftarPelayanan) => {
 
 export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, DaftarPelayanan, {
+        const response = await axios.put(`${API_URL}/edit-layanan/${id}`, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -54,7 +54,7 @@ export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
 
 export const deleteDaftarPelayanan = async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/delete-layanan/${id}`);
         console.log('Deleted DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {

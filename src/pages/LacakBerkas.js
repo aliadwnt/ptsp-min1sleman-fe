@@ -3,7 +3,7 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../App';
 import { fetchLacakBerkas , fetchLoadArsip } from '../services/lacakBerkasService';
-import { fetchDaftarDisposisi } from '../services/daftarDisposisiService';
+// import { fetchDaftarDisposisi } from '../services/daftarDisposisiService';
 
 const LacakBerkas = () => {
     const [no_reg, setNoReg] = useState('');
@@ -16,17 +16,17 @@ const LacakBerkas = () => {
     const [kelengkapan, setKelengkapan] = useState('');
     const [status, setStatus] = useState('');
     const [catatan, setCatatan] = useState('');
-    const [disposisi, setDisposisi] = useState([]);
-    const [arsipMasuk, setArsipMasuk] = useState(null);
-    const [arsipKeluar, setArsipKeluar] = useState(null);
+    // const [disposisi, setDisposisi] = useState([]);
+    // const [arsipMasuk, setArsipMasuk] = useState(null);
+    // const [arsipKeluar, setArsipKeluar] = useState(null);
 
     // Handlers for actions
     const handleSearch = async () => {
         try {
             // Fetching data using the registration number
             const pelayananData = await fetchLacakBerkas(no_reg);
-            const disposisiData = await fetchDaftarDisposisi(no_reg);
-            const arsipLayanan = await fetchLoadArsip(no_reg);
+            // const disposisiData = await fetchDaftarDisposisi(no_reg);
+            // const arsipLayanan = await fetchLoadArsip(no_reg);
             
             // Assuming the API returns the data in a specific format
             if (pelayananData) {
@@ -39,8 +39,8 @@ const LacakBerkas = () => {
                 setKelengkapan(pelayananData.kelengkapan);
                 setStatus(pelayananData.status);
                 setCatatan(pelayananData.catatan);
-                setArsipMasuk(arsipLayanan.masuk);
-                setArsipKeluar(arsipLayanan.keluar);
+                // setArsipMasuk(arsipLayanan.masuk);
+                // setArsipKeluar(arsipLayanan.keluar);
             } else {
                 // Reset fields if no data found
                 resetFields();
@@ -48,7 +48,7 @@ const LacakBerkas = () => {
             }
 
             // Setting disposisi data
-            setDisposisi(disposisiData);
+            // setDisposisi(disposisiData);
         } catch (error) {
             console.error("Error fetching data: ", error);
             alert('Terjadi kesalahan saat mengambil data');
@@ -65,9 +65,9 @@ const LacakBerkas = () => {
         setKelengkapan('');
         setStatus('');
         setCatatan('');
-        setDisposisi([]);
-        setArsipMasuk(null);
-        setArsipKeluar(null);
+        // setDisposisi([]);
+        // setArsipMasuk(null);
+        // setArsipKeluar(null);
     };
 
     return (
@@ -244,12 +244,12 @@ const LacakBerkas = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {disposisi.map((item, index) => (
+                                        {/* {disposisi.map((item, index) => (
                                             <tr key={index} className="border-b">
                                                 <td className="py-3 px-4 text-xs">{item.name}</td>
                                                 <td className="py-3 px-4 text-xs">{item.status}</td>
                                             </tr>
-                                        ))}
+                                        ))} */}
                                     </tbody>
                                 </table>
                                 </div>
@@ -270,7 +270,7 @@ const LacakBerkas = () => {
             id="fileInputMasuk"
             type="file"
             className="hidden"
-            onChange={(e) => setArsipMasuk(e.target.files[0])}
+            // onChange={(e) => setArsipMasuk(e.target.files[0])}
         />
     </div>
 
@@ -288,7 +288,7 @@ const LacakBerkas = () => {
             id="fileInputKeluar"
             type="file"
             className="hidden"
-            onChange={(e) => setArsipKeluar(e.target.files[0])}
+            // onChange={(e) => setArsipKeluar(e.target.files[0])}
         />
                     </div>
                     </div>

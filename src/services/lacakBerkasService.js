@@ -2,25 +2,31 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api_s/lacak-berkas';
 
-export const fetchLacakBerkas = async () => {
+export const fetchLacakBerkas = async (no_reg) => {
+    if (!no_reg) {
+        throw new Error('Nomor registrasi tidak boleh kosong');
+    }
+
     try {
-        const response = await axios.get(API_URL);
-        console.log('Fetched Data Berkas:', response.data);
-        return response.data;
+        const response = await axios.get(`${API_URL}/${no_reg}`);
+        return response.data; 
     } catch (error) {
-        console.error('Error fetching data berkas:', error);
+        console.error('Error fetching lacak berkas:', error);
         throw error;
     }
 };
 
-
 export const fetchLoadArsip = async (no_reg) => {
+    if (!no_reg) {
+        throw new Error('Nomor registrasi tidak boleh kosong');
+    }
+
     try {
         const response = await axios.get(`${API_URL}/load-arsip/?no_reg=${no_reg}`);
-        console.log('Fetched arsip:', response.data); 
+        console.log('Fetched arsip:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Error fetching arsip:', error);
+        console.error('Error fetching arsip:', error.response?.data || error.message);
         throw error;
     }
 };

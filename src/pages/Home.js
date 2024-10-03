@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Dialog } from '@headlessui/react';
@@ -6,12 +6,40 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer'; 
 import Jumbotron from '../components/jumbotron'; 
 import '../index.css'; 
+import { fetchDaftarLayanan } from '../services/daftarLayananService';
+import { fetchDaftarSyarat } from '../services/daftarSyaratService';
 
-const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
+const HomePage = ({ daftarSyarat = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentData, setCurrentData] = useState({ id: '', syarat_layanan: '' });
   const [noReg, setNoReg] = useState('');
+  const [daftarLayanan, setDaftarLayanan] = useState([]);
+  const [syaratData, setSyaratData] = useState([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadDaftarLayanan = async () => {
+      try {
+        const data = await fetchDaftarLayanan(); 
+        setDaftarLayanan(data); 
+      } catch (error) {
+        console.error("Failed to fetch layanan:", error);
+      }
+    };
+
+    const loadDaftarSyarat = async () => {
+      try {
+        const data = await fetchDaftarSyarat();
+        setSyaratData(data); // Simpan syarat layanan
+      } catch (error) {
+        console.error("Failed to fetch syarat:", error);
+      }
+    };
+
+    loadDaftarLayanan();
+    loadDaftarSyarat();
+  }, []); 
 
   const openModal = (data) => {
     setCurrentData(data);
@@ -24,8 +52,9 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
 
   const handleSearch = () => {
     if (noReg) {
-      // Redirect ke halaman lacak-permohonan dengan nomor registrasi sebagai parameter
       navigate(`/lacak-berkas/${noReg}`);
+    } else {
+      alert("Harap masukkan nomor registrasi yang valid.");
     }
   };
 
@@ -38,12 +67,12 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
         <h1 className="text-3xl text-center font-semibold">Tentang PTSP</h1>
         <div className="additional-content mt-4 ml-9 text-start">
           <p className="text-black font-family-poppins text-start">
-            Pelayanan Terpadu Satu Pintu (PTSP) merupakan salah satu program pemerintah dalam rangka peningkatan pelayanan publik...
+            Pelayanan Terpadu Satu Pintu (PTSP) merupakan salah satu program pemerintah dalam rangka peningkatan pelayanan publik, memangkas birokrasi pelayanan perizinan dan non perizinan, sebagai upaya mencapai good governance/kepemerintahan yang baik. PTSP dapat meminimalisir interaksi antara pengguna layanan dengan petugas dalam rangka terciptanya tata kelola pemerintahan yang baik dan bersih.
           </p>
           <div className="mt-5 flex flex-wrap">
             <div className="w-full md:w-1/2 p-2 text-start">
               <span>
-                Dengan konsep ini, pengguna layanan cukup datang ke PTSP dan bertemu dengan petugas front office...
+                Dengan konsep ini, pengguna layanan cukup datang ke PTSP dan bertemu dengan petugas front office (FO) kemudian menunggu proses selanjutnya. Adapun Tujuan dari PTSP Adalah:
               </span>
               <ul className="list-disc ml-5 mt-2 text-start">
                 <li>Mendekatkan Pelayanan Kepada Masyarakat</li>
@@ -54,7 +83,7 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
             </div>
             <div className="w-full md:w-1/2 p-2 text-start">
               <span>
-                Sasaran PTSP: Terwujudnya pelayanan publik yang cepat, mudah, transparan...
+                Sasaran PTSP: Terwujudnya pelayanan publik yang cepat, mudah, transparan, pasti dan akuntabel dalam upaya meningkatkan hak-hak masyarakat terhadap pelayanan publik.
               </span>
               <ul className="list-disc ml-5 mt-2 text-start">
                 <li>Mendapatkan kemudahan layanan</li>
@@ -74,26 +103,31 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
         {/* Daftar Layanan */}
         <div id="layanan" className="mt-8">
           <h1 className="text-3xl font-semibold text-center">Daftar Layanan PTSP MAN 1 YOGYAKARTA</h1>
-          {daftarSyarat.length > 0 ? (
-            daftarSyarat.map((item) => (
+          {daftarLayanan.length > 0 ? (
+            daftarLayanan.map((item) => (
               <div key={item.id} className="mt-5">
-                <button
+                {/* <button
                   className="accordion"
                   onClick={() => openModal({ id: item.id, syarat_layanan: item.syarat_layanan })}
                 >
-                  {item.unit}
-                </button>
-                <div className="panel">
-                  <div className="item">
-                    <div className="description">{item.name}</div>
-                    <div className="actions">
+                  {item.nama_pelayanan} 
+                </button> */}
+                <div className="panel bg-gray-100 rounded-lg p-4 shadow-md mb-4 transition-transform transform hover:scale-105">
+                  <div className="item flex justify-between items-center">
+                    <div className="description text-lg font-semibold text-gray-800">{item.name}</div>
+                    <div className="actions flex space-x-2">
                       <button
-                        className="btn"
+                        className="btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
                         onClick={() => openModal({ id: item.id, syarat_layanan: item.syarat_layanan })}
                       >
                         Lihat Syarat
                       </button>
-                      <button className="btn">Buat Permohonan</button>
+                      <button
+                className="btn bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+                onClick={() => navigate('/layanan')} // Tambahkan logika navigasi di sini
+              >
+                Buat Permohonan
+              </button>
                     </div>
                   </div>
                 </div>
@@ -112,7 +146,7 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
             <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900">Syarat Pelayanan Publik</h3>
               <div className="mt-2">
-                <span>Syarat dari Layanan <strong>{currentData.name}</strong> </span>
+                <span>Syarat dari Layanan <strong>{currentData.syarat_layanan}</strong></span>
                 <br />
                 <ol className="list-decimal ml-3">
                   {currentData.syarat_layanan ? JSON.parse(currentData.syarat_layanan).map((syarat, index) => (
@@ -129,7 +163,6 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
           </div>
         </Dialog>
 
-        {/* Lacak Permohonan */}
         <div className="text-center mt-8">
           <h1 className="text-3xl font-semibold">Lacak Permohonan Layanan</h1>
           <p className="mb-4">Masukkan No. Registrasi untuk melacak Permohonan</p>
@@ -140,14 +173,14 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
               className="custom-input w-full max-w-xl p-4 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Masukkan Nomor Registrasi"
               value={noReg}
-              onChange={(e) => setNoReg(e.target.value)} // Update state ketika input berubah
+              onChange={(e) => setNoReg(e.target.value)}
               required
             />
             <div className="text-center mt-8">
               <button
                 className="text-white font-semibold py-2 px-4 rounded-full bg-blue-500 hover:bg-blue-600"
                 type="button"
-                onClick={handleSearch} // Aksi ketika tombol diklik
+                onClick={handleSearch}
               >
                 Cek Permohonan
               </button>
@@ -155,7 +188,7 @@ const HomePage = ({ daftarSyarat = [] }) => { // Default value as an empty array
           </div>
         </div>
       </div>
-      <Footer /> {/* Add Footer component */}
+      <Footer />
     </div>
   );
 };

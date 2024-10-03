@@ -117,6 +117,20 @@ const LayananUpdate = () => {
           {successMessage && <div className="text-green-600">{successMessage}</div>} 
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_Reg">
+                NOMOR REGISTRASI
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                name="no_reg"
+                type="text"
+                placeholder="Nomor Registrasi"
+                value={formData.no_reg}
+                onChange={handleChange}
+                required
+              />
+            </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
                   Nama Layanan
@@ -137,7 +151,7 @@ const LayananUpdate = () => {
 </select>
 
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <div className="w-full md-full px-3 mb-6 md:mb-0">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="perihal">
                 Perihal
               </label>
@@ -244,7 +258,44 @@ const LayananUpdate = () => {
                 />
               </div>
             </div>
-
+            <div className="flex flex-wrap -mx-3 mb-6">
+  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="kelengkapan">
+      Kelengkapan Surat
+    </label>
+    <select
+      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+      name="kelengkapan"
+      value={formData.kelengkapan}
+      onChange={handleChange}
+      required
+    >
+      <option value="">Pilih Kelengkapan Surat</option>
+      <option value="Belum Lengkap">Belum Lengkap</option>
+      <option value="Sudah Lengkap">Sudah Lengkap</option>
+    </select>
+  </div>
+  
+  <div className="w-full md:w-1/2 px-3">
+    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="status">
+      Status Pelayanan
+    </label>
+    <select
+      className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+      name="status"
+      value={formData.status}
+      onChange={handleChange}
+      required
+    >
+      <option value="">Pilih Status</option>
+      <option value="Baru">Baru</option>
+      <option value="Proses">Proses</option>
+      <option value="Selesai">Selesai</option>
+      <option value="Diambil">Diambil</option>
+      <option value="Ditolak">Ditolak</option>
+    </select>
+  </div>
+</div>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="catatan">
