@@ -14,7 +14,7 @@ export const fetchDaftarPelayanan = async () => {
 
 export const fetchDaftarPelayananById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:3000/api_s/layanan/daftar-layanan/${id}`); 
+        const response = await axios.get(`${API_URL}/daftar-layanan/${id}`); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan By Id:', error);

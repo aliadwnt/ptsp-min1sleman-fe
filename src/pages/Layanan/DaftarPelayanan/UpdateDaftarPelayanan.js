@@ -118,18 +118,20 @@ const LayananUpdate = () => {
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_Reg">
-                NOMOR REGISTRASI
-              </label>
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                name="no_reg"
-                type="text"
-                placeholder="Nomor Registrasi"
-                value={formData.no_reg}
-                onChange={handleChange}
-                required
-              />
+          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
+                  Nomor Registrasi
+                </label>
+          <input
+  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+  name="no_reg"
+  type="text"
+  placeholder="Nomor Registrasi"
+  value={formData.no_reg}
+  onChange={handleChange}
+  readOnly // Make the input read-only
+  required
+/>
+
             </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">

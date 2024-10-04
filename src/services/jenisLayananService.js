@@ -13,11 +13,11 @@ export const fetchJenisLayanan = async () => {
     }
 };
 
-export const createJenisLayanan = async (JenisLayanan) => {
+export const createJenisLayanan = async (jenisLayanan) => {
     try {
-        const response = await axios.post(API_URL, JenisLayanan, {
+        const response = await axios.post(API_URL, jenisLayanan, {
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
             }
         });
         console.log('Created jenis layanan:', response.data); 
@@ -29,10 +29,12 @@ export const createJenisLayanan = async (JenisLayanan) => {
 };
 
 export const updateJenisLayanan = async (id, jenisLayanan) => {
+    const token = localStorage.getItem("token"); 
     try {
         const response = await axios.put(`${API_URL}/${id}`, jenisLayanan, {
             headers: {
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             }
         });
         console.log('Updated jenis layanan:', response.data); 
@@ -44,13 +46,18 @@ export const updateJenisLayanan = async (id, jenisLayanan) => {
 };
 
 export const deleteJenisLayanan = async (id) => {
+    const token = localStorage.getItem("token");
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
-        console.log('Deleted jenis layanan:', response.data);
+        const response = await axios.delete(`${API_URL}/${id}` , {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            }
+        });
+        console.log('Deleted jenis layanan:', response.data); 
         return response.data;
     } catch (error) {
         console.error('Error deleting jenis layanan:', error);
         throw error;
     }
 };
- 

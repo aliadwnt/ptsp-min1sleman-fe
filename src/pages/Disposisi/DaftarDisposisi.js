@@ -176,15 +176,15 @@ const DaftarDisposisi = () => {
           {dataDaftarDisposisi.length > 0 ? (
             dataDaftarDisposisi.map((item, index) => (
               <tr key={item.id}>
-                <td className="px-2 py-2 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.waktu}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.pengirim}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.penerima}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_masuk}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_keluar}</td>
-                <td className="px-2 py-2 text-xs text-center text-gray-900 dark:text-gray-400">{item.diteruskan}</td>
+                <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.waktu}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.pengirim}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.penerima}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_masuk}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.dis_keluar}</td>
+                <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.diteruskan}</td>
                 <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
                 <button
     onClick={() => { setCurrentDaftarDisposisi(item); setModalOpen(true); }}

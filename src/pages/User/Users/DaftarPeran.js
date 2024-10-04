@@ -207,7 +207,7 @@ const DaftarPeran = () => {
                     name="is_admin"
                     defaultValue={currentDaftarPeran?.is_admin || ""}
                     required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    className="block w-full p-2 border border-gray-300 rounded mb-4 font-poppins"
                   >
                     <option value="">Pilih Peran</option>
                     <option value="1">Admin</option>
@@ -217,15 +217,15 @@ const DaftarPeran = () => {
                     <button
                       type="button"
                       onClick={handleModalClose}
-                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
                     >
-                      Batal
+                      Cancel
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
-                      {currentDaftarPeran ? "Update" : "Tambah"}
+                      {currentDaftarPeran ? "Update" : "Add"}
                     </button>
                   </div>
                 </form>
