@@ -14,10 +14,12 @@ export const fetchJenisLayanan = async () => {
 };
 
 export const createJenisLayanan = async (jenisLayanan) => {
+    const token = localStorage.getItem("token");
     try {
         const response = await axios.post(API_URL, jenisLayanan, {
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`, 
             }
         });
         console.log('Created jenis layanan:', response.data); 
@@ -33,7 +35,7 @@ export const updateJenisLayanan = async (id, jenisLayanan) => {
     try {
         const response = await axios.put(`${API_URL}/${id}`, jenisLayanan, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, 
                 "Content-Type": "application/json",
             }
         });
@@ -48,9 +50,9 @@ export const updateJenisLayanan = async (id, jenisLayanan) => {
 export const deleteJenisLayanan = async (id) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.delete(`${API_URL}/${id}` , {
+        const response = await axios.delete(`${API_URL}/${id}`, {
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`, 
                 "Content-Type": "application/json",
             }
         });

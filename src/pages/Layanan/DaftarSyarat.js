@@ -124,7 +124,7 @@ const fetchData = async () => {
                 <i className="fas fa-search"></i>
               </button>
               <select
-                name="unit" // Tambahkan atribut name untuk menangkap value
+                name="unit" 
                 className="w-2/5 p-2 pl-4 text-sm border text-gray-400 border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Pilih Unit Pengolah</option>

@@ -28,6 +28,7 @@ export const loginPengguna = async ({ email, password }) => {
     throw new Error(error.response?.data?.message || "Failed to login user");
   }
 };
+
 export const logoutPengguna = async () => {
   const token = localStorage.getItem("token");
   console.log("Token digunakan:", token);
@@ -110,35 +111,28 @@ export const changePassword = async (DaftarPengguna) => {
   };
   
 
-export const deleteDaftarPengguna = async () => {
-  try {
-    const response = await axios.delete(`${API_URL}/deleteuser`);
-    console.log("Deleted pengguna:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error deleting pengguna:", error);
-    throw error;
-  }
-};
-
-// daftarPenggunaService.js
-export const getUserData = async () => {
-  // Simulasi pengambilan data dari API atau database
-  return {
-    name: "User Name",
-    email: "user.name@example.com",
-    hasVerifiedEmail: false,
-  };
+  export const deleteDaftarPengguna = async (userId) => {
+    const token = localStorage.getItem("token"); 
+    try {
+        const response = await axios.delete(`${API_URL}/deleteuser/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        });
+        console.log("Deleted pengguna:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting pengguna:", error.response ? error.response.data : error.message);
+        throw error; 
+    }
 };
 
 export const updateUserData = async (userData) => {
-  // Simulasi API call untuk memperbarui data pengguna
   console.log("Data pengguna diperbarui:", userData);
-  return true; // Simulasi respons sukses
+  return true; 
 };
 
 export const sendEmailVerification = async () => {
-  // Simulasi pengiriman email verifikasi
   console.log("Verifikasi email dikirim");
-  return true; // Simulasi respons sukses
+  return true; 
 };

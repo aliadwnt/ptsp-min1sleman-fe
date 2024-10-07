@@ -23,7 +23,6 @@ const UpdatePassword = () => {
         if (token) {
           const userId = JSON.parse(atob(token.split(".")[1])).userId;
           const data = await getUserById(userId);
-          // Fetch user data if needed, but don't display the old password
         }
       } catch (error) {
         console.error("Error fetching user data:", error);

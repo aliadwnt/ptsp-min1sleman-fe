@@ -12,12 +12,13 @@ export const fetchMasterSyarat = async () => {
     }
 };
 
-// Buat Master Syarat baru
 export const createMasterSyarat = async (MasterSyarat) => {
+    const token = localStorage.getItem("token");
     try {
         const response = await axios.post(API_URL, MasterSyarat, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, 
             },
         });
         console.log('Created Master Syarat:', response.data);
@@ -29,10 +30,12 @@ export const createMasterSyarat = async (MasterSyarat) => {
 };
 
 export const updateMasterSyarat = async (id, MasterSyarat) => {
+    const token = localStorage.getItem("token"); 
     try {
         const response = await axios.put(`${API_URL}/${id}`, MasterSyarat, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, 
             },
         });
         console.log('Updated Master Syarat:', response.data);
@@ -44,8 +47,13 @@ export const updateMasterSyarat = async (id, MasterSyarat) => {
 };
 
 export const deleteMasterSyarat = async (id) => {
+    const token = localStorage.getItem("token"); 
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        });
         console.log('Deleted Master Syarat:', response.data);
         return response.data; 
     } catch (error) {

@@ -48,7 +48,7 @@ const Sidebar = () => {
 
             <aside 
                 id="sidebar-multi-level-sidebar"
-                className={`top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0`}
+                className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 bg-white dark:bg-gray-800`}
                 aria-label="Sidebar"
             >
                 <Link to="/" className="sidebar-header block p-4">
@@ -58,7 +58,8 @@ const Sidebar = () => {
                     </div>
                 </Link>
 
-                <div className="overflow-y-auto bg-white dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 56px)' }}>
+                <div className="overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: 'calc(100vh - 56px)' }}>
+                    {/* Home Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Home</b>
@@ -68,6 +69,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
                     
+                    {/* Kelola Pelayanan Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Pelayanan</b>
@@ -79,6 +81,7 @@ const Sidebar = () => {
                             <i className="fas fa-archive mr-2"></i> Arsip Pelayanan
                         </Link>
                         
+                        {/* Dropdown for Surat Menyurat */}
                         <div 
                             onClick={() => toggleDropdown('surat')}
                             className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left cursor-pointer ${openDropdown === 'surat' ? 'bg-gray-100 dark:bg-gray-700' : ''}`}
@@ -97,6 +100,7 @@ const Sidebar = () => {
                         )}
                     </div>
                     
+                    {/* Kelola Disposisi Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Disposisi</b>
@@ -109,6 +113,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
                     
+                    {/* Kelola Pengguna Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Pengguna</b>
@@ -124,6 +129,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
 
+                    {/* Kelola Master Layanan Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Master Layanan</b>
@@ -139,6 +145,7 @@ const Sidebar = () => {
                         </Link>
                     </div>
 
+                    {/* Kelola Master Syarat Section */}
                     <div>
                         <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
                             <b>Kelola Master Syarat</b>
@@ -148,6 +155,9 @@ const Sidebar = () => {
                         </Link>
                         <Link to="/layanan/daftar-syarat" className={getLinkClass('/layanan/daftar-syarat')}>
                             <i className="fas fa-list-check mr-2"></i> Daftar Syarat
+                        </Link>
+                        <Link to="" className={getLinkClass('')}>
+                            <i className="fas fa-list-check mr-2"></i> 
                         </Link>
                     </div>
                 </div>

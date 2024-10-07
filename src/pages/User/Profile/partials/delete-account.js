@@ -1,28 +1,30 @@
 import React, { useState } from "react";
+import { deleteDaftarPengguna } from '../../../../services/daftarPenggunaService';
 
-function DeleteAccount() {
+function DeleteAccount({ id }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(""); // State for error messages
-    const [success, setSuccess] = useState(""); // State for success messages
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-    // Function to handle the confirmation of deletion
     const confirmUserDeletion = () => {
         setIsModalOpen(true);
-        setError(""); // Reset any previous error messages
-        setSuccess(""); // Reset any previous success messages
+        setError(""); 
+        setSuccess(""); 
     };
 
-    // Function to handle the actual deletion
-    const deleteUser = () => {
+    const deleteUser = async () => {
         if (password) {
-            // Logic to delete the user account (mocked for this example)
-            console.log("Account deleted"); // Replace this with actual deletion logic
-            setSuccess("Your account has been successfully deleted."); // Set success message
-            setIsModalOpen(false); // Close modal after deletion
-            setPassword(""); // Clear the password field
+            try {
+                await deleteDaftarPengguna(id, password); 
+                setSuccess("Your account has been successfully deleted."); 
+                setIsModalOpen(false); 
+                setPassword("");
+            } catch (err) {
+                setError("Failed to delete your account. Please try again."); 
+            }
         } else {
-            setError("Password is required to delete your account."); // Set error message
+            setError("Password is required to delete your account.");
         }
     };
 
@@ -45,7 +47,6 @@ function DeleteAccount() {
                     </button>
                 </div>
 
-                {/* Modal for confirming account deletion */}
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">

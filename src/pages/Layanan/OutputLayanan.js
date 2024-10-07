@@ -188,7 +188,7 @@ const OutputLayanan = () => {
             <div className="bg-white rounded-lg shadow-lg p-6 w-50">
               <h2 className="text-xl font-semibold mb-4">{currentOutputLayanan ? "Edit Output Layanan" : "Tambah Output Layanan"}</h2>
               <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input type="text" name="name" defaultValue={currentOutputLayanan?.name || ""} placeholder="Output Pelayanan" required className="block w-full p-2 border border-gray-300 rounded" />
+                <input type="text" name="name" defaultValue={currentOutputLayanan?.name || ""} placeholder="Masukkan Output Pelayanan baru" required className="block w-full p-2 border border-gray-300 rounded" />
                 
                 <div className="flex justify-end col-span-2 space-x-2">
                   <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>

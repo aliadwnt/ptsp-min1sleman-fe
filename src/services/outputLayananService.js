@@ -12,12 +12,13 @@ export const fetchOutputLayanan = async () => {
     }
 };
 
-// Buat output layanan baru
 export const createOutputLayanan = async (outputLayanan) => {
+    const token = localStorage.getItem("token");
     try {
         const response = await axios.post(API_URL, outputLayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
         console.log('Created output layanan:', response.data);
@@ -29,10 +30,12 @@ export const createOutputLayanan = async (outputLayanan) => {
 };
 
 export const updateOutputLayanan = async (id, outputLayanan) => {
+    const token = localStorage.getItem("token"); 
     try {
         const response = await axios.put(`${API_URL}/${id}`, outputLayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, 
             },
         });
         console.log('Updated output layanan:', response.data);
@@ -44,8 +47,13 @@ export const updateOutputLayanan = async (id, outputLayanan) => {
 };
 
 export const deleteOutputLayanan = async (id) => {
+    const token = localStorage.getItem("token"); 
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        });
         console.log('Deleted output layanan:', response.data);
         return response.data; 
     } catch (error) {

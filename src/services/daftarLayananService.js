@@ -12,12 +12,13 @@ export const fetchDaftarLayanan = async () => {
     }
 };
 
-// Buat Daftar Layanan baru
 export const createDaftarLayanan = async (DaftarLayanan) => {
+    const token = localStorage.getItem("token"); 
     try {
         const response = await axios.post(API_URL, DaftarLayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, 
             },
         });
         console.log('Created Daftar Layanan:', response.data);
@@ -29,10 +30,12 @@ export const createDaftarLayanan = async (DaftarLayanan) => {
 };
 
 export const updateDaftarLayanan = async (id, DaftarLayanan) => {
+    const token = localStorage.getItem("token"); 
     try {
         const response = await axios.put(`${API_URL}/${id}`, DaftarLayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`, 
             },
         });
         console.log('Updated Daftar Layanan:', response.data);
@@ -44,8 +47,13 @@ export const updateDaftarLayanan = async (id, DaftarLayanan) => {
 };
 
 export const deleteDaftarLayanan = async (id) => {
+    const token = localStorage.getItem("token"); 
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const response = await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        });
         console.log('Deleted Daftar Layanan:', response.data);
         return response.data; 
     } catch (error) {

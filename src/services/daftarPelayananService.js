@@ -2,9 +2,9 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api_s/layanan'; 
 
-export const fetchDaftarPelayanan = async () => {
+export const fetchDaftarPelayanan = async (DaftarLayanan) => {
     try {
-        const response = await axios.get(`${API_URL}/daftar-layanan`); 
+        const response = await axios.get(`${API_URL}`, DaftarLayanan); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan:', error);
@@ -14,7 +14,7 @@ export const fetchDaftarPelayanan = async () => {
 
 export const fetchDaftarPelayananById = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/daftar-layanan/${id}`); 
+        const response = await axios.get(`${API_URL}/${id}`); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan By Id:', error);
@@ -24,11 +24,15 @@ export const fetchDaftarPelayananById = async (id) => {
 
 export const createDaftarPelayanan = async (DaftarPelayanan) => {
     try {
+        const token = localStorage.getItem("token");
+        
         const response = await axios.post(API_URL, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
+        
         console.log('Created DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {
@@ -37,13 +41,36 @@ export const createDaftarPelayanan = async (DaftarPelayanan) => {
     }
 };
 
-export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
+export const fetchNomorRegistrasi = async (no_reg) => {
     try {
-        const response = await axios.put(`${API_URL}/edit-layanan/${id}`, DaftarPelayanan, {
+      const response = await axios.get(API_URL, {
+        params: {
+          no_reg,
+        },
+      });
+  
+      if (response.data.length > 0) {
+        return response.data[0].no_reg; 
+      }
+      
+      throw new Error('Nomor registrasi tidak ditemukan.');
+    } catch (error) {
+      console.error("Error fetching nomor registrasi:", error);
+      throw error; 
+    }
+  };
+
+  export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await axios.put(`${API_URL}/${id}`, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
+
         console.log('Updated DaftarPelayanan:', response.data);
         return response.data; 
     } catch (error) {
@@ -51,6 +78,7 @@ export const updateDaftarPelayanan = async (id, DaftarPelayanan) => {
         throw error; 
     }
 };
+
 
 export const deleteDaftarPelayanan = async (id) => {
     try {

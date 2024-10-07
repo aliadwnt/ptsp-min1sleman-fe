@@ -12,14 +12,17 @@ export const fetchMasterDisposisi = async () => {
     }
 };
 
-// Buat Master Disposisi baru
 export const createMasterDisposisi = async (MasterDisposisi) => {
     try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.post(API_URL, MasterDisposisi, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
+
         console.log('Created Master Disposisi:', response.data);
         return response.data; 
     } catch (error) {
@@ -28,13 +31,18 @@ export const createMasterDisposisi = async (MasterDisposisi) => {
     }
 };
 
+
 export const updateMasterDisposisi = async (id, MasterDisposisi) => {
     try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.put(`${API_URL}/${id}`, MasterDisposisi, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
+
         console.log('Updated Master Disposisi:', response.data);
         return response.data; 
     } catch (error) {
@@ -45,7 +53,14 @@ export const updateMasterDisposisi = async (id, MasterDisposisi) => {
 
 export const deleteMasterDisposisi = async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
+        const token = localStorage.getItem("token");
+
+        const response = await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
         console.log('Deleted Master Disposisi:', response.data);
         return response.data; 
     } catch (error) {
@@ -53,3 +68,4 @@ export const deleteMasterDisposisi = async (id) => {
         throw error; 
     }
 };
+

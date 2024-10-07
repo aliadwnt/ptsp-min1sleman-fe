@@ -12,44 +12,58 @@ export const fetchUnitPengolah = async () => {
     }
 };
 
-// Buat Syarat Layanan baru
 export const createUnitPengolah = async (UnitPengolah) => {
     try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.post(API_URL, UnitPengolah, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
-        console.log('Created Syarat Layanan:', response.data);
+
+        console.log('Created Unit Pengolah:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Failed to add Syarat Layanan:', error);
+        console.error('Failed to add Unit Pengolah:', error);
         throw error; 
     }
 };
 
 export const updateUnitPengolah = async (id, UnitPengolah) => {
     try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.put(`${API_URL}/${id}`, UnitPengolah, {
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
-        console.log('Updated Syarat Layanan:', response.data);
+
+        console.log('Updated Unit Pengolah:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Error updating Syarat Layanan:', error);
+        console.error('Error updating Unit Pengolah:', error);
         throw error; 
     }
 };
 
 export const deleteUnitPengolah = async (id) => {
     try {
-        const response = await axios.delete(`${API_URL}/${id}`);
-        console.log('Deleted Syarat Layanan:', response.data);
+        const token = localStorage.getItem("token");
+
+        const response = await axios.delete(`${API_URL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        console.log('Deleted Unit Pengolah:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Error deleting Syarat Layanan:', error);
+        console.error('Error deleting Unit Pengolah:', error);
         throw error; 
     }
 };

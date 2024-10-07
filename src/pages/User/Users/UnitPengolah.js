@@ -185,7 +185,7 @@ const UnitPengolah = () => {
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
                 <h2 className="text-xl font-semibold mb-4">{currentUnitPengolah ? "Edit Unit Pengolah" : "Tambah Unit Pengolah"}</h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="name" defaultValue={currentUnitPengolah?.id || ""} placeholder="name" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input type="text" name="name" defaultValue={currentUnitPengolah?.id || ""} placeholder="Masukkan nama unit pengolah baru" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
                   <div className="flex justify-end space-x-2">
                     <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
                     <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentUnitPengolah ? "Update" : "Tambah"}</button>

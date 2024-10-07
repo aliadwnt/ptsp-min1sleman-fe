@@ -8,7 +8,7 @@ const LanguageForm = ({ supportedLanguages = {}, onSubmit, successMessage, error
     const [statusMessage, setStatusMessage] = useState('');
 
     useEffect(() => {
-        document.title = `PTSP MAN 1 YOGYAKARTA - Pengaturan`; // 'APP NAME' with your app name
+        document.title = `PTSP MAN 1 YOGYAKARTA - Pengaturan`;
     }, []);
 
     const handleSubmit = async (event) => {
@@ -16,7 +16,7 @@ const LanguageForm = ({ supportedLanguages = {}, onSubmit, successMessage, error
         setIsSaving(true);
 
         try {
-            await onSubmit(selectedLanguage); // Call the submit function passed as a prop
+            await onSubmit(selectedLanguage);
             setStatusMessage(successMessage);
         } catch (error) {
             setStatusMessage(errorMessage);
@@ -31,7 +31,7 @@ const LanguageForm = ({ supportedLanguages = {}, onSubmit, successMessage, error
             <div className="flex-1">
                 <Header />
                 <div className="container mx-auto px-4 py-8">
-                    <div className="bg-white shadow-lg rounded-lg p-6">
+                    <div className="ml-80 bg-white shadow-lg rounded-lg p-6">
                         <div className="mb-4">
                             <h2 className="text-2xl font-bold text-gray-800">Change Language</h2>
                         </div>
