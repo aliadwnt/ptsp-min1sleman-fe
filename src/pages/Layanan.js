@@ -1,163 +1,117 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
-import { createDaftarPelayanan, fetchNomorRegistrasi } from '../services/daftarPelayananService'; // Import fungsi create dari service
-import { fetchJenisLayanan } from '../services/jenisLayananService'; // Import fungsi fetch dari service
-import Swal from 'sweetalert2'; // SweetAlert untuk notifikasi
-import withReactContent from 'sweetalert2-react-content'; // Menggunakan SweetAlert dengan React
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import { addDaftarPelayanan } from "../services/daftarPelayananService"; // Import fungsi create dari service
+import { fetchJenisLayanan } from "../services/jenisLayananService";
+import { uploadSingle } from "../services/uploadService";
+import Swal from "sweetalert2"; // SweetAlert untuk notifikasi
+import withReactContent from "sweetalert2-react-content";
 import "../App"; // CSS untuk tampilan
 
+const MySwal = withReactContent(Swal);
 const Layanan = () => {
   // State untuk form
   const [formData, setFormData] = useState({
-    no_reg: '',
-    nama_pelayanan: '',
-    perihal: '',
-    no_surat: '',
-    tgl: '',
-    nama_pemohon: '',
-    alamat: '',
-    no_hp: '',
-    nama_pengirim: '',
-    catatan: '',
+    no_reg: "",
+    nama_pelayanan: "",
+    perihal: "",
+    no_surat: "",
+    tgl: "",
+    nama_pemohon: "",
+    alamat: "",
+    no_hp: "",
+    nama_pengirim: "",
+    catatan: "",
     filename: [],
   });
 
-  // State untuk pilihan jenis layanan
   const [layananOptions, setLayananOptions] = useState([]);
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [loading, setLoading] = useState(false); // Loading state
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Fungsi untuk mengambil data jenis layanan
   const fetchData = async () => {
     try {
-      const data = await fetchJenisLayanan(); // Mengambil data dari service
+      const data = await fetchJenisLayanan();
       if (Array.isArray(data)) {
         setLayananOptions(data);
       } else {
-        throw new Error('Data is not an array');
+        throw new Error("Data is not an array");
       }
     } catch (error) {
-      setError('Error fetching Jenis Layanan: ' + error.message);
-      console.error('Error fetching Jenis Layanan:', error);
+      setError("Error fetching Jenis Layanan: " + error.message);
+      console.error("Error fetching Jenis Layanan:", error);
     }
   };
 
-  // useEffect untuk memanggil fungsi fetchData saat komponen dimuat
   useEffect(() => {
     fetchData();
   }, []);
-
-  // Fungsi untuk menangani perubahan input di form
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'filename') {
-      setFormData({ ...formData, [name]: Array.from(files) });
+    if (name === "filename") {
+      setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  const MySwal = withReactContent(Swal); 
-
-// Layanan.js
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(null);
-  setSuccessMessage('');
-  setLoading(true); 
-
-  try {
-    // Membuat form data untuk dikirim
-    const formDataToSend = new FormData();
-    for (const key in formData) {
-      if (Array.isArray(formData[key])) {
-        for (const file of formData[key]) {
-          formDataToSend.append(key, file);
-        }
-      } else {
-        formDataToSend.append(key, formData[key]);
-      }
-    }
-
-    // Mengirim data ke server dan ambil no_reg dari respons
-    const responseData = await createDaftarPelayanan(formDataToSend);
-
-    // Ambil no_reg dari respons
-    const generatedNoReg = responseData.no_reg;
-
-    // Tampilkan SweetAlert setelah berhasil submit
-    MySwal.fire({
-      title: 'Layanan Berhasil Diproses!',
-      text: `Nomor Registrasi anda : ${generatedNoReg}`,
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-
-    setSuccessMessage('Data berhasil disimpan!');
-    // Reset form setelah berhasil submit
-    setFormData({
-      no_reg: '', // Kosongkan no_reg jika tidak diisi manual
-      nama_pelayanan: '',
-      perihal: '',
-      no_surat: '',
-      tgl: '',
-      nama_pemohon: '',
-      alamat: '',
-      no_hp: '',
-      nama_pengirim: '',
-      catatan: '',
-      filename: [],
-    });
-  } catch (error) {
-    setError('Gagal menyimpan data: ' + error.message);
-    console.error('Gagal menyimpan data:', error);
-  } finally {
-    setLoading(false);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage("");
+    setLoading(true);
 
     try {
-      // Membuat form data untuk dikirim
-      const formDataToSend = new FormData();
-      for (const key in formData) {
-        if (Array.isArray(formData[key])) {
-          for (const file of formData[key]) {
-            formDataToSend.append(key, file);
-          }
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
+      let uploadedFileUrl = "";
+
+      // Upload file jika ada file yang dipilih
+      if (formData.filename && formData.filename instanceof File) {
+        uploadedFileUrl = await uploadSingle(formData.filename);
       }
 
-      // Mengirim data ke server
-      await createDaftarPelayanan(formDataToSend);
+      const dataToSend = {
+        ...formData,
+        filename: uploadedFileUrl,
+      };
 
-      // Tampilkan SweetAlert setelah berhasil submit
-      MySwal.fire({
-        title: 'Layanan Berhasil Diproses!',
-        text: `Nomor Registrasi anda : ${formData.no_reg}`,
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
+      const responseData = await addDaftarPelayanan(dataToSend);
+      console.log("Response Data:", responseData);
 
-      setSuccessMessage('Data berhasil disimpan!');
+      if (responseData && responseData.data && responseData.data.no_reg) {
+        const generatedNoReg = responseData.data.no_reg;
+        MySwal.fire({
+          title: "Layanan Berhasil Diproses!",
+          text: `Nomor Registrasi anda : ${generatedNoReg}`,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else {
+        console.error(
+          "Nomor registrasi tidak ditemukan dalam respons:",
+          responseData
+        );
+        setError("Nomor registrasi tidak ditemukan.");
+      }
+
+      // Reset form setelah data berhasil disimpan
       setFormData({
-        no_reg: '',
-        nama_pelayanan: '',
-        perihal: '',
-        no_surat: '',
-        tgl: '',
-        nama_pemohon: '',
-        alamat: '',
-        no_hp: '',
-        nama_pengirim: '',
-        catatan: '',
-        filename: [],
+        no_reg: "",
+        nama_pelayanan: "",
+        perihal: "",
+        no_surat: "",
+        tgl: "",
+        nama_pemohon: "",
+        alamat: "",
+        no_hp: "",
+        nama_pengirim: "",
+        catatan: "",
+        filename: null,
       });
+
+      setSuccessMessage("Data berhasil disimpan!");
     } catch (error) {
-      setError('Gagal menyimpan data: ' + error.message);
-      console.error('Gagal menyimpan data:', error);
+      setError("Gagal menyimpan data: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -181,29 +135,39 @@ const handleSubmit = async (e) => {
           {/* Error message */}
           {error && <div className="text-red-600">{error}</div>}
           {/* Success message */}
-          {successMessage && <div className="text-green-600">{successMessage}</div>}
+          {successMessage && (
+            <div className="text-green-600">{successMessage}</div>
+          )}
 
           {/* Form untuk input data layanan */}
-          <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8" onSubmit={handleSubmit}>
+          <form
+            className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
+            onSubmit={handleSubmit}
+          >
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_reg">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="no_reg"
+                >
                   Nomor Registrasi
                 </label>
                 <input
-  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-  name="no_reg"
-  type="text"
-  placeholder="Nomor Registrasi"
-  value={formData.no_reg}
-  onChange={handleChange}  // Ini untuk memastikan formData akan terupdate
-  required
-  readOnly  // Jika memang readonly sesuai dengan case
-/>
-
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  name="no_reg"
+                  type="text"
+                  placeholder="Nomor Registrasi"
+                  value={formData.no_reg}
+                  onChange={handleChange} // Ini untuk memastikan formData akan terupdate
+                  required
+                  readOnly // Jika memang readonly sesuai dengan case
+                />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pelayanan">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="nama_pelayanan"
+                >
                   Nama Layanan
                 </label>
                 <select
@@ -225,7 +189,10 @@ const handleSubmit = async (e) => {
 
             {/* Input untuk perihal */}
             <div className="w-1/1 md-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="perihal">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="perihal"
+              >
                 Perihal
               </label>
               <input
@@ -242,7 +209,10 @@ const handleSubmit = async (e) => {
             {/* Input untuk nomor surat dan tanggal */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_surat">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="no_surat"
+                >
                   No. Surat Permohonan
                 </label>
                 <input
@@ -256,7 +226,10 @@ const handleSubmit = async (e) => {
                 />
               </div>
               <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="tgl">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="tgl"
+                >
                   Tanggal Surat Permohonan
                 </label>
                 <input
@@ -273,7 +246,10 @@ const handleSubmit = async (e) => {
             {/* Input untuk nama pemohon */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pemohon">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="nama_pemohon"
+                >
                   Nama Pemohon
                 </label>
                 <input
@@ -286,8 +262,11 @@ const handleSubmit = async (e) => {
                   required
                 />
               </div>
-            <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="no_hp">
+              <div className="w-full md:w-1/2 px-3">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="no_hp"
+                >
                   Nomor Handphone
                 </label>
                 <input
@@ -304,7 +283,10 @@ const handleSubmit = async (e) => {
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="alamat">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="alamat"
+                >
                   Alamat
                 </label>
                 <input
@@ -318,7 +300,10 @@ const handleSubmit = async (e) => {
                 />
               </div>
               <div className="w-full md:w-1/2 px-3">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="nama_pengirim">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="nama_pengirim"
+                >
                   Nama Pengirim
                 </label>
                 <input
@@ -335,7 +320,10 @@ const handleSubmit = async (e) => {
 
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="catatan">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="catatan"
+                >
                   Catatan
                 </label>
                 <textarea
@@ -347,7 +335,10 @@ const handleSubmit = async (e) => {
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="filename">
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="filename"
+                >
                   Upload File
                 </label>
                 <input
@@ -364,11 +355,13 @@ const handleSubmit = async (e) => {
             {/* Tombol submit */}
             <div className="flex items-center justify-between">
               <button
-                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
                 type="submit"
                 disabled={loading} // Tombol disabled saat loading
               >
-                {loading ? 'Loading...' : 'Simpan'}
+                {loading ? "Loading..." : "Simpan"}
               </button>
             </div>
           </form>
