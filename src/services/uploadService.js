@@ -15,8 +15,7 @@ export const uploadSingle = async (file) => {
 
     console.log("File uploaded successfully:", response.data);
     
-    // Mengembalikan URL dari response.data
-    return response.data.data.Location; // Ambil URL dari lokasi file yang di-upload
+    return response.data.data.Location; 
   } catch (error) {
     console.error("Failed to upload file:", error);
     throw error; 

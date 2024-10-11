@@ -48,7 +48,7 @@ const Layanan = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "filename") {
-      setFormData({ ...formData, [name]: files[0] }); 
+      setFormData({ ...formData, [name]: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -59,19 +59,19 @@ const Layanan = () => {
     setError(null);
     setSuccessMessage("");
     setLoading(true);
-  
+
     try {
       let uploadedFileUrl = "";
 
       if (formData.filename && formData.filename instanceof File) {
-        uploadedFileUrl = await uploadSingle(formData.filename); 
+        uploadedFileUrl = await uploadSingle(formData.filename);
       }
-  
+
       const dataToSend = {
         ...formData,
-        filename: uploadedFileUrl, 
+        filename: uploadedFileUrl,
       };
-  
+
       await createDaftarPelayanan(dataToSend);
       setSuccessMessage("Data berhasil disimpan!");
       navigate("/layanan/daftar-pelayanan");
@@ -128,7 +128,7 @@ const Layanan = () => {
                 <select
                   className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   name="nama_pelayanan"
-                  value={formData.nama_pelayanan} // Pastikan ini sesuai
+                  value={formData.nama_pelayanan} 
                   onChange={handleChange}
                   required
                 >

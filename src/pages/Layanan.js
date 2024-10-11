@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import { addDaftarPelayanan } from "../services/daftarPelayananService"; // Import fungsi create dari service
+import { createDaftarPelayanan } from "../services/layananService"; // Import fungsi create dari service
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadSingle } from "../services/uploadService";
 import Swal from "sweetalert2"; // SweetAlert untuk notifikasi
@@ -75,7 +75,7 @@ const Layanan = () => {
         filename: uploadedFileUrl,
       };
 
-      const responseData = await addDaftarPelayanan(dataToSend);
+      const responseData = await createDaftarPelayanan(dataToSend);
       console.log("Response Data:", responseData);
 
       if (responseData && responseData.data && responseData.data.no_reg) {

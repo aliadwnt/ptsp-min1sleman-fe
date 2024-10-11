@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/surat'; 
+const API_URL = 'http://localhost:3000/api_s/layanan-arsip'; 
 
 export const fetchArsipLayanan = async () => {
     try {
@@ -12,9 +12,9 @@ export const fetchArsipLayanan = async () => {
     }
 };
 
-export const createArsipLayanan = async (ArsipLayanan) => {
+export const saveArsipMasuk = async (ArsipLayanan) => {
     try {
-        const response = await axios.post(API_URL, ArsipLayanan, {
+        const response = await axios.post(`${API_URL}/arsip-masuk`, ArsipLayanan,  {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -26,29 +26,17 @@ export const createArsipLayanan = async (ArsipLayanan) => {
         throw error; 
     }
 };
-
-export const updateArsipLayanan = async (id, ArsipLayanan) => {
+export const saveArsipKeluar = async (ArsipLayanan) => {
     try {
-        const response = await axios.put(`${API_URL}/${id}`, ArsipLayanan, {
+        const response = await axios.post(`${API_URL}/arsip-keluar`, ArsipLayanan,  {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
-        console.log('Updated arsip layanan:', response.data);
+        console.log('Created arsip layanan:', response.data);
         return response.data; 
     } catch (error) {
-        console.error('Error updating arsip layanan:', error);
-        throw error; 
-    }
-};
-
-export const deleteArsipLayanan = async (id) => {
-    try {
-        const response = await axios.delete(`${API_URL}/${id}`);
-        console.log('Deleted arsip layanan:', response.data);
-        return response.data; 
-    } catch (error) {
-        console.error('Error deleting arsip layanan:', error);
+        console.error('Failed to add arsip layanan:', error);
         throw error; 
     }
 };

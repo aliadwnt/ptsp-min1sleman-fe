@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
+import { useNavigate } from "react-router-dom";
 import {
   fetchArsipLayanan,
-  createArsipLayanan,
-  updateArsipLayanan,
-  deleteArsipLayanan,
+  saveArsipMasuk,
+  saveArsipKeluar,
 } from "../../services/arsipLayananService";
+import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
+import { uploadSingle } from "../../services/uploadService";
 import "../../App.css";
 
 const ArsipLayanan = () => {
@@ -14,7 +16,11 @@ const ArsipLayanan = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [currentArsipLayanan, setCurrentArsipLayanan] = useState(null);
+
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+ 
 
   useEffect(() => {
     document.title = `PTSP MAN 1 YOGYAKARTA - Arsip Layanan`;
@@ -23,8 +29,20 @@ const ArsipLayanan = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchArsipLayanan();
-      setDataArsipLayanan(response);
+      const pelayananResponse = await fetchDaftarPelayanan();
+      const arsipResponse = await fetchArsipLayanan();
+      const combinedData = pelayananResponse.map((pelayanan) => {
+        const arsip = arsipResponse.find(
+          (arsip) => arsip.no_reg === pelayanan.no_reg
+        );
+        return {
+          ...pelayanan,
+          arsip_masuk: arsip ? arsip.arsip_masuk : "",
+          arsip_keluar: arsip ? arsip.arsip_keluar : "",
+        };
+      });
+
+      setDataArsipLayanan(combinedData);
     } catch (error) {
       console.error("Error fetching Arsip Layanan:", error);
     }
@@ -33,76 +51,98 @@ const ArsipLayanan = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     const filteredData = dataArsipLayanan.filter((item) =>
-      String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase())
+      String(item.nama_pelayanan || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     );
     setDataArsipLayanan(filteredData);
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
-      try {
-        await deleteArsipLayanan(id);
-        setMessage("Data berhasil dihapus");
-        fetchData();
-      } catch (error) {
-        console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
-      }
+  const handleChange = (e, type, id) => {
+    const { files } = e.target;
+    if (files.length > 0) {
+      const updatedData = dataArsipLayanan.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            [type === "masuk" ? "arsip_masuk" : "arsip_keluar"]: files[0],
+          };
+        }
+        return item;
+      });
+      setDataArsipLayanan(updatedData);
+
+      handleSubmit(e, files[0], type, id);
     }
   };
 
-  const handleAdd = () => {
-    setCurrentArsipLayanan(null);
-    setModalOpen(true);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, file, type, id) => {
     e.preventDefault();
-    const { 
-        no_reg, 
-        nama_pelayanan, 
-        perihal, 
-        arsip_masuk, 
-        arsip_keluar, 
-        status 
-    } = e.target.elements;
+    setError(null);
+    setSuccessMessage("");
+    setLoading(true);
 
-    const ArsipLayanan = {
-      no_reg: no_reg.value,
-      nama_pelayanan: nama_pelayanan.value,
-      perihal: perihal.value,
-      arsip_masuk: arsip_masuk.value,
-      arsip_keluar: arsip_keluar.value,
-      status: status.value,
-    };
-    
     try {
-      if (currentArsipLayanan) {
-        await updateArsipLayanan(currentArsipLayanan.id, ArsipLayanan);
-        setMessage("Data berhasil diupdate");
-      } else {
-        await createArsipLayanan(ArsipLayanan);
-        setMessage("Data berhasil ditambahkan");
+      let uploadedArsipMasukUrl = "";
+      let uploadedArsipKeluarUrl = "";
+
+      if (type === "masuk" && file instanceof File) {
+        uploadedArsipMasukUrl = await uploadSingle(file);
+        console.log("Uploaded Arsip Masuk URL:", uploadedArsipMasukUrl);
       }
-      fetchData(); 
-      setModalOpen(false); 
+
+      if (type === "keluar" && file instanceof File) {
+        uploadedArsipKeluarUrl = await uploadSingle(file);
+        console.log("Uploaded Arsip Keluar URL:", uploadedArsipKeluarUrl);
+      }
+      const selectedArsipLayanan = dataArsipLayanan.find(
+        (item) => item.id === id
+      );
+
+      if (!selectedArsipLayanan) {
+        console.error("Data arsip tidak ditemukan untuk id:", id);
+        setError("Data arsip tidak ditemukan.");
+        setLoading(false);
+        return;
+      }
+
+      const dataToSend = {
+        no_reg: selectedArsipLayanan.no_reg,
+        nama_pelayanan: selectedArsipLayanan.nama_pelayanan,
+        perihal: selectedArsipLayanan.perihal,
+        status: selectedArsipLayanan.status,
+        arsip_masuk:
+          type === "masuk"
+            ? uploadedArsipMasukUrl
+            : selectedArsipLayanan.arsip_masuk,
+        arsip_keluar:
+          type === "keluar"
+            ? uploadedArsipKeluarUrl
+            : selectedArsipLayanan.arsip_keluar,
+      };
+
+      console.log("Data yang akan dikirim:", dataToSend);
+
+      if (type === "masuk") {
+        await saveArsipMasuk(dataToSend);
+      } else if (type === "keluar") {
+        await saveArsipKeluar(dataToSend);
+      }
+
+      setSuccessMessage("Data berhasil disimpan!");
+      fetchData();
     } catch (error) {
-      console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
+      console.error(
+        "Gagal menyimpan data:",
+        error.response ? error.response.data : error.message
+      );
+      setError(
+        "Gagal menyimpan data: " +
+          (error.response ? error.response.data : error.message)
+      );
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setCurrentArsipLayanan(null);
-  };
-
-  const handlePreview = (arsip) => {
-    console.log("Previewing:", arsip);
-  };
-
-  const handleUpload = (arsip) => {
-    console.log("Uploading:", arsip);
   };
 
   return (
@@ -114,7 +154,6 @@ const ArsipLayanan = () => {
         <Header />
         <div>
           <div className="texttitle">Daftar Arsip Layanan</div>
-
           {message && (
             <div
               className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -124,9 +163,11 @@ const ArsipLayanan = () => {
               {message}
             </div>
           )}
-
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-grow justify-center"
+            >
               <input
                 type="search"
                 value={searchTerm}
@@ -141,12 +182,12 @@ const ArsipLayanan = () => {
               >
                 <i className="fas fa-search"></i>
               </button>
-              <button
+              {/* <button
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
                 <i className="fas fa-plus mr-2"></i>Tambah
-              </button>
+              </button> */}
             </form>
           </div>
 
@@ -157,48 +198,181 @@ const ArsipLayanan = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Registrasi</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Perihal</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Arsip Masuk</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Arsip Keluar</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Nomor Registrasi
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Nama Layanan
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Perihal
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Arsip Masuk
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Arsip Keluar
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Aksi
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {dataArsipLayanan.length > 0 ? (
                         dataArsipLayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.no_reg}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_masuk}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.arsip_keluar}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
+                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                              {index + 1}
+                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.no_reg}
+                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.nama_pelayanan}
+                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.perihal}
+                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.arsip_masuk ? (
+                                <>
+                                  <a
+                                    href={item.arsip_keluar}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-green-500 text-white py-1 px-2 rounded mr-2"
+                                  >
+                                    Preview
+                                  </a>
+
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <input
+                                    type="file"
+                                    id={`uploadMasuk-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "masuk", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                  <button
+                                    onClick={() =>
+                                      document
+                                        .getElementById(
+                                          `uploadMasuk-${item.id}`
+                                        )
+                                        .click()
+                                    } // Trigger input file
+                                    className="bg-blue-500 text-white py-1 px-2 rounded"
+                                  >
+                                    Upload
+                                  </button>
+                                </>
+                              )}
+                            </td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.arsip_keluar ? (
+                                <>
+                                  <a
+                                    href={item.arsip_keluar}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-green-500 text-white py-1 px-2 rounded mr-2"
+                                  >
+                                    Preview
+                                  </a>
+
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                  <button
+                                    onClick={() =>
+                                      document
+                                        .getElementById(
+                                          `uploadKeluar-${item.id}`
+                                        )
+                                        .click()
+                                    }
+                                    className="bg-blue-500 text-white py-1 px-2 rounded"
+                                  >
+                                    Upload
+                                  </button>
+                                </>
+                              )}
+                            </td>
+
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                              {item.status}
+                            </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <button
-                                onClick={() => { setCurrentArsipLayanan(item); setModalOpen(true); }}
+                              {/* <button
+                                onClick={() => {
+                                  setCurrentArsipLayanan(item);
+                                  setModalOpen(true);
+                                }}
                                 className="focus:outline-none"
-                                style={{ background: 'none', border: 'none', padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button>
-                              <button
+                              </button> */}
+                              {/* <button
                                 onClick={() => handleDelete(item.id)}
                                 className="focus:outline-none"
-                                style={{ background: 'none', border: 'none', padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
+                              </button> */}
                             </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="8" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No data available</td>
+                          <td
+                            colSpan="8"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            No data available
+                          </td>
                         </tr>
                       )}
                     </tbody>
@@ -208,26 +382,83 @@ const ArsipLayanan = () => {
             </div>
           </div>
 
-          {/* Modal */}
+          {/* Modal
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-                <h2 className="text-xl font-semibold mb-4">{currentArsipLayanan ? "Edit Arsip Layanan" : "Tambah Arsip Layanan"}</h2>
+                <h2 className="text-xl font-semibold mb-4">
+                  {currentArsipLayanan
+                    ? "Edit Arsip Layanan"
+                    : "Tambah Arsip Layanan"}
+                </h2>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" name="no_reg" defaultValue={currentArsipLayanan?.no_reg || ""} placeholder="Nomor Registrasi" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="nama_pelayanan" defaultValue={currentArsipLayanan?.nama_pelayanan || ""} placeholder="Nama Layanan" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="perihal" defaultValue={currentArsipLayanan?.perihal || ""} placeholder="Perihal" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="arsip_masuk" defaultValue={currentArsipLayanan?.arsip_masuk || ""} placeholder="Arsip Masuk" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="arsip_keluar" defaultValue={currentArsipLayanan?.arsip_keluar || ""} placeholder="Arsip Keluar" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
-                  <input type="text" name="status" defaultValue={currentArsipLayanan?.status || ""} placeholder="Status" required className="block w-full p-2 border border-gray-300 rounded mb-4" />
+                  <input
+                    type="text"
+                    name="no_reg"
+                    defaultValue={currentArsipLayanan?.no_reg || ""}
+                    placeholder="Nomor Registrasi"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
+                  <input
+                    type="text"
+                    name="nama_pelayanan"
+                    defaultValue={currentArsipLayanan?.nama_pelayanan || ""}
+                    placeholder="Nama Layanan"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
+                  <input
+                    type="text"
+                    name="perihal"
+                    defaultValue={currentArsipLayanan?.perihal || ""}
+                    placeholder="Perihal"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
+                  <input
+                    type="text"
+                    name="arsip_masuk"
+                    defaultValue={currentArsipLayanan?.arsip_masuk || ""}
+                    placeholder="Arsip Masuk"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
+                  <input
+                    type="text"
+                    name="arsip_keluar"
+                    defaultValue={currentArsipLayanan?.arsip_keluar || ""}
+                    placeholder="Arsip Keluar"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
+                  <input
+                    type="text"
+                    name="status"
+                    defaultValue={currentArsipLayanan?.status || ""}
+                    placeholder="Status"
+                    required
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
+                  />
                   <div className="flex justify-end space-x-2">
-                    <button type="button" onClick={handleModalClose} className="bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</button>
-                    <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">{currentArsipLayanan ? "Update" : "Tambah"}</button>
+                    <button
+                      type="button"
+                      onClick={handleModalClose}
+                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      className="bg-green-600 text-white px-4 py-2 rounded"
+                    >
+                      {currentArsipLayanan ? "Update" : "Tambah"}
+                    </button>
                   </div>
                 </form>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
