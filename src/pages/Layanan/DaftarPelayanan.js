@@ -71,7 +71,7 @@ const DaftarPelayanan = () => {
   
   const handleDownload = async (id) => {
     try {
-      const response = await axios.get(`${'http://localhost:3000/api_s/layanan'}/${id}/download`, {
+      const response = await axios.get(`${'/api_s/layanan'}/${id}/download`, {
         responseType: 'blob', 
       });
   

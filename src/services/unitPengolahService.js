@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/unit-pengolah'; 
+const API_URL = '/api_s/unit-pengolah'; 
 
 export const fetchUnitPengolah = async () => {
     try {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/lacak-berkas';
+const API_URL = '/api_s/lacak-berkas';
 
 export const fetchLacakBerkas = async (no_reg) => {
     if (!no_reg) {

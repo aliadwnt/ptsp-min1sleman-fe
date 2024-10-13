@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/lacak-permohonan';
+const API_URL = '/api_s/lacak-permohonan';
 
 export const fetchLacakPermohonan = async (no_reg) => {
     try {
@@ -18,7 +18,7 @@ export const fetchLacakPermohonan = async (no_reg) => {
 
 export const fetchLacakPermohonanById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:3000/api_s/lacak-permohonan/${id}`); 
+        const response = await axios.get(`/api_s/lacak-permohonan/${id}`); 
         return response.data; 
     } catch (error) {
         console.error('Error fetching Data Permohonan By Id:', error);

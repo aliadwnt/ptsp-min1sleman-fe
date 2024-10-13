@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api_s/users";
+const API_URL = "/api_s/users";
 
 export const fetchDaftarPengguna = async () => {
   try {

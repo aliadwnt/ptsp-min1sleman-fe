@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/layanan'; 
+const API_URL = '/api_s/layanan'; 
 
 export const fetchDaftarPelayanan = async (DaftarLayanan) => {
     try {

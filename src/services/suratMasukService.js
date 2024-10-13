@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/surat-masuk'; 
+const API_URL = '/api_s/surat-masuk'; 
 
 export const fetchSuratMasuk = async () => {
     try {
