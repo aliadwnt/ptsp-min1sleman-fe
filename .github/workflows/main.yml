@@ -30,8 +30,7 @@ jobs:
           CI: false
           INLINE_RUNTIME_CHUNK: false
           GENERATE_SOURCEMAP: false
-          REACT_APP_API_URL: "/api_s"
-          
+
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks
