@@ -31,7 +31,7 @@ jobs:
           INLINE_RUNTIME_CHUNK: false
           GENERATE_SOURCEMAP: false
 
-      - uses: kevin-romer/s3-sync-action@master
+      - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks 
         env:
