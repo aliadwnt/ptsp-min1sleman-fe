@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import '../App';
-import { fetchLacakBerkas , fetchLoadArsip } from '../services/lacakBerkasService';
-// import { fetchDaftarDisposisi } from '../services/daftarDisposisiService';
+import { fetchLacakBerkas } from '../services/lacakBerkasService';
 
 const LacakBerkas = () => {
-    const [no_reg, setNoReg] = useState('');
+    const { no_reg: regParam } = useParams(); // Ambil no_reg dari URL
+    const [no_reg, setNoReg] = useState(regParam || ''); // Set no_reg berdasarkan URL
     const [nama_pelayanan, setNamaPelayanan] = useState('');
     const [perihal, setPerihal] = useState('');
     const [nama_pemohon, setNamaPemohon] = useState('');
@@ -16,18 +17,17 @@ const LacakBerkas = () => {
     const [kelengkapan, setKelengkapan] = useState('');
     const [status, setStatus] = useState('');
     const [catatan, setCatatan] = useState('');
-    // const [disposisi, setDisposisi] = useState([]);
-    // const [arsipMasuk, setArsipMasuk] = useState(null);
-    // const [arsipKeluar, setArsipKeluar] = useState(null);
 
-    // Handlers for actions
+    // Effect to handle fetching data when no_reg changes
+    useEffect(() => {
+        if (no_reg) {
+            handleSearch();
+        }
+    }, [no_reg]);
+
     const handleSearch = async () => {
         try {
-            const [pelayananData, arsipLayanan] = await Promise.all([
-                fetchLacakBerkas(no_reg),
-                fetchLoadArsip(no_reg)
-            ]);
-    
+            const pelayananData = await fetchLacakBerkas(no_reg);
             if (pelayananData) {
                 setNamaPelayanan(pelayananData.nama_pelayanan);
                 setPerihal(pelayananData.perihal);
@@ -42,18 +42,12 @@ const LacakBerkas = () => {
                 resetFields();
                 alert('Data tidak ditemukan');
             }
-    
-            // Set arsipMasuk and arsipKeluar when data available
-            // if (arsipLayanan) {
-            //     setArsipMasuk(arsipLayanan.masuk);
-            //     setArsipKeluar(arsipLayanan.keluar);
-            // }
         } catch (error) {
             console.error("Error fetching data: ", error);
             alert('Terjadi kesalahan saat mengambil data');
         }
     };
-    
+
     const resetFields = () => {
         setNamaPelayanan('');
         setPerihal('');
@@ -64,9 +58,6 @@ const LacakBerkas = () => {
         setKelengkapan('');
         setStatus('');
         setCatatan('');
-        // setDisposisi([]);
-        // setArsipMasuk(null);
-        // setArsipKeluar(null);
     };
 
     return (
@@ -252,8 +243,8 @@ const LacakBerkas = () => {
                                     </tbody>
                                 </table>
                                 </div>
-                                
-                              
+
+
 <div className="flex flex-wrap">
     <div className="w-full md:w-1/2 mt-1 px-2">
         <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -303,4 +294,3 @@ const LacakBerkas = () => {
 };
 
 export default LacakBerkas;
-                      
