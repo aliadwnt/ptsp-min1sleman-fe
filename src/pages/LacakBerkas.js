@@ -23,12 +23,11 @@ const LacakBerkas = () => {
     // Handlers for actions
     const handleSearch = async () => {
         try {
-            // Fetching data using the registration number
-            const pelayananData = await fetchLacakBerkas(no_reg);
-            // const disposisiData = await fetchDaftarDisposisi(no_reg);
-            // const arsipLayanan = await fetchLoadArsip(no_reg);
-            
-            // Assuming the API returns the data in a specific format
+            const [pelayananData, arsipLayanan] = await Promise.all([
+                fetchLacakBerkas(no_reg),
+                fetchLoadArsip(no_reg)
+            ]);
+    
             if (pelayananData) {
                 setNamaPelayanan(pelayananData.nama_pelayanan);
                 setPerihal(pelayananData.perihal);
@@ -39,22 +38,22 @@ const LacakBerkas = () => {
                 setKelengkapan(pelayananData.kelengkapan);
                 setStatus(pelayananData.status);
                 setCatatan(pelayananData.catatan);
-                // setArsipMasuk(arsipLayanan.masuk);
-                // setArsipKeluar(arsipLayanan.keluar);
             } else {
-                // Reset fields if no data found
                 resetFields();
                 alert('Data tidak ditemukan');
             }
-
-            // Setting disposisi data
-            // setDisposisi(disposisiData);
+    
+            // Set arsipMasuk and arsipKeluar when data available
+            // if (arsipLayanan) {
+            //     setArsipMasuk(arsipLayanan.masuk);
+            //     setArsipKeluar(arsipLayanan.keluar);
+            // }
         } catch (error) {
             console.error("Error fetching data: ", error);
             alert('Terjadi kesalahan saat mengambil data');
         }
     };
-
+    
     const resetFields = () => {
         setNamaPelayanan('');
         setPerihal('');

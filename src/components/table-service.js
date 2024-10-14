@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchUnitPengolah } from '../services/unitPengolahService'; // Pastikan path service benar
 
 const TableService = () => {
-    // Data for the table
-    const services = [
-        { id: 1, unit: 'Surat Tata Usaha', total: 1 },
-        { id: 2, unit: 'Surat Rekomendasi', total: 2 },
-        { id: 3, unit: 'Surat Izin Peminjaman Ruang', total: 3 },
-        { id: 4, unit: 'Surat Osis', total: 4 },
-        { id: 5, unit: 'Surat Izin Penelitian', total: 5 },
-        { id: 6, unit: 'Surat Tugas Guru', total: 6 },
-        { id: 7, unit: 'Surat Tugas Siswa', total: 7 },
-    ];
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        const getUnitPengolahData = async () => {
+            try {
+                const unitPengolahData = await fetchUnitPengolah();
+                const servicesWithTotals = unitPengolahData.map((unit, index) => ({
+                    id: index + 1,
+                    unit: unit.name,
+                    total: 0
+                }));
+                setServices(servicesWithTotals);
+            } catch (error) {
+                console.error("Error fetching unit pengolah data:", error);
+            }
+        };
+
+        getUnitPengolahData();
+    }, []);
 
     return (
         <div className="bg-white shadow rounded-lg w-full md:w-1/2 ml-3 p-4">

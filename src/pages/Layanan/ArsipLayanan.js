@@ -182,12 +182,6 @@ const ArsipLayanan = () => {
               >
                 <i className="fas fa-search"></i>
               </button>
-              {/* <button
-                onClick={handleAdd}
-                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
-              >
-                <i className="fas fa-plus mr-2"></i>Tambah
-              </button> */}
             </form>
           </div>
 
@@ -219,35 +213,32 @@ const ArsipLayanan = () => {
                         <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Aksi
-                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {dataArsipLayanan.length > 0 ? (
                         dataArsipLayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                               {index + 1}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.no_reg}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.nama_pelayanan}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.perihal}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.arsip_masuk ? (
                                 <>
                                   <a
                                     href={item.arsip_keluar}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-green-500 text-white py-1 px-2 rounded mr-2"
+                                    className="bg-grey-500 text-white py-1 px-2 rounded mr-2"
                                   >
                                     Preview
                                   </a>
@@ -279,7 +270,7 @@ const ArsipLayanan = () => {
                                         )
                                         .click()
                                     } // Trigger input file
-                                    className="bg-blue-500 text-white py-1 px-2 rounded"
+                                    className="bg-green-500 text-white py-1 px-2 rounded"
                                   >
                                     Upload
                                   </button>
@@ -293,7 +284,7 @@ const ArsipLayanan = () => {
                                     href={item.arsip_keluar}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-green-500 text-white py-1 px-2 rounded mr-2"
+                                    className="bg-grey-500 text-white py-1 px-2 rounded mr-2"
                                   >
                                     Preview
                                   </a>
@@ -325,7 +316,7 @@ const ArsipLayanan = () => {
                                         )
                                         .click()
                                     }
-                                    className="bg-blue-500 text-white py-1 px-2 rounded"
+                                    className="bg-green-500 text-white py-1 px-2 rounded"
                                   >
                                     Upload
                                   </button>
@@ -336,39 +327,12 @@ const ArsipLayanan = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.status}
                             </td>
-                            <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                              {/* <button
-                                onClick={() => {
-                                  setCurrentArsipLayanan(item);
-                                  setModalOpen(true);
-                                }}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button> */}
-                              {/* <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button> */}
-                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td
-                            colSpan="8"
+                            colSpan="7"
                             className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             No data available
@@ -381,84 +345,6 @@ const ArsipLayanan = () => {
               </div>
             </div>
           </div>
-
-          {/* Modal
-          {modalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-                <h2 className="text-xl font-semibold mb-4">
-                  {currentArsipLayanan
-                    ? "Edit Arsip Layanan"
-                    : "Tambah Arsip Layanan"}
-                </h2>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="no_reg"
-                    defaultValue={currentArsipLayanan?.no_reg || ""}
-                    placeholder="Nomor Registrasi"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="nama_pelayanan"
-                    defaultValue={currentArsipLayanan?.nama_pelayanan || ""}
-                    placeholder="Nama Layanan"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="perihal"
-                    defaultValue={currentArsipLayanan?.perihal || ""}
-                    placeholder="Perihal"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="arsip_masuk"
-                    defaultValue={currentArsipLayanan?.arsip_masuk || ""}
-                    placeholder="Arsip Masuk"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="arsip_keluar"
-                    defaultValue={currentArsipLayanan?.arsip_keluar || ""}
-                    placeholder="Arsip Keluar"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="status"
-                    defaultValue={currentArsipLayanan?.status || ""}
-                    placeholder="Status"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <div className="flex justify-end space-x-2">
-                    <button
-                      type="button"
-                      onClick={handleModalClose}
-                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-                    >
-                      Batal
-                    </button>
-                    <button
-                      type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
-                    >
-                      {currentArsipLayanan ? "Update" : "Tambah"}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )} */}
         </div>
       </div>
     </div>
