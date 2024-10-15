@@ -19,7 +19,7 @@ const Jumbotron = () => {
           <div className="selamat-datang-di-ptsp">Selamat Datang di</div>
           <div className="ptsp-container">
             <div className="ptsp">PTSP</div>
-            <div className="man-1">MAN 1 YOGYAKARTA</div>
+            <div className="man-1">MIN 1 SLEMAN</div>
           </div>
         </div>
 

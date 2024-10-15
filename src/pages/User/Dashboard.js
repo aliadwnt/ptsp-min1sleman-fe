@@ -33,7 +33,7 @@ const DashboardAdmin = () => {
                 </div>
 
                 <div className="py-2 space-y-2 sm:py-8 sm:space-y-8" style={{ width: '100%' }}>
-                    <AppCard title="Welcome to PTSP MAN 1 Yogyakarta" description={`You are logged in as User Name.`} />
+                    <AppCard title="Welcome to PTSP MIN 1 SLEMAN" description={`You are logged in as User Name.`} />
                 </div>
             </div>
         </div>

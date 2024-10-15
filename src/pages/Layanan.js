@@ -56,12 +56,21 @@ const Layanan = () => {
     }
   };
 
- function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-      console.log('Text copied to clipboard');
-  }).catch(err => {
-      console.error('Could not copy text: ', err);
-  });
+function copyToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    const messageElement = document.getElementById("copyMessage");
+    messageElement.textContent = "Nomor Registrasi Berhasil disalin!";
+    messageElement.style.display = "block";
+
+    setTimeout(() => {
+        messageElement.style.display = "none";
+    }, 2000);
 }
 
 window.copyToClipboard = copyToClipboard;
@@ -75,7 +84,6 @@ window.copyToClipboard = copyToClipboard;
     try {
       let uploadedFileUrl = "";
 
-      // Upload file jika ada file yang dipilih
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
@@ -90,8 +98,7 @@ window.copyToClipboard = copyToClipboard;
 
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
-    
-        // Fungsi untuk menyalin nomor registrasi
+
         const copyToClipboard = (text) => {
             navigator.clipboard.writeText(text).then(() => {
                 MySwal.fire({
@@ -113,15 +120,18 @@ window.copyToClipboard = copyToClipboard;
         MySwal.fire({
           title: "Layanan Berhasil Diproses!",
           html: `
-              <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                  <span style="font-family: 'Poppins', sans-serif;">Nomor Registrasi anda : ${generatedNoReg}
-                  <button 
-                      style="margin-top: 10px; border: none; background: none; cursor: pointer;"
-                      onclick="copyToClipboard('${generatedNoReg}')"
-                  >
-                      <i class="fas fa-copy"></i>
-                  </button>
-              </div>
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                <span style="font-family: 'Poppins', sans-serif;">
+                    Nomor Registrasi anda: ${generatedNoReg}
+                </span>
+                <button 
+                    style="margin-top: 10px; border: none; background: none; cursor: pointer;"
+                    onclick="copyToClipboard('${generatedNoReg}')"
+                >
+                    <i class="fas fa-copy"></i>
+                </button>
+                <span id="copyMessage" style="margin-top: 5px; color: green; display: none;"></span>
+            </div>
           `,
           icon: "success",
           confirmButtonText: "OK",

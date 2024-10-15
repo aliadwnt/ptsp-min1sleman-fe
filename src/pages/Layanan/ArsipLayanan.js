@@ -63,49 +63,51 @@ const ArsipLayanan = () => {
     if (files.length > 0) {
       const updatedData = dataArsipLayanan.map((item) => {
         if (item.id === id) {
+          const newFile = files[0];
+          const fileUrl = URL.createObjectURL(newFile); // Create a URL for the file
           return {
             ...item,
-            [type === "masuk" ? "arsip_masuk" : "arsip_keluar"]: files[0],
+            [type === "masuk" ? "arsip_masuk" : "arsip_keluar"]: fileUrl, // Store the URL
+            [`${type}_file`]: newFile, // Store the file for upload
           };
         }
         return item;
       });
       setDataArsipLayanan(updatedData);
-
-      handleSubmit(e, files[0], type, id);
     }
   };
-
+  
   const handleSubmit = async (e, file, type, id) => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
     setLoading(true);
-
+  
     try {
       let uploadedArsipMasukUrl = "";
       let uploadedArsipKeluarUrl = "";
-
+  
       if (type === "masuk" && file instanceof File) {
         uploadedArsipMasukUrl = await uploadSingle(file);
         console.log("Uploaded Arsip Masuk URL:", uploadedArsipMasukUrl);
       }
-
+  
       if (type === "keluar" && file instanceof File) {
         uploadedArsipKeluarUrl = await uploadSingle(file);
         console.log("Uploaded Arsip Keluar URL:", uploadedArsipKeluarUrl);
       }
+  
       const selectedArsipLayanan = dataArsipLayanan.find(
         (item) => item.id === id
       );
-
+  
       if (!selectedArsipLayanan) {
         console.error("Data arsip tidak ditemukan untuk id:", id);
         setError("Data arsip tidak ditemukan.");
         setLoading(false);
         return;
       }
-
+  
       const dataToSend = {
         no_reg: selectedArsipLayanan.no_reg,
         nama_pelayanan: selectedArsipLayanan.nama_pelayanan,
@@ -120,15 +122,15 @@ const ArsipLayanan = () => {
             ? uploadedArsipKeluarUrl
             : selectedArsipLayanan.arsip_keluar,
       };
-
+  
       console.log("Data yang akan dikirim:", dataToSend);
-
+  
       if (type === "masuk") {
         await saveArsipMasuk(dataToSend);
       } else if (type === "keluar") {
         await saveArsipKeluar(dataToSend);
       }
-
+  
       setSuccessMessage("Data berhasil disimpan!");
       fetchData();
     } catch (error) {
@@ -143,7 +145,7 @@ const ArsipLayanan = () => {
     } finally {
       setLoading(false);
     }
-  };
+  };  
 
   return (
     <div className="bodyadmin flex">
@@ -172,7 +174,7 @@ const ArsipLayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
               />
@@ -232,97 +234,77 @@ const ArsipLayanan = () => {
                               {item.perihal}
                             </td>
                             <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                              {item.arsip_masuk ? (
-                                <>
-                                  <a
-                                    href={item.arsip_keluar}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-grey-500 text-white py-1 px-2 rounded mr-2"
-                                  >
-                                    Preview
-                                  </a>
+  {item.arsip_masuk ? (
+    <>
+      <a
+        href={item.arsip_masuk}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-gray-500 text-white py-1 px-2 rounded mr-2"
+      >
+        Preview
+      </a>
+      <input
+        type="file"
+        id={`uploadKeluar-${item.id}`}
+        onChange={(e) => handleChange(e, "keluar", item.id)}
+        className="hidden"
+      />
+    </>
+  ) : (
+    <>
+      <input
+        type="file"
+        id={`uploadMasuk-${item.id}`}
+        onChange={(e) => handleChange(e, "masuk", item.id)}
+        className="hidden"
+      />
+      <button
+        onClick={() => document.getElementById(`uploadMasuk-${item.id}`).click()} // Trigger input file
+        className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-700 transition-colors duration-200"
+      >
+        Upload
+      </button>
+    </>
+  )}
+</td>
 
-                                  <input
-                                    type="file"
-                                    id={`uploadKeluar-${item.id}`}
-                                    onChange={(e) =>
-                                      handleChange(e, "keluar", item.id)
-                                    }
-                                    className="hidden"
-                                  />
-                                </>
-                              ) : (
-                                <>
-                                  <input
-                                    type="file"
-                                    id={`uploadMasuk-${item.id}`}
-                                    onChange={(e) =>
-                                      handleChange(e, "masuk", item.id)
-                                    }
-                                    className="hidden"
-                                  />
-                                  <button
-                                    onClick={() =>
-                                      document
-                                        .getElementById(
-                                          `uploadMasuk-${item.id}`
-                                        )
-                                        .click()
-                                    } // Trigger input file
-                                    className="bg-green-500 text-white py-1 px-2 rounded"
-                                  >
-                                    Upload
-                                  </button>
-                                </>
-                              )}
-                            </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
-                              {item.arsip_keluar ? (
-                                <>
-                                  <a
-                                    href={item.arsip_keluar}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="bg-grey-500 text-white py-1 px-2 rounded mr-2"
-                                  >
-                                    Preview
-                                  </a>
+<td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+  {item.arsip_keluar ? (
+    <>
+      <a
+        href={item.arsip_keluar}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-gray-500 text-white py-1 px-2 rounded mr-2"
+      >
+        Preview
+      </a>
 
-                                  <input
-                                    type="file"
-                                    id={`uploadKeluar-${item.id}`}
-                                    onChange={(e) =>
-                                      handleChange(e, "keluar", item.id)
-                                    }
-                                    className="hidden"
-                                  />
-                                </>
-                              ) : (
-                                <>
-                                  <input
-                                    type="file"
-                                    id={`uploadKeluar-${item.id}`}
-                                    onChange={(e) =>
-                                      handleChange(e, "keluar", item.id)
-                                    }
-                                    className="hidden"
-                                  />
-                                  <button
-                                    onClick={() =>
-                                      document
-                                        .getElementById(
-                                          `uploadKeluar-${item.id}`
-                                        )
-                                        .click()
-                                    }
-                                    className="bg-green-500 text-white py-1 px-2 rounded"
-                                  >
-                                    Upload
-                                  </button>
-                                </>
-                              )}
-                            </td>
+      <input
+        type="file"
+        id={`uploadKeluar-${item.id}`}
+        onChange={(e) => handleChange(e, "keluar", item.id)}
+        className="hidden"
+      />
+    </>
+  ) : (
+    <>
+      <input
+        type="file"
+        id={`uploadKeluar-${item.id}`}
+        onChange={(e) => handleChange(e, "keluar", item.id)}
+        className="hidden"
+      />
+      <button
+        onClick={() => document.getElementById(`uploadKeluar-${item.id}`).click()}
+        className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-700 transition-colors duration-200"
+      >
+        Upload
+      </button>
+    </>
+  )}
+</td>
 
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.status}

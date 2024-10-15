@@ -43,7 +43,7 @@ const RegisterForm = () => {
   return (
     <div className="register-form-ptsp">
       <h2 className="register-heading font-poppins">REGISTER</h2>
-      <h5 className="register-title">PTSP MAN 1 Yogyakarta</h5>
+      <h5 className="register-title">PTSP MIN 1 SLEMAN</h5>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
       <form onSubmit={handleRegister}>

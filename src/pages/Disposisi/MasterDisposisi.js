@@ -18,7 +18,7 @@ const MasterDisposisi = () => {
   const [currentMasterDisposisi, setCurrentMasterDisposisi] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Master Disposisi`;
+    document.title = `PTSP MIN 1 SLEMAN - Daftar Master Disposisi`;
     fetchData();
   }, []);
 

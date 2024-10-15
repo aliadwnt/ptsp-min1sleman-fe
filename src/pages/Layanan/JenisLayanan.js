@@ -17,7 +17,7 @@ const JenisLayanan = () => {
   const [currentJenisLayanan, setCurrentJenisLayanan] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Jenis Layanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Daftar Jenis Layanan`;
     fetchData();
   }, []);
 

@@ -17,7 +17,7 @@ const SuratMasuk = () => {
   const [currentSuratMasuk, setCurrentSuratMasuk] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Surat Masuk`;
+    document.title = `PTSP MIN 1 SLEMAN - Surat Masuk`;
     fetchData();
   }, []);
 

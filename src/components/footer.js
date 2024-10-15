@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
-import logo from '../images/logo_man_1.png'
+import logo from '../images/logo-kemenag.png'
 const Footer = () => {
   return (
     <footer className="bg-white-800 text-center text-blue lg:text-left" style={{ fontFamily: 'Poppins, sans-serif' }}>
@@ -10,7 +10,7 @@ const Footer = () => {
             <div className="flex">
             <img src={logo} alt="PTSP Logo" className="w-12 h-12 rounded-full center" />
               <h4 className="mb-4 mx-5 flex items-center justify-start font-bold uppercase md:justify-start">
-                MAN 1 YOGYAKARTA
+              MIN 1 SLEMAN
               </h4>
             </div>
             <h5 className="mb-4 flex items-center justify-start font-semibold md:justify-start">
@@ -46,7 +46,7 @@ const Footer = () => {
               <Link to="https://man1yogyakarta.sch.id/profil/kepala-madrasah" className="text-blue">Kepala Madrasah</Link>
             </h5>
             <h5 className="mb-4 flex items-center justify-center font-semibold md:justify-start">
-              <Link to="https://man1yogyakarta.sch.id/profil/struktur-man-1-yogyakarta" className="text-blue">Struktur MAN 1 Yogyakarta</Link>
+              <Link to="https://man1yogyakarta.sch.id/profil/struktur-man-1-yogyakarta" className="text-blue">Struktur MIN 1 SLEMAN</Link>
             </h5>
           </div>
 
@@ -64,7 +64,7 @@ const Footer = () => {
               <Link to="https://library.man1yogyakarta.sch.id/" className="text-blue">Perpustakaan</Link>
             </h5>
             <h5 className="mb-4 flex items-center justify-center font-semibold md:justify-start">
-              <Link to="https://man1yogyakarta.sch.id/" className="text-blue">Website MAN 1 Yogyakarta </Link>
+              <Link to="https://man1yogyakarta.sch.id/" className="text-blue">Website MIN 1 SLEMAN </Link>
             </h5>
           </div>
 
@@ -84,7 +84,7 @@ const Footer = () => {
       <div className="bg-blue-100 p-6 text-center">
         <span>© Copyright</span>
         <a className="font-semibold text-blue ml-1 mr-1" href="#">
-    MAN 1 YOGYAKARTA
+        MIN 1 SLEMAN
 </a>
 
         <span>All Rights Reserved</span>

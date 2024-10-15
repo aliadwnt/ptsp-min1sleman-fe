@@ -17,7 +17,7 @@ const UnitPengolah = () => {
   const [currentUnitPengolah, setCurrentUnitPengolah] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Unit Pengolah`;
+    document.title = `PTSP MIN 1 SLEMAN - Unit Pengolah`;
     fetchData();
   }, []);
 

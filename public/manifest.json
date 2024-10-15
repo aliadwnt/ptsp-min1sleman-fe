@@ -1,19 +1,19 @@
 {
-  "short_name": "PTSP MAN 1 Yogyakarta",
-  "name": "PTSP MAN 1 Yogyakarta ",
+  "short_name": "PTSP MIN 1 SLEMAN",
+  "name": "PTSP MIN 1 SLEMAN ",
   "icons": [
     {
-      "src": "logo_man_1.png",
+      "src": "logo-kemenag.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo_man_1.png",
+      "src": "logo-kemenag.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo_man_1.png",
+      "src": "logo-kemenag.png",
       "type": "image/png",
       "sizes": "512x512"
     }

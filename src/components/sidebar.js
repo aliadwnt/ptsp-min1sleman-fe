@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../images/logo_man_1.png';
+import logo from '../images/logo-kemenag.png';
 import '../App.css';
 
 const Sidebar = () => {
@@ -54,7 +54,7 @@ const Sidebar = () => {
                 <Link to="/" className="sidebar-header block p-4">
                     <img src={logo} alt="Logo" className="h-14" />
                     <div>
-                        <p className="text-center font-bold text-white">PTSP MAN 1 Yogyakarta</p>
+                        <p className="text-center font-bold text-white">PTSP MIN 1 SLEMAN</p>
                     </div>
                 </Link>
 

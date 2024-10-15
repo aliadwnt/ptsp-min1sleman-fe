@@ -12,7 +12,7 @@ const DaftarPelayanan = ({
     const [searchTerm, setSearchTerm] = useState('');
     const [message, setMessage] = useState('');
     useEffect(() => {
-        document.title = `PTSP MAN 1 YOGYAKARTA - Edit Profile`;
+        document.title = `PTSP MIN 1 SLEMAN - Edit Profile`;
     }, []);
 
 
