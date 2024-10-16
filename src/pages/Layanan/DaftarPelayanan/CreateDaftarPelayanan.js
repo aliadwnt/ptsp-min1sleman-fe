@@ -59,19 +59,16 @@ const Layanan = () => {
     setError(null);
     setSuccessMessage("");
     setLoading(true);
-
     try {
       let uploadedFileUrl = "";
 
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
-
       const dataToSend = {
         ...formData,
         filename: uploadedFileUrl,
       };
-
       await createDaftarPelayanan(dataToSend);
       setSuccessMessage("Data berhasil disimpan!");
       navigate("/layanan/daftar-pelayanan");

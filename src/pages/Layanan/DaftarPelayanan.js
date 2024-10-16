@@ -6,6 +6,7 @@ import {
   createDaftarPelayanan,
   updateDaftarPelayanan,
   deleteDaftarPelayanan,
+  previewPdf
 } from "../../services/daftarPelayananService";
 import "../../App.css";
 import axios from 'axios';
@@ -24,6 +25,7 @@ const DaftarPelayanan = () => {
   const [countProses, setCountProses] = useState(0);
   const [countSelesai, setCountSelesai] = useState(0);
   const [countAmbil, setCountAmbil] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -83,31 +85,55 @@ const DaftarPelayanan = () => {
     navigate('/create-daftar-pelayanan');
   };
 
-  const handleDocument = (id) => {
-    console.log(`Menampilkan dokumen untuk item dengan id ${id}`);
-    // 
+  const handleDocument = async (id) => {
+    try {
+      const data = await previewPdf(id);
+  
+      if (data && data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        console.error('Gagal memuat dokumen');
+      }
+    } catch (error) {
+      console.error('Terjadi kesalahan saat membuka dokumen', error);
+    }
   };
   
   const handleDownload = async (id) => {
     try {
-      const response = await axios.get(`${'/api_s/layanan'}/${id}/download`, {
-        responseType: 'blob', 
-      });
+      const data = await previewPdf(id);
+      
+      if (data && data.url) {
+        const response = await fetch(data.url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/pdf',
+          },
+        });
   
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+        if (!response.ok) {
+          throw new Error('Gagal mendownload file');
+        }
   
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `file_${id}.pdf`); 
-      document.body.appendChild(link);
-      link.click();
+        const blob = await response.blob();
   
-      link.parentNode.removeChild(link);
+        const url = window.URL.createObjectURL(blob);
+  
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `file_${id}.pdf`); 
+  
+        document.body.appendChild(link);
+        link.click();
+  
+        link.parentNode.removeChild(link);
+      } else {
+        console.error('URL dokumen tidak ditemukan');
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
     }
-  };
-
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

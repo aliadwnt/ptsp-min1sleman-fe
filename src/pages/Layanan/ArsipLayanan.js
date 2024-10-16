@@ -87,20 +87,24 @@ const ArsipLayanan = () => {
       let uploadedArsipMasukUrl = "";
       let uploadedArsipKeluarUrl = "";
   
-      if (type === "masuk" && file instanceof File) {
-        uploadedArsipMasukUrl = await uploadSingle(file);
-        console.log("Uploaded Arsip Masuk URL:", uploadedArsipMasukUrl);
+      // Cek jika file yang diupload adalah File
+      if (file instanceof File) {
+        // Upload file berdasarkan type
+        if (type === "masuk") {
+          uploadedArsipMasukUrl = await uploadSingle(file);
+          console.log("Uploaded Arsip Masuk URL:", uploadedArsipMasukUrl);
+        } else if (type === "keluar") {
+          uploadedArsipKeluarUrl = await uploadSingle(file);
+          console.log("Uploaded Arsip Keluar URL:", uploadedArsipKeluarUrl);
+        }
       }
   
-      if (type === "keluar" && file instanceof File) {
-        uploadedArsipKeluarUrl = await uploadSingle(file);
-        console.log("Uploaded Arsip Keluar URL:", uploadedArsipKeluarUrl);
-      }
-  
+      // Temukan arsip layanan berdasarkan ID
       const selectedArsipLayanan = dataArsipLayanan.find(
         (item) => item.id === id
       );
   
+      // Cek jika data arsip tidak ditemukan
       if (!selectedArsipLayanan) {
         console.error("Data arsip tidak ditemukan untuk id:", id);
         setError("Data arsip tidak ditemukan.");
@@ -108,23 +112,19 @@ const ArsipLayanan = () => {
         return;
       }
   
+      // Siapkan data untuk dikirim
       const dataToSend = {
         no_reg: selectedArsipLayanan.no_reg,
         nama_pelayanan: selectedArsipLayanan.nama_pelayanan,
         perihal: selectedArsipLayanan.perihal,
         status: selectedArsipLayanan.status,
-        arsip_masuk:
-          type === "masuk"
-            ? uploadedArsipMasukUrl
-            : selectedArsipLayanan.arsip_masuk,
-        arsip_keluar:
-          type === "keluar"
-            ? uploadedArsipKeluarUrl
-            : selectedArsipLayanan.arsip_keluar,
+        arsip_masuk: type === "masuk" ? uploadedArsipMasukUrl : selectedArsipLayanan.arsip_masuk,
+        arsip_keluar: type === "keluar" ? uploadedArsipKeluarUrl : selectedArsipLayanan.arsip_keluar,
       };
   
       console.log("Data yang akan dikirim:", dataToSend);
   
+      // Simpan data sesuai type
       if (type === "masuk") {
         await saveArsipMasuk(dataToSend);
       } else if (type === "keluar") {
@@ -145,7 +145,7 @@ const ArsipLayanan = () => {
     } finally {
       setLoading(false);
     }
-  };  
+  };    
 
   return (
     <div className="bodyadmin flex">
