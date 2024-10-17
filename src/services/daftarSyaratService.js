@@ -12,22 +12,6 @@ export const fetchDaftarSyarat = async () => {
   }
 };
 
-// Buat Syarat Layanan baru
-export const createDaftarSyarat = async (DaftarSyarat) => {
-  try {
-    const response = await axios.post(API_URL, DaftarSyarat, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("Created Syarat Layanan:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Failed to add Syarat Layanan:", error);
-    throw error;
-  }
-};
-
 
 export const updateDaftarSyarat = async (DaftarSyarat) => {
   try {
@@ -42,11 +26,13 @@ export const updateDaftarSyarat = async (DaftarSyarat) => {
     console.log("Updated Syarat Layanan:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error updating Syarat Layanan:", error.response?.data || error.message);
+    console.error(
+      "Error updating Syarat Layanan:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
-
 
 export const deleteDaftarSyarat = async (id) => {
   try {
@@ -81,4 +67,3 @@ export const fetchDaftarSyaratById = async (id) => {
     throw error;
   }
 };
-

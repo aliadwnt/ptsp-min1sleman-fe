@@ -145,7 +145,7 @@ const DaftarSyarat = () => {
     const syarat_terpilih = daftarSyarat.map((syarat) => syarat.name);
 
     const data = {
-      unit: selectedUnit, // Use selectedUnit
+      unit: formData.get("unit"),
       name: formData.get("name"),
       jenis: formData.get("jenis"),
       syarat_terpilih,
@@ -375,9 +375,6 @@ const DaftarSyarat = () => {
                   {modalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                       <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-                        <h2 className="text-xl font-semibold mb-4">
-                          Edit Data Daftar Syarat Layanan
-                        </h2>
                         <form onSubmit={handleSubmit}>
                           <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -550,134 +547,6 @@ const DaftarSyarat = () => {
               </div>
             </div>
           </div>
-
-          {modalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-                <h2 className="text-lg font-bold mb-4">
-                  {currentDaftarSyarat ? "Edit Syarat" : "Tambah Syarat"}
-                </h2>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Unit Pengolah
-                    </label>
-                    <select
-                      value={selectedUnit}
-                      onChange={(e) => setSelectedUnit(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                    >
-                      <option value="">Pilih Unit Pengolah</option>
-                      {unitPengolahOptions &&
-                        unitPengolahOptions.length > 0 &&
-                        unitPengolahOptions.map((unit) => (
-                          <option key={unit.id} value={unit.name}>
-                            {unit.name}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Jenis Layanan
-                    </label>
-                    <select
-                      value={selectedJenisLayanan}
-                      onChange={(e) => setSelectedJenisLayanan(e.target.value)}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                    >
-                      <option value="">Pilih Jenis Layanan</option>
-                      {jenisLayananOptions.map((jenis) => (
-                        <option key={jenis.id} value={jenis.name}>
-                          {jenis.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Syarat Layanan
-                    </label>
-                    <select
-                      multiple
-                      value={selectedSyaratLayanan}
-                      onChange={(e) => {
-                        const options = Array.from(
-                          e.target.selectedOptions,
-                          (option) => option.value
-                        );
-                        setSelectedSyaratLayanan(options);
-                      }}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                    >
-                      {masterSyaratOptions.map((syarat) => (
-                        <option key={syarat.id} value={syarat.name}>
-                          {syarat.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Tabel Master Layanan yang Dipilih */}
-                  <div className="mb-4">
-                    <h3 className="text-md font-medium text-gray-700">
-                      Master Layanan Dipilih
-                    </h3>
-                    <table className="min-w-full border border-gray-300">
-                      <thead>
-                        <tr className="bg-gray-100">
-                          <th className="border px-4 py-2">No</th>
-                          <th className="border px-4 py-2">Master Layanan</th>
-                          <th className="border px-4 py-2">Aksi</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedSyaratLayanan.map((syarat, index) => (
-                          <tr key={index} className="hover:bg-gray-100">
-                            <td className="border px-4 py-2">{index + 1}</td>
-                            <td className="border px-4 py-2">{syarat}</td>
-                            <td className="border px-4 py-2">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const newSelectedSyarat =
-                                    selectedSyaratLayanan.filter(
-                                      (item) => item !== syarat
-                                    );
-                                  setSelectedSyaratLayanan(newSelectedSyarat);
-                                }}
-                                className="text-red-500 hover:text-red-700"
-                              >
-                                Hapus
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="flex justify-end mt-4">
-                    <button
-                      type="button"
-                      onClick={handleModalClose}
-                      className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
-                    >
-                      Tutup
-                    </button>
-                    <button
-                      type="submit"
-                      className="ml-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                    >
-                      Simpan
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
