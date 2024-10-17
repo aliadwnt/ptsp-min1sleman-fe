@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../App.css";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
-import { 
-  HomeIcon, 
-  CogIcon, 
-  UserIcon, 
-  ArrowRightOnRectangleIcon 
-} from '@heroicons/react/24/outline';
+import {
+  HomeIcon,
+  CogIcon,
+  UserIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 const UserProfileMenu = () => {
-  const [formData, setFormData] = useState(null); 
+  const [formData, setFormData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation(); // Get the current location
@@ -18,9 +18,18 @@ const UserProfileMenu = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token"); 
+        const token = localStorage.getItem("token");
         if (token) {
-          const userId = JSON.parse(atob(token.split(".")[1])).userId; 
+          const decodedToken = JSON.parse(atob(token.split(".")[1]));
+          const { userId, exp } = decodedToken;
+  
+          const currentTime = Math.floor(Date.now() / 1000);
+          if (exp < currentTime) {
+            console.log("Token expired. Navigating to login...");
+            localStorage.removeItem("token");
+            navigate("/login"); 
+            return;
+          }
           const data = await getUserById(userId); 
           setFormData(data); 
         }
@@ -28,9 +37,10 @@ const UserProfileMenu = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [navigate]); 
+  
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -49,10 +59,10 @@ const UserProfileMenu = () => {
   };
 
   // Determine the active path
-  const isActive = (path) => location.pathname === path ? "bg-green-400" : "";
+  const isActive = (path) => (location.pathname === path ? "bg-green-400" : "");
 
   return (
-<header className="sticky top-0 bg-[#11ad00] w-full px-6 pt-8 pb-7 flex justify-between items-center text-white z-10">
+    <header className="sticky top-0 bg-[#11ad00] w-full px-6 pt-8 pb-7 flex justify-between items-center text-white z-10">
       <div className="textheader"></div>
       <div className="relative inline-block text-left">
         <button
@@ -95,14 +105,18 @@ const UserProfileMenu = () => {
                   </div>
                   <div className="border-t border-gray-200"></div>
                   <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive("/dashboard")} transition duration-150 ease-in-out rounded-md`}
-                    onClick={() => navigate("/dashboard")}
+                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
+                      "/dashboard"
+                    )} transition duration-150 ease-in-out rounded-md`}
+                    onClick={() => navigate("/")}
                   >
                     <HomeIcon className="h-5 w-5 mr-2" />
-                    Dashboard
+                    Home
                   </button>
                   <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive("/user/settings")} transition duration-150 ease-in-out rounded-md`}
+                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
+                      "/user/settings"
+                    )} transition duration-150 ease-in-out rounded-md`}
                     onClick={() => navigate("/user/settings")}
                   >
                     <CogIcon className="h-5 w-5 mr-2" />
@@ -110,7 +124,9 @@ const UserProfileMenu = () => {
                   </button>
                   <div className="border-t border-gray-200"></div>
                   <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive("/profile/edit")} transition duration-150 ease-in-out rounded-md`}
+                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
+                      "/profile/edit"
+                    )} transition duration-150 ease-in-out rounded-md`}
                     onClick={() => navigate("/profile/edit")}
                   >
                     <UserIcon className="h-5 w-5 mr-2" />
