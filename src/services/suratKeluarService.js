@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/surat-keluar'; 
+const API_URL = '/api_s/surat-keluar'; 
 
 export const fetchSuratKeluar = async () => {
     try {

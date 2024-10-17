@@ -53,32 +53,32 @@ const LacakBerkas = () => {
           status: pelayananData.status,
           catatan: pelayananData.catatan,
         });
-      }  else {
-            resetFields();
-            alert("Data pelayanan tidak ditemukan");
-            return; // Keluar jika tidak ada data pelayanan
-          }
+      } else {
+        resetFields();
+        alert("Data pelayanan tidak ditemukan");
+        return; // Keluar jika tidak ada data pelayanan
+      }
 
-        if (arsipData) {
-          setArsipLayanan({
-            arsip_masuk: arsipData.arsipMasuk || "",
-            arsip_keluar: arsipData.arsipKeluar || "",
-          });
-          console.log("Arsip masuk dan keluar:", {
-            arsip_masuk: arsipData.arsipMasuk || "",
-            arsip_keluar: arsipData.arsipKeluar || "",
-          });
-        } else {
-          console.warn(
-            "Data arsip tidak ditemukan untuk nomor registrasi:",
-            no_reg
-          );
-          setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
-        }
-    //   } else {
-    //     resetFields();
-    //     alert("Data tidak ditemukan");
-    //   }
+      if (arsipData) {
+        setArsipLayanan({
+          arsip_masuk: arsipData.arsipMasuk || "",
+          arsip_keluar: arsipData.arsipKeluar || "",
+        });
+        console.log("Arsip masuk dan keluar:", {
+          arsip_masuk: arsipData.arsipMasuk || "",
+          arsip_keluar: arsipData.arsipKeluar || "",
+        });
+      } else {
+        console.warn(
+          "Data arsip tidak ditemukan untuk nomor registrasi:",
+          no_reg
+        );
+        setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
+      }
+      //   } else {
+      //     resetFields();
+      //     alert("Data tidak ditemukan");
+      //   }
     } catch (error) {
       console.error("Error fetching data: ", error);
       alert("Terjadi kesalahan saat mengambil data");

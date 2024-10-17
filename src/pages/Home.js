@@ -150,9 +150,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
 
         {/* Daftar Layanan */}
         <div id="layanan" className="mt-8">
-          <h1 className="text-3xl font-semibold text-center">
-            Daftar Layanan PTSP MIN 1 SLEMAN
-          </h1>
+          <h1 className="text-3xl font-semibold text-center">Daftar Layanan PTSP MIN 1 SLEMAN</h1>
           {daftarLayanan.length > 0 ? (
             daftarLayanan.map((item) => (
               <div key={item.id} className="mt-5">

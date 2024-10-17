@@ -6,6 +6,7 @@ import {
   createDaftarPelayanan,
   updateDaftarPelayanan,
   deleteDaftarPelayanan,
+  previewPdf
 } from "../../services/daftarPelayananService";
 import "../../App.css";
 import axios from 'axios';
@@ -17,12 +18,28 @@ const DaftarPelayanan = () => {
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarPelayanan, setCurrentDaftarPelayanan] = useState(null);
+  const [activeTab, setActiveTab] = useState('all');
+  const [dataPelayanan, setDataPelayanan] = useState([]); // Untuk menyimpan data pelayanan
+  const [countAll, setCountAll] = useState(0);
+  const [countBaru, setCountBaru] = useState(0);
+  const [countProses, setCountProses] = useState(0);
+  const [countSelesai, setCountSelesai] = useState(0);
+  const [countAmbil, setCountAmbil] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Pelayanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Daftar Pelayanan`;
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setCountAll(dataPelayanan.length);
+    setCountBaru(dataPelayanan.filter(item => item.status === 'baru').length);
+    setCountProses(dataPelayanan.filter(item => item.status === 'proses').length);
+    setCountSelesai(dataPelayanan.filter(item => item.status === 'selesai').length);
+    setCountAmbil(dataPelayanan.filter(item => item.status === 'ambil').length);
+  }, [dataPelayanan]); // Hitung kembali ketika dataPelayanan berubah
 
   const fetchData = async () => {
     try {
@@ -45,6 +62,10 @@ const DaftarPelayanan = () => {
     setDataDaftarPelayanan(filteredData);
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   const handleDelete = async (id) => {
     if (window.confirm("Yakin mau dihapus?")) {
       try {
@@ -64,31 +85,55 @@ const DaftarPelayanan = () => {
     navigate('/create-daftar-pelayanan');
   };
 
-  const handleDocument = (id) => {
-    console.log(`Menampilkan dokumen untuk item dengan id ${id}`);
-    // 
+  const handleDocument = async (id) => {
+    try {
+      const data = await previewPdf(id);
+  
+      if (data && data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        console.error('Gagal memuat dokumen');
+      }
+    } catch (error) {
+      console.error('Terjadi kesalahan saat membuka dokumen', error);
+    }
   };
   
   const handleDownload = async (id) => {
     try {
-      const response = await axios.get(`${'http://localhost:3000/api_s/layanan'}/${id}/download`, {
-        responseType: 'blob', 
-      });
+      const data = await previewPdf(id);
+      
+      if (data && data.url) {
+        const response = await fetch(data.url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/pdf',
+          },
+        });
   
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+        if (!response.ok) {
+          throw new Error('Gagal mendownload file');
+        }
   
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `file_${id}.pdf`); 
-      document.body.appendChild(link);
-      link.click();
+        const blob = await response.blob();
   
-      link.parentNode.removeChild(link);
+        const url = window.URL.createObjectURL(blob);
+  
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `file_${id}.pdf`); 
+  
+        document.body.appendChild(link);
+        link.click();
+  
+        link.parentNode.removeChild(link);
+      } else {
+        console.error('URL dokumen tidak ditemukan');
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
     }
-  };
-
+  };  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,7 +182,6 @@ const DaftarPelayanan = () => {
         <Header />
         <div>
           <div className="texttitle">Daftar Pelayanan</div>
-
           {message && (
             <div
               className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -158,7 +202,6 @@ const DaftarPelayanan = () => {
       placeholder="Search..."
       required
     />
-
               <button
                 type="submit"
                 className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
@@ -173,10 +216,105 @@ const DaftarPelayanan = () => {
             </button>
             </form>
           </div>
-
           <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div className="flex mx-auto max-w-7xl sm:px-6 lg:px-8 -mb-2">
+          <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist" style={{ listStyle: 'none' }}>
+  <li className="mb-2 me-14 relative group" role="presentation"> 
+    <button
+      className={`inline-block p-2 border-b-2 w-16 rounded-t-lg ${activeTab === 'all' ? 'border-green-900 text-black-600' : ''}`}
+      id="all-tab"
+      onClick={() => handleTabChange('all')}
+      type="button"
+      role="tab"
+      aria-controls="all"
+      aria-selected={activeTab === 'all'}
+    >
+      <i className="fas fa-list mr-2"></i>
+      <span className="ml-2 text-[16px]">{countAll}</span>
+    </button>
+    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+      Semua
+    </span>
+  </li>
+  <li className="mb-8 me-14 relative group" role="presentation"> 
+    <button
+ className={`inline-block p-2 border-b-2 w-16 rounded-t-lg ${activeTab === 'accept' ? 'border-green-900 text-blue-600' : ''}`}
+      id="accept-tab"
+      onClick={() => handleTabChange('accept')}
+      type="button"
+      role="tab"
+      aria-controls="accept"
+      aria-selected={activeTab === 'accept'}
+    >
+      <i className="fas fa-file text-green-600 mr-2"></i>
+      <span className="ml-2 text-[16px]">{countBaru}</span>
+    </button>
+    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+      Baru
+    </span>
+  </li>
+  <li className="mb-20 me-14 relative group" role="presentation">
+    <button
+ className={`inline-block p-2 border-b-2 w-16 rounded-t-lg ${activeTab === 'verify' ? 'border-green-900 text-blue-600' : ''}`}
+      id="verify-tab"
+      onClick={() => handleTabChange('verify')}
+      type="button"
+      role="tab"
+      aria-controls="verify"
+      aria-selected={activeTab === 'verify'}
+    >
+      <i className="fas fa-check-circle text-blue-600 mr-2"></i>
+      <span className="ml-2 text-[16px]">{countProses}</span>
+    </button>
+    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+      Proses
+    </span>
+  </li>
+  <li className="mb-20 me-14 relative group" role="presentation"> 
+    <button
+ className={`inline-block p-2 border-b-2 w-16 rounded-t-lg ${activeTab === 'notverify' ? 'border-green-900 text-blue-600' : ''}`}
+      id="notverify-tab"
+      onClick={() => handleTabChange('notverify')}
+      type="button"
+      role="tab"
+      aria-controls="notverify"
+      aria-selected={activeTab === 'notverify'}
+    >
+      <i className="fas fa-clock text-red-600 mr-2"></i>
+      <span className="ml-2 text-[16px]">{countSelesai}</span>
+    </button>
+    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+      Selesai
+    </span>
+  </li>
+  <li className="mb-20 me-14 relative group" role="presentation"> 
+    <button
+ className={`inline-block p-2 border-b-2 w-16 rounded-t-lg ${activeTab === 'pass' ? 'border-green-900 text-blue-600' : ''}`}
+      id="pass-tab"
+      onClick={() => handleTabChange('pass')}
+      type="button"
+      role="tab"
+      aria-controls="pass"
+      aria-selected={activeTab === 'pass'}
+    >
+      <i className="fas fa-user-check text-yellow-500 mr-2"></i>
+      <span className="ml-2 text-[16px]">{countAmbil}</span>
+    </button>
+    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+      Ambil
+    </span>
+  </li>
+</ul>
+      <div id="default-tab-content" className="mt-4">
+        {activeTab === 'all' && <div></div>}
+        {activeTab === 'accept' && <div></div>}
+        {activeTab === 'verify' && <div></div>}
+        {activeTab === 'notverify' && <div></div>}
+        {activeTab === 'pass' && <div></div>}
+      </div>
+    </div>
                 <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
@@ -199,8 +337,38 @@ const DaftarPelayanan = () => {
                               <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.nama_pelayanan}</td>
                               <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.perihal}</td>
                               <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.kelengkapan}</td>
-                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.status}</td>
-                              <td className="text-center">
+                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+  {(() => {
+    if (item.status === 'baru') {
+      return (
+        <span className="flex items-center">
+          <i className="fas fa-plus-circle text-green-500" style={{ fontSize: '0.4rem' }}></i> Baru
+        </span>
+      );
+    } else if (item.status === 'diproses') {
+      return (
+        <span className="flex items-center">
+          <i className="fas fa-cog text-yellow-500 animate-spin" style={{ fontSize: '0.4rem' }}></i> Diproses
+        </span>
+      );
+    } else if (item.status === 'selesai') {
+      return (
+        <span className="flex items-center">
+          <i className="fas fa-check-circle text-blue-500" style={{ fontSize: '0.4rem' }}></i> Selesai
+        </span>
+      );
+    } else if (item.status === 'diambil') {
+      return (
+        <span className="flex items-center">
+          <i className="fas fa-box-open text-red-500" style={{ fontSize: '0.4rem' }}></i> Diambil
+        </span>
+      );
+    } else {
+      return <span>{item.status}</span>; 
+    }
+  })()}
+</td>
+  <td className="text-center">
   <div className="flex justify-center space-x-2">
   <div className="flex justify-center space-x-2">
   <button

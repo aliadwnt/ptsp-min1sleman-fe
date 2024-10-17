@@ -33,11 +33,7 @@ const DashboardAdmin = () => {
                 </div>
 
                 <div className="py-2 space-y-2 sm:py-8 sm:space-y-8" style={{ width: '100%' }}>
-                    <AppCard title="Welcome to MyApp" description={`You are logged in as ${"User Name"}.`} />
-                    {/* Impersonation card if user is impersonating */}
-                    <AppCard title="Status" description="You are currently on impersonation mode." />
-                    {/* Status message from session */}
-                    <AppCard title="Status" description={"Session Status Message"} />
+                    <AppCard title="Welcome to PTSP MIN 1 SLEMAN" description={`You are logged in as User Name.`} />
                 </div>
             </div>
         </div>

@@ -33,7 +33,7 @@ const LoginForm = () => {
             <Navbar />
     <div className="login-form-ptsp">
       <h2 className="login-heading">LOGIN</h2>
-      <h5 className="login-title">PTSP MAN 1 Yogyakarta</h5>
+      <h5 className="login-title">PTSP MIN 1 SLEMAN</h5>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleLogin}>
         <div className="form-group-ptsp">

@@ -23,7 +23,7 @@ const DaftarLayanan = () => {
   const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
 
   useEffect(() => {
-    document.title = "PTSP MAN 1 YOGYAKARTA - Daftar Layanan";
+    document.title = "PTSP MIN 1 SLEMAN - Daftar Layanan";
     loadData();
   }, []);
 

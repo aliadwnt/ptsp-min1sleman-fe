@@ -17,7 +17,7 @@ const OutputLayanan = () => {
   const [currentOutputLayanan, setCurrentOutputLayanan] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Output Layanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Output Layanan`;
     fetchData();
   }, []);
 

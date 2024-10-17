@@ -8,7 +8,7 @@ const LanguageForm = ({ supportedLanguages = {}, onSubmit, successMessage, error
     const [statusMessage, setStatusMessage] = useState('');
 
     useEffect(() => {
-        document.title = `PTSP MAN 1 YOGYAKARTA - Pengaturan`;
+        document.title = `PTSP MIN 1 SLEMAN - Pengaturan`;
     }, []);
 
     const handleSubmit = async (event) => {

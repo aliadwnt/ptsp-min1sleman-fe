@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api_s/upload";
+const API_URL = "/api_s/upload";
 
 export const uploadSingle = async (file) => {
   try {
@@ -14,7 +14,7 @@ export const uploadSingle = async (file) => {
     });
 
     console.log("File uploaded successfully:", response.data);
-    
+
     return response.data.data.Location; 
   } catch (error) {
     console.error("Failed to upload file:", error);

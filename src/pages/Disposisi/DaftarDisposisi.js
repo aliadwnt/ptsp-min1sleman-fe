@@ -18,7 +18,7 @@ const DaftarDisposisi = () => {
   const [currentDaftarDisposisi, setCurrentDaftarDisposisi] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Disposisi`;
+    document.title = `PTSP MIN 1 SLEMAN - Daftar Disposisi`;
     fetchData();
   }, []);
 

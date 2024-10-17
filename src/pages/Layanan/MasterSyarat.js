@@ -17,7 +17,7 @@ const MasterSyarat = () => {
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Master Syarat Layanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Master Syarat Layanan`;
     fetchData();
   }, []);
 

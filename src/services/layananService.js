@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api_s/layanan'; 
+const API_URL = '/api_s/layanan'; 
 
 export const createDaftarPelayanan = async (DaftarPelayanan) => {
     try {
-        const response = await axios.post(API_URL, DaftarPelayanan, {
+        const response = await axios.post(`${API_URL}/create-layanan`, DaftarPelayanan, {
             headers: {
                 'Content-Type': 'application/json',
             },

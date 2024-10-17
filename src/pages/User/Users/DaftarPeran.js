@@ -17,7 +17,7 @@ const DaftarPeran = () => {
   const [currentDaftarPeran, setCurrentDaftarPeran] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Daftar Peran`;
+    document.title = `PTSP MIN 1 SLEMAN - Daftar Peran`;
     fetchData();
   }, []);
 

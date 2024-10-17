@@ -56,6 +56,25 @@ const Layanan = () => {
     }
   };
 
+function copyToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    const messageElement = document.getElementById("copyMessage");
+    messageElement.textContent = "Nomor Registrasi Berhasil disalin!";
+    messageElement.style.display = "block";
+
+    setTimeout(() => {
+        messageElement.style.display = "none";
+    }, 2000);
+}
+
+window.copyToClipboard = copyToClipboard;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -65,7 +84,6 @@ const Layanan = () => {
     try {
       let uploadedFileUrl = "";
 
-      // Upload file jika ada file yang dipilih
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
@@ -80,12 +98,44 @@ const Layanan = () => {
 
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
+
+        const copyToClipboard = (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+                MySwal.fire({
+                    title: "Disalin!",
+                    text: "Nomor Registrasi telah disalin ke clipboard.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                });
+            }).catch((err) => {
+                MySwal.fire({
+                    title: "Gagal!",
+                    text: "Tidak dapat menyalin nomor registrasi.",
+                    icon: "error",
+                    confirmButtonText: "OK",
+                });
+            });
+        };
+    
         MySwal.fire({
           title: "Layanan Berhasil Diproses!",
-          text: `Nomor Registrasi anda : ${generatedNoReg}`,
+          html: `
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                <span style="font-family: 'Poppins', sans-serif;">
+                    Nomor Registrasi anda: ${generatedNoReg}
+                </span>
+                <button 
+                    style="margin-top: 10px; border: none; background: none; cursor: pointer;"
+                    onclick="copyToClipboard('${generatedNoReg}')"
+                >
+                    <i class="fas fa-copy"></i>
+                </button>
+                <span id="copyMessage" style="margin-top: 5px; color: green; display: none;"></span>
+            </div>
+          `,
           icon: "success",
           confirmButtonText: "OK",
-        });
+      });          
       } else {
         console.error(
           "Nomor registrasi tidak ditemukan dalam respons:",
@@ -94,7 +144,6 @@ const Layanan = () => {
         setError("Nomor registrasi tidak ditemukan.");
       }
 
-      // Reset form setelah data berhasil disimpan
       setFormData({
         no_reg: "",
         nama_pelayanan: "",

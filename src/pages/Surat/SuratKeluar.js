@@ -17,7 +17,7 @@ const SuratKeluar = () => {
   const [currentSuratKeluar, setCurrentSuratKeluar] = useState(null);
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Surat Keluar`;
+    document.title = `PTSP MIN 1 SLEMAN - Surat Keluar`;
     fetchData();
   }, []);
 
