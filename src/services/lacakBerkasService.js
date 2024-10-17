@@ -8,7 +8,7 @@ export const fetchLacakBerkas = async (no_reg) => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/${no_reg}`);
+        const response = await axios.get(`${API_URL}/?no_reg=${no_reg}`);
         return response.data; 
     } catch (error) {
         console.error('Error fetching lacak berkas:', error);
@@ -22,7 +22,7 @@ export const fetchLoadArsip = async (no_reg) => {
     }
 
     try {
-        const response = await axios.get(`${API_URL}/load-arsip/?no_reg=${no_reg}`);
+        const response = await axios.get(`${API_URL}/load-arsip/${no_reg}`);
         console.log('Fetched arsip:', response.data);
         return response.data;
     } catch (error) {

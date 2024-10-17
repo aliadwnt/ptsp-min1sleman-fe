@@ -25,3 +25,17 @@ export const fetchLacakPermohonanById = async (id) => {
         throw error; 
     }
 };
+
+export const handleSearch = async (no_reg) => {
+    try {
+        const response = await axios.get(`${API_URL}?no_reg=${no_reg}`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        console.error("Error fetching search results:", error);
+        throw error; 
+    }
+};
