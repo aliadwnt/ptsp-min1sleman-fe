@@ -13,10 +13,12 @@ export const fetchArsipLayanan = async () => {
 };
 
 export const saveArsipMasuk = async (arsipLayanan) => {
+    const token = localStorage.getItem("token");
     try {
         const response = await axios.post(`${API_URL}/arsip-masuk`, arsipLayanan, {
             headers: {
                 'Content-Type': arsipLayanan instanceof FormData ? 'multipart/form-data' : 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
         console.log('Created arsip layanan:', response.data);
@@ -28,10 +30,12 @@ export const saveArsipMasuk = async (arsipLayanan) => {
 };
 
 export const saveArsipKeluar = async (arsipLayanan) => {
+    const token = localStorage.getItem("token");
     try {
         const response = await axios.post(`${API_URL}/arsip-keluar`, arsipLayanan, {
             headers: {
                 'Content-Type': arsipLayanan instanceof FormData ? 'multipart/form-data' : 'application/json',
+                Authorization: `Bearer ${token}`,
             },
         });
         console.log('Created arsip layanan:', response.data);
