@@ -53,7 +53,6 @@ const UserProfileMenu = () => {
       try {
         const data = await fetchNotification();
         if (data.success) {
-          // Pengecekan apakah notifications adalah array
           if (Array.isArray(data.notifications)) {
             setNotifications(data.notifications); // Simpan notifikasi ke state
           } else {

@@ -5,8 +5,6 @@ import { createDaftarPelayanan } from "../services/layananService";
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadSingle } from "../services/uploadService";
 import { addNotification } from "../services/notificationService"; 
-import { exportpdf } from "../services/layananService"; 
-import PdfTemplate from "./pdf/TemplatePelayanan";
 import Swal from "sweetalert2"; // SweetAlert untuk notifikasi
 import withReactContent from "sweetalert2-react-content";
 import "../App"; // CSS untuk tampilan
