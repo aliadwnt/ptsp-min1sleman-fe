@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import { createDaftarPelayanan } from "../services/layananService"; // Import fungsi create dari service
+import { createDaftarPelayanan } from "../services/layananService"; 
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadSingle } from "../services/uploadService";
+import { addNotification } from "../services/notificationService"; 
+import { exportpdf } from "../services/layananService"; 
+import PdfTemplate from "./pdf/TemplatePelayanan";
 import Swal from "sweetalert2"; // SweetAlert untuk notifikasi
 import withReactContent from "sweetalert2-react-content";
 import "../App"; // CSS untuk tampilan
@@ -47,6 +50,7 @@ const Layanan = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "filename") {
@@ -56,7 +60,7 @@ const Layanan = () => {
     }
   };
 
-function copyToClipboard(text) {
+  function copyToClipboard(text) {
     const textarea = document.createElement("textarea");
     textarea.value = text;
     document.body.appendChild(textarea);
@@ -69,73 +73,85 @@ function copyToClipboard(text) {
     messageElement.style.display = "block";
 
     setTimeout(() => {
-        messageElement.style.display = "none";
+      messageElement.style.display = "none";
     }, 2000);
-}
+  }
 
-window.copyToClipboard = copyToClipboard;
-
+  window.copyToClipboard = copyToClipboard;
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
     setLoading(true);
-
+  
     try {
       let uploadedFileUrl = "";
-
+  
+      // Upload file jika ada
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
-
+  
       const dataToSend = {
         ...formData,
         filename: uploadedFileUrl,
       };
-
+  
       const responseData = await createDaftarPelayanan(dataToSend);
       console.log("Response Data:", responseData);
-
+  
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
-
+  
+        // Tambahkan notifikasi setelah berhasil membuat layanan
+        try {
+          await addNotification({
+            message: `Layanan baru telah dikirim dengan nomor registrasi: ${generatedNoReg}`,
+            no_surat: formData.no_surat, // Ambil no_surat dari formData
+            perihal: formData.perihal, // Ambil perihal dari formData
+          });
+        } catch (notificationError) {
+          console.error("Gagal menambahkan notifikasi:", notificationError);
+          // Anda bisa menambahkan pesan error di sini jika ingin memberitahu pengguna
+        }
+  
         const copyToClipboard = (text) => {
-            navigator.clipboard.writeText(text).then(() => {
-                MySwal.fire({
-                    title: "Disalin!",
-                    text: "Nomor Registrasi telah disalin ke clipboard.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                });
-            }).catch((err) => {
-                MySwal.fire({
-                    title: "Gagal!",
-                    text: "Tidak dapat menyalin nomor registrasi.",
-                    icon: "error",
-                    confirmButtonText: "OK",
-                });
+          navigator.clipboard.writeText(text).then(() => {
+            MySwal.fire({
+              title: "Disalin!",
+              text: "Nomor Registrasi telah disalin ke clipboard.",
+              icon: "success",
+              confirmButtonText: "OK",
             });
+          }).catch((err) => {
+            MySwal.fire({
+              title: "Gagal!",
+              text: "Tidak dapat menyalin nomor registrasi.",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          });
         };
-    
+  
         MySwal.fire({
           title: "Layanan Berhasil Diproses!",
           html: `
             <div style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-                <span style="font-family: 'Poppins', sans-serif;">
-                    Nomor Registrasi anda: ${generatedNoReg}
-                </span>
-                <button 
-                    style="margin-top: 10px; border: none; background: none; cursor: pointer;"
-                    onclick="copyToClipboard('${generatedNoReg}')"
-                >
-                    <i class="fas fa-copy"></i>
-                </button>
-                <span id="copyMessage" style="margin-top: 5px; color: green; display: none;"></span>
+              <span style="font-family: 'Poppins', sans-serif;">
+                Nomor Registrasi anda: ${generatedNoReg}
+              </span>
+              <button 
+                style="margin-top: 10px; border: none; background: none; cursor: pointer;"
+                onclick="copyToClipboard('${generatedNoReg}')"
+              >
+                <i class="fas fa-copy"></i>
+              </button>
+              <span id="copyMessage" style="margin-top: 5px; color: green; display: none;"></span>
             </div>
           `,
           icon: "success",
           confirmButtonText: "OK",
-      });          
+        });
       } else {
         console.error(
           "Nomor registrasi tidak ditemukan dalam respons:",
@@ -143,7 +159,7 @@ window.copyToClipboard = copyToClipboard;
         );
         setError("Nomor registrasi tidak ditemukan.");
       }
-
+  
       setFormData({
         no_reg: "",
         nama_pelayanan: "",
@@ -157,7 +173,7 @@ window.copyToClipboard = copyToClipboard;
         catatan: "",
         filename: null,
       });
-
+  
       setSuccessMessage("Data berhasil disimpan!");
     } catch (error) {
       setError("Gagal menyimpan data: " + error.message);
@@ -165,6 +181,9 @@ window.copyToClipboard = copyToClipboard;
       setLoading(false);
     }
   };
+
+  
+  
 
   return (
     <div>
