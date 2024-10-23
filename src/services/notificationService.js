@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const API_URL = "/api_s/notification";
 
 export const fetchNotification = async () => {
