@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/sidebar";
 import Header from "../../../components/header";
-import { fetchDaftarPengguna, createDaftarPengguna } from "../../../services/daftarPenggunaService";
+import {
+  fetchDaftarPengguna,
+  createDaftarPengguna,
+} from "../../../services/daftarPenggunaService";
 import "../../../App.css";
 
 const DaftarPengguna = () => {
@@ -50,20 +53,19 @@ const DaftarPengguna = () => {
 
   return (
     <div className="bodyadmin flex relative">
-    {/* Sidebar */}
-    <div
-      className={`fixed inset-y-0 left-0 transform ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
-    >
-      <Sidebar toggleSidebar={toggleSidebar} />{" "}
-    </div>
-    <div
-      className={`flex-1 transition-all duration-300 ease-in-out ${
-        isSidebarOpen ? "lg:ml-64" : "ml-0"
-      } pl-4 lg:pl-64`}
-    >
-      <Header />
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+      </div>
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
+        <Header />
         <div>
           <div className="texttitle">Daftar Pengguna</div>
 
@@ -113,10 +115,9 @@ const DaftarPengguna = () => {
                             {item.name}
                           </td>
                           <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.is_admin === 1 ? 'ADMIN' : 'USER'}
+                            {item.is_admin === 1 ? "ADMIN" : "USER"}
                           </td>
-                          <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
-                          </td>
+                          <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1"></td>
                         </tr>
                       ))
                     ) : (
