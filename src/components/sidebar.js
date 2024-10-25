@@ -206,9 +206,6 @@ const Sidebar = (isOpen) => {
           </div>
         </div>
       </aside>
-
-      {/* Content Area */}
-      <div className="flex-grow p-4">{/* Your content goes here */}</div>
     </div>
   );
 };

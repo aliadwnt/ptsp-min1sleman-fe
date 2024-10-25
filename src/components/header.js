@@ -15,7 +15,7 @@ import {
 const UserProfileMenu = () => {
   const [formData, setFormData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [notifications, setNotifications] = useState([]);
@@ -55,7 +55,7 @@ const UserProfileMenu = () => {
         const data = await fetchNotification();
         if (data.success) {
           if (Array.isArray(data.notifications)) {
-            setNotifications(data.notifications); // Simpan notifikasi ke state
+            setNotifications(data.notifications);
           } else {
             console.error("Notifications is not an array.");
           }
@@ -105,14 +105,12 @@ const UserProfileMenu = () => {
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
         <Sidebar toggleSidebar={toggleSidebar} />{" "}
-        {/* Mengirimkan fungsi toggle ke Sidebar */}
       </div>
-      {/* Tombol untuk membuka sidebar di mobile, ditempatkan di atas header */}
       <button
         aria-controls="sidebar"
         type="button"
         onClick={toggleSidebar}
-        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-white-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
