@@ -109,8 +109,30 @@
 
 .jumbotron {
   position: relative;
-  padding: 1rem;
+  padding: 1rem; /* Padding default */
 }
+
+/* Responsif untuk layar lebih kecil dari 768px (mobile) */
+@media (max-width: 768px) {
+  .jumbotron {
+    padding: 0.5rem; /* Padding lebih kecil untuk mobile */
+  }
+}
+
+/* Responsif untuk layar antara 768px dan 1024px (tablet) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .jumbotron {
+    padding: 1rem; /* Padding default atau bisa disesuaikan */
+  }
+}
+
+/* Responsif untuk layar lebih besar dari 1024px (desktop) */
+@media (min-width: 1024px) {
+  .jumbotron {
+    padding: 1.5rem; /* Padding lebih besar untuk desktop */
+  }
+}
+
 
 .active {
   font-weight: bold;
@@ -154,12 +176,14 @@
 }
 
 .main {
-  /* padding: 2rem; */
+  padding: 3rem;
   font-family: 'Poppins', sans-serif;
-  margin-left: 60px;
+  /* margin-left: 60px;
   margin-right: 190px;
-  margin-top: 20px;
+  margin-top: 20px; */
 }
+
+
 .main1 {
   /* padding: 2rem; */
   font-family: 'Poppins', sans-serif;
@@ -220,15 +244,31 @@ html, body {
   align-items: center;
   gap: 1rem;
 }
-
 .ptsp,
 .man-1 {
   color: #1875ff;
   font-family: "Poppins", sans-serif;
-  font-size: 50px;
-  font-weight: 600;
-  -webkit-text-stroke: 3px #ffffff;
+  font-weight: auto; 
+  -webkit-text-stroke: 2px #ffffff;
 }
+
+/* Media Queries untuk Responsivitas */
+@media (max-width: 640px) {
+  .ptsp,
+  .man-1 {
+    font-size: 30px; 
+    
+  }
+}
+
+@media (min-width: 641px) {
+  .ptsp,
+  .man-1 { 
+    font-size: 50px;
+  }
+}
+
+
 
 .ptsp {
   color: #ffffff;
@@ -245,6 +285,13 @@ html, body {
   font-size: 25px;
   font-weight: 400;
   margin-top: 1rem;
+}
+
+@media (max-width: 641px) {
+.pelayanan-terpadu-satu-pintu{
+  padding-top: 0%;
+    font-size: 10px; /* Ukuran font untuk tablet dan desktop */
+  }
 }
 
 .box {
@@ -327,7 +374,7 @@ html, body {
   }
 }
 .mb4 {
-  text-align: left;
+  text-align: right;
 }
 @media (prefers-color-scheme: dark) {
     ::-webkit-scrollbar {
@@ -368,6 +415,16 @@ html, body {
   color: white;
   padding: 1rem; /* 4 units of padding */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Medium shadow */
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none; 
+  }
+
+  .nav-menu.open {
+    display: block; 
+  }
 }
 
 .sidebar-header {
@@ -726,4 +783,83 @@ button:hover {
 /* Border separator between items */
 .relative .absolute .border-t {
   border-top: 1px solid #f1f5f9;
+}
+
+
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px; /* Adjust the left position as needed */
+  width: 2px;
+  background-color: #ccc;
+}
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  position: relative;
+}
+.timeline-item::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 50%;
+  position: absolute;
+  left: 5px; /* Same left as the timeline line */
+  top: 0;
+  margin-top: 5px;
+}
+.timeline-content {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  margin-left: 30px; /* Spacing from the timeline line */
+}
+.timeline-content .time {
+  font-size: 12px;
+  color: #777;
+}
+.timeline-content .name {
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.timeline-content .position {
+  font-size: 12px;
+  color: #555;
+}
+.timeline-content .note {
+  font-size: 12px;
+  color: #333;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* App.css */
+
+.sidebar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  #sidebar-multi-level-sidebar {
+    display: none;
+  }
+  #sidebar-multi-level-sidebar.show {
+    display: block;
+  }
 }

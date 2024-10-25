@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
+import Sidebar from "../../../components/sidebar";
 import { createDaftarPelayanan } from "../../../services/daftarPelayananService";
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import { uploadSingle } from "../../../services/uploadService";
@@ -25,6 +26,7 @@ const Layanan = () => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,11 +80,24 @@ const Layanan = () => {
       setLoading(false);
     }
   };
-
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
-    <div>
-      <div className="bg-blue-600"></div>
-      <div className="BodyLayanan">
+    <div className="bodyadmin flex relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+      </div>
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
@@ -93,19 +108,17 @@ const Layanan = () => {
             <div className="text-green-600">{successMessage}</div>
           )}
           <form
-            className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
+            className="w-full mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
             onSubmit={handleSubmit}
           >
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="no_reg"
-                >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* NOMOR REGISTRASI */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   NOMOR REGISTRASI
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="no_reg"
                   type="text"
                   placeholder="Nomor Registrasi"
@@ -115,17 +128,16 @@ const Layanan = () => {
                   required
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="nama_pelayanan"
-                >
+
+              {/* Nama Layanan */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Nama Layanan
                 </label>
                 <select
-                  className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="nama_pelayanan"
-                  value={formData.nama_pelayanan} 
+                  value={formData.nama_pelayanan}
                   onChange={handleChange}
                   required
                 >
@@ -137,15 +149,14 @@ const Layanan = () => {
                   ))}
                 </select>
               </div>
-              <div className="w-full md-full px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="perihal"
-                >
+
+              {/* Perihal */}
+              <div className="md:col-span-2">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Perihal
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="perihal"
                   type="text"
                   placeholder="Perihal"
@@ -154,17 +165,14 @@ const Layanan = () => {
                   required
                 />
               </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="no_surat"
-                >
+
+              {/* No. Surat dan Tanggal */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   No. Surat Permohonan
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="no_surat"
                   type="text"
                   placeholder="Nomor Surat"
@@ -173,15 +181,12 @@ const Layanan = () => {
                   required
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="tgl"
-                >
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Tanggal Surat Permohonan
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="tgl"
                   type="date"
                   value={formData.tgl}
@@ -189,18 +194,14 @@ const Layanan = () => {
                   required
                 />
               </div>
-            </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="nama_pemohon"
-                >
+              {/* Nama Pemohon dan Nomor HP */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Nama Pemohon
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="nama_pemohon"
                   type="text"
                   placeholder="Nama Pemohon"
@@ -209,15 +210,12 @@ const Layanan = () => {
                   required
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="no_hp"
-                >
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Nomor Handphone
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="no_hp"
                   type="tel"
                   placeholder="Nomor HP"
@@ -226,18 +224,14 @@ const Layanan = () => {
                   required
                 />
               </div>
-            </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="alamat"
-                >
+              {/* Alamat dan Nama Pengirim */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Alamat
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="alamat"
                   type="text"
                   placeholder="Alamat"
@@ -246,15 +240,12 @@ const Layanan = () => {
                   required
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="nama_pengirim"
-                >
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Nama Pengirim
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="nama_pengirim"
                   type="text"
                   placeholder="Nama Pengirim"
@@ -263,42 +254,35 @@ const Layanan = () => {
                   required
                 />
               </div>
-            </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="catatan"
-                >
+              {/* Catatan dan Upload File */}
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Catatan
                 </label>
                 <textarea
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="catatan"
                   placeholder="Catatan"
                   value={formData.catatan}
                   onChange={handleChange}
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="filename"
-                >
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">
                   Upload File
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="filename"
                   type="file"
                   onChange={handleChange}
-                  // required
                 />
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            {/* Button */}
+            <div className="flex items-center justify-between mt-6">
               <button
                 className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
                   loading ? "opacity-50 cursor-not-allowed" : ""

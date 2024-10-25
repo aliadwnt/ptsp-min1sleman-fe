@@ -21,6 +21,7 @@ const DaftarLayanan = () => {
   const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Layanan";
@@ -28,7 +29,12 @@ const DaftarLayanan = () => {
   }, []);
 
   const loadData = async () => {
-    await Promise.all([fetchData(), fetchUnitOptions(), fetchJenisOptions(), fetchOutputOptions()]);
+    await Promise.all([
+      fetchData(),
+      fetchUnitOptions(),
+      fetchJenisOptions(),
+      fetchOutputOptions(),
+    ]);
   };
 
   const fetchData = async () => {
@@ -70,7 +76,9 @@ const DaftarLayanan = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     const filteredData = dataDaftarLayanan.filter((item) =>
-      String(item.name || "").toLowerCase().includes(searchTerm.toLowerCase())
+      String(item.name || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
     );
     setDataDaftarLayanan(filteredData);
   };
@@ -125,25 +133,44 @@ const DaftarLayanan = () => {
     setMessage(""); // Reset message when modal closes
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="flex">
-      <div className="w-64">
-        <Sidebar />
+    <div className="bodyadmin flex relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
       </div>
-      <div className="flex-1">
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <div className="bodyadmin">
           <div className="texttitle">Daftar Layanan</div>
 
           {message && (
-            <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+            <div
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+              role="alert"
+            >
               <span className="font-medium">Sukses: </span>
               {message}
             </div>
           )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-grow justify-center"
+            >
               <input
                 type="search"
                 value={searchTerm}
@@ -175,37 +202,71 @@ const DaftarLayanan = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Pengolah</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Output Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Layanan</th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Unit Pengolah
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Nama Layanan
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Jenis Layanan
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Output Layanan
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Durasi Layanan
+                        </th>
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Aksi
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {dataDaftarLayanan.length > 0 ? (
                         dataDaftarLayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-3 text-xs font-medium text-center text-gray-900">{index + 1}</td>
-                            <td className="px-6 py-3 text-xs text-center text-gray-900">{item.unit}</td>
-                            <td className="px-6 py-3 text-xs text-center text-gray-900">{item.name}</td>
-                            <td className="px-6 py-3 text-xs text-center text-gray-900">{item.jenis}</td>
-                            <td className="px-6 py-3 text-xs text-center text-gray-900">{item.output}</td>
-                            <td className="px-6 py-3 text-xs text-center text-gray-900">{item.duration}</td>
+                            <td className="px-1 py-3 text-xs font-medium text-center text-gray-900">
+                              {index + 1}
+                            </td>
+                            <td className="px-6 py-3 text-xs text-center text-gray-900">
+                              {item.unit}
+                            </td>
+                            <td className="px-6 py-3 text-xs text-center text-gray-900">
+                              {item.name}
+                            </td>
+                            <td className="px-6 py-3 text-xs text-center text-gray-900">
+                              {item.jenis}
+                            </td>
+                            <td className="px-6 py-3 text-xs text-center text-gray-900">
+                              {item.output}
+                            </td>
+                            <td className="px-6 py-3 text-xs text-center text-gray-900">
+                              {item.duration}
+                            </td>
                             <td className="px-6 py-3 text-xs text-center text-gray-900">
                               <button
                                 onClick={() => handleEdit(item)}
                                 className="focus:outline-none"
-                                style={{ background: "none", border: "none", padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-edit text-green-600"></i>
                               </button>
                               <button
                                 onClick={() => handleDelete(item.id)}
                                 className="focus:outline-none"
-                                style={{ background: "none", border: "none", padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-trash-alt text-red-600"></i>
                               </button>
@@ -214,7 +275,12 @@ const DaftarLayanan = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan="7" className="text-center py-4 text-gray-500">Tidak ada data ditemukan</td>
+                          <td
+                            colSpan="7"
+                            className="text-center py-4 text-gray-500"
+                          >
+                            Tidak ada data ditemukan
+                          </td>
                         </tr>
                       )}
                     </tbody>
@@ -226,14 +292,20 @@ const DaftarLayanan = () => {
 
           {modalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white rounded-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-lg font-bold">{currentDaftarLayanan ? "Edit" : "Tambah"} Layanan</h2>
+              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+                <h2 className="text-lg font-bold">
+                  {currentDaftarLayanan ? "Edit" : "Simpan"} Layanan
+                </h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Unit Pengolah</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Unit Pengolah
+                    </label>
                     <select
                       name="unit"
-                      defaultValue={currentDaftarLayanan ? currentDaftarLayanan.unit : ""}
+                      defaultValue={
+                        currentDaftarLayanan ? currentDaftarLayanan.unit : ""
+                      }
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
@@ -245,20 +317,28 @@ const DaftarLayanan = () => {
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Nama Layanan</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Nama Layanan
+                    </label>
                     <input
                       type="text"
                       name="name"
-                      defaultValue={currentDaftarLayanan ? currentDaftarLayanan.name : ""}
+                      defaultValue={
+                        currentDaftarLayanan ? currentDaftarLayanan.name : ""
+                      }
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Jenis Layanan</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Jenis Layanan
+                    </label>
                     <select
                       name="jenis"
-                      defaultValue={currentDaftarLayanan ? currentDaftarLayanan.jenis : ""}
+                      defaultValue={
+                        currentDaftarLayanan ? currentDaftarLayanan.jenis : ""
+                      }
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
@@ -270,10 +350,14 @@ const DaftarLayanan = () => {
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Output Layanan</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Output Layanan
+                    </label>
                     <select
                       name="output"
-                      defaultValue={currentDaftarLayanan ? currentDaftarLayanan.output : ""}
+                      defaultValue={
+                        currentDaftarLayanan ? currentDaftarLayanan.output : ""
+                      }
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
@@ -285,11 +369,17 @@ const DaftarLayanan = () => {
                     </select>
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">Durasi Layanan</label>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Durasi Layanan
+                    </label>
                     <input
                       type="text"
                       name="duration"
-                      defaultValue={currentDaftarLayanan ? currentDaftarLayanan.duration : ""}
+                      defaultValue={
+                        currentDaftarLayanan
+                          ? currentDaftarLayanan.duration
+                          : ""
+                      }
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     />
@@ -302,8 +392,11 @@ const DaftarLayanan = () => {
                     >
                       Batal
                     </button>
-                    <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-                      Simpan
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                    >
+                     Update
                     </button>
                   </div>
                 </form>

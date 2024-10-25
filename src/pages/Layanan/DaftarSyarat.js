@@ -5,7 +5,6 @@ import {
   searchDaftarSyarat,
   fetchDaftarSyarat,
   updateDaftarSyarat,
-  deleteDaftarSyarat,
   fetchDaftarSyaratById,
 } from "../../services/daftarSyaratService";
 import { fetchDaftarLayanan } from "../../services/daftarLayananService";
@@ -27,6 +26,7 @@ const DaftarSyarat = () => {
   const [currentDaftarSyarat, setCurrentDaftarSyarat] = useState(null);
   const [error, setError] = useState(null);
   const [syaratTerpilih, setSyaratTerpilih] = useState([]);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Syarat";
@@ -200,12 +200,26 @@ const DaftarSyarat = () => {
     setCurrentDaftarSyarat(null);
     setDaftarSyarat([]);
   };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="flex">
-      <div className="w-64">
-        <Sidebar />
+    <div className="bodyadmin flex relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
       </div>
-      <div className="flex-1">
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <div className="bodyadmin">
           <div className="texttitle">Daftar Syarat</div>
@@ -374,7 +388,7 @@ const DaftarSyarat = () => {
                   {/* Modal */}
                   {modalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
-                      <div className="bg-white rounded-lg shadow-lg p-6 w-50">
+                      <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
                         <form onSubmit={handleSubmit}>
                           <label
                             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -455,7 +469,7 @@ const DaftarSyarat = () => {
                               </select>
                               <button
                                 type="button"
-                                className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                className="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                 onClick={handleAddSyarat}
                               >
                                 Tambah
@@ -532,9 +546,9 @@ const DaftarSyarat = () => {
                               </button>
                               <button
                                 type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded"
+                                className="bg-green-600 text-white px-4 py-2 rounded"
                               >
-                                Save
+                                Simpan
                                 {/* {currentJenisLayanan ? "Update" : "Tambah"} */}
                               </button>
                             </div>

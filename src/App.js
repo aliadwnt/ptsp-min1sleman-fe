@@ -20,6 +20,7 @@ import SuratKeluar from './pages/Surat/SuratKeluar';
 
 import MasterDisposisi from './pages/Disposisi/MasterDisposisi';
 import DaftarDisposisi from './pages/Disposisi/DaftarDisposisi';
+import DetailDisposisi from './pages/Disposisi/DetailDisposisi';
 
 import DaftarPengguna from './pages/User/Users/DaftarPengguna';
 import DaftarPeran from './pages/User/Users/DaftarPeran';
@@ -37,6 +38,12 @@ import EditProfile from './pages/User/Profile/Edit';
 
 import CreateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/CreateDaftarPelayanan'; 
 import UpdateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/UpdateDaftarPelayanan';
+
+import DaftarNotifikasi from './pages/User/Notifications/DaftarNotifikasi';
+
+
+
+
 
 function App() {
   return (
@@ -62,10 +69,13 @@ function App() {
 
         <Route path="/disposisi/master-disposisi" element={<MasterDisposisi />} />
         <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />} />
+        <Route path="/disposisi/detail-disposisi/:no_reg" element={<DetailDisposisi />} />
 
         <Route path="/user/users" element={<DaftarPengguna />} />
         <Route path="/user/users/daftar-peran" element={<DaftarPeran />} />
         <Route path="/user/unit-pengolah" element={<UnitPengolah />} />
+
+        <Route path="/user/daftar-notifikasi" element={<DaftarNotifikasi />} />
 
         <Route path="/layanan/jenis-layanan" element={<JenisLayanan />} />
         <Route path="/layanan/daftar-layanan" element={<DaftarLayanan />} />
@@ -78,6 +88,7 @@ function App() {
 
         <Route path="/create-daftar-pelayanan" element={<CreateDaftarPelayanan />} />
         <Route path="/update-daftar-pelayanan/:id" element={<UpdateDaftarPelayanan />} />
+       
       </Routes>
     </Router>
   );

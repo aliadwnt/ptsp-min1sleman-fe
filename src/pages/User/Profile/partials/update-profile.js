@@ -15,6 +15,7 @@ function UpdateProfile() {
   const [saved, setSaved] = useState(false);
   const [nothingChanged, setNothingChanged] = useState(false);
   const [resent, setResent] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
@@ -25,9 +26,9 @@ function UpdateProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token"); 
+        const token = localStorage.getItem("token");
         if (token) {
-          const userId = JSON.parse(atob(token.split(".")[1])).userId; 
+          const userId = JSON.parse(atob(token.split(".")[1])).userId;
           const data = await getUserById(userId);
           setFormData({
             name: data.name,
@@ -76,16 +77,10 @@ function UpdateProfile() {
       }
     }
   };
-  // Resend email verification
-  // const handleResendVerification = async () => {
-  //     try {
-  //         await sendEmailVerification(); // Trigger email verification via service
-  //         setResent(true);
-  //     } catch (error) {
-  //         console.error("Error resending verification email:", error);
-  //         setResent(false); // Reset resent state if resend fails
-  //     }
-  // };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <div className="container mx-auto px-4 py-2">

@@ -7,6 +7,7 @@ import "../../../App.css";
 const DaftarPengguna = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
   const [message, setMessage] = useState("");
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pengguna`;
@@ -43,13 +44,26 @@ const DaftarPengguna = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <div className="bodyadmin flex overflow-x-auto">
-      <div className="w-64">
-        <Sidebar />
-      </div>
-      <div className="flex-1">
-        <Header />
+    <div className="bodyadmin flex relative">
+    {/* Sidebar */}
+    <div
+      className={`fixed inset-y-0 left-0 transform ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+    >
+      <Sidebar toggleSidebar={toggleSidebar} />{" "}
+    </div>
+    <div
+      className={`flex-1 transition-all duration-300 ease-in-out ${
+        isSidebarOpen ? "lg:ml-64" : "ml-0"
+      } pl-4 lg:pl-64`}
+    >
+      <Header />
         <div>
           <div className="texttitle">Daftar Pengguna</div>
 

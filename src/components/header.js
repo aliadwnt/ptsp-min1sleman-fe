@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../App.css";
+import Sidebar from "../components/sidebar";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
 import { fetchNotification } from "../services/notificationService";
 import {
@@ -22,7 +23,7 @@ const UserProfileMenu = () => {
     (notification) => !notification.isRead
   );
   const [showAllNotifications, setShowAllNotifications] = useState(false);
-
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -92,9 +93,37 @@ const UserProfileMenu = () => {
   };
 
   const isActive = (path) => (location.pathname === path ? "bg-green-400" : "");
-
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
     <header className="sticky top-0 bg-[#11ad00] w-full px-6 pt-8 pb-6 flex justify-between items-center text-white z-10">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        {/* Mengirimkan fungsi toggle ke Sidebar */}
+      </div>
+      {/* Tombol untuk membuka sidebar di mobile, ditempatkan di atas header */}
+      <button
+        aria-controls="sidebar"
+        type="button"
+        onClick={toggleSidebar}
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      >
+        <span className="sr-only">Open sidebar</span>
+        <svg
+          className="w-6 h-6"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z" />
+        </svg>
+      </button>
       <div className="textheader"></div>
       <div className="relative inline-block text-left">
         <div className="flex items-center space-x-3">
@@ -138,6 +167,8 @@ const UserProfileMenu = () => {
               </span>
             )}
           </button>
+
+          {/* Dropdown untuk User Profile */}
           <button
             onClick={toggleDropdown}
             className="inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition ease-in-out duration-200"
@@ -223,11 +254,11 @@ const UserProfileMenu = () => {
         {/* Modal for Notifications */}
         {isModalOpen && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50"
+            className="notifications origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out transform scale-95"
             onClick={toggleModal}
           >
             <div
-              className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
+              className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md "
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center">

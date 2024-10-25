@@ -7,9 +7,10 @@ import "../../../App.css";
 const Notifications = () => {
   const [Notifications, setNotifications] = useState([]);
   const [message] = useState("");
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetchData(); // Panggil fetchData saat komponen dimuat
+    fetchData(); 
   }, []);
 
   const fetchData = async () => {
@@ -21,13 +22,24 @@ const Notifications = () => {
       console.error("Error fetching notifications:", error);
     }
   };
-
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
   return (
-    <div className="bodyadmin flex">
-      <div className="w-64">
-        <Sidebar />
+    <div className="bodyadmin flex relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />{" "}
       </div>
-      <div className="flex-1">
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <div>
           <div className="texttitle">Daftar Notifikasi</div>
@@ -105,4 +117,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications; // Pastikan mengekspor dengan nama yang benar
+export default Notifications; 
