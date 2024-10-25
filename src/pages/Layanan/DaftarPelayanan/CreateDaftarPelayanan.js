@@ -296,7 +296,6 @@ const Layanan = () => {
           </form>
         </div>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };

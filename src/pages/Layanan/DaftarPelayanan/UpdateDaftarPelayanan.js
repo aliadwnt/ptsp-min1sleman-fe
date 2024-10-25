@@ -30,7 +30,7 @@ const LayananUpdate = () => {
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
-  const { id } = useParams(); 
+  const { id } = useParams();
 
   // Fetch data layanan berdasarkan ID
   const fetchLayanan = async () => {
@@ -378,8 +378,6 @@ const LayananUpdate = () => {
                   name="filename"
                   type="file"
                   onChange={handleChange}
-                  multiple
-                  // required
                 />
               </div>
             </div>
