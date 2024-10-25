@@ -7,7 +7,7 @@ import {
   fetchLacakBerkas,
   fetchLoadArsip,
 } from "../../services/lacakBerkasService";
-import { fetchDaftarDisposisi } from "../../services/daftarDisposisiService";
+// import { fetchDaftarDisposisi } from "../../services/daftarDisposisiService";
 import { fetchMasterDisposisi } from "../../services/masterDisposisiService";
 
 const DetailDisposisi = () => {

@@ -95,7 +95,6 @@ const DaftarDisposisi = () => {
     setCurrentDaftarDisposisi(null);
   };
   const handleDetail = (no_reg) => {
-    // Gunakan setCurrentDaftarDisposisi untuk memperbarui state
     setCurrentDaftarDisposisi(null);
     setModalOpen(true);
     navigate(`/disposisi/detail-disposisi/${no_reg}`);
