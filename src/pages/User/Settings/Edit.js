@@ -20,7 +20,6 @@ const LanguageForm = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSaving(true);
-
     try {
       await onSubmit(selectedLanguage);
       setStatusMessage(successMessage);
@@ -31,7 +30,7 @@ const LanguageForm = ({
     }
   };
 
-   const toggleSidebar = () => {
+  const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 

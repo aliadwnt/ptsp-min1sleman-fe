@@ -6,13 +6,13 @@ import UpdatePassword from "./partials/update-password";
 import DeleteAccount from "./partials/delete-account";
 import "../../../App.css";
 
-const DaftarPelayanan = ({}) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
+const Profile = ({}) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Edit Profile`;
   }, []);
+  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -47,4 +47,4 @@ const DaftarPelayanan = ({}) => {
   );
 };
 
-export default DaftarPelayanan;
+export default Profile;

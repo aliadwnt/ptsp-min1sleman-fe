@@ -15,14 +15,12 @@ function UpdateProfile() {
   const [saved, setSaved] = useState(false);
   const [nothingChanged, setNothingChanged] = useState(false);
   const [resent, setResent] = useState(false);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
     // password: "",
   });
 
-  // Fetch user data when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -76,10 +74,6 @@ function UpdateProfile() {
         setSaved(false);
       }
     }
-  };
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
   };
 
   return (
