@@ -74,8 +74,8 @@ const MasterSyarat = () => {
         await createMasterSyarat(MasterSyarat);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); 
-      setModalOpen(false); 
+      fetchData();
+      setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -225,7 +225,7 @@ const MasterSyarat = () => {
           {/* Modal */}
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
                 <h2 className="text-xl font-semibold mb-4">
                   {currentMasterSyarat
                     ? "Edit Master Syarat"

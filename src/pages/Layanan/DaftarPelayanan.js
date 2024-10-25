@@ -462,7 +462,6 @@ const DaftarPelayanan = () => {
                                 <div className="flex justify-center space-x-2">
                                   <div className="flex justify-center space-x-2">
                                     <button
-                                      // onClick={() => handleDocument(item.id)}
                                       className="focus:outline-none"
                                       style={{
                                         background: "none",

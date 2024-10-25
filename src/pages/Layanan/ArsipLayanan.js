@@ -281,7 +281,7 @@ const ArsipLayanan = () => {
                                             `uploadMasuk-${item.id}`
                                           )
                                           .click()
-                                      } // Trigger input file
+                                      }
                                       className="bg-green-500 text-white py-1 px-2 rounded"
                                     >
                                       Upload

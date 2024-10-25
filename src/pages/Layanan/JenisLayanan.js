@@ -74,7 +74,7 @@ const JenisLayanan = () => {
         await createJenisLayanan(JenisLayanan);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); // Refresh data setelah tambah atau update
+      fetchData(); 
       setModalOpen(false); // Tutup modal
     } catch (error) {
       console.error("Failed to save data:", error);

@@ -326,7 +326,6 @@ const DaftarSyarat = () => {
                             <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
                               {(() => {
                                 try {
-                                  // Jika syarat_layanan adalah string JSON, kita parse menjadi array
                                   const syaratArray = Array.isArray(
                                     item.syarat_layanan
                                   )
