@@ -153,7 +153,6 @@ const SuratMasuk = () => {
                 placeholder="Search..."
                 required
               />
-
               <button
                 type="submit"
                 className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
