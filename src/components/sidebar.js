@@ -55,7 +55,7 @@ const Sidebar = (isOpen) => {
         <Link to="/" className="sidebar-header block p-4">
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
           <div>
-            <p className="text-center font-bold text-white-800 dark:text-white">
+          <p className="text-center font-bold text-white dark:text-white">
               PTSP MIN 1 SLEMAN
             </p>
           </div>

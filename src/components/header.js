@@ -97,7 +97,7 @@ const UserProfileMenu = () => {
     setSidebarOpen(!isSidebarOpen);
   };
   return (
-    <header className="sticky top-0 bg-[#11ad00] w-full px-6 pt-8 pb-6 flex justify-between items-center text-white z-10">
+<header className="sticky top-0 bg-[#11ad00] w-full px-6 flex justify-between items-center text-white z-10" style={{ paddingTop: '1.75rem', paddingBottom: '1.92rem' }}>
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
