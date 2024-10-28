@@ -4,83 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
-/* General styles for form container */
-.register-form-ptsp {
-  max-width: 400px; /* Maximum width of the form */
-  margin: 50px auto; /* Centering the form on the page */
-  padding: 20px; /* Inner spacing */
-  border: 1px solid #dcdcdc; /* Light grey border */
-  border-radius: 8px; /* Rounded corners */
-  background-color: #f7f7f7; /* Light background color */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+.font-family {
   font-family: poppins;
 }
 
-/* Heading styles */
-.register-heading {
-  font-size: 24px; /* Size of the main heading */
-  text-align: center; /* Center the heading */
-  color: #333; /* Dark grey color */
-  margin-bottom: 10px; /* Space below heading */
-  font-family: poppins;
-}
-
-.register-title {
-  font-size: 16px; /* Size of the subtitle */
-  text-align: center; /* Center the subtitle */
-  color: #666; /* Medium grey color */
-  margin-bottom: 20px; /* Space below subtitle */
-  font-family: poppins;
-}
-
-/* Form group styles */
-.form-group-ptsp {
-  margin-bottom: 15px; /* Space below each form group */
-  font-family: poppins;
-}
-
-/* Label styles */
-.label-ptsp {
-  display: block; /* Block level for labels */
-  margin-bottom: 5px; /* Space below label */
-  font-weight: bold; /* Bold labels */
-  font-family: poppins;
-  color: #333; /* Dark grey color */
-}
-
-/* Input styles */
-.input-ptsp {
-  width: 100%; /* Full width of the container */
-  padding: 10px; /* Inner spacing */
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size */
-  transition: border-color 0.3s; /* Smooth transition for border color */
-}
-
-.input-ptsp:focus {
-  border-color: #007bff; /* Blue border on focus */
-  outline: none; /* Remove default outline */
-}
-
-/* Button styles */
-.register-button {
-  width: 100%; /* Full width of the container */
-  padding: 10px; /* Inner spacing */
-  background-color: #007bff; /* Blue background color */
-  color: white; /* White text color */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  font-size: 16px; /* Font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
-}
-
-.register-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Message styles */
 .error-message {
   color: red; /* Red color for error messages */
   margin-bottom: 10px; /* Space below error message */
@@ -91,20 +18,6 @@
   color: green; /* Green color for success messages */
   margin-bottom: 10px; /* Space below success message */
   font-weight: bold; /* Bold text */
-}
-
-/* Back to login link styles */
-.backlogin {
-  margin-top: 10px; /* Space above the link */
-  text-align: center; /* Center the text */
-  font-size: 14px; /* Font size for the link */
-  color: #007bff; /* Blue color for the link */
-  cursor: pointer; /* Pointer cursor */
-  text-decoration: underline; /* Underline for links */
-}
-
-.backlogin:hover {
-  color: #0056b3; /* Darker blue on hover */
 }
 
 .jumbotron {
@@ -175,22 +88,6 @@
   display: flex;
 }
 
-.main {
-  padding: 3rem;
-  font-family: 'Poppins', sans-serif;
-  /* margin-left: 60px;
-  margin-right: 190px;
-  margin-top: 20px; */
-}
-
-
-.main1 {
-  /* padding: 2rem; */
-  font-family: 'Poppins', sans-serif;
-  margin-left: 60px;
-  margin-right: 190px;
-  margin-top: 0px;
-}
 html, body {
   height: 100%;
   margin: 0;
@@ -200,7 +97,7 @@ html, body {
   min-height: 100vh; 
   background-color: rgb(244, 244, 244);
   padding-bottom: 0;
-  margin: 0; /* Pastikan tidak ada margin */
+  margin: 0; 
 }
 
 .texttitle {
@@ -480,137 +377,15 @@ font-family: 'Poppins', sans-serif;
   font-family: 'Poppins', sans-serif;
 }
 
-/* Login page container */
-.login-page-ptsp {
-  text-align: center;
-}
-
-/* Styles for login form */
-.login-form-ptsp {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-  margin: 20px auto;
-  margin-top: 60px;
-}
-
-/* Styles for login heading */
-.login-heading {
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  color: #333333;
-  font-weight: bold;
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.signup {
-  margin-top: 10px;
-  font-family: 'Poppins', sans-serif;
-}
-/* Form group styles */
-.form-group-ptsp {
-  margin-bottom: 15px;
-}
-
-/* Label styles */
-.label-ptsp {
-  text-align: left;
-  display: block;
-  margin-bottom: 5px;
-  color: #333333;
-  font-weight: 500;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* Input styles */
-.input-ptsp {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-/* Button styles */
-.login-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
-  font-family: "poppins", sans-serif;
-}
-/* Centering text horizontally */
-.unmember {
-  text-align: center; /* Center text horizontally */
-}
-.backhome {
-  margin-top: 10px;
-  text-align: center;
-  color: #0056b3;
-  font-family: 'Poppins', sans-serif; /* Pastikan font 'Poppins' tersedia atau gunakan font fallback */
-  text-decoration: underline; /* Menambahkan garis bawah pada teks */
-}
-/* styles.css */
 .scrollable-content {
   overflow-y: hidden; /* Menghilangkan scrollbar vertikal */
   overflow-x: hidden; /* Menghilangkan scrollbar horizontal jika ada */
 }
 
 .login-button-navbar:hover {
-  background-color: #000000; /* Warna background berubah ke hitam saat hover */
-  color: #ffffff; /* Warna teks berubah menjadi putih */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Shadow saat hover */
-}
-
-.login-title {
-  text-align: center;
-  font-family: "poppins", sans-serif;
-  margin-bottom: 20px;
-  margin-top: opx;
-}
-
-.login-button-navbar:hover {
   background-color: #4a4a4a; 
 }
 
-.signup {
-  display: inline-block; /* Ensure block-level elements are centered horizontally */
-  font-size: 16px; /* Adjust font size as needed */
-  color: #333; /* Adjust text color as needed */
-}
-
-.login-button:hover {
-  background-color: #0056b3;
-}
-/* Styles for the back-button */
-.back-button {
-  position: absolute; /* Position relative to nearest positioned ancestor */
-  top: 20px; /* Adjust the distance from the top of the container */
-  left: 120px; /* Adjust the distance from the left of the container */
-  padding: 10px 20px; /* Add padding to make the button more clickable */
-  font-size: 16px; /* Adjust the font size of the button text */
-  background-color: #007bff; /* Button background color */
-  color: white; /* Button text color */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Round the corners of the button */
-  cursor: pointer; /* Change cursor to pointer on hover */
-  z-index: 1000; /* Ensure button appears above other content */
-}
-
-.back-button:hover {
-  background-color: #0056b3; /* Change color on hover for better UX */
-}
-/* Navbar container */
 nav {
   background: transparent;
   font-family: 'Poppins', sans-serif;

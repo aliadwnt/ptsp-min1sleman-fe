@@ -91,7 +91,7 @@ const MasterDisposisi = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-  
+
   return (
     <div className="bodyadmin flex relative">
       {/* Sidebar */}
@@ -100,7 +100,7 @@ const MasterDisposisi = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
@@ -108,12 +108,12 @@ const MasterDisposisi = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="texttitle">Daftar Master Disposisi</div>
-          {/* Alert untuk pesan sukses */}
+        <div className="p-4">
+          <div className="text-xl font-semibold mb-4">Daftar Master Disposisi</div>
+
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className="p-4 m-2 text-sm text-green-800 rounded-lg bg-green-50"
               role="alert"
             >
               <span className="font-medium">Sukses </span>
@@ -121,23 +121,18 @@ const MasterDisposisi = () => {
             </div>
           )}
 
-          {/* Form pencarian */}
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-grow justify-center"
-            >
+            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
               <input
                 type="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full md:w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
-
               <button
                 type="submit"
-                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+                className="ml-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
               >
                 <i className="fas fa-search"></i>
               </button>
@@ -145,7 +140,8 @@ const MasterDisposisi = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>Tambah
+                <i className="fas fa-plus mr-2"></i>
+                <span className="hidden md:inline">Tambah</span>
               </button>
             </form>
           </div>
@@ -158,27 +154,17 @@ const MasterDisposisi = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          No
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Master Disposisi
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Aksi
-                        </th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Master Disposisi</th>
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {dataMasterDisposisi.length > 0 ? (
                         dataMasterDisposisi.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
-                              {index + 1}
-                            </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
-                              {item.name}
-                            </td>
+                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
+                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                               <button
                                 onClick={() => {
@@ -186,22 +172,14 @@ const MasterDisposisi = () => {
                                   setModalOpen(true);
                                 }}
                                 className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
+                                style={{ background: "none", border: "none", padding: 0 }}
                               >
                                 <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
                               </button>
                               <button
                                 onClick={() => handleDelete(item.id)}
                                 className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
+                                style={{ background: "none", border: "none", padding: 0 }}
                               >
                                 <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
                               </button>
@@ -225,16 +203,11 @@ const MasterDisposisi = () => {
             </div>
           </div>
 
-          {/* Modal untuk tambah/edit Master Disposisi */}
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                {" "}
-                {/* Mengubah lebar menjadi responsif */}
                 <h2 className="text-xl font-semibold mb-4">
-                  {currentMasterDisposisi
-                    ? "Edit Master Disposisi"
-                    : "Tambah Master Disposisi"}
+                  {currentMasterDisposisi ? "Edit Master Disposisi" : "Tambah Master Disposisi"}
                 </h2>
                 <form onSubmit={handleSubmit}>
                   <input

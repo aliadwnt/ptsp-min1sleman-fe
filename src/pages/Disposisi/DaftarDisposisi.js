@@ -138,13 +138,13 @@ const DaftarDisposisi = () => {
               className="flex flex-grow justify-center"
             >
               <input
-                type="search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search..."
-                required
-              />
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full md:w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search..."
+              required
+            />
               <button
                 type="submit"
                 className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
@@ -181,7 +181,7 @@ const DaftarDisposisi = () => {
                           Penerima
                         </th>
                         <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Diteruskan Ke-
+                          Diteruskan Kepada
                         </th>
                         <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Waktu Disposisi
@@ -225,19 +225,19 @@ const DaftarDisposisi = () => {
                             <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.catatan}
                             </td>
-                            <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1">
-                              <button
-                                onClick={() => handleDetail(item.no_reg)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fa fa-search text-green-600 hover:text-green-900"></i>
-                              </button>
-                            </td>
+                            <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-2">
+  <button
+    onClick={() => handleDetail(item.no_reg)}
+    className="focus:outline-none"
+    style={{
+      background: "none",
+      border: "none",
+      padding: 0,
+    }}
+  >
+    <i className="fa fa-eye text-green-600 hover:text-green-900"></i> {/* Ikon detail */}
+  </button>
+</td>
                           </tr>
                         ))
                       ) : (

@@ -5,13 +5,12 @@ import { createDaftarPelayanan } from "../services/layananService";
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadSingle } from "../services/uploadService";
 import { addNotification } from "../services/notificationService"; 
-import Swal from "sweetalert2"; // SweetAlert untuk notifikasi
+import Swal from "sweetalert2"; 
 import withReactContent from "sweetalert2-react-content";
-import "../App"; // CSS untuk tampilan
+import "../App";
 
 const MySwal = withReactContent(Swal);
 const Layanan = () => {
-  // State untuk form
   const [formData, setFormData] = useState({
     no_reg: "",
     nama_pelayanan: "",
@@ -85,7 +84,6 @@ const Layanan = () => {
     try {
       let uploadedFileUrl = "";
   
-      // Upload file jika ada
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
@@ -101,16 +99,14 @@ const Layanan = () => {
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
   
-        // Tambahkan notifikasi setelah berhasil membuat layanan
         try {
           await addNotification({
             message: `Layanan baru telah dikirim dengan nomor registrasi: ${generatedNoReg}`,
-            no_surat: formData.no_surat, // Ambil no_surat dari formData
-            perihal: formData.perihal, // Ambil perihal dari formData
+            no_surat: formData.no_surat,
+            perihal: formData.perihal, 
           });
         } catch (notificationError) {
           console.error("Gagal menambahkan notifikasi:", notificationError);
-          // Anda bisa menambahkan pesan error di sini jika ingin memberitahu pengguna
         }
   
         const copyToClipboard = (text) => {
@@ -179,18 +175,14 @@ const Layanan = () => {
       setLoading(false);
     }
   };
-
-  
-  
-
   return (
-    <div>
-      <Navbar /> {/* Navbar component */}
+    <div className="font-family">
+      <Navbar /> 
       <div className="bg-blue-600"></div>
-      <div className="BodyLayanan">
+      <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            <h2 className="font-family ml-8 mt-6 mb-10 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
               Buat Permohonan Layanan
             </h2>
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-8">
@@ -198,14 +190,11 @@ const Layanan = () => {
             </button>
           </div>
 
-          {/* Error message */}
           {error && <div className="text-red-600">{error}</div>}
-          {/* Success message */}
           {successMessage && (
             <div className="text-green-600">{successMessage}</div>
           )}
 
-          {/* Form untuk input data layanan */}
           <form
             className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
             onSubmit={handleSubmit}
@@ -224,9 +213,9 @@ const Layanan = () => {
                   type="text"
                   placeholder="Nomor Registrasi"
                   value={formData.no_reg}
-                  onChange={handleChange} // Ini untuk memastikan formData akan terupdate
+                  onChange={handleChange} 
                   required
-                  readOnly // Jika memang readonly sesuai dengan case
+                  readOnly 
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -253,7 +242,6 @@ const Layanan = () => {
               </div>
             </div>
 
-            {/* Input untuk perihal */}
             <div className="w-1/1 md-full px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -272,7 +260,6 @@ const Layanan = () => {
               />
             </div>
 
-            {/* Input untuk nomor surat dan tanggal */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
@@ -309,7 +296,6 @@ const Layanan = () => {
               </div>
             </div>
 
-            {/* Input untuk nama pemohon */}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3">
                 <label
@@ -418,14 +404,13 @@ const Layanan = () => {
               </div>
             </div>
 
-            {/* Tombol submit */}
             <div className="flex items-center justify-between">
               <button
                 className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 type="submit"
-                disabled={loading} // Tombol disabled saat loading
+                disabled={loading} 
               >
                 {loading ? "Loading..." : "Simpan"}
               </button>
@@ -433,7 +418,7 @@ const Layanan = () => {
           </form>
         </div>
       </div>
-      <Footer /> {/* Footer component */}
+      <Footer /> 
     </div>
   );
 };

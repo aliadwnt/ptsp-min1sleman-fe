@@ -93,7 +93,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
       <Navbar />
       <Jumbotron />
 
-      <div className="main">
+      <div className="p-12 font-family">
         <h1 className="text-3xl text-center font-semibold">Tentang PTSP</h1>
         <div className="additional-content mt-4 ml-9 text-start">
           <p className="text-black font-family-poppins text-start">

@@ -142,7 +142,8 @@ const UnitPengolah = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>Tambah
+                 <i className="fas fa-plus mr-2"></i>
+                 <span className="hidden md:inline">Tambah</span>
               </button>
             </form>
           </div>

@@ -12,9 +12,6 @@ const Jumbotron = () => {
       <img src={jumbotronImage} alt="Background Image" className="jumbotron-bg" />
 
       <div className="heading">
-        {/* Replace this with your main navigation component */}
-        {/* <LivewireMainNavigation /> */}
-
         <div className="txt">
           <div className="selamat-datang-di-ptsp">Selamat Datang di</div>
           <div className="ptsp-container">

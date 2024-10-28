@@ -74,8 +74,8 @@ const JenisLayanan = () => {
         await createJenisLayanan(JenisLayanan);
         setMessage("Data berhasil ditambahkan");
       }
-      fetchData(); 
-      setModalOpen(false); // Tutup modal
+      fetchData();
+      setModalOpen(false); // Close modal
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -90,15 +90,16 @@ const JenisLayanan = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
   return (
-    <div className="bodyadmin flex relative">
+    <div className="flex relative min-h-screen">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
@@ -106,15 +107,15 @@ const JenisLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="texttitle">Daftar Jenis Layanan</div>
+        <div className="p-4">
+          <h1 className="text-2xl font-semibold mb-4">Daftar Jenis Layanan</h1>
 
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
+              <span className="font-medium">Sukses: </span>
               {message}
             </div>
           )}
@@ -142,83 +143,79 @@ const JenisLayanan = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>Tambah
+                <i className="fas fa-plus mr-2"></i>
+                <span className="hidden md:inline">Tambah</span>
               </button>
             </form>
           </div>
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <div className="overflow-y-auto max-h-80 md:max-h-96">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                      <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                        <tr>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            No
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Nama Layanan
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Aksi
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                        {dataJenisLayanan.length > 0 ? (
-                          dataJenisLayanan.map((item, index) => (
-                            <tr key={item.id}>
-                              <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
-                                {index + 1}
-                              </td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.name}
-                              </td>
-                              <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button
-                                  onClick={() => {
-                                    setCurrentJenisLayanan(item);
-                                    setModalOpen(true);
-                                  }}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                >
-                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(item.id)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                >
-                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                                </button>
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan="3"
-                              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              No data available
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
+
+          <div className="overflow-x-auto">
+            <div className="min-w-full border border-gray-200 rounded-lg shadow">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      No
+                    </th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Nama Layanan
+                    </th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Aksi
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {dataJenisLayanan.length > 0 ? (
+                    dataJenisLayanan.map((item, index) => (
+                      <tr key={item.id}>
+                        <td className="px-4 py-2 text-xs text-center text-gray-900">
+                          {index + 1}
+                        </td>
+                        <td className="px-4 py-2 text-xs text-center text-gray-900">
+                          {item.name}
+                        </td>
+                        <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <button
+                            onClick={() => {
+                              setCurrentJenisLayanan(item);
+                              setModalOpen(true);
+                            }}
+                            className="focus:outline-none"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                            }}
+                          >
+                            <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                          </button>
+                          <button
+                            onClick={() => handleDelete(item.id)}
+                            className="focus:outline-none"
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                            }}
+                          >
+                            <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="3"
+                        className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        No data available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
 

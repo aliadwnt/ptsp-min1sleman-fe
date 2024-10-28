@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../images/logo-kemenag.png";
 import "../App.css";
 
-const Sidebar = (isOpen) => {
+const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
@@ -22,54 +22,69 @@ const Sidebar = (isOpen) => {
       : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700";
   };
 
+  // Close sidebar automatically on wider screens (above sm breakpoint)
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setIsSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div className="flex">
+      {/* Hamburger icon only visible on small screens */}
       <button
         aria-controls="sidebar-multi-level-sidebar"
         type="button"
         onClick={toggleSidebar}
-        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-white-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
-        <span className="sr-only">Open sidebar</span>
+        <span className="sr-only">Toggle sidebar</span>
         <svg
           className="w-6 h-6"
           aria-hidden="true"
           fill="currentColor"
-          viewBox="0 0 20 20"
+          viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            clipRule="evenodd"
             fillRule="evenodd"
-            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+            clipRule="evenodd"
+            d={
+              isSidebarOpen
+                ? "M6 18L18 6M6 6l12 12" // Path for the "X" icon
+                : "M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z" // Path for the "Menu" icon
+            }
           />
         </svg>
       </button>
 
+      {/* Sidebar appears conditionally based on screen size */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 bg-white dark:bg-gray-800`}
         aria-label="Sidebar"
       >
         <Link to="/" className="sidebar-header block p-4">
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
           <div>
-          <p className="text-center font-bold text-white dark:text-white">
+            <p
+              className="text-center font-bold text-white dark:text-white"
+              style={{ fontFamily: "Poppins, sans-serif" }}
+            >
               PTSP MIN 1 SLEMAN
             </p>
           </div>
         </Link>
 
-        <div
-          className="overflow-y-auto dark:bg-gray-800 dark:border-gray-700"
-          style={{ maxHeight: "calc(100vh - 56px)" }}
-        >
-          {/* Home Section */}
+        {/* Content of the Sidebar */}
+        <div className="overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: "calc(100vh - 56px)" }}>
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
-              <b>Home</b>
-            </div>
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Home</b></div>
             <Link to="/dashboard" className={getLinkClass("/dashboard")}>
               <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
             </Link>

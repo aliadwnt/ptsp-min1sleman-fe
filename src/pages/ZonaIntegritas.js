@@ -8,7 +8,7 @@ const ZonaIntegritas = () => {
     <div>
       <Navbar />
 
-      <div className="main">
+      <div className="p-12 font-family">
         <h1 className="text-3xl text-center font-semibold">Zona Integritas</h1>
         <div className="additional-content mt-5 text-center">
           <p className="text-black font-poppins text-start">
