@@ -4,6 +4,8 @@ import Header from "../../../components/header";
 import {
   fetchDaftarPengguna,
   createDaftarPengguna,
+  updateDaftarPengguna,
+  changePassword,
 } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
 
@@ -11,6 +13,8 @@ const DaftarPengguna = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
   const [message, setMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [currentDaftarPengguna, setCurrentDaftarPengguna] = useState(null);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pengguna`;
@@ -29,22 +33,44 @@ const DaftarPengguna = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { id, name, is_admin } = e.target.elements;
+    const { name, email, password, is_admin } = e.target.elements;
+
+    // const isAdmin = currentDaftarPengguna ? currentDaftarPengguna.is_admin : 0;
 
     const DaftarPengguna = {
-      id: id.value,
       name: name.value,
+      email: email.value,
+      password: password.value,
       is_admin: is_admin.value,
     };
 
+    console.log("Data yang akan dikirim:", DaftarPengguna); // Log untuk debugging
+
     try {
-      await createDaftarPengguna(DaftarPengguna); // Create new user
-      fetchData(); // Refresh data after success
+      await createDaftarPengguna(DaftarPengguna);
       setMessage("Data berhasil disimpan");
+      fetchData();
+      handleModalClose();
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
     }
+  };
+
+  const handleAdd = () => {
+    setCurrentDaftarPengguna(null);
+    setModalOpen(true);
+  };
+
+  const handleEdit = (item) => {
+    setCurrentDaftarPengguna(item);
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setCurrentDaftarPengguna(null);
+    setMessage("");
   };
 
   const toggleSidebar = () => {
@@ -78,6 +104,36 @@ const DaftarPengguna = () => {
               {message}
             </div>
           )}
+
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <form
+              // onSubmit={handleSearch}
+              className="flex flex-grow justify-center"
+            >
+              <input
+                type="search"
+                // value={searchTerm}
+                // onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search..."
+                required
+              />
+              <button
+                type="submit"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+              >
+                <i className="fas fa-search"></i>
+              </button>
+              <button
+                onClick={handleAdd}
+                type="button"
+                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
+              >
+                <i className="fas fa-plus mr-2"></i>Tambah
+              </button>
+            </form>
+          </div>
+
           <div className="flex justify-center">
             <div className="w-full max-w-7xl">
               <div className=" mr-4 ml-4 overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
@@ -88,14 +144,16 @@ const DaftarPengguna = () => {
                         No
                       </th>
                       <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        No ID Pengguna
+                        Nama Lengkap
+                      </th>
+
+                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
                       </th>
                       <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama Pengguna
+                        Peran User
                       </th>
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Peran
-                      </th>
+
                       <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
@@ -109,15 +167,52 @@ const DaftarPengguna = () => {
                             {index + 1}
                           </td>
                           <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.id}
-                          </td>
-                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.name}
                           </td>
                           <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.is_admin === 1 ? "ADMIN" : "USER"}
+                            {item.email}
                           </td>
-                          <td className="text-center flex items-center justify-center px-2 py-2 whitespace-nowrap text-xs font-medium space-x-1"></td>
+                          {/* <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            {item.name}
+                          </td> */}
+                          {/* <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            {item.name}
+                          </td>
+                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            {item.name}
+                          </td> */}
+                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            {item.is_admin === 2
+                              ? "SUPER ADMIN"
+                              : item.is_admin === 1
+                              ? "ADMIN"
+                              : "USER"}
+                          </td>
+
+                          <td className="px-6 py-3 text-xs text-center text-gray-900">
+                            <button
+                              onClick={() => handleEdit(item)}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                            >
+                              <i className="fas fa-edit text-green-600"></i>
+                            </button>
+                            <button
+                              // onClick={() => handleDelete(item.id)}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                            >
+                              <i className="fas fa-trash-alt text-red-600"></i>
+                            </button>
+                          </td>
                         </tr>
                       ))
                     ) : (
@@ -136,6 +231,130 @@ const DaftarPengguna = () => {
             </div>
           </div>
         </div>
+        
+        {modalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+              <h2 className="text-lg font-bold">Tambah Pengguna / Users</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    defaultValue={
+                      currentDaftarPengguna ? currentDaftarPengguna.name : ""
+                    }
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="text"
+                    name="email"
+                    placeholder="example@gmail.com"
+                    defaultValue={
+                      currentDaftarPengguna ? currentDaftarPengguna.email : ""
+                    }
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder={
+                      currentDaftarPengguna && currentDaftarPengguna.password
+                        ? "Kosongkan jika tidak ingin mengubah"
+                        : "Masukkan password"
+                    }
+                    onChange={(e) => {
+                      setCurrentDaftarPengguna((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }));
+                    }}
+                    required={
+                      !currentDaftarPengguna || !currentDaftarPengguna.password
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Peran Pengguna
+                  </label>
+                  <div>
+                    <label className="inline-flex items-center mr-4">
+                      <input
+                        type="radio"
+                        name="is_admin"
+                        value="1" // nilai 1 untuk admin
+                        onChange={(e) => {
+                          setCurrentDaftarPengguna((prev) => ({
+                            ...prev,
+                            is_admin: Number(e.target.value),
+                          }));
+                        }}
+                        className="form-radio"
+                        defaultChecked={
+                          currentDaftarPengguna &&
+                          currentDaftarPengguna.is_admin === 1
+                        }
+                      />
+                      <span className="ml-2">Admin</span>
+                    </label>
+                    <label className="inline-flex items-center">
+                      <input
+                        type="radio"
+                        name="is_admin"
+                        value="2" // nilai 2 untuk super admin
+                        onChange={(e) => {
+                          setCurrentDaftarPengguna((prev) => ({
+                            ...prev,
+                            is_admin: Number(e.target.value),
+                          }));
+                        }}
+                        className="form-radio"
+                        defaultChecked={
+                          currentDaftarPengguna &&
+                          currentDaftarPengguna.is_admin === 2
+                        }
+                      />
+                      <span className="ml-2">Super Admin</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleModalClose}
+                    className="mr-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                  >
+                    Update
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
