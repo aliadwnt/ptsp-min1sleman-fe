@@ -145,6 +145,7 @@ const DaftarPengguna = () => {
                       <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Peran User
                       </th>
+
                       <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>

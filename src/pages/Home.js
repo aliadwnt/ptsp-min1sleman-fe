@@ -189,6 +189,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
           )}
         </div>
 
+
         {/* Modal Detail Syarat Layanan */}
         <Dialog
           open={isModalOpen}
