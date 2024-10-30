@@ -51,7 +51,7 @@ const LacakPermohonan = () => {
   return (
     <div>
       <Navbar />
-      <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mx-8 mt-4">
+      <h2 className="font-family text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mx-8 mt-4">
           Permohonan Pelayanan
         </h2> 
       <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
@@ -59,13 +59,13 @@ const LacakPermohonan = () => {
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"></h2>
           <button
             onClick={handleExportPDF} // Updated to call the correct export function
-            className="bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded"
+            className="font-family bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded"
           >
             Cetak Bukti Permohonan
           </button>
         </div>
 
-        <div className="bg-white shadow rounded-lg mx-8 py-8">
+        <div className="font-family bg-white shadow rounded-lg mx-8 py-8">
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">

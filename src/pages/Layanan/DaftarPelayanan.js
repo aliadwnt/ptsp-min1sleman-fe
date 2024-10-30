@@ -466,22 +466,6 @@ const DaftarPelayanan = () => {
                             <td className="text-center">
                               <div className="flex justify-center space-x-2">
                                 <button
-                                  onClick={() =>
-                                    navigate(
-                                      `/layanan/daftar-pelayanan/show-disposisi/${item.id}`
-                                    )
-                                  }
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="View Disposisi"
-                                >
-                                  <i className="fas fa-file-alt text-blue-600 hover:text-blue-900"></i>
-                                </button>
-                                <button
                                   onClick={() => handleExportPDF(item)}
                                   className="focus:outline-none"
                                   style={{
