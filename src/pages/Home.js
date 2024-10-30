@@ -148,26 +148,22 @@ const HomePage = ({ daftarSyarat = [] }) => {
           </button>
         </div>
 
-        {/* Daftar Layanan */}
-        <div id="layanan" className="mt-8">
-          <h1 className="text-3xl font-semibold text-center">Daftar Layanan PTSP MIN 1 SLEMAN</h1>
+         {/* Daftar Layanan */}
+         <div id="layanan" className="mt-8">
+          <h1 className="text-2xl md:text-3xl font-semibold text-center">
+            Daftar Layanan PTSP MIN 1 SLEMAN
+          </h1>
           {daftarLayanan.length > 0 ? (
             daftarLayanan.map((item) => (
-              <div key={item.id} className="mt-5">
-                {/* <button
-                  className="accordion"
-                  onClick={() => openModal({ id: item.id, syarat_layanan: item.syarat_layanan })}
-                >
-                  {item.nama_pelayanan} 
-                </button> */}
-                <div className="panel bg-gray-100 rounded-lg p-4 shadow-md mb-4 transition-transform transform hover:scale-105">
+              <div key={item.id} className="mt-3">
+                <div className="panel bg-gray-100 rounded-lg p-2 shadow-md mb-1 transition-transform transform hover:scale-105">
                   <div className="item flex justify-between items-center">
-                    <div className="description text-lg font-semibold text-gray-800">
+                    <div className="description text-sm md:text-lg font-semibold text-gray-800">
                       {item.name}
                     </div>
                     <div className="actions flex space-x-2">
                       <button
-                        className="btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+                        className="btn bg-blue-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-blue-600 transition duration-300 text-xs sm:text-sm"
                         onClick={() =>
                           openModal({
                             id: item.id,
@@ -178,7 +174,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
                         Lihat Syarat
                       </button>
                       <button
-                        className="btn bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300"
+                        className="btn bg-green-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-green-600 transition duration-300 text-xs sm:text-sm"
                         onClick={() => navigate("/layanan")} // Tambahkan logika navigasi di sini
                       >
                         Buat Permohonan

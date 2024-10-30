@@ -37,7 +37,10 @@ const Navbar = () => {
     fetchData();
   }, [navigate]);
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const toggleDropdown = (event) => {
+    event.stopPropagation(); // Prevent closing sidebar
+    setIsOpen((prev) => !prev);
+  };
 
   const handleLogout = async () => {
     try {
@@ -51,14 +54,20 @@ const Navbar = () => {
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
-  const renderMenuItems = () => {
+  const renderMenuItems = (isMobile = false) => {
     const menuPaths = ["/", "/layanan", "/visi-misi", "/lacak-berkas", "/zona-integritas"];
     return menuPaths.map((path, index) => (
       <li key={index}>
         <Link
           to={path}
           className={`txt transition-colors duration-300 ease-in-out ${
-            location.pathname === path ? "text-white font-extrabold" : "text-white hover:text-blue-600"
+            location.pathname === path
+              ? isMobile
+                ? "text-blue-600 font-extrabold" // Different color for mobile active
+                : "text-white font-extrabold" // Color for desktop active
+              : isMobile
+              ? "text-gray-300 hover:text-blue-500" // Default color for mobile
+              : "text-white hover:text-blue-600" // Color for desktop
           }`}
         >
           {path === "/" ? "Beranda" : path.replace("/", "").replace("-", " ")}
@@ -90,19 +99,84 @@ const Navbar = () => {
 
           {/* Sidebar for mobile */}
           {menuOpen && (
-            <div className="absolute top-0 left-0 w-3/4 h-screen bg-white shadow-lg md:hidden z-50 transition transform duration-300 ease-in-out">
-              <button className="absolute top-4 right-4" onClick={toggleMenu}>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              <ul className="flex flex-col space-y-4 mt-20 px-4">{renderMenuItems()}</ul>
+            <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-80 md:hidden" onClick={toggleMenu}>
+              <div className="absolute top-0 right-0 w-3/4 h-screen bg-white shadow-lg transition transform duration-300 ease-in-out">
+                <button className="absolute top-4 right-4" onClick={toggleMenu}>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                <ul className="flex flex-col space-y-4 mt-20 px-4">{renderMenuItems(true)}</ul> {/* Mobile menu items */}
+                <div className="border-t border-gray-200 my-4"></div>
+                <div className="px-2 py-2">
+                  <button
+                    onClick={toggleDropdown}
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    aria-expanded={isOpen}
+                  >
+                    {formData ? formData.name : "Login"}
+                    <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                  {isOpen && (
+                    <div className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 transition duration-150 ease-in-out">
+                      <div className="py-1" role="menu">
+                        {formData ? (
+                          <>
+                            <div className="px-4 py-2 bg-gray-100 rounded-t-md">
+                              <div className="text-base font-medium text-gray-800">{formData.name}</div>
+                              <div className="text-sm font-medium text-gray-500">{formData.email}</div>
+                            </div>
+                            <div className="border-t border-gray-200"></div>
+                            <button
+                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                              onClick={() => navigate("/dashboard")}
+                            >
+                              Dashboard
+                            </button>
+                            <button
+                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                              onClick={() => navigate("/user/settings")}
+                            >
+                              Settings
+                            </button>
+                            <button
+                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                              onClick={() => navigate("/profile/edit")}
+                            >
+                              Profile
+                            </button>
+                            <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={handleLogout}>
+                              Logout
+                            </button>
+                          </>
+                        ) : (
+                          <Link
+                            to="/login"
+                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            Login
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
-          <ul className="hidden md:flex space-x-5">{renderMenuItems()}</ul>
+          {/* Desktop view */}
+          <ul className="hidden md:flex space-x-5">{renderMenuItems()}</ul> {/* Desktop menu items */}
 
-          <div className="relative inline-block text-left ml-4">
+          {/* User dropdown in desktop view */}
+          <div className="hidden md:inline-block relative ml-4">
             <button
               onClick={toggleDropdown}
               className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -112,14 +186,13 @@ const Navbar = () => {
               <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                   clipRule="evenodd"
                 />
               </svg>
             </button>
-
             {isOpen && (
-              <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 transition duration-150 ease-in-out">
+              <div className="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition duration-150 ease-in-out">
                 <div className="py-1" role="menu">
                   {formData ? (
                     <>
@@ -128,22 +201,13 @@ const Navbar = () => {
                         <div className="text-sm font-medium text-gray-500">{formData.email}</div>
                       </div>
                       <div className="border-t border-gray-200"></div>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/dashboard")}
-                      >
+                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/dashboard")}>
                         Dashboard
                       </button>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/user/settings")}
-                      >
+                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/user/settings")}>
                         Settings
                       </button>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/profile/edit")}
-                      >
+                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/profile/edit")}>
                         Profile
                       </button>
                       <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={handleLogout}>
@@ -151,11 +215,7 @@ const Navbar = () => {
                       </button>
                     </>
                   ) : (
-                    <Link
-                      to="/login"
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                      onClick={() => setIsOpen(false)}
-                    >
+                    <Link to="/login" className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => setIsOpen(false)}>
                       Login
                     </Link>
                   )}

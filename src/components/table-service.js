@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUnitPengolah } from '../services/unitPengolahService'; // Pastikan path service benar
+import { fetchUnitPengolah } from '../services/unitPengolahService';
+import { fetchDaftarLayanan } from '../services/daftarLayananService';
 
 const TableService = () => {
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        const getUnitPengolahData = async () => {
+        const getData = async () => {
             try {
+                // Fetch data from services
                 const unitPengolahData = await fetchUnitPengolah();
-                const servicesWithTotals = unitPengolahData.map((unit, index) => ({
-                    id: index + 1,
-                    unit: unit.name,
-                    total: 0
-                }));
+                const daftarLayananData = await fetchDaftarLayanan();
+
+                // Calculate total layanan per unit
+                const servicesWithTotals = unitPengolahData.map((unit, index) => {
+                    // Count occurrences of the unit in daftarLayananData
+                    const total = daftarLayananData.filter(item => item.unit === unit.name).length;
+                    return {
+                        id: index + 1,
+                        unit: unit.name,
+                        total: total
+                    };
+                });
+
                 setServices(servicesWithTotals);
             } catch (error) {
-                console.error("Error fetching unit pengolah data:", error);
+                console.error("Error fetching data:", error);
             }
         };
 
-        getUnitPengolahData();
+        getData();
     }, []);
 
     return (

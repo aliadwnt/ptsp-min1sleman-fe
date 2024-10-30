@@ -12,17 +12,12 @@ const Sidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleDropdown = (dropdown) => {
-    setOpenDropdown(openDropdown === dropdown ? null : dropdown);
-  };
-
   const getLinkClass = (path) => {
     return location.pathname === path
       ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white"
       : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700";
   };
 
-  // Close sidebar automatically on wider screens (above sm breakpoint)
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 640) {
@@ -35,7 +30,6 @@ const Sidebar = () => {
 
   return (
     <div className="flex">
-      {/* Hamburger icon only visible on small screens */}
       <button
         aria-controls="sidebar-multi-level-sidebar"
         type="button"
@@ -55,14 +49,13 @@ const Sidebar = () => {
             clipRule="evenodd"
             d={
               isSidebarOpen
-                ? "M6 18L18 6M6 6l12 12" // Path for the "X" icon
-                : "M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z" // Path for the "Menu" icon
+                ? "M6 18L18 6M6 6l12 12"
+                : "M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
             }
           />
         </svg>
       </button>
 
-      {/* Sidebar appears conditionally based on screen size */}
       <aside
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -71,18 +64,18 @@ const Sidebar = () => {
       >
         <Link to="/" className="sidebar-header block p-4">
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
-          <div>
-            <p
-              className="text-center font-bold text-white dark:text-white"
-              style={{ fontFamily: "Poppins, sans-serif" }}
-            >
-              PTSP MIN 1 SLEMAN
-            </p>
-          </div>
+          <p
+            className="text-center font-bold text-white dark:text-white"
+            style={{ fontFamily: "Poppins, sans-serif" }}
+          >
+            PTSP MIN 1 SLEMAN
+          </p>
         </Link>
 
-        {/* Content of the Sidebar */}
-        <div className="overflow-y-auto dark:bg-gray-800 dark:border-gray-700" style={{ maxHeight: "calc(100vh - 56px)" }}>
+        <div
+          className="overflow-y-auto h-full dark:bg-gray-800 dark:border-gray-700"
+          style={{ maxHeight: "calc(100vh - 56px)" }} // Adjust if header height changes
+        >
           <div>
             <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Home</b></div>
             <Link to="/dashboard" className={getLinkClass("/dashboard")}>
@@ -92,54 +85,41 @@ const Sidebar = () => {
 
           {/* Kelola Pelayanan Section */}
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
-              <b>Kelola Pelayanan</b>
-            </div>
-            <Link
-              to="/layanan/daftar-pelayanan"
-              className={getLinkClass("/layanan/daftar-pelayanan")}
-            >
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Kelola Pelayanan</b></div>
+            <Link to="/layanan/daftar-pelayanan" className={getLinkClass("/layanan/daftar-pelayanan")}>
               <i className="fas fa-list mr-2"></i> Daftar Pelayanan
             </Link>
-            <Link
-              to="/layanan/arsip-layanan"
-              className={getLinkClass("/layanan/arsip-layanan")}
-            >
+            <Link to="/layanan/arsip-layanan" className={getLinkClass("/layanan/arsip-layanan")}>
               <i className="fas fa-archive mr-2"></i> Arsip Pelayanan
             </Link>
 
             {/* Dropdown for Surat Menyurat */}
             <div
-              onClick={() => toggleDropdown("surat")}
-              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left cursor-pointer ${
-                openDropdown === "surat" ? "bg-gray-100 dark:bg-gray-700" : ""
-              }`}
+              onMouseEnter={() => setOpenDropdown("surat")}
+              onMouseLeave={() => setOpenDropdown(null)}
+              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left cursor-pointer`}
             >
               <i className="fas fa-envelope mr-2"></i> Surat Menyurat
+              {openDropdown === "surat" && (
+                <div
+                  className="ml-4"
+                  onMouseEnter={() => setOpenDropdown("surat")}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
+                  <Link to="/surat/surat-masuk" className={getLinkClass("/surat/surat-masuk")}>
+                    <i className="fas fa-inbox mr-2"></i> Surat Masuk
+                  </Link>
+                  <Link to="/surat/surat-keluar" className={getLinkClass("/surat/surat-keluar")}>
+                    <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
+                  </Link>
+                </div>
+              )}
             </div>
-            {openDropdown === "surat" && (
-              <div className="ml-4">
-                <Link
-                  to="/surat/surat-masuk"
-                  className={getLinkClass("/surat/surat-masuk")}
-                >
-                  <i className="fas fa-inbox mr-2"></i> Surat Masuk
-                </Link>
-                <Link
-                  to="/surat/surat-keluar"
-                  className={getLinkClass("/surat/surat-keluar")}
-                >
-                  <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
-                </Link>
-              </div>
-            )}
           </div>
 
           {/* Kelola Disposisi Section */}
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
-              <b>Kelola Disposisi</b>
-            </div>
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Kelola Disposisi</b></div>
             <Link
               to="/disposisi/master-disposisi"
               className={getLinkClass("/disposisi/master-disposisi")}
@@ -218,6 +198,8 @@ const Sidebar = () => {
             >
               <i className="fas fa-list-alt mr-2"></i> Daftar Syarat
             </Link>
+          </div>
+          <div className="mt-10">
           </div>
         </div>
       </aside>

@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const MainNavigation = ({ user, logout }) => {
   const [open, setOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // New state for dropdown visibility
+  const [dropdownOpen, setDropdownOpen] = useState(false); 
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -11,19 +11,16 @@ const MainNavigation = ({ user, logout }) => {
 
   return (
     <nav className="bg-opacity-0 text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
-      {/* Primary Navigation Menu */}
       <div className="px-4 mx-auto w-full sm:px-6 lg:px-8">
         <div className="flex justify-between h-30">
-          {/* Logo */}
           <div className="flex items-center shrink-0">
             <div className="navbar-brand">
               <Link to="/" className="pl-4 py-2">
-                <img src="/path/to/logo.png" alt="Logo" /> {/* Add your logo image here */}
+                <img src="/path/to/logo.png" alt="Logo" /> 
               </Link>
             </div>
           </div>
 
-          {/* Navigation Links */}
           <div className="flex justify-center items-center">
             <div className="hidden space-x-8 sm:-my-px sm:flex">
               <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -40,7 +37,6 @@ const MainNavigation = ({ user, logout }) => {
             </div>
           </div>
 
-          {/* Authentication & Settings */}
           <div className="hidden sm:flex sm:items-center">
             {user ? (
               <div className="relative ml-3">
@@ -56,7 +52,7 @@ const MainNavigation = ({ user, logout }) => {
                     </svg>
                   </button>
                 </div>
-                {/* Dropdown Menu */}
+
                 {dropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white">
                     <div className="block px-4 py-2">
@@ -80,7 +76,6 @@ const MainNavigation = ({ user, logout }) => {
             )}
           </div>
 
-          {/* Hamburger Menu */}
           <div className="flex items-center -mr-2 sm:hidden">
             <button onClick={() => setOpen(!open)} className="inline-flex items-center justify-center p-2">
               <svg className="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -95,7 +90,6 @@ const MainNavigation = ({ user, logout }) => {
         </div>
       </div>
 
-      {/* Responsive Navigation Menu */}
       {open && (
         <div className="sm:hidden">
           <div className="pt-2 pb-3 space-y-1">

@@ -14,6 +14,7 @@ const MasterDisposisi = () => {
   const [dataMasterDisposisi, setDataMasterDisposisi] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false); // New state for error tracking
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterDisposisi, setCurrentMasterDisposisi] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -47,10 +48,12 @@ const MasterDisposisi = () => {
       try {
         await deleteMasterDisposisi(id);
         setMessage("Data berhasil dihapus");
+        setIsError(false);
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
+        setIsError(true);
       }
     }
   };
@@ -67,6 +70,14 @@ const MasterDisposisi = () => {
     const MasterDisposisi = {
       name: name.value,
     };
+
+    const isDuplicate = dataMasterDisposisi.some((item) => item.name.toLowerCase() === MasterDisposisi.name.toLowerCase());
+    if (isDuplicate) {
+      setMessage("Master Disposisi Sudah tersedia, Masukkan Master Disposisi yang belum tersedia");
+      setIsError(true); 
+      return;
+    }
+
     try {
       if (currentMasterDisposisi) {
         await updateMasterDisposisi(currentMasterDisposisi.id, MasterDisposisi);
@@ -75,11 +86,13 @@ const MasterDisposisi = () => {
         await createMasterDisposisi(MasterDisposisi);
         setMessage("Data berhasil ditambahkan");
       }
+      setIsError(false); 
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
+      setIsError(true); 
     }
   };
 
@@ -113,10 +126,12 @@ const MasterDisposisi = () => {
 
           {message && (
             <div
-              className="p-4 m-2 text-sm text-green-800 rounded-lg bg-green-50"
+              className={`p-4 m-2 text-sm ${
+                isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
+              } rounded-lg`}
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
+              <span className="font-medium">{isError ? "Error" : "Sukses"}: </span>
               {message}
             </div>
           )}
@@ -146,7 +161,6 @@ const MasterDisposisi = () => {
             </form>
           </div>
 
-          {/* Tabel daftar Master Disposisi */}
           <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -154,17 +168,17 @@ const MasterDisposisi = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Master Disposisi</th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Master Disposisi</th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {dataMasterDisposisi.length > 0 ? (
                         dataMasterDisposisi.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">{index + 1}</td>
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">{item.name}</td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                               <button
                                 onClick={() => {

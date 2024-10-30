@@ -156,13 +156,13 @@ const OutputLayanan = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Output Layanan
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -171,10 +171,10 @@ const OutputLayanan = () => {
                       {dataOutputLayanan.length > 0 ? (
                         dataOutputLayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                               {index + 1}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.name}
                             </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -210,7 +210,7 @@ const OutputLayanan = () => {
                         <tr>
                           <td
                             colSpan="10"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             No data available
                           </td>

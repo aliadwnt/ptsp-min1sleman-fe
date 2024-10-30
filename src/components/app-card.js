@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Component to render the card with title, description, actions, and content
 const Card = ({ title, description, actions, content }) => {
     return (
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

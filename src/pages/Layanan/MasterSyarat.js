@@ -13,6 +13,7 @@ const MasterSyarat = () => {
   const [dataMasterSyarat, setDataMasterSyarat] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -46,10 +47,12 @@ const MasterSyarat = () => {
       try {
         await deleteMasterSyarat(id);
         setMessage("Data berhasil dihapus");
+        setIsError(false);
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
+        setIsError(true); 
       }
     }
   };
@@ -60,27 +63,39 @@ const MasterSyarat = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { name } = e.target.elements;
+  e.preventDefault();
+  const { name } = e.target.elements;
 
-    const MasterSyarat = {
-      name: name.value,
-    };
-    try {
-      if (currentMasterSyarat) {
-        await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
-        setMessage("Data berhasil diupdate");
-      } else {
-        await createMasterSyarat(MasterSyarat);
-        setMessage("Data berhasil ditambahkan");
-      }
-      fetchData();
-      setModalOpen(false);
-    } catch (error) {
-      console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-    }
+  const isDuplicate = dataMasterSyarat.some((item) => item.name.toLowerCase() === name.value.toLowerCase());
+
+  if (isDuplicate) {
+    setMessage("Master Syarat sudah tersedia, Masukkan master syarat yang belum tersedia.");
+    setIsError(true); 
+    return; 
+  }
+
+  const MasterSyarat = {
+    name: name.value,
   };
+
+  try {
+    if (currentMasterSyarat) {
+      await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
+      setMessage("Data berhasil diupdate");
+      setIsError(false);
+    } else {
+      await createMasterSyarat(MasterSyarat);
+      setMessage("Data berhasil ditambahkan");
+      setIsError(false);
+    }
+    fetchData();
+    setModalOpen(false); 
+  } catch (error) {
+    console.error("Failed to save data:", error);
+    setMessage("Failed to save data");
+    setIsError(true); 
+  }
+};
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -93,7 +108,6 @@ const MasterSyarat = () => {
 
   return (
     <div className="bodyadmin flex relative">
-      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -112,10 +126,14 @@ const MasterSyarat = () => {
 
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className={`p-4 m-8 text-sm rounded-lg ${
+                isError
+                  ? "text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  : "text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              }`}
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
+              <span className="font-medium">{isError ? "Error" : "Sukses"} </span>
               {message}
             </div>
           )}
@@ -156,13 +174,13 @@ const MasterSyarat = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Master Syarat
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -171,10 +189,10 @@ const MasterSyarat = () => {
                       {dataMasterSyarat.length > 0 ? (
                         dataMasterSyarat.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                               {index + 1}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.name}
                             </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -210,7 +228,7 @@ const MasterSyarat = () => {
                         <tr>
                           <td
                             colSpan="3"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             No data available
                           </td>

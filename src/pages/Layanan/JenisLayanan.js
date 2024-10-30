@@ -154,13 +154,13 @@ const JenisLayanan = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50 sticky top-0">
                   <tr>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       No
                     </th>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Nama Layanan
                     </th>
-                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Aksi
                     </th>
                   </tr>
@@ -169,10 +169,10 @@ const JenisLayanan = () => {
                   {dataJenisLayanan.length > 0 ? (
                     dataJenisLayanan.map((item, index) => (
                       <tr key={item.id}>
-                        <td className="px-4 py-2 text-xs text-center text-gray-900">
+                        <td className="px-2 py-3 text-xs text-center text-gray-900">
                           {index + 1}
                         </td>
-                        <td className="px-4 py-2 text-xs text-center text-gray-900">
+                        <td className="px-2 py-3 text-xs text-center text-gray-900">
                           {item.name}
                         </td>
                         <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -208,7 +208,7 @@ const JenisLayanan = () => {
                     <tr>
                       <td
                         colSpan="3"
-                        className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
                         No data available
                       </td>

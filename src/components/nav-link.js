@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-// Komponen NavLink
 const NavLink = ({ active, children, ...props }) => {
-  // Tentukan kelas CSS berdasarkan prop active
   const classes = classNames(
     'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out',
     {
@@ -20,13 +18,11 @@ const NavLink = ({ active, children, ...props }) => {
   );
 };
 
-// Menetapkan tipe prop
 NavLink.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.node.isRequired
 };
 
-// Menetapkan nilai default untuk prop
 NavLink.defaultProps = {
   active: false
 };

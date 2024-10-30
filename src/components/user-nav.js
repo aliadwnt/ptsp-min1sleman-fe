@@ -8,17 +8,15 @@ const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
-    const [user, setUser] = useState(null); // State untuk menyimpan data pengguna
+    const [user, setUser] = useState(null); 
 
-    // Mengambil data pengguna dari localStorage saat komponen pertama kali dimuat
     useEffect(() => {
         const userData = {
             name: localStorage.getItem('name'),
             email: localStorage.getItem('email'),
         };
-        // Hanya set user jika ada data
         if (userData.name) {
-            setUser(userData); // Set data pengguna ke state
+            setUser(userData); 
         }
     }, []);
 
@@ -28,7 +26,7 @@ const Navbar = () => {
             console.log("User logged out");
             localStorage.removeItem('name');
             localStorage.removeItem('email');
-            setUser(null); // Reset state pengguna
+            setUser(null);
             navigate('/login');
         } catch (error) {
             console.error("Failed to logout:", error);
@@ -55,7 +53,7 @@ const Navbar = () => {
                                             onClick={() => setDropdownOpen(!dropdownOpen)}
                                             className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700"
                                         >
-                                            {user.name} {/* Menampilkan nama pengguna */}
+                                            {user.name} 
                                             <svg className="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                             </svg>
@@ -66,12 +64,12 @@ const Navbar = () => {
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <div className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
-                                            {user.name} {/* Menampilkan nama lengkap pengguna */}
-                                            <div className="text-xs text-gray-400">{user.email}</div> {/* Menampilkan email pengguna */}
+                                            {user.name} 
+                                            <div className="text-xs text-gray-400">{user.email}</div> 
                                         </div>
                                         <div className="border-t border-gray-200 dark:border-gray-600"></div>
                                         <button
-                                            onClick={handleLogout} // Memanggil handleLogout ketika menekan Log Out
+                                            onClick={handleLogout} 
                                             className="block w-full px-4 py-2 text-sm leading-5 text-left text-gray-700 transition duration-150 ease-in-out dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800"
                                         >
                                             Log Out
@@ -81,7 +79,7 @@ const Navbar = () => {
                             </div>
                         ) : (
                             <button
-                                onClick={() => navigate('/login')} // Mengarahkan pengguna ke halaman login
+                                onClick={() => navigate('/login')} 
                                 className="inline-flex items-center px-4 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700"
                             >
                                 LOGIN
@@ -100,7 +98,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Responsive Navigation Menu */}
             <div className={`${open ? 'block' : 'hidden'} sm:hidden`}>
                 <div className="pt-2 pb-3 space-y-1">
                     <a href="/dashboard" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a>
@@ -112,7 +109,7 @@ const Navbar = () => {
                         {user ? (
                             <div>
                                 <div className="text-base font-medium text-gray-800 dark:text-gray-200">{user.name}</div> {/* Menampilkan nama lengkap pengguna */}
-                                <div className="text-sm font-medium text-gray-500">{user.email}</div> {/* Menampilkan email pengguna */}
+                                <div className="text-sm font-medium text-gray-500">{user.email}</div> 
                             </div>
                         ) : (
                             <button onClick={() => navigate('/login')} className="text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Login</button>

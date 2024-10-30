@@ -292,19 +292,19 @@ const DaftarSyarat = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Unit Pengolah
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Nama Layanan
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Syarat Layanan
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -314,16 +314,16 @@ const DaftarSyarat = () => {
                       dataDaftarSyarat.length > 0 ? (
                         dataDaftarSyarat.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                               {index + 1}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.unit}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.name}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {(() => {
                                 try {
                                   const syaratArray = Array.isArray(

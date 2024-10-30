@@ -196,34 +196,34 @@ const DaftarLayanan = () => {
             </form>
           </div>
 
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="flex flex-col mx-auto max-w-5xl sm:px-6 lg:px-8">
   <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div className="overflow-hidden">
       <div className="min-w-full border border-gray-200 rounded-lg shadow">
-        <div className="overflow-x-auto"> {/* Change this line to use overflow-x-auto */}
+        <div className="overflow-x-auto"> 
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Pengolah</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Layanan</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Output Layanan</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Layanan</th>
-                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Pengolah</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Layanan</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Output Layanan</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Layanan</th>
+                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {dataDaftarLayanan.length > 0 ? (
                 dataDaftarLayanan.map((item, index) => (
                   <tr key={item.id}>
-                    <td className="px-1 py-3 text-xs font-medium text-center text-gray-900">{index + 1}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">{item.unit}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">{item.name}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">{item.jenis}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">{item.output}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">{item.duration}</td>
-                    <td className="px-6 py-3 text-xs text-center text-gray-900">
+                    <td className="px-2 py-3 text-xs font-medium text-center text-gray-900">{index + 1}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.unit}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.name}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.jenis}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.output}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.duration}</td>
+                    <td className="px-2 py-3 text-xs text-center text-gray-900">
                       <button onClick={() => handleEdit(item)} className="focus:outline-none mr-auto" style={{ background: "none", border: "none", padding: 0 }}>
                         <i className="fas fa-edit text-green-600"></i>
                       </button>

@@ -182,7 +182,7 @@ const Layanan = () => {
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="font-family ml-8 mt-6 mb-10 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            <h2 className="font-family ml-8 mt-6 mb-3 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
               Buat Permohonan Layanan
             </h2>
             <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-8">
@@ -199,7 +199,7 @@ const Layanan = () => {
             className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
             onSubmit={handleSubmit}
           >
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3 mb-1">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -242,7 +242,7 @@ const Layanan = () => {
               </div>
             </div>
 
-            <div className="w-1/1 md-full px-3 mb-6 md:mb-0">
+            <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="perihal"
@@ -404,7 +404,7 @@ const Layanan = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="pl-3 flex items-center justify-between">
               <button
                 className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
                   loading ? "opacity-50 cursor-not-allowed" : ""

@@ -1,71 +1,33 @@
-// Accordion.js
-import React, { useState, useEffect } from 'react';
-
-// Inline CSS as a string
-const accordionStyles = `
-  .accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    font-size: 15px;
-    transition: 0.4s;
-  }
-
-  .accordion.active {
-    background-color: #ccc;
-  }
-
-  .accordion-icon {
-    float: right;
-    margin-left: 5px;
-  }
-
-  .accordion-icon.active {
-    transform: rotate(180deg);
-  }
-
-  .panel {
-    padding: 0 18px;
-    display: none;
-    background-color: white;
-    overflow: hidden;
-  }
-
-  .panel.open {
-    display: block;
-  }
-`;
+import React, { useState } from 'react';
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 
-  useEffect(() => {
-    // Append CSS styles to the head of the document
-    const style = document.createElement('style');
-    style.innerHTML = accordionStyles;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
-
   return (
     <div>
       <button
-        className={`accordion ${isOpen ? 'active' : ''}`}
+        className={`flex items-center justify-between w-full p-4 text-left text-gray-700 text-lg font-medium transition-all duration-300 ${
+          isOpen ? 'bg-gray-300' : 'bg-gray-200'
+        }`}
         onClick={toggle}
       >
         {title}
-        <span className={`accordion-icon ${isOpen ? 'active' : ''}`} />
+        <span
+          className={`transform transition-transform duration-300 ${
+            isOpen ? 'rotate-180' : 'rotate-0'
+          }`}
+        >
+          ▼
+        </span>
       </button>
-      <div className={`panel ${isOpen ? 'open' : ''}`}>
-        {children}
+      <div
+        className={`overflow-hidden transition-max-height duration-300 ${
+          isOpen ? 'max-h-screen' : 'max-h-0'
+        }`}
+      >
+        <div className="p-4 bg-white">{children}</div>
       </div>
     </div>
   );

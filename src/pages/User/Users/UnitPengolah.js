@@ -13,6 +13,7 @@ const UnitPengolah = () => {
   const [dataUnitPengolah, setDataUnitPengolah] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false); // State to track if there's an error
   const [modalOpen, setModalOpen] = useState(false);
   const [currentUnitPengolah, setCurrentUnitPengolah] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -46,10 +47,12 @@ const UnitPengolah = () => {
       try {
         await deleteUnitPengolah(id);
         setMessage("Data berhasil dihapus");
+        setIsError(false);
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
+        setIsError(true);
       }
     }
   };
@@ -65,6 +68,16 @@ const UnitPengolah = () => {
     const formData = new FormData();
     const { name } = e.target.elements;
 
+    const isDuplicate = dataUnitPengolah.some(
+      (item) => item.name.toLowerCase() === name.value.toLowerCase() && currentUnitPengolah?.id !== item.id
+    );
+
+    if (isDuplicate) {
+      setMessage("Unit Pengolah sudah tersedia, Masukkan unit pengolah yang belum tersedia"); // Error message for duplicates
+      setIsError(true); 
+      return; 
+    }
+
     formData.append("name", name.value);
 
     try {
@@ -75,11 +88,13 @@ const UnitPengolah = () => {
         await createUnitPengolah(formData);
         setMessage("Data berhasil ditambahkan");
       }
+      setIsError(false);
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
+      setIsError(true); 
     }
   };
 
@@ -87,6 +102,7 @@ const UnitPengolah = () => {
     setModalOpen(false);
     setCurrentUnitPengolah(null);
   };
+  
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -98,7 +114,7 @@ const UnitPengolah = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
@@ -111,10 +127,14 @@ const UnitPengolah = () => {
 
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className={`p-4 m-8 text-sm ${
+                isError
+                  ? "text-red-800 bg-red-50"
+                  : "text-green-800 bg-green-50"
+              } rounded-lg`}
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
+              <span className="font-medium">{isError ? "Error " : "Sukses "}</span>
               {message}
             </div>
           )}
@@ -154,13 +174,13 @@ const UnitPengolah = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-800">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Nama Unit Pengolah
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -169,10 +189,10 @@ const UnitPengolah = () => {
                       {dataUnitPengolah.length > 0 ? (
                         dataUnitPengolah.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-1 py-1 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                               {index + 1}
                             </td>
-                            <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                               {item.name}
                             </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -234,7 +254,7 @@ const UnitPengolah = () => {
                   <input
                     type="text"
                     name="name"
-                    defaultValue={currentUnitPengolah?.id || ""}
+                    defaultValue={currentUnitPengolah?.name || ""} // Change to use the name instead of id
                     placeholder="Masukkan nama unit pengolah baru"
                     required
                     className="block w-full p-2 border border-gray-300 rounded mb-4"
