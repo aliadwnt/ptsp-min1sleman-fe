@@ -5,7 +5,7 @@ import {
   fetchDaftarPengguna,
   createDaftarPengguna,
   updateDaftarPengguna,
-  changePassword,
+  deletePengguna,
 } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
 
@@ -14,6 +14,7 @@ const DaftarPengguna = () => {
   const [message, setMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentDaftarPengguna, setCurrentDaftarPengguna] = useState(null);
 
   useEffect(() => {
@@ -24,17 +25,25 @@ const DaftarPengguna = () => {
   const fetchData = async () => {
     try {
       const response = await fetchDaftarPengguna();
-      console.log("Data fetched:", response); // Logging response for debugging
+      console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
     }
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const filteredData = dataDaftarPengguna.filter((item) =>
+      String(item.name || "")
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+    setDataDaftarPengguna(filteredData);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password, is_admin } = e.target.elements;
-    // const isAdmin = currentDaftarPengguna ? currentDaftarPengguna.is_admin : 0;
 
     const DaftarPengguna = {
       name: name.value,
@@ -43,10 +52,16 @@ const DaftarPengguna = () => {
       is_admin: is_admin.value,
     };
 
-    console.log("Data yang akan dikirim:", DaftarPengguna); // Log untuk debugging
+    console.log("Data yang akan dikirim:", DaftarPengguna); 
+
     try {
-      await createDaftarPengguna(DaftarPengguna);
-      setMessage("Data berhasil disimpan");
+      if (currentDaftarPengguna) {
+        await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
+        setMessage("Data berhasil diperbarui");
+      } else {
+        await createDaftarPengguna(DaftarPengguna);
+        setMessage("Data berhasil disimpan");
+      }
       fetchData();
       handleModalClose();
     } catch (error) {
@@ -62,6 +77,18 @@ const DaftarPengguna = () => {
   const handleEdit = (item) => {
     setCurrentDaftarPengguna(item);
     setModalOpen(true);
+  };
+  const handleDelete = async (id) => {
+    if (window.confirm("Yakin mau dihapus?")) {
+      try {
+        await deletePengguna(id);
+        setMessage("Data berhasil dihapus");
+        fetchData();
+      } catch (error) {
+        console.error("Failed to delete data:", error);
+        setMessage("Failed to delete data");
+      }
+    }
   };
   const handleModalClose = () => {
     setModalOpen(false);
@@ -101,16 +128,15 @@ const DaftarPengguna = () => {
           )}
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              // onSubmit={handleSearch}
+              onSubmit={handleSearch}
               className="flex flex-grow justify-center"
             >
               <input
                 type="search"
-                // value={searchTerm}
-                // onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
-                required
               />
               <button
                 type="submit"
@@ -164,15 +190,6 @@ const DaftarPengguna = () => {
                           <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.email}
                           </td>
-                          {/* <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.name}
-                          </td> */}
-                          {/* <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.name}
-                          </td>
-                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.name}
-                          </td> */}
                           <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.is_admin === 2
                               ? "SUPER ADMIN"
@@ -193,7 +210,7 @@ const DaftarPengguna = () => {
                               <i className="fas fa-edit text-green-600"></i>
                             </button>
                             <button
-                              // onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item.id)}
                               className="focus:outline-none"
                               style={{
                                 background: "none",
@@ -222,7 +239,7 @@ const DaftarPengguna = () => {
             </div>
           </div>
         </div>
-        
+
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
@@ -290,7 +307,7 @@ const DaftarPengguna = () => {
                       <input
                         type="radio"
                         name="is_admin"
-                        value="1" // nilai 1 untuk admin
+                        value="1"
                         onChange={(e) => {
                           setCurrentDaftarPengguna((prev) => ({
                             ...prev,
@@ -309,7 +326,7 @@ const DaftarPengguna = () => {
                       <input
                         type="radio"
                         name="is_admin"
-                        value="2" // nilai 2 untuk super admin
+                        value="2"
                         onChange={(e) => {
                           setCurrentDaftarPengguna((prev) => ({
                             ...prev,
