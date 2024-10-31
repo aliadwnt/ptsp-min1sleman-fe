@@ -139,12 +139,38 @@ const DaftarPelayanan = () => {
       console.error("No item data available for PDF export.");
       return;
     }
+    const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
+    const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
+    await exportpdf(htmlString, item.no_reg);
+  };
+
+  const handlePreview = async (item) => {
+    if (!item) {
+      console.error("No item data available for PDF preview.");
+      return;
+    }
+  
     // Define the PDF content using the specific item data
     const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
     // Convert the HTML template to a static HTML string
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
-    // Pass the rendered HTML and the item's no_reg to the export function
-    await exportpdf(htmlString, item.no_reg);
+    
+    // Open a new window for previewing the PDF
+    const previewWindow = window.open('', '_blank');
+    if (previewWindow) {
+      // Writing the HTML string to the new window
+      previewWindow.document.write(`
+            ${htmlString}
+          <button onclick="window.print();" style="margin-top: 20px; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer;">
+            Print
+          </button>
+        </body>
+        </html>
+      `);
+      previewWindow.document.close(); // Close the document to render it
+    } else {
+      console.error("Failed to open preview window.");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -464,49 +490,62 @@ const DaftarPelayanan = () => {
                               })()}
                             </td>
                             <td className="text-center">
-                              <div className="flex justify-center space-x-2">
-                                <button
-                                  onClick={() => handleExportPDF(item)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Download"
-                                >
-                                  <i className="fas fa-download text-yellow-600 hover:text-yellow-900"></i>
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    navigate(
-                                      `/update-daftar-pelayanan/${item.id}`
-                                    )
-                                  }
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Edit"
-                                >
-                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(item.id)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Delete"
-                                >
-                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                                </button>
-                              </div>
-                            </td>
+                            <div className="flex justify-center space-x-2">
+                              <button
+                                onClick={() => handlePreview(item)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Preview"
+                              >
+                                <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>    
+                              </button>
+
+                              <button
+                                onClick={() => handleExportPDF(item)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Download"
+                              >
+                                <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
+                              </button>
+                              
+                              {/* Button for Editing */}
+                              <button
+                                onClick={() => navigate(`/update-daftar-pelayanan/${item.id}`)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Edit"
+                              >
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                              
+                              {/* Button for Deleting */}
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Delete"
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </div>
+                          </td>
                           </tr>
                         ))
                       ) : (

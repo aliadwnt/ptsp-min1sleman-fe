@@ -43,7 +43,7 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md text-base box-border focus:outline-none focus:ring focus:ring-blue-500"
+              className="font-family w-full p-2 border border-gray-300 rounded-md text-base box-border focus:outline-none focus:ring focus:ring-blue-500"
               required
             />
           </div>

@@ -62,24 +62,36 @@ const JenisLayanan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name } = e.target.elements;
-
+  
     const JenisLayanan = {
       name: name.value,
     };
-    try {
-      if (currentJenisLayanan) {
-        await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
-        setMessage("Data berhasil diupdate");
-      } else {
-        await createJenisLayanan(JenisLayanan);
-        setMessage("Data berhasil ditambahkan");
-      }
-      fetchData();
-      setModalOpen(false); // Close modal
-    } catch (error) {
-      console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-    }
+  
+    // Check for duplicates
+    const isDuplicate = dataJenisLayanan.some(
+      (item) => item.name.toLowerCase() === JenisLayanan.name.toLowerCase() && 
+                (!currentJenisLayanan || item.id !== currentJenisLayanan.id)
+    );
+  
+   if (isDuplicate) {
+  setMessage({ text: "Nama layanan sudah ada. Silakan gunakan nama lain.", type: "error" });
+  return; // Exit the function if duplicate found
+}
+
+try {
+  if (currentJenisLayanan) {
+    await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
+    setMessage({ text: "Data berhasil diupdate", type: "success" });
+  } else {
+    await createJenisLayanan(JenisLayanan);
+    setMessage({ text: "Data berhasil ditambahkan", type: "success" });
+  }
+  fetchData();
+  setModalOpen(false); // Close modal
+} catch (error) {
+  console.error("Failed to save data:", error);
+  setMessage({ text: "Failed to save data", type: "error" });
+}
   };
 
   const handleModalClose = () => {
@@ -111,14 +123,20 @@ const JenisLayanan = () => {
           <h1 className="text-2xl font-semibold mb-4">Daftar Jenis Layanan</h1>
 
           {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
-              role="alert"
-            >
-              <span className="font-medium">Sukses: </span>
-              {message}
-            </div>
-          )}
+  <div
+    className={`p-4 m-8 text-sm rounded-lg ${
+      message.type === "success"
+        ? "text-green-800 bg-green-50"
+        : "text-red-800 bg-red-50"
+    }`}
+    role="alert"
+  >
+    <span className="font-medium">
+      {message.type === "success" ? "Sukses: " : "Error: "}
+    </span>
+    {message.text}
+  </div>
+)}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form

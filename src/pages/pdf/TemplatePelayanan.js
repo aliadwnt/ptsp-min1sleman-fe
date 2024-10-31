@@ -554,7 +554,7 @@ const PdfTemplate = ({ data }) => {
         flex-direction: column;
         gap: 12.8px;
         align-items: flex-end;
-        justify-content: flex-start;
+        justify-content: flex-left;
         position: absolute;
         left: 600px;
         top: 19.2px;
@@ -599,6 +599,7 @@ const PdfTemplate = ({ data }) => {
         color: #000000;
         text-align: right;
     }`}</style>
+    <div className="w-full p-5">
     <div className="form-1">
         <div className="kop">
           <img
@@ -614,18 +615,18 @@ const PdfTemplate = ({ data }) => {
                   <br />
                 </span>
                 <span className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span2">
-                  MADRASAH ALIYAH NEGERI (MAN) 1 YOGYAKARTA
+                MADRASAH IBTIDAIYAH NEGERI 1 SLEMAN
                 </span>
               </span>
             </div>
             <div className="address text-right">
-              Jl. C Simanjuntak 60 (C Simanjuntak), Yogyakarta, DI Yogyakarta,
-              Indonesia
+            Jl. Magelang Km. 4, Sinduadi, Mlati, Sleman, Daerah Istimewa Yogyakarta, 
+            Indonesia
               <br />
-              Telepon +62858-6924-0876, Faksimile +62858-6924-0876
+              Telepon (0274) 557464
               <br />
-              Laman https://man1yogyakarta.sch.id/, Email
-              info@man1yogyakarta.sch.id
+              Laman https://min1sleman.sch.id/ Email
+              minsatu.yk@gmail.com
             </div>
           </div>
         </div>
@@ -753,18 +754,18 @@ const PdfTemplate = ({ data }) => {
                   <br />
                 </span>
                 <span className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span2">
-                  MADRASAH ALIYAH NEGERI (MAN) 1 YOGYAKARTA
+                MADRASAH IBTIDAIYAH NEGERI 1 SLEMAN
                 </span>
               </span>
             </div>
             <div className="address text-center">
-              Jl. C Simanjuntak 60 (C Simanjuntak), Yogyakarta, DI Yogyakarta,
-              Indonesia
+            Jl. Magelang Km. 4, Sinduadi, Mlati, Sleman, Daerah Istimewa Yogyakarta, 
+            Indonesia
               <br />
-              Telepon +62858-6924-0876, Faksimile +62858-6924-0876
+              Telepon (0274) 557464
               <br />
-              Laman https://man1yogyakarta.sch.id/, Email
-              info@man1yogyakarta.sch.id
+              Laman https://min1sleman.sch.id/ Email
+              minsatu.yk@gmail.com
             </div>
           </div>
         </div>
@@ -876,6 +877,7 @@ const PdfTemplate = ({ data }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

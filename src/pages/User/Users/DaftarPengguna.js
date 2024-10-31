@@ -44,16 +44,31 @@ const DaftarPengguna = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password, is_admin } = e.target.elements;
-
+  
     const DaftarPengguna = {
       name: name.value,
       email: email.value,
       password: password.value,
       is_admin: is_admin.value,
     };
-
+  
     console.log("Data yang akan dikirim:", DaftarPengguna);
-
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailExists = dataDaftarPengguna.some(
+      (item) => item.email === DaftarPengguna.email && currentDaftarPengguna?.email !== DaftarPengguna.email
+    );
+  
+    if (!emailRegex.test(DaftarPengguna.email)) {
+      setMessage("Masukkan email yang valid");
+      return;
+    }
+  
+    if (emailExists) {
+      setMessage("Email sudah terdaftar. Silakan gunakan email lain.");
+      return;
+    }
+  
     try {
       if (currentDaftarPengguna) {
         await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
@@ -68,7 +83,7 @@ const DaftarPengguna = () => {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
     }
-  };
+  };  
 
   const handleAdd = () => {
     setCurrentDaftarPengguna(null);
@@ -118,14 +133,21 @@ const DaftarPengguna = () => {
           <div className="texttitle">Daftar Pengguna</div>
 
           {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-              role="alert"
-            >
-              <span className="font-medium">Sukses </span>
-              {message}
-            </div>
-          )}
+          <div
+            className={`p-4 m-8 text-sm rounded-lg ${
+              message.includes("berhasil")
+                ? "text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                : "text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            }`}
+            role="alert"
+          >
+            <span className="font-medium">
+              {message.includes("berhasil") ? "Sukses " : "Error "}
+            </span>
+            {message}
+          </div>
+        )}
+
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
               onSubmit={handleSearch}
@@ -181,16 +203,16 @@ const DaftarPengguna = () => {
                     {dataDaftarPengguna.length > 0 ? (
                       dataDaftarPengguna.map((item, index) => (
                         <tr key={item.id}>
-                          <td className="px-1 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
+                          <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
                             {index + 1}
                           </td>
-                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.name}
                           </td>
-                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.email}
                           </td>
-                          <td className="px-1 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
                             {item.is_admin === 2
                               ? "SUPER ADMIN"
                               : item.is_admin === 1
@@ -218,7 +240,7 @@ const DaftarPengguna = () => {
                                 padding: 0,
                               }}
                             >
-                              <i className="fas fa-trash-alt text-red-600"></i>
+                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
                             </button>
                           </td>
                         </tr>
