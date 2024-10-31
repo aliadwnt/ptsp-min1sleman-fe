@@ -107,7 +107,7 @@ const MasterSyarat = () => {
   };
 
   return (
-    <div className="bodyadmin flex relative">
+    <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -122,7 +122,7 @@ const MasterSyarat = () => {
       >
         <Header />
         <div>
-          <div className="texttitle">Daftar Master Syarat Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Master Syarat Layanan</div>
 
           {message && (
             <div

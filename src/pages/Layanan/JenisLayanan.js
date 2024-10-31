@@ -104,8 +104,7 @@ try {
   };
 
   return (
-    <div className="flex relative min-h-screen">
-      {/* Sidebar */}
+    <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

@@ -14,10 +14,8 @@ const DiagramPelayanan = () => {
             const hue = Math.floor(Math.random() * 360); 
             const saturation = 70 + Math.random() * 30;  
             const lightness = 30 + Math.random() * 20;  
-    
             color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         } while (usedColors.has(color)); 
-    
         usedColors.add(color); 
         return color;
     };
@@ -28,18 +26,13 @@ const DiagramPelayanan = () => {
                 const outputResponse = await fetchOutputLayanan();
                 const daftarResponse = await fetchDaftarLayanan();
 
-                console.log('Output Response:', outputResponse);
-                console.log('Daftar Response:', daftarResponse);
-
                 const labels = outputResponse.map(item => item.name);
-
                 const countMap = {};
                 labels.forEach(label => {
                     countMap[label] = daftarResponse.filter(item => item.output === label).length;
                 });
 
                 const values = labels.map(label => countMap[label] || 0);
-
                 const backgroundColor = labels.map(() => generateRandomColor());
 
                 setChartData({ labels, data: values, backgroundColor });
@@ -75,17 +68,21 @@ const DiagramPelayanan = () => {
     }, [chartData]);
 
     return (
-        <div className="bg-white shadow rounded-lg w-full md:w-1/2 mr-3 p-4 text-left">
-            <b>Diagram Pelayanan</b>
-            <div className="flex flex-col bg-white w-96 text-xs mt-2 legend">
-                {chartData.labels.map((label, index) => (
-                    <div key={index} className="flex items-center mb-1">
-                        <div className="w-6 h-3 mr-2" style={{ background: chartData.backgroundColor[index] }}></div>
-                        {label}
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mx-auto">
+            <h2 className="text-lg font-semibold mb-4">Diagram Pelayanan</h2>
+            <canvas ref={chartRef} className="h-64 w-full"></canvas>
+            <div className="mt-4 text-xs">
+                {chartData.labels.length > 0 && (
+                    <div className="flex flex-col">
+                        {chartData.labels.map((label, index) => (
+                            <div key={index} className="flex items-center mb-2">
+                                <div className="w-4 h-4 mr-2" style={{ background: chartData.backgroundColor[index] }}></div>
+                                <span className="truncate">{label}</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                )}
             </div>
-            <canvas ref={chartRef} className="text-left h-64"></canvas>
         </div>
     );
 };

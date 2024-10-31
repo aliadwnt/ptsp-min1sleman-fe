@@ -59,7 +59,7 @@ const DaftarDisposisi = () => {
   };
 
   return (
-    <div className="bodyadmin flex relative">
+    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}>
         <Sidebar toggleSidebar={toggleSidebar} />
@@ -68,7 +68,7 @@ const DaftarDisposisi = () => {
       <div className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? "lg:ml-64" : "ml-0"} pl-4 lg:pl-64`}>
         <Header />
         <main>
-          <div className="texttitle">Daftar Disposisi</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Disposisi</div>
 
           {message && (
             <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
@@ -87,7 +87,7 @@ const DaftarDisposisi = () => {
                     type="search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full md:w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-5/6 md:w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search..."
                     required
                   />
@@ -99,15 +99,14 @@ const DaftarDisposisi = () => {
                   </button>
                 </form>
               </div>
-              <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-              <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+              <div className="flex justify-center">
+                <div className="w-full max-w-4xl">
+                  <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 space-y-4">
                       <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                        <tr>
-                          <th className="px- py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                          <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No Surat</th>
+                        <tr className="space-x-4">
+                          <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                          <th className="px-19 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No Surat</th>
                           <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>
                           <th className="px-14 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Surat</th>
                           <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Perihal</th>
@@ -131,7 +130,7 @@ const DaftarDisposisi = () => {
                               <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-400">{item.created_at}</td>
                               <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-400">{item.waktu}</td>
                               <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-400">{item.catatan}</td>
-                              <td className="text-center flex items-center justify-center px-4 py-8 whitespace-nowrap text-xs font-medium space-x-2">
+                              <td className="text-center flex items-center justify-center px-4 py-9 whitespace-nowrap text-xs font-medium space-x-2">
                                 <button onClick={() => handleDetail(item.no_reg)} className="focus:outline-none" style={{ background: "none", border: "none", padding: 0 }}>
                                   <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
                                 </button>
@@ -149,7 +148,6 @@ const DaftarDisposisi = () => {
                     </table>
                   </div>
                 </div>
-              </div>
               </div>
             </>
           )}

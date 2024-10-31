@@ -111,7 +111,7 @@ const LayananUpdate = () => {
   };
 
   return (
-    <div className="bodyadmin flex relative">
+    <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
