@@ -52,7 +52,7 @@ const DaftarPengguna = () => {
       is_admin: is_admin.value,
     };
 
-    console.log("Data yang akan dikirim:", DaftarPengguna); 
+    console.log("Data yang akan dikirim:", DaftarPengguna);
 
     try {
       if (currentDaftarPengguna) {
