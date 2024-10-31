@@ -27,7 +27,7 @@ const DaftarPelayanan = () => {
   const [countProses, setCountProses] = useState(0);
   const [countSelesai, setCountSelesai] = useState(0);
   const [countAmbil, setCountAmbil] = useState(0);
-  const [formData, setFormData] = useState(null);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState([]);
 
   const navigate = useNavigate();
@@ -149,16 +149,11 @@ const DaftarPelayanan = () => {
       console.error("No item data available for PDF preview.");
       return;
     }
-  
-    // Define the PDF content using the specific item data
+
     const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
-    // Convert the HTML template to a static HTML string
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
-    
-    // Open a new window for previewing the PDF
-    const previewWindow = window.open('', '_blank');
+    const previewWindow = window.open("", "_blank");
     if (previewWindow) {
-      // Writing the HTML string to the new window
       previewWindow.document.write(`
             ${htmlString}
           <button onclick="window.print();" style="margin-top: 20px; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer;">
@@ -205,13 +200,25 @@ const DaftarPelayanan = () => {
     setModalOpen(false);
     setCurrentDaftarPelayanan(null);
   };
+  const toggleSidebar = () => {
+    setSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className="bodyadmin flex">
-      <div className="w-64">
-        <Sidebar />
+    <div className="bodyadmin flex relative">
+      {/* Sidebar */}
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
-      <div className="flex-1">
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <div>
           <div className="texttitle">Daftar Pelayanan</div>
@@ -490,62 +497,66 @@ const DaftarPelayanan = () => {
                               })()}
                             </td>
                             <td className="text-center">
-                            <div className="flex justify-center space-x-2">
-                              <button
-                                onClick={() => handlePreview(item)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Preview"
-                              >
-                                <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>    
-                              </button>
+                              <div className="flex justify-center space-x-2">
+                                <button
+                                  onClick={() => handlePreview(item)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Preview"
+                                >
+                                  <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>
+                                </button>
 
-                              <button
-                                onClick={() => handleExportPDF(item)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Download"
-                              >
-                                <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
-                              </button>
-                              
-                              {/* Button for Editing */}
-                              <button
-                                onClick={() => navigate(`/update-daftar-pelayanan/${item.id}`)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Edit"
-                              >
-                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button>
-                              
-                              {/* Button for Deleting */}
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Delete"
-                              >
-                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
-                            </div>
-                          </td>
+                                <button
+                                  onClick={() => handleExportPDF(item)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Download"
+                                >
+                                  <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
+                                </button>
+
+                                {/* Button for Editing */}
+                                <button
+                                  onClick={() =>
+                                    navigate(
+                                      `/update-daftar-pelayanan/${item.id}`
+                                    )
+                                  }
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Edit"
+                                >
+                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                                </button>
+
+                                {/* Button for Deleting */}
+                                <button
+                                  onClick={() => handleDelete(item.id)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Delete"
+                                >
+                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                                </button>
+                              </div>
+                            </td>
                           </tr>
                         ))
                       ) : (

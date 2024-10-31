@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
-import "../../App";
 import {
   fetchLacakBerkas,
   fetchLoadArsip,
 } from "../../services/lacakBerkasService";
-// import { fetchDaftarDisposisi } from "../../services/daftarDisposisiService";
 import { fetchMasterDisposisi } from "../../services/masterDisposisiService";
+import { fetchDaftarPengguna } from "../../services/daftarPenggunaService";
+import {
+  updateDaftarDisposisi,
+  fetchDaftarDisposisi,
+} from "../../services/daftarDisposisiService";
+import "../../App";
 
 const DetailDisposisi = () => {
   const { no_reg } = useParams();
   const [disposisiOptions, setDisposisiOptions] = useState([]);
+  const [penggunaOptions, setPenggunaOptions] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
     no_reg: "",
@@ -48,7 +53,12 @@ const DetailDisposisi = () => {
     setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
   };
 
-  // Fungsi untuk mengambil data detail
+  const [daftarDisposisi, setDaftarDisposisi] = useState({
+    diteruskan: "",
+    disposisi: "",
+    keterangan: "",
+  });
+
   const fetchDetail = async () => {
     try {
       const pelayananData = await fetchLacakBerkas(no_reg);
@@ -76,6 +86,36 @@ const DetailDisposisi = () => {
       alert("Terjadi kesalahan saat mengambil data pelayanan");
     }
 
+    // Ambil data disposisi
+    try {
+      const disposisiData = await fetchDaftarDisposisi(no_reg);
+      console.log("Disposisi Data:", disposisiData);
+
+      if (
+        disposisiData &&
+        Array.isArray(disposisiData) &&
+        disposisiData.length > 0
+      ) {
+        const mappedData = disposisiData.map((item) => ({
+          diteruskan: item.diteruskan,
+          disposisi: item.disposisi,
+          time: item.createdAt,
+          keterangan: item.keterangan,
+        }));
+        setDaftarDisposisi(mappedData);
+      } else {
+        console.warn(
+          "Data disposisi tidak ditemukan untuk nomor registrasi:",
+          no_reg
+        );
+        setDaftarDisposisi([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data disposisi: ", error);
+      // alert("Terjadi kesalahan saat mengambil data disposisi");
+    }
+
+    // Ambil data arsip
     try {
       const arsipData = await fetchLoadArsip(no_reg);
       if (arsipData) {
@@ -99,6 +139,8 @@ const DetailDisposisi = () => {
       console.warn(
         "Data arsip tidak dapat diambil, tetapi pelayanan tetap tampil."
       );
+      // Tetap set state arsipLayanan meskipun terjadi error
+      setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
     }
   };
 
@@ -110,11 +152,46 @@ const DetailDisposisi = () => {
       } else {
         throw new Error("Data is not an array");
       }
+    } catch (error) {}
+  };
+
+  const fetchPengguna = async () => {
+    try {
+      const daftarPengguna = await fetchDaftarPengguna();
+      if (Array.isArray(daftarPengguna)) {
+        const filteredPengguna = daftarPengguna.filter(
+          (pengguna) => pengguna.is_admin === 1 || pengguna.is_admin === 2
+        );
+        setPenggunaOptions(filteredPengguna);
+      } else {
+        throw new Error("Data is not an array");
+      }
     } catch (error) {
-      console.error("Error fetching data arsip: ", error);
-      console.warn(
-        "Data arsip tidak dapat diambil, tetapi pelayanan tetap tampil."
+      console.error("Error fetching pengguna:", error);
+    }
+  };
+
+  const handleUpdateDisposisi = async () => {
+    if (!formData.diteruskan || !formData.disposisi || !formData.keterangan) {
+      alert("Silakan pilih pejabat dan aksi disposisi sebelum mengirim.");
+      return;
+    }
+
+    try {
+      const updatedData = await updateDaftarDisposisi(
+        formData.no_reg,
+        formData.diteruskan,
+        formData.disposisi,
+        formData.keterangan
       );
+      console.log("Update berhasil:", updatedData);
+
+      resetFields();
+      alert("Disposisi berhasil diperbarui.");
+      fetchDetail();
+    } catch (error) {
+      console.error("Gagal update disposisi:", error);
+      alert("Terjadi kesalahan saat memperbarui disposisi.");
     }
   };
 
@@ -134,6 +211,7 @@ const DetailDisposisi = () => {
   useEffect(() => {
     fetchDetail();
     fetchDisposisi();
+    fetchPengguna();
   }, [no_reg]);
 
   return (
@@ -422,33 +500,28 @@ const DetailDisposisi = () => {
                           </span>
                         </div>
                       </h2>
-                      <ul class="timeline">
-                        <li class="timeline-item">
-                          <div class="timeline-content">
-                            <div class="time">17 Oct 2022, 09:58:48</div>
-                            <div class="name">Pramana Yuda Sayeti, S.Kom</div>
-                            <div class="position">
-                              Ahli Pertama - Pranata Komputer
-                            </div>
-                            <div class="note">[mohon_tindaklanjuti]</div>
-                          </div>
-                        </li>
-                        <li class="timeline-item">
-                          <div class="timeline-content">
-                            <div class="time">17 Oct 2022, 10:55:01</div>
-                            <div class="name">Yossef Yuda, S.HI, MA</div>
-                            <div class="position">
-                              Kepala Sub Bagian Tata Usaha
-                            </div>
-                            <div class="note">[mohon_tindaklanjuti]</div>
-                          </div>
-                        </li>
+                      <ul className="timeline">
+                        {Array.isArray(daftarDisposisi) &&
+                          daftarDisposisi.map((item, index) => (
+                            <li className="timeline-item" key={index}>
+                              <div className="timeline-content">
+                                <div className="time">
+                                  {new Date(item.time).toLocaleString()}
+                                </div>
+                                <div className="name">{item.diteruskan}</div>
+                                <div className="position">
+                                  {item.keterangan}
+                                </div>
+                                <div className="note">{item.disposisi}</div>
+                              </div>
+                            </li>
+                          ))}
                       </ul>
                     </div>
                   </table>
                 </div>
               </table>
-              <div className=" rounded-lg p-6">
+              <div className="rounded-lg p-6">
                 <div className="bg-white shadow-md rounded-lg p-6">
                   <h2 className="text-ll font-bold mb-3 p-2 bg-white-100 shadow-md rounded">
                     <div className="flex items-center">
@@ -473,19 +546,20 @@ const DetailDisposisi = () => {
                     <div className="w-full mb-6">
                       <label
                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="catatan"
+                        htmlFor="diteruskan"
                       >
-                        Nama Pejawat / Pegawai
+                        Nama Pejabat / Pegawai
                       </label>
                       <select
                         className="w-full bg-white border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                        value={formData.pejabat}
+                        name="diteruskan"
+                        value={formData.diteruskan}
                         onChange={handleChange}
                       >
                         <option value="">Pilih Pejabat</option>
-                        {disposisiOptions.map((disposisi) => (
-                          <option key={disposisi.id} value={disposisi.name}>
-                            {disposisi.name}
+                        {penggunaOptions.map((pengguna) => (
+                          <option key={pengguna.id} value={pengguna.name}>
+                            {pengguna.name}
                           </option>
                         ))}
                       </select>
@@ -493,13 +567,14 @@ const DetailDisposisi = () => {
                     <div className="w-full mb-6">
                       <label
                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="catatan"
+                        htmlFor="disposisi"
                       >
                         Aksi Disposisi
                       </label>
                       <select
                         className="w-full bg-white border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                        value={formData.pejabat}
+                        name="disposisi"
+                        value={formData.disposisi}
                         onChange={handleChange}
                       >
                         <option value="">Aksi Disposisi</option>
@@ -513,20 +588,21 @@ const DetailDisposisi = () => {
                     <div className="w-full mb-6">
                       <label
                         className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                        htmlFor="catatan"
+                        htmlFor="keterangan"
                       >
                         Catatan / Keterangan
                       </label>
                       <input
                         className="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        name="catatan"
-                        value={formData.catatan}
+                        name="keterangan"
+                        value={formData.keterangan}
                         onChange={handleChange}
                       />
                     </div>
                     <button
-                      // onClick={handleAdd}
+                      type="button" 
+                      onClick={handleUpdateDisposisi} 
                       className="w-full mb-6 bg-green-600 text-white rounded-lg py-2 hover:bg-green-700"
                     >
                       Disposisikan

@@ -99,14 +99,14 @@ const DaftarDisposisi = () => {
                   </button>
                 </form>
               </div>
-
-              <div className="flex justify-center">
-                <div className="w-full max-w-4xl">
-                  <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
+              <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 space-y-4">
                       <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                        <tr className="space-x-4">
-                          <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                        <tr>
+                          <th className="px- py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
                           <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No Surat</th>
                           <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Pengirim</th>
                           <th className="px-14 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Tgl Surat</th>
@@ -149,6 +149,7 @@ const DaftarDisposisi = () => {
                     </table>
                   </div>
                 </div>
+              </div>
               </div>
             </>
           )}
