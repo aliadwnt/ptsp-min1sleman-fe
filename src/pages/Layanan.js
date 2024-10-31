@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
-import { createDaftarPelayanan } from "../services/layananService"; 
+import { createDaftarPelayanan } from "../services/layananService";
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadSingle } from "../services/uploadService";
-import { addNotification } from "../services/notificationService"; 
-import Swal from "sweetalert2"; 
+import { addNotification } from "../services/notificationService";
+import Swal from "sweetalert2";
+import { exportpdf } from "../services/layananService";
+import PdfTemplate from "./pdf/TemplatePelayanan";
 import withReactContent from "sweetalert2-react-content";
+import ReactDOMServer from "react-dom/server";
 import "../App";
 
 const MySwal = withReactContent(Swal);
@@ -47,7 +50,7 @@ const Layanan = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "filename") {
@@ -80,53 +83,55 @@ const Layanan = () => {
     setError(null);
     setSuccessMessage("");
     setLoading(true);
-  
+
     try {
       let uploadedFileUrl = "";
-  
+
       if (formData.filename && formData.filename instanceof File) {
         uploadedFileUrl = await uploadSingle(formData.filename);
       }
-  
+
       const dataToSend = {
         ...formData,
         filename: uploadedFileUrl,
       };
-  
+
       const responseData = await createDaftarPelayanan(dataToSend);
       console.log("Response Data:", responseData);
-  
+
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
-  
+        const newItem = { ...formData, no_reg: generatedNoReg };
         try {
           await addNotification({
             message: `Layanan baru telah dikirim dengan nomor registrasi: ${generatedNoReg}`,
             no_surat: formData.no_surat,
-            perihal: formData.perihal, 
+            perihal: formData.perihal,
           });
         } catch (notificationError) {
           console.error("Gagal menambahkan notifikasi:", notificationError);
         }
-  
+
         const copyToClipboard = (text) => {
-          navigator.clipboard.writeText(text).then(() => {
-            MySwal.fire({
-              title: "Disalin!",
-              text: "Nomor Registrasi telah disalin ke clipboard.",
-              icon: "success",
-              confirmButtonText: "OK",
+          navigator.clipboard
+            .writeText(text)
+            .then(() => {
+              MySwal.fire({
+                title: "Disalin!",
+                text: "Nomor Registrasi telah disalin ke clipboard.",
+                icon: "success",
+                confirmButtonText: "OK",
+              });
+            })
+            .catch((err) => {
+              MySwal.fire({
+                title: "Gagal!",
+                text: "Tidak dapat menyalin nomor registrasi.",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             });
-          }).catch((err) => {
-            MySwal.fire({
-              title: "Gagal!",
-              text: "Tidak dapat menyalin nomor registrasi.",
-              icon: "error",
-              confirmButtonText: "OK",
-            });
-          });
         };
-  
         MySwal.fire({
           title: "Layanan Berhasil Diproses!",
           html: `
@@ -135,16 +140,52 @@ const Layanan = () => {
                 Nomor Registrasi anda: ${generatedNoReg}
               </span>
               <button 
+                id="copyButton"
                 style="margin-top: 10px; border: none; background: none; cursor: pointer;"
-                onclick="copyToClipboard('${generatedNoReg}')"
               >
-                <i class="fas fa-copy"></i>
+                <i class="fas fa-copy"></i> Salin Nomor Registrasi
               </button>
-              <span id="copyMessage" style="margin-top: 5px; color: green; display: none;"></span>
+              <button 
+                id="exportPdfButton"
+                style="margin-top: 10px; border: none; background-color: #4CAF50; color: white; padding: 5px 10px; cursor: pointer;"
+              >
+                <i class="fas fa-file-pdf"></i> Cetak Permohonan (PDF)
+              </button>
             </div>
           `,
           icon: "success",
           confirmButtonText: "OK",
+          didOpen: () => {
+            // Event listener untuk menyalin nomor registrasi
+            document
+              .getElementById("copyButton")
+              .addEventListener("click", () => {
+                navigator.clipboard
+                  .writeText(generatedNoReg)
+                  .then(() => {
+                    MySwal.fire({
+                      title: "Disalin!",
+                      text: "Nomor Registrasi telah disalin ke clipboard.",
+                      icon: "success",
+                      confirmButtonText: "OK",
+                    });
+                  })
+                  .catch((err) => {
+                    MySwal.fire({
+                      title: "Gagal!",
+                      text: "Tidak dapat menyalin nomor registrasi.",
+                      icon: "error",
+                      confirmButtonText: "OK",
+                    });
+                  });
+              });
+
+            document
+              .getElementById("exportPdfButton")
+              .addEventListener("click", () => {
+                handleExportPDF(newItem);
+              });
+          },
         });
       } else {
         console.error(
@@ -153,7 +194,7 @@ const Layanan = () => {
         );
         setError("Nomor registrasi tidak ditemukan.");
       }
-  
+
       setFormData({
         no_reg: "",
         nama_pelayanan: "",
@@ -167,27 +208,37 @@ const Layanan = () => {
         catatan: "",
         filename: null,
       });
-  
+
       setSuccessMessage("Data berhasil disimpan!");
     } catch (error) {
       setError("Gagal menyimpan data: " + error.message);
     } finally {
       setLoading(false);
     }
+
+    const handleExportPDF = async (item) => {
+      if (!item) {
+        console.error("Data item tidak tersedia untuk export PDF.");
+        return;
+      }
+      const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
+      const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
+      await exportpdf(htmlString, item.no_reg);
+    };
   };
   return (
     <div className="font-family">
-      <Navbar /> 
+      <Navbar />
       <div className="bg-blue-600"></div>
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="font-family ml-8 mt-6 mb-3 text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            <h2 className="font-family ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-gray-800 dark:text-gray-200">
               Buat Permohonan Layanan
             </h2>
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-8">
+            {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-8">
               Cetak Bukti Permohonan
-            </button>
+            </button> */}
           </div>
 
           {error && <div className="text-red-600">{error}</div>}
@@ -205,7 +256,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_reg"
                 >
-                  Nomor Registrasi
+                  NOMOR REGISTRASI
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -213,9 +264,9 @@ const Layanan = () => {
                   type="text"
                   placeholder="Nomor Registrasi"
                   value={formData.no_reg}
-                  onChange={handleChange} 
+                  onChange={handleChange}
                   required
-                  readOnly 
+                  readOnly
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -223,7 +274,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="nama_pelayanan"
                 >
-                  Nama Layanan
+                  NAMA LAYANAN
                 </label>
                 <select
                   className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -247,7 +298,7 @@ const Layanan = () => {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="perihal"
               >
-                Perihal
+                PERIHAL
               </label>
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -266,7 +317,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_surat"
                 >
-                  No. Surat Permohonan
+                  NO,SURAT PERMOHONAN
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -283,7 +334,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="tgl"
                 >
-                  Tanggal Surat Permohonan
+                  TANGGAL SURAT PERMOHONAN
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -302,7 +353,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="nama_pemohon"
                 >
-                  Nama Pemohon
+                  NAMA PEMOHON
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -319,7 +370,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_hp"
                 >
-                  Nomor Handphone
+                  NO.HP PEMOHON
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -339,7 +390,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="alamat"
                 >
-                  Alamat
+                  ALAMAT
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -356,7 +407,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="nama_pengirim"
                 >
-                  Nama Pengirim
+                  NAMA PENGIRIM
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -370,38 +421,34 @@ const Layanan = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="catatan"
-                >
-                  Catatan
-                </label>
-                <textarea
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="catatan"
-                  placeholder="Catatan"
-                  value={formData.catatan}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="filename"
-                >
-                  Upload File
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="filename"
-                  type="file"
-                  onChange={handleChange}
-                  multiple
-                  // required
-                />
-              </div>
+            <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="filename"
+              >
+                UPLOAD BERKAS (PDF)
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                name="filename"
+                type="file"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="catatan"
+              >
+                CATATAN
+              </label>
+              <textarea
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                name="catatan"
+                placeholder="Catatan"
+                value={formData.catatan}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="pl-3 flex items-center justify-between">
@@ -410,7 +457,7 @@ const Layanan = () => {
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 type="submit"
-                disabled={loading} 
+                disabled={loading}
               >
                 {loading ? "Loading..." : "Simpan"}
               </button>
@@ -418,7 +465,7 @@ const Layanan = () => {
           </form>
         </div>
       </div>
-      <Footer /> 
+      <Footer />
     </div>
   );
 };
