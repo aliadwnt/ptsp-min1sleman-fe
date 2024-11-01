@@ -12,6 +12,7 @@ import {
   updateDaftarDisposisi,
   fetchDaftarDisposisi,
 } from "../../services/daftarDisposisiService";
+import { addNotification } from "../../services/notificationService";
 import "../../App";
 
 const DetailDisposisi = () => {
@@ -186,6 +187,14 @@ const DetailDisposisi = () => {
       );
       console.log("Update berhasil:", updatedData);
 
+      const notificationMessage = { 
+        message: `Disposisi #${formData.no_reg} `,
+        diteruskan: formData.diteruskan,
+        disposisi: formData.disposisi,
+        type: "disposisi"
+      };
+      addNotification(notificationMessage);
+
       resetFields();
       alert("Disposisi berhasil diperbarui.");
       fetchDetail();
@@ -215,7 +224,7 @@ const DetailDisposisi = () => {
   }, [no_reg]);
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
+    <div className="bodyadmin flex relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -601,8 +610,8 @@ const DetailDisposisi = () => {
                       />
                     </div>
                     <button
-                      type="button" 
-                      onClick={handleUpdateDisposisi} 
+                      type="button"
+                      onClick={handleUpdateDisposisi}
                       className="w-full mb-6 bg-green-600 text-white rounded-lg py-2 hover:bg-green-700"
                     >
                       Disposisikan

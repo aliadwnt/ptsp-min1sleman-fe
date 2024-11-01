@@ -19,10 +19,14 @@ const UserProfileMenu = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [notifications, setNotifications] = useState([]);
+  const [showAllNotifications, setShowAllNotifications] = useState(false);
   const newNotifications = notifications.filter(
     (notification) => !notification.isRead
   );
-  const [showAllNotifications, setShowAllNotifications] = useState(false);
+  const sortedNotifications = [...newNotifications].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +101,10 @@ const UserProfileMenu = () => {
     setSidebarOpen(!isSidebarOpen);
   };
   return (
-<header className="sticky top-0 bg-[#11ad00] w-full px-6 flex justify-between items-center text-white z-10" style={{ paddingTop: '1.75rem', paddingBottom: '1.92rem' }}>
+    <header
+      className="sticky top-0 bg-[#11ad00] w-full px-6 flex justify-between items-center text-white z-10"
+      style={{ paddingTop: "1.75rem", paddingBottom: "1.92rem" }}
+    >
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -256,7 +263,7 @@ const UserProfileMenu = () => {
             onClick={toggleModal}
           >
             <div
-              className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md "
+              className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center">
@@ -267,7 +274,6 @@ const UserProfileMenu = () => {
                   className="text-sm bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded-md transition duration-150 ease-in-out"
                   onClick={() => {
                     navigate("/user/daftar-notifikasi");
-                    // Logika untuk melihat semua notifikasi
                     console.log("Melihat semua notifikasi:", notifications);
                   }}
                 >
@@ -279,31 +285,52 @@ const UserProfileMenu = () => {
 
               <div className="flex items-start">
                 <ul className="mt-2">
-                  {newNotifications.length > 0 ? (
+                  {sortedNotifications.length > 0 ? (
                     (showAllNotifications
-                      ? newNotifications
-                      : newNotifications.slice(0, 1)
+                      ? sortedNotifications
+                      : sortedNotifications.slice(0, 1)
                     ).map((notification) => (
                       <li
                         key={notification.id}
                         className="text-lg font text-gray-700 mb-3 flex items-start"
                       >
-                        {" "}
                         <ExclamationCircleIcon className="h-10 w-10 text-yellow-500 mr-4 transform translate-y-2" />
                         <div>
-                          <p className="text-sm text-gray-700">
-                            {notification.message.message}
+                          <p className="text-s text-gray-700">
+                            <strong> {notification.message.message}</strong>
                           </p>
-                          <p className="text-sm text-gray-700">
-                            <strong>No Surat:</strong>{" "}
-                            {notification.message.no_surat}
-                          </p>
-                          <p className="text-sm text-gray-700">
-                            <strong>Perihal:</strong>{" "}
-                            {notification.message.perihal}
-                          </p>
+
+                          {/* Untuk Pelayanan */}
+                          {notification.message.no_surat && (
+                            <>
+                              <p className="text-sm text-gray-700">
+                                <strong>No Surat:</strong>{" "}
+                                {notification.message.no_surat}
+                              </p>
+                              <p className="text-sm text-gray-700">
+                                <strong>Perihal:</strong>{" "}
+                                {notification.message.perihal}
+                              </p>
+                            </>
+                          )}
+                          
+                          {/* Untuk Disposisi */}
+                          {notification.message.type === "disposisi" && (
+                            <>
+                              <p className="text-sm text-gray-700">
+                                <strong>Diteruskan:</strong>{" "}
+                                {notification.message.diteruskan}
+                              </p>
+                              <p className="text-sm text-gray-700">
+                                <strong>Disposisi:</strong>{" "}
+                                {notification.message.disposisi ||
+                                  "Tidak ada data"}
+                              </p>
+                            </>
+                          )}
+
                           <p className="text-sm text-gray-500">
-                            <strong>Tanggal Dibuat:</strong>{" "}
+                            <strong>Tgl:</strong>{" "}
                             {new Date(notification.created_at).toLocaleString()}
                           </p>
                         </div>

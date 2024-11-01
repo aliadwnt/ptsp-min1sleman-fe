@@ -104,9 +104,10 @@ const Layanan = () => {
         const newItem = { ...formData, no_reg: generatedNoReg };
         try {
           await addNotification({
-            message: `Layanan baru telah dikirim dengan nomor registrasi: ${generatedNoReg}`,
+            message: `Layanan #${generatedNoReg}`,
             no_surat: formData.no_surat,
             perihal: formData.perihal,
+            type:"pelayanan"
           });
         } catch (notificationError) {
           console.error("Gagal menambahkan notifikasi:", notificationError);
@@ -317,7 +318,7 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_surat"
                 >
-                  NO,SURAT PERMOHONAN
+                  NO.SURAT PERMOHONAN
                 </label>
                 <input
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
