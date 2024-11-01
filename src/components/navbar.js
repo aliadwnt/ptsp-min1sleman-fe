@@ -60,11 +60,11 @@ const Navbar = () => {
       <li key={index}>
         <Link
           to={path}
-          className={`flex flex-col gap-4 my-4 font-poppins font-bold transition-colors duration-300 ease-in-out ${
+          className={`flex flex-col gap-4 my-4 font-poppins transition-colors duration-300 ease-in-out ${
             location.pathname === path
               ? isMobile
-                ? "text-blue-600 font-extrabold" // Different color for mobile active
-                : "text-white font-extrabold" // Color for desktop active
+                ? "text-blue-600 font-bold" // Different color for mobile active
+                : "text-white font-bold" // Color for desktop active
               : isMobile
               ? "text-gray-300 hover:text-blue-500" // Default color for mobile
               : "text-white hover:text-blue-600" // Color for desktop
@@ -186,13 +186,13 @@ const Navbar = () => {
               <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path
                   fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                   clipRule="evenodd"
                 />
               </svg>
             </button>
             {isOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition duration-150 ease-in-out">
+              <div className="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                 <div className="py-1" role="menu">
                   {formData ? (
                     <>
@@ -201,13 +201,22 @@ const Navbar = () => {
                         <div className="text-sm font-medium text-gray-500">{formData.email}</div>
                       </div>
                       <div className="border-t border-gray-200"></div>
-                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/dashboard")}>
+                      <button
+                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        onClick={() => navigate("/dashboard")}
+                      >
                         Dashboard
                       </button>
-                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/user/settings")}>
+                      <button
+                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        onClick={() => navigate("/user/settings")}
+                      >
                         Settings
                       </button>
-                      <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => navigate("/profile/edit")}>
+                      <button
+                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                        onClick={() => navigate("/profile/edit")}
+                      >
                         Profile
                       </button>
                       <button className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={handleLogout}>
@@ -215,7 +224,11 @@ const Navbar = () => {
                       </button>
                     </>
                   ) : (
-                    <Link to="/login" className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" onClick={() => setIsOpen(false)}>
+                    <Link
+                      to="/login"
+                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      onClick={() => setIsOpen(false)}
+                    >
                       Login
                     </Link>
                   )}
