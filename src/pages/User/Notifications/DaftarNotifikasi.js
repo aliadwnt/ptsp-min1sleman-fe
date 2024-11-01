@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/sidebar";
 import Header from "../../../components/header";
-import { fetchNotification } from "../../../services/notificationService";
+import {
+  fetchNotification,
+  markNotificationAsRead,
+} from "../../../services/notificationService";
+
 import "../../../App.css";
 
 const Notifications = () => {
@@ -10,22 +14,60 @@ const Notifications = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetchData(); 
+    fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
       const response = await fetchNotification();
       console.log("Fetched notifications:", response);
-      setNotifications(response.notifications);
+
+      const sortedNotifications = response.notifications.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      setNotifications(sortedNotifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
+
+  const handleMarkAsRead = async (notification) => {
+    if (!notification || !notification.id) {
+      console.error("Notification is invalid:", notification);
+      return;
+    }
+
+    try {
+      const result = await markNotificationAsRead(notification.id);
+      console.log(result.message);
+
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notif) =>
+          notif.id === notification.id ? { ...notif, isRead: true } : notif
+        )
+      );
+    } catch (error) {
+      console.error("Failed to mark notification as read:", error);
+    }
+  };
+
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+
+    if (interval > 1) return `${interval} hari yang lalu`;
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) return `${interval} jam yang lalu`;
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) return `${interval} menit yang lalu`;
+    return `${seconds} detik yang lalu`;
+  };
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-  
+
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
       {/* Sidebar */}
@@ -80,22 +122,72 @@ const Notifications = () => {
                       {Notifications.length > 0 ? (
                         Notifications.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-4 py-2 text-center">
+                            <td className="px-4 py-2 text-sm text-center">
                               {index + 1}
                             </td>
-                            <td className="px-6 py-2 text-center">
+                            <td className="px-6 py-2 text-sm text-center">
                               {new Date(item.created_at).toLocaleString()}
                             </td>
                             <td className="px-6 py-2 text-center">
-                              {item.message.perihal}
+                              {item.message.type === "disposisi" ? (
+                                <div>
+                                  <strong className="text-sm text-gray-700">
+                                    {item.message.message ||
+                                      "Tidak ada pesan disposisi"}
+                                    :
+                                  </strong>
+                                  <p className="text-sm text-gray-700">
+                                    {item.message.disposisi ||
+                                      "Tidak ada informasi"}
+                                  </p>
+                                  <p className="text-sm text-gray-700">
+                                    {item.message.diteruskan ||
+                                      "Tidak ada informasi"}
+                                  </p>
+                                  <span className="text-xs text-gray-500">
+                                    {timeAgo(item.created_at)}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div>
+                                  <strong className="text-sm text-gray-700">
+                                    {item.message.message ||
+                                      "Tidak ada pesan layanan"}
+                                    :
+                                  </strong>
+                                  <p className="text-sm text-gray-700">
+                                    <strong>No Surat:</strong>{" "}
+                                    {item.message.no_surat ||
+                                      "Tidak ada nomor surat"}
+                                  </p>
+                                  <p className="text-sm text-gray-700">
+                                    <strong>Perihal:</strong>{" "}
+                                    {item.message.perihal ||
+                                      "Tidak ada perihal"}
+                                  </p>
+                                  <span className="text-xs text-gray-500">
+                                    {timeAgo(item.created_at)}
+                                  </span>
+                                </div>
+                              )}
                             </td>
                             <td className="px-6 py-2 text-center">
-                              <button
-                                type="button"
-                                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-                              >
-                                <i className="fas fa-search"></i>
-                              </button>
+                              <td>
+                                <button
+                                  onClick={() => {
+                                    console.log("Item yang diklik:", item);
+                                    handleMarkAsRead(item);
+                                  }}
+                                >
+                                  <i
+                                    className={`fa fa-eye ${
+                                      item.isRead
+                                        ? "text-gray-400"
+                                        : "text-green-600"
+                                    }`}
+                                  ></i>
+                                </button>
+                              </td>
                             </td>
                           </tr>
                         ))
@@ -118,4 +210,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications; 
+export default Notifications;

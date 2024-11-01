@@ -11,7 +11,7 @@ export const fetchNotification = async () => {
   }
 };
 
-export const addNotification = async (message, no_surat, perihal) => {
+export const addNotification = async (message, no_surat, perihal, disposisi, diteruskan) => {
   try {
     const response = await axios.post(
       API_URL,
@@ -19,6 +19,8 @@ export const addNotification = async (message, no_surat, perihal) => {
         message,
         no_surat,
         perihal,
+        disposisi,
+        diteruskan,
       },
       {
         headers: {
@@ -31,5 +33,15 @@ export const addNotification = async (message, no_surat, perihal) => {
   } catch (error) {
     console.error("Failed to add notification:", error);
     throw error;
+  }
+
+};
+export const markNotificationAsRead = async (id) => {
+  try {
+    const response = await axios.patch(`${API_URL}/mark-as-read/${id}`, { isRead: true });
+    return response.data;
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+    throw error; 
   }
 };
