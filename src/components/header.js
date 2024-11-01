@@ -26,8 +26,8 @@ const UserProfileMenu = () => {
   const sortedNotifications = [...newNotifications].sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
-
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,6 +72,12 @@ const UserProfileMenu = () => {
     };
 
     getNotifications();
+
+    const interval = setInterval(() => {
+      getNotifications();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const toggleShowAll = () => {
@@ -313,7 +319,7 @@ const UserProfileMenu = () => {
                               </p>
                             </>
                           )}
-                          
+
                           {/* Untuk Disposisi */}
                           {notification.message.type === "disposisi" && (
                             <>
