@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../images/logo-kemenag.png";
 import "../App.css";
@@ -7,6 +7,7 @@ const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
+  const dropdownRef = useRef(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -14,9 +15,24 @@ const Sidebar = () => {
 
   const getLinkClass = (path) => {
     return location.pathname === path
-      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-700 dark:text-white"
-      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700";
+      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-100 dark:text-gray-700"
+      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-200";
   };
+
+  const toggleDropdown = () => {
+    setOpenDropdown((prev) => (prev === "surat" ? null : "surat"));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,7 +75,7 @@ const Sidebar = () => {
       <aside
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0 bg-white dark:bg-gray-800`}
+        } sm:translate-x-0 bg-white dark:bg-gray-200`}
         aria-label="Sidebar"
       >
         <Link to="/" className="sidebar-header block p-4">
@@ -73,8 +89,8 @@ const Sidebar = () => {
         </Link>
 
         <div
-          className="overflow-y-auto h-full dark:bg-gray-800 dark:border-gray-700"
-          style={{ maxHeight: "calc(100vh - 56px)" }} // Adjust if header height changes
+          className="overflow-y-auto h-full bg-white border-gray-300"
+          style={{ maxHeight: "calc(100vh - 56px)" }}
         >
           <div>
             <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Home</b></div>
@@ -95,17 +111,13 @@ const Sidebar = () => {
 
             {/* Dropdown for Surat Menyurat */}
             <div
-              onMouseEnter={() => setOpenDropdown("surat")}
-              onMouseLeave={() => setOpenDropdown(null)}
-              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left cursor-pointer`}
+              onClick={toggleDropdown}
+              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-00 w-full text-left cursor-pointer`}
+              ref={dropdownRef}
             >
               <i className="fas fa-envelope mr-2"></i> Surat Menyurat
               {openDropdown === "surat" && (
-                <div
-                  className="ml-4"
-                  onMouseEnter={() => setOpenDropdown("surat")}
-                  onMouseLeave={() => setOpenDropdown(null)}
-                >
+                <div className="ml-4">
                   <Link to="/surat/surat-masuk" className={getLinkClass("/surat/surat-masuk")}>
                     <i className="fas fa-inbox mr-2"></i> Surat Masuk
                   </Link>

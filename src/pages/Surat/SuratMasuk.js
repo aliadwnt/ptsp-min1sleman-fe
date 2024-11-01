@@ -128,7 +128,7 @@ const SuratMasuk = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Surat Masuk</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Surat Masuk</div>
 
           {message && (
             <div
@@ -163,7 +163,7 @@ const SuratMasuk = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>Tambah
+                <i className="fas fa-plus"></i>Tambah
               </button>
             </form>
           </div>
@@ -173,36 +173,36 @@ const SuratMasuk = () => {
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                 <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           No Agenda
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           No Surat
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Tanggal Surat
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Pengirim
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Penerima
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Disposisi
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Surat
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Lampiran
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -271,7 +271,7 @@ const SuratMasuk = () => {
                         <tr>
                           <td
                             colSpan="10"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
                           >
                             No data available
                           </td>

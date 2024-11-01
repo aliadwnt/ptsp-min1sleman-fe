@@ -84,7 +84,7 @@ const Layanan = () => {
     setSidebarOpen(!isSidebarOpen);
   };
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
+    <div className="min-h-screen bg-gray-50 m-0 flex relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -100,7 +100,7 @@ const Layanan = () => {
       >
         <Header />
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-          <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+          <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-900">
             Tambah Daftar Pelayanan
           </h2>
           {error && <div className="text-red-600">{error}</div>}
@@ -114,7 +114,7 @@ const Layanan = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* NOMOR REGISTRASI */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   NOMOR REGISTRASI
                 </label>
                 <input
@@ -131,7 +131,7 @@ const Layanan = () => {
 
               {/* Nama Layanan */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Nama Layanan
                 </label>
                 <select
@@ -152,7 +152,7 @@ const Layanan = () => {
 
               {/* Perihal */}
               <div className="md:col-span-2">
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Perihal
                 </label>
                 <input
@@ -168,7 +168,7 @@ const Layanan = () => {
 
               {/* No. Surat dan Tanggal */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   No. Surat Permohonan
                 </label>
                 <input
@@ -182,7 +182,7 @@ const Layanan = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Tanggal Surat Permohonan
                 </label>
                 <input
@@ -197,7 +197,7 @@ const Layanan = () => {
 
               {/* Nama Pemohon dan Nomor HP */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Nama Pemohon
                 </label>
                 <input
@@ -211,7 +211,7 @@ const Layanan = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Nomor Handphone
                 </label>
                 <input
@@ -227,7 +227,7 @@ const Layanan = () => {
 
               {/* Alamat dan Nama Pengirim */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Alamat
                 </label>
                 <input
@@ -241,7 +241,7 @@ const Layanan = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Nama Pengirim
                 </label>
                 <input
@@ -257,7 +257,7 @@ const Layanan = () => {
 
               {/* Catatan dan Upload File */}
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Catatan
                 </label>
                 <textarea
@@ -269,7 +269,7 @@ const Layanan = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Upload File
                 </label>
                 <input
@@ -284,7 +284,7 @@ const Layanan = () => {
             {/* Button */}
             <div className="flex items-center justify-between mt-6">
               <button
-                className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+                className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 type="submit"

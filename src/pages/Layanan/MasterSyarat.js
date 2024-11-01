@@ -122,14 +122,14 @@ const MasterSyarat = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Master Syarat Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Master Syarat Layanan</div>
 
           {message && (
             <div
               className={`p-4 m-8 text-sm rounded-lg ${
                 isError
-                  ? "text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                  : "text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                  ? "text-red-800 bg-red-50 dark:bg-red-50 dark:text-red-800"
+                  : "text-green-800 bg-green-50 dark:bg-green-50 dark:text-green-800"
               }`}
               role="alert"
             >
@@ -161,8 +161,8 @@ const MasterSyarat = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>
-                <span className="hidden md:inline">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="hidden md:inline ml-1">Tambah</span>
               </button>
             </form>
           </div>
@@ -172,15 +172,15 @@ const MasterSyarat = () => {
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                 <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Master Syarat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -189,10 +189,10 @@ const MasterSyarat = () => {
                       {dataMasterSyarat.length > 0 ? (
                         dataMasterSyarat.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
                               {index + 1}
                             </td>
-                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.name}
                             </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

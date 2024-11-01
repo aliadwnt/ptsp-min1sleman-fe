@@ -154,17 +154,24 @@ const DaftarLayanan = () => {
       >
         <Header />
         <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0">
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Layanan</div>
 
           {message && (
-            <div
-             className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
-              role="alert"
-            >
-              <span className="font-medium">Sukses: </span>
-              {message}
-            </div>
-          )}
+  <div
+    className={`p-4 m-8 text-sm rounded-lg ${
+      message.type === "success"
+        ? "text-green-800 bg-green-50"
+        : "text-red-800 bg-red-50"
+    }`}
+    role="alert"
+  >
+    <span className="font-medium">
+      {message.type === "success" ? "Sukses: " : "Error: "}
+    </span>
+    {message.text}
+  </div>
+)}
+
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
@@ -190,53 +197,58 @@ const DaftarLayanan = () => {
                 type="button"
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>
-                <span className="hidden md:inline">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="hidden md:inline ml-1">Tambah</span>
               </button>
             </form>
           </div>
 
-          <div className="flex flex-col mx-auto max-w-5xl sm:px-6 lg:px-8">
+          <div className="flex flex-col mx-auto max-w-4xl sm:px-6 lg:px-8">
   <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
     <div className="overflow-hidden">
-      <div className="min-w-full border border-gray-200 rounded-lg shadow">
-        <div className="overflow-x-auto"> 
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+    <div className="overflow-x-auto">
+          <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
               <tr>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Unit Pengolah</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Layanan</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jenis Layanan</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Output Layanan</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Durasi Layanan</th>
-                <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">No</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Unit Pengolah</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Nama Layanan</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Jenis Layanan</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Output Layanan</th>
+                <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Durasi Layanan</th>
+                <th className="px-3 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {dataDaftarLayanan.length > 0 ? (
                 dataDaftarLayanan.map((item, index) => (
                   <tr key={item.id}>
-                    <td className="px-2 py-3 text-xs font-medium text-center text-gray-900">{index + 1}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.unit}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.name}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.jenis}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.output}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">{item.duration}</td>
-                    <td className="px-2 py-3 text-xs text-center text-gray-900">
+                    <td className="px-2 py-6 text-xs font-medium text-center text-gray-900">{index + 1}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">{item.unit}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">{item.name}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">{item.jenis}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">{item.output}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">{item.duration}</td>
+                    <td className="px-2 py-6 text-xs text-center text-gray-900">
                       <button onClick={() => handleEdit(item)} className="focus:outline-none mr-auto" style={{ background: "none", border: "none", padding: 0 }}>
                         <i className="fas fa-edit text-green-600"></i>
                       </button>
                       <button onClick={() => handleDelete(item.id)} className="focus:outline-none" style={{ background: "none", border: "none", padding: 0 }}>
-                        <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                        <i className="ml-1 fas fa-trash text-red-600 hover:text-red-900"></i>
                       </button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center py-4 text-gray-500">Tidak ada data ditemukan</td>
-                </tr>
+                          <td
+                            colSpan="3"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
+                          >
+                            No data available
+                          </td>
+                        </tr>
               )}
             </tbody>
           </table>

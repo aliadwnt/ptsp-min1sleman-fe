@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
+import { UploadIcon } from '@heroicons/react/outline'; 
 
 import {
   fetchArsipLayanan,
@@ -163,7 +164,7 @@ const ArsipLayanan = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Arsip Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Arsip Layanan</div>
           {message && (
             <div
               className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
@@ -195,168 +196,174 @@ const ArsipLayanan = () => {
             </form>
           </div>
 
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <div className="overflow-y-auto max-h-96 md:max-h-80">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                      <thead className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                        <tr>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            No
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Nomor Registrasi
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Nama Layanan
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Perihal
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Arsip Masuk
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Arsip Keluar
-                          </th>
-                          <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                        {dataArsipLayanan.length > 0 ? (
-                          dataArsipLayanan.map((item, index) => (
-                            <tr key={item.id}>
-                              <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
-                                {index + 1}
-                              </td>
-                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.no_reg}
-                              </td>
-                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.nama_pelayanan}
-                              </td>
-                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.perihal}
-                              </td>
-                              <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.arsip_masuk ? (
-                                  <>
-                                    <a
-                                      href={item.arsip_masuk}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="bg-gray-500 text-white py-1 px-2 rounded mr-2"
-                                    >
-                                      Preview
-                                    </a>
+          <div className="flex justify-center">
+  <div className="w-full max-w-4xl">
+    <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead className="bg-gray-50 dark:bg-gray-200">
+          <tr>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              No
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Nomor Registrasi
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Nama Layanan
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Perihal
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Arsip Masuk
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Arsip Keluar
+            </th>
+            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+          
+          {dataArsipLayanan.length > 0 ? (
+            dataArsipLayanan.map((item, index) => (
+              <tr key={item.id}>
+                <td className="px-2 sm:px-4 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                  {index + 1}
+                </td>
+                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {item.no_reg}
+                </td>
+                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {item.nama_pelayanan}
+                </td>
+                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {item.perihal}
+                </td>
+                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {item.arsip_masuk ? (
+                    <>
+                      <a
+                        href={item.arsip_masuk}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-800 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                      >
+                        Preview
+                      </a>
+                      <input
+                        type="file"
+                        id={`uploadKeluar-${item.id}`}
+                        onChange={(e) => handleChange(e, "keluar", item.id)}
+                        className="hidden"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        type="file"
+                        id={`uploadMasuk-${item.id}`}
+                        onChange={(e) => 
+                          handleChange(e, "masuk", item.id)
+                        }
+                        className="hidden"
+                      />
+                      <button
+                                  onClick={() =>
+                          document
+                            .getElementById(
+                              `uploadMasuk-${item.id}`
+                            )
+                            .click()
+                          }
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Delete"
+                                >
+                                  <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                </button>
+                    </>
+                  )}
+                </td>
+                <td className="px-2 sm:px-4 py-2 text-xs text-center text-gray-900 dark:text-gray-400">
+                  {item.arsip_keluar ? (
+                    <>
+                      <a
+                        href={item.arsip_keluar}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-800 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                      >
+                        Preview
+                      </a>
 
-                                    <input
-                                      type="file"
-                                      id={`uploadKeluar-${item.id}`}
-                                      onChange={(e) =>
-                                        handleChange(e, "keluar", item.id)
-                                      }
-                                      className="hidden"
-                                    />
-                                  </>
-                                ) : (
-                                  <>
-                                    <input
-                                      type="file"
-                                      id={`uploadMasuk-${item.id}`}
-                                      onChange={(e) =>
-                                        handleChange(e, "masuk", item.id)
-                                      }
-                                      className="hidden"
-                                    />
-                                    <button
-                                      onClick={() =>
-                                        document
-                                          .getElementById(
-                                            `uploadMasuk-${item.id}`
-                                          )
-                                          .click()
-                                      }
-                                      className="bg-green-500 text-white py-1 px-2 rounded"
-                                    >
-                                      Upload
-                                    </button>
-                                  </>
-                                )}
-                              </td>
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.arsip_keluar ? (
-                                  <>
-                                    <a
-                                      href={item.arsip_keluar}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="bg-gray-500 text-white py-1 px-2 rounded mr-2"
-                                    >
-                                      Preview
-                                    </a>
+                      <input
+                        type="file"
+                        id={`uploadKeluar-${item.id}`}
+                        onChange={(e) => 
+                          handleChange(e, "keluar", item.id)
+                        }
+                        className="hidden"
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <input
+                        type="file"
+                        id={`uploadKeluar-${item.id}`}
+                        onChange={(e) =>
+                           handleChange(e, "keluar", item.id)
+                          }
+                        className="hidden"
+                      />
+                      <button
+                                  onClick={() =>
+                          document
+                            .getElementById(
+                              `uploadKeluar-${item.id}`
+                            )
+                            .click()
+                          }
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Delete"
+                                >
+                                  <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                </button>
+                    </>
+                  )}
+                </td>
+                <td className="px-2 sm:px-4 py-2 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {item.status}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="7"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
+              >
+                No data available
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-                                    <input
-                                      type="file"
-                                      id={`uploadKeluar-${item.id}`}
-                                      onChange={(e) =>
-                                        handleChange(e, "keluar", item.id)
-                                      }
-                                      className="hidden"
-                                    />
-                                  </>
-                                ) : (
-                                  <>
-                                    <input
-                                      type="file"
-                                      id={`uploadKeluar-${item.id}`}
-                                      onChange={(e) =>
-                                        handleChange(e, "keluar", item.id)
-                                      }
-                                      className="hidden"
-                                    />
-                                    <button
-                                      onClick={() =>
-                                        document
-                                          .getElementById(
-                                            `uploadKeluar-${item.id}`
-                                          )
-                                          .click()
-                                      }
-                                      className="bg-green-500 text-white py-1 px-2 rounded"
-                                    >
-                                      Upload
-                                    </button>
-                                  </>
-                                )}
-                              </td>
-
-                              <td className="px-1 py-1 text-xs text-center text-gray-900 dark:text-gray-400">
-                                {item.status}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td
-                              colSpan="7"
-                              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                            >
-                              No data available
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>  
-          </div>
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@ const LoginForm = () => {
       >
         <h2 className="font-family font-bold text-2xl text-center text-gray-800 mb-2">LOGIN</h2>
         <h5 className="font-family text-center text-gray-900 text-base mb-3 font-bold">PTSP MIN 1 SLEMAN</h5>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {errorMessage && <p className="text-red-500 mb-2 font-bold">{errorMessage}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-2">
             <label htmlFor="email" className="font-family text-m block mb-1 font-medium text-gray-800">Email:</label>

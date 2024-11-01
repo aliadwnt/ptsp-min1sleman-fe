@@ -205,31 +205,30 @@ const DaftarPelayanan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
-      <div
-        className={`fixed inset-y-0 left-0 transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
-      >
-        <Sidebar toggleSidebar={toggleSidebar} />
-      </div>
-      <div
-        className={`flex-1 transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "lg:ml-64" : "ml-0"
-        } pl-4 lg:pl-64`}
-      >
-        <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Pelayanan</div>
-          {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-              role="alert"
-            >
-              <span className="font-medium">Sukses </span>
-              {message}
-            </div>
-          )}
+    <div className="min-h-screen bg-gray-100 flex flex-col lg:flex-row">
+    <div
+      className={`fixed inset-y-0 center-0 transform ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+    >
+      <Sidebar toggleSidebar={toggleSidebar} />
+    </div>
+    <div
+      className={`flex-1 lg:ml-64 transition-all duration-300 ease-in-out ${
+        isSidebarOpen ? "ml-0" : "ml-0"
+      }`}
+    >
+      <Header />
+          <div className="p-4">
+        <div className="text-xl font-semibold text-gray-800 mb-4">
+          Daftar Pelayanan
+        </div>
+        {message && (
+          <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span className="font-medium">Sukses </span>
+            {message}
+          </div>
+        )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
@@ -254,177 +253,160 @@ const DaftarPelayanan = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>
-                <span className="hidden md:inline">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="hidden md:inline ml-1">Tambah</span>
               </button>
             </form>
           </div>
           <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="flex mx-auto max-w-7xl sm:px-6 lg:px-8 -mb-2">
-                  <ul
-                    className="flex flex-wrap -mb-px text-sm font-medium text-center"
-                    id="default-tab"
-                    data-tabs-toggle="#default-tab-content"
-                    role="tablist"
-                    style={{ listStyle: "none" }}
-                  >
-                    <li
-                      className="mb-2 me-16 relative group"
-                      role="presentation"
+              <div className="flex flex-col w-full sm:w-1/2 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
+                <ul
+                  className="flex justify-between sm:justify-center -mb-px text-sm font-medium text-center"
+                  id="default-tab"
+                  data-tabs-toggle="#default-tab-content"
+                  role="tablist"
+                  style={{ listStyle: "none" }}
+                >
+                  <li className="mb-2 sm:mb-0 flex-1 text-center relative group" role="presentation">
+                    <button
+                      className={`inline-block p-2 border-b-3 w-auto ${
+                        activeTab === "all" ? "border-green-900 text-black-600" : ""
+                      }`}
+                      id="all-tab"
+                      onClick={() => handleTabChange("all")}
+                      type="button"
+                      role="tab"
+                      aria-controls="all"
+                      aria-selected={activeTab === "all"}
                     >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-20 rounded-t-lg ${
-                          activeTab === "all"
-                            ? "border-green-900 text-black-600"
-                            : ""
-                        }`}
-                        id="all-tab"
-                        onClick={() => handleTabChange("all")}
-                        type="button"
-                        role="tab"
-                        aria-controls="all"
-                        aria-selected={activeTab === "all"}
-                      >
-                        <i className="fas fa-list mr-2"></i>
-                        <span className="ml-2 text-[16px]">{countAll}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        Semua
-                      </span>
-                    </li>
-                    <li
-                      className="mb-8 me-16 relative group"
-                      role="presentation"
-                    >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-20 rounded-t-lg ${
-                          activeTab === "all"
-                            ? "border-green-900 text-black-600"
-                            : ""
-                        }`}
-                        id="accept-tab"
-                        onClick={() => handleTabChange("accept")}
-                        type="button"
-                        role="tab"
-                        aria-controls="accept"
-                        aria-selected={activeTab === "accept"}
-                      >
-                        <i className="fas fa-file text-green-600 mr-2"></i>
-                        <span className="ml-2 text-[16px]">{countBaru}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        Baru
-                      </span>
-                    </li>
+                      <i className="fas fa-list mr-2"></i>
+                      <span className="ml-2 text-[16px]">{countAll}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      Semua
+                    </span>
+                  </li>
 
-                    <li
-                      className="mb-20 me-16 relative group"
-                      role="presentation"
+                  {/* Tab Baru */}
+                  <li className="mb-2 sm:mb-0 flex-1 text-center relative group" role="presentation">
+                    <button
+                      className={`inline-block p-2 border-b-3 w-auto ${
+                        activeTab === "accept" ? "border-green-900 text-black-600" : ""
+                      }`}
+                      id="accept-tab"
+                      onClick={() => handleTabChange("accept")}
+                      type="button"
+                      role="tab"
+                      aria-controls="accept"
+                      aria-selected={activeTab === "accept"}
                     >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-20 rounded-t-lg ${
-                          activeTab === "all"
-                            ? "border-green-900 text-black-600"
-                            : ""
-                        }`}
-                        id="verify-tab"
-                        onClick={() => handleTabChange("verify")}
-                        type="button"
-                        role="tab"
-                        aria-controls="verify"
-                        aria-selected={activeTab === "verify"}
-                      >
-                        <i className="fas fa-check-circle text-blue-600 mr-2"></i>
-                        <span className="ml-2 text-[16px]">{countProses}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        Proses
-                      </span>
-                    </li>
+                      <i className="fas fa-file text-green-600 mr-2"></i>
+                      <span className="ml-2 text-[16px]">{countBaru}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      Baru
+                    </span>
+                  </li>
 
-                    <li
-                      className="mb-20 me-16 relative group"
-                      role="presentation"
+                  {/* Tab Proses */}
+                  <li className="mb-2 sm:mb-0 flex-1 text-center relative group" role="presentation">
+                    <button
+                      className={`inline-block p-2 border-b-3 w-auto ${
+                        activeTab === "verify" ? "border-green-900 text-black-600" : ""
+                      }`}
+                      id="verify-tab"
+                      onClick={() => handleTabChange("verify")}
+                      type="button"
+                      role="tab"
+                      aria-controls="verify"
+                      aria-selected={activeTab === "verify"}
                     >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-20 rounded-t-lg ${
-                          activeTab === "all"
-                            ? "border-green-900 text-black-600"
-                            : ""
-                        }`}
-                        id="notverify-tab"
-                        onClick={() => handleTabChange("notverify")}
-                        type="button"
-                        role="tab"
-                        aria-controls="notverify"
-                        aria-selected={activeTab === "notverify"}
-                      >
-                        <i className="fas fa-clock text-red-600 mr-2"></i>
-                        <span className="ml-2 text-[16px]">{countSelesai}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        Selesai
-                      </span>
-                    </li>
+                      <i className="fas fa-check-circle text-blue-600 mr-2"></i>
+                      <span className="ml-2 text-[16px]">{countProses}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      Proses
+                    </span>
+                  </li>
 
-                    <li
-                      className="mb-20 me-14 relative group"
-                      role="presentation"
+                  {/* Tab Selesai */}
+                  <li className="mb-2 sm:mb-0 flex-1 text-center relative group" role="presentation">
+                    <button
+                      className={`inline-block p-2 border-b-3 w-auto ${
+                        activeTab === "notverify" ? "border-green-900 text-black-600" : ""
+                      }`}
+                      id="notverify-tab"
+                      onClick={() => handleTabChange("notverify")}
+                      type="button"
+                      role="tab"
+                      aria-controls="notverify"
+                      aria-selected={activeTab === "notverify"}
                     >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-20 rounded-t-lg ${
-                          activeTab === "all"
-                            ? "border-green-900 text-black-600"
-                            : ""
-                        }`}
-                        id="pass-tab"
-                        onClick={() => handleTabChange("pass")}
-                        type="button"
-                        role="tab"
-                        aria-controls="pass"
-                        aria-selected={activeTab === "pass"}
-                      >
-                        <i className="fas fa-user-check text-yellow-500 mr-2"></i>
-                        <span className="ml-2 text-[16px]">{countAmbil}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        Ambil
-                      </span>
-                    </li>
-                  </ul>
-                  <div id="default-tab-content" className="mt-4">
-                    {activeTab === "all" && <div></div>}
-                    {activeTab === "accept" && <div></div>}
-                    {activeTab === "verify" && <div></div>}
-                    {activeTab === "notverify" && <div></div>}
-                    {activeTab === "pass" && <div></div>}
-                  </div>
+                      <i className="fas fa-clock text-red-600 mr-2"></i>
+                      <span className="ml-2 text-[16px]">{countSelesai}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      Selesai
+                    </span>
+                  </li>
+
+                  {/* Tab Ambil */}
+                  <li className="mb-2 sm:mb-0 flex-1 text-center relative group" role="presentation">
+                    <button
+                      className={`inline-block p-2 border-b-3 w-auto ${
+                        activeTab === "pass" ? "border-green-900 text-black-600" : ""
+                      }`}
+                      id="pass-tab"
+                      onClick={() => handleTabChange("pass")}
+                      type="button"
+                      role="tab"
+                      aria-controls="pass"
+                      aria-selected={activeTab === "pass"}
+                    >
+                      <i className="fas fa-user-check text-yellow-500 mr-2"></i>
+                      <span className="ml-2 text-[16px]">{countAmbil}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      Ambil
+                    </span>
+                  </li>
+                </ul>
+
+                <div id="default-tab-content" className="mt-4">
+                  {activeTab === "all" && <div></div>}
+                  {activeTab === "accept" && <div></div>}
+                  {activeTab === "verify" && <div></div>}
+                  {activeTab === "notverify" && <div></div>}
+                  {activeTab === "pass" && <div></div>}
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
+              </div>
+              <div className="flex justify-center">
+  <div className="w-full max-w-4xl">
+    <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
+      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Nomor Registrasi
                         </th>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Nama Layanan
                         </th>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Perihal
                         </th>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider hidden md:table-cell">
                           Kelengkapan
                         </th>
-                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                        <th className="px-3 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider hidden md:table-cell">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-14 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -433,22 +415,22 @@ const DaftarPelayanan = () => {
                       {dataDaftarPelayanan.length > 0 ? (
                         dataDaftarPelayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-3 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-3 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
                               {index + 1}
                             </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.no_reg}
                             </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.nama_pelayanan}
                             </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.perihal}
                             </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400 hidden md:table-cell">
+                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900 hidden md:table-cell">
                               {item.kelengkapan}
                             </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-400 hidden md:table-cell">
+                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900 hidden md:table-cell">
                               {(() => {
                                 if (item.status === "baru") {
                                   return (
@@ -572,6 +554,8 @@ const DaftarPelayanan = () => {
                   </table>
                 </div>
               </div>
+            </div>
+            </div>
             </div>
           </div>
 

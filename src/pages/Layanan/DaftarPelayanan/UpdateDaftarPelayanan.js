@@ -111,7 +111,7 @@ const LayananUpdate = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
+    <div className="min-h-screen  bg-gray-50 pb-0 m-0een  m-0 flex relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -126,8 +126,8 @@ const LayananUpdate = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-          <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+        <div className=" py-2 space-y-2 sm:py-8 sm:space-y-8">
+          <h2 className="ml-8 mt-6 mb-10 font-poppins text-xl font-semibold leading-tight text-gray-800 dark:text-gray-900">
             Update Permohonan Layanan
           </h2>
           {error && <div className="text-red-600">{error}</div>}
@@ -383,7 +383,7 @@ const LayananUpdate = () => {
             </div>
             <div className="flex items-center justify-between">
               <button
-                className={`bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+                className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
                   loading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 type="submit"

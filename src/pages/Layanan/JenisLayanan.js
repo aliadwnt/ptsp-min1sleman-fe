@@ -160,24 +160,24 @@ try {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>
-                <span className="hidden md:inline">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="hidden md:inline ml-1">Tambah</span>
               </button>
             </form>
           </div>
 
           <div className="overflow-x-auto">
-            <div className="min-w-full border border-gray-200 rounded-lg shadow">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50 sticky top-0">
+          <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
                   <tr>
-                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                       No
                     </th>
-                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                       Nama Layanan
                     </th>
-                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                       Aksi
                     </th>
                   </tr>

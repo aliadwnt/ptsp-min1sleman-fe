@@ -60,7 +60,7 @@ const Navbar = () => {
       <li key={index}>
         <Link
           to={path}
-          className={`txt transition-colors duration-300 ease-in-out ${
+          className={`flex flex-col gap-4 my-4 font-poppins font-bold transition-colors duration-300 ease-in-out ${
             location.pathname === path
               ? isMobile
                 ? "text-blue-600 font-extrabold" // Different color for mobile active

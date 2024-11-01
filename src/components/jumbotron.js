@@ -9,10 +9,10 @@ import '../App.css';
 const Jumbotron = () => {
   return (
     <div className="jumbotron">
-      <img src={jumbotronImage} alt="Background Image" className="jumbotron-bg" />
+      <img src={jumbotronImage} alt="Background Image" className="w-full h-auto absolute top-0 left-0 -z-10" />
 
-      <div className="heading">
-        <div className="txt">
+      <div className="relative z-0 p-2">
+        <div className="flex flex-col gap-4 my-4 font-poppins font-bold">
           <div className="selamat-datang-di-ptsp">Selamat Datang di</div>
           <div className="ptsp-container">
             <div className="ptsp">PTSP</div>

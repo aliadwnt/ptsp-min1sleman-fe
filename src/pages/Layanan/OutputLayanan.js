@@ -31,14 +31,12 @@ const OutputLayanan = () => {
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     const filteredData = dataOutputLayanan.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      String(item.name || "").toLowerCase().includes(searchTerm.toLowerCase())
     );
-    dataOutputLayanan(filteredData);
+    setOutputLayanan(filteredData);
   };
 
   const handleDelete = async (id) => {
@@ -62,26 +60,32 @@ const OutputLayanan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name } = e.target.elements;
-
-    const OutputLayanan = {
-      name: name.value,
-    };
-
+    const OutputLayanan = { name: name.value };
+  
+    const isDuplicate = dataOutputLayanan.some(
+      (item) => item.name.toLowerCase() === OutputLayanan.name.toLowerCase()
+    );
+  
+    if (isDuplicate) {
+      setMessage({ type: "error", text: "Data sudah ada, Masukkan Data yang lain" });
+      return; 
+    }
+  
     try {
       if (currentOutputLayanan) {
         await updateOutputLayanan(currentOutputLayanan.id, OutputLayanan);
-        setMessage("Data berhasil diupdate");
+        setMessage({ type: "success", text: "Data berhasil diupdate" });
       } else {
         await createOutputLayanan(OutputLayanan);
-        setMessage("Data berhasil ditambahkan");
+        setMessage({ type: "success", text: "Data berhasil ditambahkan" });
       }
       fetchData();
       setModalOpen(false);
     } catch (error) {
-      console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
+      console.error("Gagal menyimpan data:", error);
+      setMessage({ type: "error", text: "Gagal menyimpan data" });
     }
-  };
+  };  
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -93,13 +97,13 @@ const OutputLayanan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
+    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
@@ -108,18 +112,22 @@ const OutputLayanan = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Output Layanan</div>
-
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Output Layanan</div>
           {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-              role="alert"
-            >
-              <span className="font-medium">Sukses </span>
-              {message}
-            </div>
-          )}
-
+        <div
+          className={`p-4 m-8 text-sm rounded-lg ${
+            message.type === "success"
+              ? "text-green-800 bg-green-50"
+              : "text-red-800 bg-red-50"
+          }`}
+          role="alert"
+        >
+          <span className="font-medium">
+            {message.type === "success" ? "Sukses: " : "Error: "}
+          </span>
+          {message.text}
+        </div>
+      )}
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
               onSubmit={handleSearch}
@@ -154,15 +162,15 @@ const OutputLayanan = () => {
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                 <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Output Layanan
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -171,10 +179,10 @@ const OutputLayanan = () => {
                       {dataOutputLayanan.length > 0 ? (
                         dataOutputLayanan.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
                               {index + 1}
                             </td>
-                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.name}
                             </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">

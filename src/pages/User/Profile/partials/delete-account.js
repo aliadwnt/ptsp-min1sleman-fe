@@ -63,7 +63,7 @@ function DeleteAccount({ userId }) {
               <div className="modal-title">
                 <h3 className="text-lg font-semibold">Delete Account</h3>
               </div>
-              <div className="mt-4 text-sm text-gray-600">
+              <div className="mt-4 text-sm text-gray-700">
                 Are you sure you want to delete your account? Once your account
                 is deleted, all of its resources and data will be permanently
                 deleted. Please enter your password to confirm you would like to

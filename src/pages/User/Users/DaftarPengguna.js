@@ -130,7 +130,7 @@ const DaftarPengguna = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-300">Daftar Pengguna</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Pengguna</div>
 
           {message && (
           <div
@@ -148,7 +148,7 @@ const DaftarPengguna = () => {
           </div>
         )}
 
-          <div className="flex items-center justify-center space-x-2 mb-4">
+<div className="flex items-center justify-center space-x-2 mb-4">
             <form
               onSubmit={handleSearch}
               className="flex flex-grow justify-center"
@@ -157,9 +157,10 @@ const DaftarPengguna = () => {
                 type="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
+
               <button
                 type="submit"
                 className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
@@ -168,99 +169,103 @@ const DaftarPengguna = () => {
               </button>
               <button
                 onClick={handleAdd}
-                type="button"
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus mr-2"></i>Tambah
+                <i className="fas fa-plus"></i>
+                <span className="hidden md:inline ml-1">Tambah</span>
               </button>
             </form>
           </div>
+
+          <div className="flex justify-center">
           <div className="flex justify-center">
             <div className="w-full max-w-7xl">
               <div className=" mr-4 ml-4 overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                 <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-800">
-                    <tr>
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        No
-                      </th>
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama Lengkap
-                      </th>
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Email
-                      </th>
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Peran User
-                      </th>
-
-                      <th className="px-1 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                    {dataDaftarPengguna.length > 0 ? (
-                      dataDaftarPengguna.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-6 py-3 text-xs font-medium text-center text-gray-900 dark:text-white">
-                            {index + 1}
-                          </td>
-                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.name}
-                          </td>
-                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.email}
-                          </td>
-                          <td className="px-6 py-3 text-xs text-center text-gray-900 dark:text-gray-400">
-                            {item.is_admin === 2
-                              ? "SUPER ADMIN"
-                              : item.is_admin === 1
-                              ? "ADMIN"
-                              : "USER"}
-                          </td>
-                          <td className="px-6 py-3 text-xs text-center text-gray-900">
-                            <button
-                              onClick={() => handleEdit(item)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-edit text-green-600"></i>
-                            </button>
-                            <button
-                              onClick={() => handleDelete(item.id)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="5"
-                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+                  <thead className="bg-gray-50 dark:bg-gray-200">
+            <tr>
+              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                No
+              </th>
+              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                Nama Lengkap
+              </th>
+              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                Peran User
+              </th>
+              <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                Aksi
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+            {dataDaftarPengguna.length > 0 ? (
+              dataDaftarPengguna.map((item, index) => (
+                <tr key={item.id}>
+                  <td className="px-2 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                    {index + 1}
+                  </td>
+                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                    {item.name}
+                  </td>
+                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                    {item.email}
+                  </td>
+                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                    {item.is_admin === 2
+                      ? "SUPER ADMIN"
+                      : item.is_admin === 1
+                      ? "ADMIN"
+                      : "USER"}
+                  </td>
+                  <td className="px-2 py-4 text-xs text-center text-gray-900">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="focus:outline-none"
+                      style={{
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                      }}
+                      aria-label="Edit user"
+                    >
+                      <i className="fas fa-edit text-green-600"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="focus:outline-none"
+                      style={{
+                        background: "none",
+                        border: "none",
+                        padding: 0,
+                      }}
+                      aria-label="Delete user"
+                    >
+                      <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="5"
+                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
+                >
+                  No data available
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
