@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
 import { fetchOutputLayanan } from '../services/outputLayananService';
-import { fetchDaftarLayanan } from '../services/daftarLayananService';
+import { fetchDaftarPelayanan } from '../services/daftarPelayananService';
 
 const DiagramPelayanan = () => {
     const [chartData, setChartData] = useState({ labels: [], data: [], backgroundColor: [] });
@@ -12,10 +12,11 @@ const DiagramPelayanan = () => {
         let color;
         do {
             const hue = Math.floor(Math.random() * 360); 
-            const saturation = 70 + Math.random() * 30;  
-            const lightness = 30 + Math.random() * 20;  
+            const saturation = 70 + Math.random() * 20;  
+            const lightness = 50 + Math.random() * 20;  
             color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         } while (usedColors.has(color)); 
+        
         usedColors.add(color); 
         return color;
     };
@@ -23,16 +24,16 @@ const DiagramPelayanan = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const outputResponse = await fetchOutputLayanan();
-                const daftarResponse = await fetchDaftarLayanan();
+                const daftarResponse = await fetchDaftarPelayanan();
 
-                const labels = outputResponse.map(item => item.name);
-                const countMap = {};
-                labels.forEach(label => {
-                    countMap[label] = daftarResponse.filter(item => item.output === label).length;
-                });
+                // Get unique 'nama_pelayanan' labels
+                const labels = [...new Set(daftarResponse.map(item => item.nama_pelayanan))];
 
-                const values = labels.map(label => countMap[label] || 0);
+                // Count occurrences of each 'nama_pelayanan'
+                const values = labels.map(label => 
+                    daftarResponse.filter(item => item.nama_pelayanan === label).length
+                );
+                
                 const backgroundColor = labels.map(() => generateRandomColor());
 
                 setChartData({ labels, data: values, backgroundColor });
@@ -46,7 +47,7 @@ const DiagramPelayanan = () => {
 
     useEffect(() => {
         const ctx = chartRef.current?.getContext('2d');
-
+        
         if (ctx) {
             const chartInstance = new Chart(ctx, {
                 type: 'doughnut',
@@ -58,6 +59,10 @@ const DiagramPelayanan = () => {
                         backgroundColor: chartData.backgroundColor,
                         hoverOffset: 4
                     }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
                 }
             });
 
@@ -68,20 +73,20 @@ const DiagramPelayanan = () => {
     }, [chartData]);
 
     return (
-        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mx-auto">
-            <h2 className="text-lg font-semibold mb-4">Diagram Pelayanan</h2>
-            <canvas ref={chartRef} className="h-64 w-full"></canvas>
-            <div className="mt-4 text-xs">
-                {chartData.labels.length > 0 && (
-                    <div className="flex flex-col">
-                        {chartData.labels.map((label, index) => (
-                            <div key={index} className="flex items-center mb-2">
-                                <div className="w-4 h-4 mr-2" style={{ background: chartData.backgroundColor[index] }}></div>
-                                <span className="truncate">{label}</span>
-                            </div>
-                        ))}
+        <div className="bg-white shadow rounded-lg w-full md:w-1/2 lg:w-2/3 p-4 text-left mx-auto">
+            <h2 className="text-lg font-semibold mb-4 text-center md:text-left">Diagram Pelayanan</h2>
+            
+            <div className="flex flex-wrap items-start justify-center md:justify-start bg-white text-xs mt-2">
+                {chartData.labels.map((label, index) => (
+                    <div key={index} className="flex items-center mb-1 md:mr-4">
+                        <div className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: chartData.backgroundColor[index] }}></div>
+                        <span>{label}</span>
                     </div>
-                )}
+                ))}
+            </div>
+            
+            <div className="relative w-full h-64 md:h-72 lg:h-80 mt-4">
+                <canvas ref={chartRef} className="h-full w-full"></canvas>
             </div>
         </div>
     );

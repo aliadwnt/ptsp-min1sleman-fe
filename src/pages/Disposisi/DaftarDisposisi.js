@@ -112,7 +112,7 @@ const DaftarDisposisi = () => {
   <div className="w-full max-w-full p-1"> 
     <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
       <table className="min-w-full  divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-200 sticky top-0 z-10">
+        <thead className="bg-gray-50 dark:bg-gray-200">
           <tr>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No Surat</th>

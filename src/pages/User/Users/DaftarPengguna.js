@@ -178,7 +178,6 @@ const DaftarPengguna = () => {
           </div>
 
           <div className="flex justify-center">
-          <div className="flex justify-center">
             <div className="w-full max-w-7xl">
               <div className=" mr-4 ml-4 overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
                 <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700">
@@ -261,7 +260,7 @@ const DaftarPengguna = () => {
             )}
           </tbody>
         </table>
-      </div>
+
     </div>
   </div>
 </div>

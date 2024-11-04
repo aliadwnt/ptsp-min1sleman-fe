@@ -102,7 +102,7 @@ const UserProfileMenu = () => {
     }
   };
 
-  const isActive = (path) => (location.pathname === path ? "bg-green-400" : "");
+  const isActive = (path) => (location.pathname === path ? "bg-green-100" : "");
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -201,66 +201,52 @@ const UserProfileMenu = () => {
           </button>
         </div>
 
-        {isOpen && (
-          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out transform scale-95">
-            <div
-              className="py-1"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="options-menu"
-            >
-              {formData && (
-                <>
-                  <div className="mr-2 px-4 py-2">
-                    <div className="text-base font-semibold text-gray-800">
-                      {formData.name}
-                    </div>
-                    <div className="text-sm font-medium text-gray-500">
-                      {formData.email}
-                    </div>
-                  </div>
-                  <div className="border-t border-gray-200"></div>
-                  <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
-                      "/dashboard"
-                    )} transition duration-150 ease-in-out rounded-md`}
-                    onClick={() => navigate("/")}
-                  >
-                    <HomeIcon className="h-5 w-5 mr-2" />
-                    Home
-                  </button>
-                  <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
-                      "/user/settings"
-                    )} transition duration-150 ease-in-out rounded-md`}
-                    onClick={() => navigate("/user/settings")}
-                  >
-                    <CogIcon className="h-5 w-5 mr-2" />
-                    Settings
-                  </button>
-                  <div className="border-t border-gray-200"></div>
-                  <button
-                    className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 ${isActive(
-                      "/profile/edit"
-                    )} transition duration-150 ease-in-out rounded-md`}
-                    onClick={() => navigate("/profile/edit")}
-                  >
-                    <UserIcon className="h-5 w-5 mr-2" />
-                    Profile
-                  </button>
-                  <div className="border-t border-gray-200"></div>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-green-200 transition duration-150 ease-in-out rounded-md"
-                  >
-                    <ArrowRightOnRectangleIcon className="h-5 w-5 mr-2" />
-                    Log Out
-                  </button>
-                </>
-              )}
-            </div>
+{isOpen && (
+  <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out transform scale-100">
+    <div
+      className="py-1"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby="options-menu"
+    >
+      {formData && (
+        <>
+          <div className="mr-2 px-4 py-2">
+            <div className="text-lg font-bold text-gray-800">{formData.name}</div>
+            <div className="text-sm font-medium text-gray-500">{formData.email}</div>
           </div>
-        )}
+          <div className="border-b border-gray-200"></div>
+          <button
+            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
+            onClick={() => navigate("/")}
+          >
+            <span className="mr-2">🏠</span> Home
+          </button>
+          <button
+            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
+            onClick={() => navigate("/user/settings")}
+          >
+            <span className="mr-2">⚙️</span> Settings
+          </button>
+          <div className="border-b border-gray-200"></div>
+          <button
+            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
+            onClick={() => navigate("/profile/edit")}
+          >
+            <span className="mr-2">✏️</span> Profile
+          </button>
+          <div className="border-b border-gray-200"></div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-200 transition duration-150 ease-in-out rounded-md"
+          >
+            <span className="mr-2">🚪</span> Log Out
+          </button>
+        </>
+      )}
+    </div>
+  </div>
+)}
 
         {/* Modal for Notifications */}
         {isModalOpen && (
