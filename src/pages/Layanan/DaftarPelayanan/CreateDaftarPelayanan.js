@@ -169,15 +169,16 @@ const Layanan = () => {
               {/* No. Surat dan Tanggal */}
               <div>
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  No. Surat Permohonan
+                  NOMOR SURAT PERMOHONAN
                 </label>
                 <input
-                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="no_surat"
                   type="text"
                   placeholder="Nomor Surat"
                   value={formData.no_surat}
                   onChange={handleChange}
+                  readOnly
                   required
                 />
               </div>
