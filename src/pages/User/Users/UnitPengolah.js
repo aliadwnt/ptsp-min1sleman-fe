@@ -108,7 +108,7 @@ const UnitPengolah = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
+<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -163,7 +163,7 @@ const UnitPengolah = () => {
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
                  <i className="fas fa-plus"></i>
-                 <span className="hidden md:inline ml-1">Tambah</span>
+                 <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>

@@ -97,7 +97,7 @@ const OutputLayanan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
+<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -151,8 +151,8 @@ const OutputLayanan = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-               <i className="fas fa-plus mr-2"></i>
-               <span className="hidden md:inline">Tambah</span>
+               <i className="fas fa-plus"></i>
+               <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
@@ -170,7 +170,7 @@ const OutputLayanan = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Output Layanan
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                        <th className="px-5 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>

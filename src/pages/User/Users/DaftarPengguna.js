@@ -109,7 +109,7 @@ const DaftarPengguna = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
+<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -165,99 +165,99 @@ const DaftarPengguna = () => {
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
                 <i className="fas fa-plus"></i>
-                <span className="hidden md:inline ml-1">Tambah</span>
+                <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-7xl">
-              <div className=" mr-4 ml-4 overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700">
+            <div className="w-full max-w-7xl overflow-x-auto"> 
+              <div className="mr-4 ml-4 border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700 w-full">
                   <thead className="bg-gray-50 dark:bg-gray-200">
-            <tr>
-              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                No
-              </th>
-              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                Nama Lengkap
-              </th>
-              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                Email
-              </th>
-              <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                Peran User
-              </th>
-              <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                Aksi
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-            {dataDaftarPengguna.length > 0 ? (
-              dataDaftarPengguna.map((item, index) => (
-                <tr key={item.id}>
-                  <td className="px-2 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
-                    {index + 1}
-                  </td>
-                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                    {item.name}
-                  </td>
-                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                    {item.email}
-                  </td>
-                  <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                    {item.is_admin === 2
-                      ? "SUPER ADMIN"
-                      : item.is_admin === 1
-                      ? "ADMIN"
-                      : "USER"}
-                  </td>
-                  <td className="px-2 py-4 text-xs text-center text-gray-900">
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="focus:outline-none"
-                      style={{
-                        background: "none",
-                        border: "none",
-                        padding: 0,
-                      }}
-                      aria-label="Edit user"
-                    >
-                      <i className="fas fa-edit text-green-600"></i>
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="focus:outline-none"
-                      style={{
-                        background: "none",
-                        border: "none",
-                        padding: 0,
-                      }}
-                      aria-label="Delete user"
-                    >
-                      <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan="5"
-                  className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
-                >
-                  No data available
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                      <tr>
+                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                          No
+                        </th>
+                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                          Nama Lengkap
+                        </th>
+                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                          Email
+                        </th>
+                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                          Peran User
+                        </th>
+                        <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                      {dataDaftarPengguna.length > 0 ? (
+                        dataDaftarPengguna.map((item, index) => (
+                          <tr key={item.id}>
+                            <td className="px-2 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                              {index + 1}
+                            </td>
+                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                              {item.name}
+                            </td>
+                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                              {item.email}
+                            </td>
+                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                              {item.is_admin === 2
+                                ? "SUPER ADMIN"
+                                : item.is_admin === 1
+                                ? "ADMIN"
+                                : "USER"}
+                            </td>
+                            <td className="px-2 py-4 text-xs text-center text-gray-900">
+                              <button
+                                onClick={() => handleEdit(item)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Edit user"
+                              >
+                                <i className="fas fa-edit text-green-600"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Delete user"
+                              >
+                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
+                          >
+                            No data available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
 
-    </div>
-  </div>
-</div>
-</div>
+              </div>
+            </div>
+          </div>
+          </div>
 
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

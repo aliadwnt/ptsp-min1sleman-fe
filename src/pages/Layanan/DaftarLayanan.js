@@ -138,7 +138,7 @@ const DaftarLayanan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
+  <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -198,18 +198,18 @@ const DaftarLayanan = () => {
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
                 <i className="fas fa-plus"></i>
-                <span className="hidden md:inline ml-1">Tambah</span>
+                <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
 
           <div className="flex flex-col mx-auto max-w-4xl sm:px-6 lg:px-8">
-  <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div className="overflow-hidden">
+  <div className="overflow-x-auto -mx-4 -my-2 sm:-mx-6 lg:-mx-8">
+    <div className="inline-block min-w-full py-2 align-middle">
     <div className="overflow-x-auto">
-          <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-200">
+      <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-200">
               <tr>
                 <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">No</th>
                 <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Unit Pengolah</th>
@@ -217,7 +217,7 @@ const DaftarLayanan = () => {
                 <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Jenis Layanan</th>
                 <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Output Layanan</th>
                 <th className="px-2 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Durasi Layanan</th>
-                <th className="px-3 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Aksi</th>
+                <th className="px-5 py-6 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">

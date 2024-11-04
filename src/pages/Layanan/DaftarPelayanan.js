@@ -202,7 +202,7 @@ const DaftarPelayanan = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col lg:flex-row">
+<div className="min-h-screen w-full bg-gray-100 flex flex-col lg:flex-row">
       <div className={`fixed inset-y-0 center-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}>
         <Sidebar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
       </div>
@@ -231,7 +231,7 @@ const DaftarPelayanan = () => {
                 onClick={handleAdd} 
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700">
                 <i className="fas fa-plus"></i>
-                <span className="hidden md:inline ml-1">Tambah</span>
+                <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>

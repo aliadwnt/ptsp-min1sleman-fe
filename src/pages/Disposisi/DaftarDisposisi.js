@@ -68,7 +68,7 @@ const DaftarDisposisi = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
+<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}>
         <Sidebar toggleSidebar={toggleSidebar} />
