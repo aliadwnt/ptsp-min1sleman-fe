@@ -15,7 +15,6 @@ import { useParams } from "react-router-dom";
 
 const DaftarSyarat = () => {
   const { id } = useParams();
-  const [dataDaftarSyarat, setDataDaftarSyarat] = useState([]);
   const [unit, setUnit] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("");
   const [daftarSyarat, setDaftarSyarat] = useState([]);
@@ -28,6 +27,8 @@ const DaftarSyarat = () => {
   const [error, setError] = useState(null);
   const [syaratTerpilih, setSyaratTerpilih] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [dataDaftarSyarat, setDataDaftarSyarat] = useState([]);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Syarat";
@@ -63,7 +64,7 @@ const DaftarSyarat = () => {
   const fetchData = async () => {
     try {
       const layananResponse = await fetchDaftarLayanan();
-      const syaratResponse = await fetchDaftarSyarat(id); // gunakan id di sini
+      const syaratResponse = await fetchDaftarSyarat(id);
       const combinedData = layananResponse.map((layanan) => {
         const syarat = syaratResponse.filter(
           (syarat) => syarat.layanan_id === layanan.id
@@ -75,12 +76,17 @@ const DaftarSyarat = () => {
       });
 
       setDataDaftarSyarat(combinedData);
+      setError(null); 
+      setSuccess("Data berhasil diambil!"); 
     } catch (error) {
       console.error("Error fetching Daftar Syarat:", error);
+      setSuccess(null); 
+      setError("Terjadi kesalahan saat mengambil data."); 
     }
   };
 
   useEffect(() => {
+    
     const search = async () => {
       if (searchTerm || selectedUnit) {
         try {
@@ -100,9 +106,10 @@ const DaftarSyarat = () => {
           });
 
           setDataDaftarSyarat(combinedData);
+          setError(null); 
+          setSuccess("Pencarian berhasil!"); 
         } catch (error) {
           console.error("Error during search:", error);
-          setError("Tidak ada data yang tersedia");
         }
       } else {
         setDataDaftarSyarat([]);
@@ -111,7 +118,6 @@ const DaftarSyarat = () => {
 
     search();
   }, [searchTerm, selectedUnit, id]);
-
   const handleUnitChange = (e) => {
     setSelectedUnit(e.target.value);
   };
@@ -136,6 +142,17 @@ const DaftarSyarat = () => {
   React.useEffect(() => {
     fetchCurrentDaftarSyarat();
   }, [currentDaftarSyarat]);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    const filteredData = dataDaftarSyarat.filter
+    (item =>
+      String(item.unit || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setDataDaftarSyarat(filteredData);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -261,12 +278,13 @@ const DaftarSyarat = () => {
                 placeholder="Search..."
                 required
               />
-              <button
-                type="submit"
-                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-              >
-                <i className="fas fa-search"></i>
-              </button>
+             <button
+              type="submit"
+              onClick={handleSearch}
+              className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+            >
+              <i className="fas fa-search"></i>
+            </button>
               <select
                 className="w-2/5 p-2 pl-4 text-sm border text-gray-400 border-gray-300 rounded-lg bg-gray-50 focus:ring-green-500 focus:border-green-500"
                 value={selectedUnit}
@@ -376,7 +394,7 @@ const DaftarSyarat = () => {
                         <tr>
                           <td
                             colSpan="5"
-                            className="text-center py-4 text-gray-600"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                           >
                             Tidak ada data yang tersedia
                           </td>
