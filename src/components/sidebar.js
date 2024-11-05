@@ -67,7 +67,6 @@ const Sidebar = (isOpen) => {
           />
         </svg>
       </button>
-
       <aside
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
@@ -87,7 +86,9 @@ const Sidebar = (isOpen) => {
           style={{ maxHeight: "calc(100vh - 56px)" }}
         >
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Home</b></div>
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
+              <b>Home</b>
+            </div>
             <Link to="/dashboard" className={getLinkClass("/dashboard")}>
               <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
             </Link>
@@ -95,11 +96,19 @@ const Sidebar = (isOpen) => {
 
           {/* Kelola Pelayanan Section */}
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Kelola Pelayanan</b></div>
-            <Link to="/layanan/daftar-pelayanan" className={getLinkClass("/layanan/daftar-pelayanan")}>
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
+              <b>Kelola Pelayanan</b>
+            </div>
+            <Link
+              to="/layanan/daftar-pelayanan"
+              className={getLinkClass("/layanan/daftar-pelayanan")}
+            >
               <i className="fas fa-list mr-2"></i> Daftar Pelayanan
             </Link>
-            <Link to="/layanan/arsip-layanan" className={getLinkClass("/layanan/arsip-layanan")}>
+            <Link
+              to="/layanan/arsip-layanan"
+              className={getLinkClass("/layanan/arsip-layanan")}
+            >
               <i className="fas fa-archive mr-2"></i> Arsip Pelayanan
             </Link>
 
@@ -112,10 +121,16 @@ const Sidebar = (isOpen) => {
               <i className="fas fa-envelope mr-2"></i> Surat Menyurat
               {openDropdown === "surat" && (
                 <div className="ml-4">
-                  <Link to="/surat/surat-masuk" className={getLinkClass("/surat/surat-masuk")}>
+                  <Link
+                    to="/surat/surat-masuk"
+                    className={getLinkClass("/surat/surat-masuk")}
+                  >
                     <i className="fas fa-inbox mr-2"></i> Surat Masuk
                   </Link>
-                  <Link to="/surat/surat-keluar" className={getLinkClass("/surat/surat-keluar")}>
+                  <Link
+                    to="/surat/surat-keluar"
+                    className={getLinkClass("/surat/surat-keluar")}
+                  >
                     <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
                   </Link>
                 </div>
@@ -125,7 +140,9 @@ const Sidebar = (isOpen) => {
 
           {/* Kelola Disposisi Section */}
           <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300"><b>Kelola Disposisi</b></div>
+            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
+              <b>Kelola Disposisi</b>
+            </div>
             <Link
               to="/disposisi/master-disposisi"
               className={getLinkClass("/disposisi/master-disposisi")}
@@ -205,8 +222,7 @@ const Sidebar = (isOpen) => {
               <i className="fas fa-list-alt mr-2"></i> Daftar Syarat
             </Link>
           </div>
-          <div className="mt-10">
-          </div>
+          <div className="mt-10"></div>
         </div>
       </aside>
     </div>
