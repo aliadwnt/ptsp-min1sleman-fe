@@ -106,7 +106,7 @@ const Layanan = () => {
         try {
           await addNotification({
             message: `Layanan #${generatedNoReg}`,
-            no_surat: formData.no_surat,
+            no_surat:`${generatedNoSurat}`,
             perihal: formData.perihal,
             type:"pelayanan"
           });
