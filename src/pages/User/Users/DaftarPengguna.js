@@ -27,7 +27,7 @@ const DaftarPengguna = () => {
   const fetchData = async () => {
     try {
       const response = await fetchDaftarPengguna();
-      console.log("Data fetched:", response); // Logging response for debugging
+      console.log("Data fetched:", response); 
       setDataDaftarPengguna(response);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
@@ -392,6 +392,5 @@ const DaftarPengguna = () => {
     </div>
   );
 };
-
 
 export default DaftarPengguna;
