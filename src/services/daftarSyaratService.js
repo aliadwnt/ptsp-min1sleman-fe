@@ -60,10 +60,10 @@ export const searchDaftarSyarat = async (selectedUnit, searchTerm) => {
 export const fetchDaftarSyaratById = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/edit/${id}`);
-    console.log("Deleted Syarat Layanan:", response.data);
+    console.log("fetch Syarat Layanan:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error get edit daftar syarat:", error);
+    console.error("Error get daftar syarat:", error);
     throw error;
   }
 };
