@@ -1,46 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/sidebar';
 import Header from '../../../components/header';
-import { useTranslation } from 'react-i18next';
 
 const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
-    const { t, i18n } = useTranslation();
-    const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+    // Definisikan supported languages
+    const supportedLanguages = {
+        en: 'English',
+        id: 'Bahasa Indonesia'
+    };
+
+    const [selectedLanguage, setSelectedLanguage] = useState('en'); // Bahasa default adalah English
     const [isSaving, setIsSaving] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
-    const [statusType, setStatusType] = useState('');
-
-    const supportedLanguages = {
-        en: "English",
-        id: "Bahasa Indonesia",
-    };
 
     useEffect(() => {
         document.title = `PTSP MIN 1 SLEMAN - Pengaturan`;
-        const savedLanguage = localStorage.getItem('user-language');
-        if (savedLanguage) {
-            handleLanguageChange(savedLanguage);
-        }
-    }, []); // Hanya dijalankan sekali saat komponen di-mount
-
-    const handleLanguageChange = (language) => {
-        setSelectedLanguage(language);
-        i18n.changeLanguage(language);
-        localStorage.setItem('user-language', language);
-    };    
+    }, []);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsSaving(true);
-        setStatusMessage('');
 
         try {
             await onSubmit(selectedLanguage);
-            setStatusMessage(t('Language changed successfully!')); // Pesan sukses
-            setStatusType('success');
+            setStatusMessage(successMessage);
         } catch (error) {
             setStatusMessage(errorMessage);
-            setStatusType('error');
         } finally {
             setIsSaving(false);
         }
@@ -54,21 +39,21 @@ const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
                 <div className="container mx-auto px-4 py-8">
                     <div className="bg-white shadow-lg rounded-lg p-6 max-w-lg mx-auto">
                         <div className="mb-4">
-                            <h2 className="text-2xl font-bold text-gray-800">{t('Change Language')}</h2>
+                            <h2 className="text-2xl font-bold text-gray-800">Change Language</h2>
                         </div>
                         <div className="mb-6">
-                            <p className="text-gray-600">{t('Update Browser Language')}</p>
+                            <p className="text-gray-600">Update your browser language.</p>
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="form-group">
                                 <label htmlFor="language" className="block text-sm font-medium text-gray-700">
-                                    {t('language')}
+                                    Language
                                 </label>
                                 <select
                                     id="language"
                                     name="language"
                                     value={selectedLanguage}
-                                    onChange={(e) => handleLanguageChange(e.target.value)}
+                                    onChange={(e) => setSelectedLanguage(e.target.value)}
                                     className="block w-full mt-1 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 >
                                     {Object.entries(supportedLanguages).map(([code, name]) => (
@@ -82,7 +67,7 @@ const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
                             {statusMessage && (
                                 <div
                                     className={`text-sm p-2 rounded ${
-                                        statusType === 'success'
+                                        statusMessage.includes('Changed')
                                             ? 'bg-green-100 text-green-700'
                                             : 'bg-red-100 text-red-700'
                                     }`}
@@ -100,7 +85,7 @@ const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
                                         : 'bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:outline-none'
                                 }`}
                             >
-                                {isSaving ? t('saving') : t('save')}
+                                {isSaving ? 'Saving...' : 'Save'}
                             </button>
                         </form>
                     </div>
