@@ -9,8 +9,8 @@ import {
   CogIcon,
   UserIcon,
   ArrowRightOnRectangleIcon,
-  ExclamationCircleIcon
-} from '@heroicons/react/24/outline';
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
 
 const UserProfileMenu = () => {
   const [formData, setFormData] = useState(null);
@@ -200,71 +200,91 @@ const UserProfileMenu = () => {
             </svg>
           </button>
         </div>
-        
+
         {isOpen && (
-  <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out transform scale-100">
-    <div
-      className="py-1"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby="options-menu"
-    >
-      {formData && (
-        <div className="p-3">
-          <div className="mb-2">
-            <div className="text-lg font-bold text-gray-800">{formData.name}</div>
-            <div className="text-sm font-medium text-gray-500">{formData.email}</div>
+          <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-200 ease-in-out transform scale-100">
+            <div
+              className="py-1"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="options-menu"
+            >
+              {formData && (
+                <div className="p-3">
+                  <div className="mb-2">
+                    <div className="text-lg font-bold text-gray-800">
+                      {formData.name}
+                    </div>
+                    <div className="text-sm font-medium text-gray-500">
+                      {formData.email}
+                    </div>
+                  </div>
+                  <div className="border-b border-gray-200 mb-2"></div>
+
+                  {/* Home Button */}
+                  <button
+                    className={`flex items-center justify-start w-full px-4 py-2 text-sm ${
+                      window.location.pathname === "/dashboard"
+                        ? "bg-gray-200 text-gray-900"
+                        : "text-gray-700"
+                    } hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
+                    onClick={() => navigate("/dashboard")}
+                  >
+                    <div className="flex flex-col items-center">
+                      <HomeIcon className="h-5 w-5" />
+                      <span className="text-xs">Dashboard</span>
+                    </div>
+                  </button>
+
+                  {/* Settings Button */}
+                  <button
+                    className={`flex items-center justify-start w-full px-4 py-2 text-sm ${
+                      window.location.pathname === "/user/settings"
+                        ? "bg-gray-200 text-gray-900"
+                        : "text-gray-700"
+                    } hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
+                    onClick={() => navigate("/user/settings")}
+                  >
+                    <div className="flex flex-col items-center">
+                      <CogIcon className="h-5 w-5" />
+                      <span className="text-xs">Settings</span>
+                    </div>
+                  </button>
+
+                  {/* Profile Button */}
+                  <button
+                    className={`flex items-center justify-start w-full px-4 py-2 text-sm ${
+                      window.location.pathname === "/profile/edit"
+                        ? "bg-gray-200 text-gray-900"
+                        : "text-gray-700"
+                    } hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
+                    onClick={() => navigate("/profile/edit")}
+                  >
+                    <div className="flex flex-col items-center">
+                      <UserIcon className="h-5 w-5" />
+                      <span className="text-xs">Profile</span>
+                    </div>
+                  </button>
+
+                  {/* Logout Button */}
+                  <button
+                    onClick={handleLogout}
+                    className={`flex items-center justify-start w-full px-4 py-2 text-sm ${
+                      window.location.pathname === "/logout"
+                        ? "bg-gray-100 text-gray-900"
+                        : "text-gray-700"
+                    } hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
+                  >
+                    <div className="flex flex-col items-center">
+                      <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                      <span className="text-xs">Log Out</span>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="border-b border-gray-200 mb-2"></div>
-
-          {/* Home Button */}
-          <button
-            className={`flex items-center justify-start w-full px-4 py-2 text-sm ${window.location.pathname === '/dashboard' ? 'bg-gray-200 text-gray-900' : 'text-gray-700'} hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
-            onClick={() => navigate("/dashboard")}
-          >
-            <div className="flex flex-col items-center">
-              <HomeIcon className="h-5 w-5" />
-              <span className="text-xs">Dashboard</span>
-            </div>
-          </button>
-
-          {/* Settings Button */}
-          <button
-            className={`flex items-center justify-start w-full px-4 py-2 text-sm ${window.location.pathname === '/user/settings' ? 'bg-gray-200 text-gray-900' : 'text-gray-700'} hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
-            onClick={() => navigate("/user/settings")}
-          >
-            <div className="flex flex-col items-center">
-              <CogIcon className="h-5 w-5" />
-              <span className="text-xs">Settings</span>
-            </div>
-          </button>
-
-          {/* Profile Button */}
-          <button
-            className={`flex items-center justify-start w-full px-4 py-2 text-sm ${window.location.pathname === '/profile/edit' ? 'bg-gray-200 text-gray-900' : 'text-gray-700'} hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
-            onClick={() => navigate("/profile/edit")}
-          >
-            <div className="flex flex-col items-center">
-              <UserIcon className="h-5 w-5" />
-              <span className="text-xs">Profile</span>
-            </div>
-          </button>
-
-          {/* Logout Button */}
-          <button
-            onClick={handleLogout}
-            className={`flex items-center justify-start w-full px-4 py-2 text-sm ${window.location.pathname === '/logout' ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} hover:bg-gray-100 transition duration-150 ease-in-out rounded-md mb-2`}
-          >
-            <div className="flex flex-col items-center">
-              <ArrowRightOnRectangleIcon className="h-5 w-5" />
-              <span className="text-xs">Log Out</span>
-            </div>
-          </button>
-        </div>
-      )}
-    </div>
-  </div>
-)}
+        )}
 
         {/* Modal for Notifications */}
         {isModalOpen && (
@@ -292,7 +312,6 @@ const UserProfileMenu = () => {
               </div>
 
               <hr className="w-full border-t-2 border-gray-400 my-2" />
-
               <div className="flex items-start">
                 <ul className="mt-2">
                   {sortedNotifications.length > 0 ? (
