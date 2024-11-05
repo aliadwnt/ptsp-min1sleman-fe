@@ -8,6 +8,7 @@ import {
   fetchDaftarSyaratById,
 } from "../../services/daftarSyaratService";
 import { fetchDaftarLayanan } from "../../services/daftarLayananService";
+import { fetchUnitPengolah } from "../../services/unitPengolahService";
 import { fetchMasterSyarat } from "../../services/masterSyaratService";
 import "../../App.css";
 import { useParams } from "react-router-dom";
@@ -52,8 +53,8 @@ const DaftarSyarat = () => {
 
   const fetchUnit = async () => {
     try {
-      const response = await fetchDaftarLayanan();
-      setUnit(response.map((item) => item.unit));
+      const response = await fetchUnitPengolah();
+      setUnit(response.map((item) => item.name));
     } catch (error) {
       console.error("Error fetching unit:", error);
     }
@@ -101,7 +102,7 @@ const DaftarSyarat = () => {
           setDataDaftarSyarat(combinedData);
         } catch (error) {
           console.error("Error during search:", error);
-          setError("Gagal mengambil data.");
+          setError("Tidak ada data yang tersedia");
         }
       } else {
         setDataDaftarSyarat([]);
@@ -206,7 +207,7 @@ const DaftarSyarat = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -222,7 +223,9 @@ const DaftarSyarat = () => {
       >
         <Header />
         <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0">
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Syarat</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+            Daftar Syarat
+          </div>
 
           {message && (
             <div
@@ -247,7 +250,7 @@ const DaftarSyarat = () => {
           {/* Search and Filter Section */}
           <div className="flex items-center justify-between space-x-2 mb-4">
             <form
-              onSubmit={(e) => e.preventDefault()} 
+              onSubmit={(e) => e.preventDefault()}
               className="flex flex-grow justify-center"
             >
               <input
@@ -345,9 +348,7 @@ const DaftarSyarat = () => {
                                     "Error parsing syarat_layanan:",
                                     error
                                   );
-                                  return (
-                                    <span>Error parsing syarat_layanan</span>
-                                  );
+                                  return <span>No syarat available</span>;
                                 }
                               })()}
                             </td>
@@ -510,12 +511,14 @@ const DaftarSyarat = () => {
                                         {syarat.name}
                                       </td>
                                       <td className="px-4 py-2 border border-gray-300">
-                                      <button
-                                        className="bg-red-500 text-white px-2 py-1 rounded flex items-center space-x-2"
-                                        onClick={() => handleDeleteSyarat(index)}
-                                      >
-                                        <i className="fas fa-trash"></i>
-                                      </button>
+                                        <button
+                                          className="bg-red-500 text-white px-2 py-1 rounded flex items-center space-x-2"
+                                          onClick={() =>
+                                            handleDeleteSyarat(index)
+                                          }
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </button>
                                       </td>
                                     </tr>
                                   ))
