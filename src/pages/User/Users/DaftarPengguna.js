@@ -109,7 +109,7 @@ const DaftarPengguna = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -170,11 +170,12 @@ const DaftarPengguna = () => {
             </form>
           </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-7xl overflow-x-auto"> 
-              <div className="mr-4 ml-4 border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700 w-full">
-                  <thead className="bg-gray-50 dark:bg-gray-200">
+          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="-mx-4 -my-2 overflow-hidden sm:-mx-6 lg:-mx-8">
+              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
                         <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
                           No
@@ -197,23 +198,23 @@ const DaftarPengguna = () => {
                       {dataDaftarPengguna.length > 0 ? (
                         dataDaftarPengguna.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-2 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                            <td className="py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
                               {index + 1}
                             </td>
-                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                            <td className=" py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.name}
                             </td>
-                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                            <td className=" py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.email}
                             </td>
-                            <td className="px-2 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                            <td className="py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.is_admin === 2
                                 ? "SUPER ADMIN"
                                 : item.is_admin === 1
                                 ? "ADMIN"
                                 : "USER"}
                             </td>
-                            <td className="px-2 py-4 text-xs text-center text-gray-900">
+                            <td className=" py-4 text-xs text-center text-gray-900 whitespace-nowrap">
                               <button
                                 onClick={() => handleEdit(item)}
                                 className="focus:outline-none"
@@ -253,11 +254,11 @@ const DaftarPengguna = () => {
                       )}
                     </tbody>
                   </table>
-
+                </div>
               </div>
             </div>
           </div>
-          </div>
+        </div>
 
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
