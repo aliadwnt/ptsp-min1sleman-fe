@@ -165,10 +165,10 @@ const UserProfileMenu = () => {
                   right: "0",
                   backgroundColor: "red",
                   color: "white",
-                  fontSize: "0.625rem", // text-xs
+                  fontSize: "0.625rem", 
                   borderRadius: "9999px",
-                  height: "1rem", // h-4
-                  width: "1rem", // w-4
+                  height: "1rem", 
+                  width: "1rem", 
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -209,41 +209,55 @@ const UserProfileMenu = () => {
       aria-orientation="vertical"
       aria-labelledby="options-menu"
     >
-      {formData && (
-        <>
-          <div className="mr-2 px-4 py-2">
-            <div className="text-lg font-bold text-gray-800">{formData.name}</div>
-            <div className="text-sm font-medium text-gray-500">{formData.email}</div>
-          </div>
-          <div className="border-b border-gray-200"></div>
-          <button
-            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
-            onClick={() => navigate("/")}
-          >
-            <span className="mr-2">🏠</span> Home
-          </button>
-          <button
-            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
-            onClick={() => navigate("/user/settings")}
-          >
-            <span className="mr-2">⚙️</span> Settings
-          </button>
-          <div className="border-b border-gray-200"></div>
-          <button
-            className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md`}
-            onClick={() => navigate("/profile/edit")}
-          >
-            <span className="mr-2">✏️</span> Profile
-          </button>
-          <div className="border-b border-gray-200"></div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-200 transition duration-150 ease-in-out rounded-md"
-          >
-            <span className="mr-2">🚪</span> Log Out
-          </button>
-        </>
-      )}
+{formData && (
+  <>
+    <div className="mr-2 px-4 py-2">
+      <div className="text-lg font-bold text-gray-800">{formData.name}</div>
+      <div className="text-sm font-medium text-gray-500">{formData.email}</div>
+    </div>
+    <div className="border-b border-gray-200"></div>
+
+    {/* Home Button */}
+    <button
+      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md space-x-2"
+      onClick={() => navigate("/")}
+    >
+      <HomeIcon className="h-5 w-5 text-green-600" />
+      <span>Home</span>
+    </button>
+
+    {/* Settings Button */}
+    <button
+      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md space-x-2"
+      onClick={() => navigate("/user/settings")}
+    >
+      <CogIcon className="h-5 w-5 text-yellow-600" />
+      <span>Settings</span>
+    </button>
+
+    <div className="border-b border-gray-200"></div>
+
+    {/* Profile Button */}
+    <button
+      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150 ease-in-out rounded-md space-x-2"
+      onClick={() => navigate("/profile/edit")}
+    >
+      <UserIcon className="h-5 w-5 text-blue-600" />
+      <span>Profile</span>
+    </button>
+
+    <div className="border-b border-gray-200"></div>
+
+    {/* Logout Button */}
+    <button
+      onClick={handleLogout}
+      className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-100 transition duration-150 ease-in-out rounded-md space-x-2"
+    >
+      <ArrowRightOnRectangleIcon className="h-5 w-5" />
+      <span>Log Out</span>
+    </button>
+  </>
+)}
     </div>
   </div>
 )}
@@ -259,11 +273,11 @@ const UserProfileMenu = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-800">
+                <div className="text-m font-semibold text-gray-700">
                   Anda Memiliki {newNotifications.length} Notifikasi Baru
-                </h2>
+                </div>
                 <button
-                  className="text-sm bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded-md transition duration-150 ease-in-out"
+                  className="text-center justify-center text-bold text-xs text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded-md transition duration-150 ease-in-out"
                   onClick={() => {
                     navigate("/user/daftar-notifikasi");
                     console.log("Melihat semua notifikasi:", notifications);
@@ -329,9 +343,9 @@ const UserProfileMenu = () => {
                       </li>
                     ))
                   ) : (
-                    <li className="text-lg font-bold text-gray-700">
+                    <div className="text-sm font-light text-gray-700">
                       Tidak ada notifikasi baru.
-                    </li>
+                    </div>
                   )}
                 </ul>
               </div>

@@ -49,7 +49,7 @@ const DaftarPelayanan = () => {
       setCounts({ 
         Semua: SemuaCount, 
         Baru: baruCount, 
-        Diproses: prosesCount, 
+        Proses: prosesCount, 
         Selesai: selesaiCount, 
         Diambil: ambilCount, 
         Ditolak: tolakCount 
@@ -100,7 +100,7 @@ const DaftarPelayanan = () => {
         return dataDaftarPelayanan;
       case "Baru":
         return dataDaftarPelayanan.filter(item => item.status === "Baru");
-      case "Diproses":
+      case "Proses":
         return dataDaftarPelayanan.filter(item => item.status === "Proses");
       case "Selesai":
         return dataDaftarPelayanan.filter(item => item.status === "Selesai");
@@ -108,6 +108,8 @@ const DaftarPelayanan = () => {
         return dataDaftarPelayanan.filter(item => item.status === "Diambil");
       case "Ditolak":
         return dataDaftarPelayanan.filter(item => item.status === "Ditolak");
+      case "":
+        return dataDaftarPelayanan.filter(item => item.status === "");
       default:
         return dataDaftarPelayanan;
     }
@@ -162,6 +164,27 @@ const DaftarPelayanan = () => {
       previewWindow.document.close(); // Close the document to render it
     } else {
       console.error("Failed to open preview window.");
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "Semua":
+        return "fas fa-list text-gray-600"; 
+      case "Baru":
+        return "fas fa-file text-yellow-600"; 
+      case "Proses":
+        return "fas fa-hourglass-half text-yellow-500"; 
+      case "Selesai":
+        return "fas fa-check-circle text-green-600"; 
+      case "Diambil":
+        return "fas fa-user-check text-blue-600"; 
+      case "Ditolak":
+        return "fas fa-times-circle text-red-600";
+      case "":
+        return "fas fa-exclamation-circle text-orange-600 mr-2"; 
+      default:
+        return ""; 
     }
   };
 
@@ -246,10 +269,10 @@ const DaftarPelayanan = () => {
                   role="tablist"
                   style={{ listStyle: "none" }}
                 >
-                  {["Semua", "Baru", "Diproses", "Selesai", "Diambil", "Ditolak"].map((tab) => (
+                  {["Semua", "Baru", "Proses", "Selesai", "Diambil", "Ditolak"].map((tab) => (
                     <li
                       key={tab}
-                      className="mb-4 sm:mb-0 flex-1 text-center relative group" 
+                      className="mb-4 sm:mb-0 flex-1 text-center relative group"
                       role="presentation"
                     >
                       <button
@@ -264,22 +287,21 @@ const DaftarPelayanan = () => {
                         aria-selected={activeTab === tab}
                       >
                         <i
-                          className={`fas fa-${tab === "Semua" ? "list" : tab === "Baru" ? "file" : tab === "Diproses" ? "check-circle" : tab === "Selesai" ? "check" : tab === "Ditolak" ? "times-circle" : "user-check"} mr-2 ${
-                            tab === "Semua" ? "text-blue-600" : tab === "Baru" ? "text-yellow-600" : tab === "Diproses" ? "text-green-600" : tab === "Selesai" ? "text-purple-600" : tab === "Ditolak" ? "text-red-600" : "text-gray-600"
-                          } text-sm font-bold`} 
+                          className={`${getStatusIcon(tab)} mr-2 text-sm font-bold`}
                         ></i>
-                        <span className="ml-2 text-[16px]">{counts[tab]}</span> 
+                        <span className="ml-2 text-[16px]">{counts[tab]}</span>
                       </button>
                       <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)} 
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
                       </span>
                     </li>
                   ))}
                 </ul>
               </div>
 
+
               <div className="flex justify-center mt-6">
-  <div className="w-full max-w-4xl">
+  <div className="w-full max-w-4xl mx-auto"> 
     <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
       <table className="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-200">
@@ -326,8 +348,9 @@ const DaftarPelayanan = () => {
                             <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.kelengkapan}
                               </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.status}
+                              <td className="px-3 py-3 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
+                                <i className={getStatusIcon(item.status)}></i>
+                                <span className="ml-2">{item.status}</span>
                               </td>
                             <td className="text-center">
                               <div className="flex justify-center space-x-2">
@@ -382,7 +405,7 @@ const DaftarPelayanan = () => {
                                   }}
                                   aria-label="Delete"
                                 >
-                                                                    <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
                                 </button>
                               </div>
                             </td>
@@ -392,9 +415,9 @@ const DaftarPelayanan = () => {
                         <tr>
                           <td
                           colSpan="7"
-                          className="text-center py-3 text-gray-500"
+                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
                           >
-                            Data tidak ditemukan
+                            No data available
                           </td>
                         </tr>
                       )}
