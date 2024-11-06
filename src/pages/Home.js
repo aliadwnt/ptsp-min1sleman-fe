@@ -8,8 +8,7 @@ import Jumbotron from "../components/jumbotron";
 import "../index.css";
 import { fetchDaftarLayanan } from "../services/daftarLayananService";
 import {
-  fetchDaftarSyarat,
-  fetchDaftarSyaratById,
+  fetchDaftarSyarat
 } from "../services/daftarSyaratService";
 import { handleSearch } from "../services/lacakPermohonanService";
 import { useParams } from "react-router-dom";
@@ -231,14 +230,11 @@ const HomePage = ({ daftarSyarat = [] }) => {
                     <span>No layanan available</span>
                   );
                 })()}
-                <ol className="list-decimal ml-10">
+                <ol className="list-inside list-disc ml-10">
                   {currentData.syarat_layanan ? (
                     (() => {
                       try {
-                        // Ubah format string JSON menjadi array
-                        const parsedSyarat = JSON.parse(
-                          currentData.syarat_layanan
-                        );
+                        const parsedSyarat = JSON.parse(currentData.syarat_layanan);
                         return parsedSyarat.length > 0 ? (
                           parsedSyarat.map((syarat, index) => (
                             <li key={index} className="mb-2">
@@ -257,12 +253,15 @@ const HomePage = ({ daftarSyarat = [] }) => {
                     <li>No data available</li>
                   )}
                 </ol>
+                <div className="mt-3 text-gray-500 italic text-sm">
+                  *mohon melengkapi persyaratan diatas sebelum melakukan permohonan layanan.
+                </div>
               </div>
 
               <div className="mt-5 border-t border-gray-300 pt-4 flex justify-end">
-                <button type="button" className="btn" onClick={closeModal}>
-                  Tutup
-                </button>
+              <button type="button" className="font-family btn bg-green-600 text-white hover:bg-green-700" onClick={closeModal}>
+                Tutup
+              </button>
               </div>
             </div>
           </div>

@@ -125,7 +125,22 @@ const Notifications = () => {
                               {index + 1}
                             </td>
                             <td className="px-6 py-2 text-sm text-center">
-                              {new Date(item.created_at).toLocaleString()}
+                              {(() => {
+                                const date = new Date(item.created_at);
+                                const today = new Date();
+                                const yesterday = new Date(today);
+                                yesterday.setDate(today.getDate() - 1);
+
+                                // Check if the date is today, yesterday, or another day
+                                if (date.toDateString() === today.toDateString()) {
+                                  return `Today, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                                } else if (date.toDateString() === yesterday.toDateString()) {
+                                  return `Yesterday, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                                } else {
+                                  return date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ", " +
+                                        date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                }
+                              })()}
                             </td>
                             <td className="px-6 py-2 text-center">
                               {item.message.type === "disposisi" ? (
@@ -170,24 +185,20 @@ const Notifications = () => {
                                 </div>
                               )}
                             </td>
-                            <td className="px-6 py-2 text-center">
-                              <td>
-                                <button
-                                  onClick={() => {
-                                    console.log("Item yang diklik:", item);
-                                    handleMarkAsRead(item);
-                                  }}
-                                >
-                                  <i
-                                    className={`fa fa-eye ${
-                                      item.isRead
-                                        ? "text-gray-400"
-                                        : "text-green-600"
-                                    }`}
-                                  ></i>
-                                </button>
-                              </td>
-                            </td>
+                            <td className="px-10 py-2 text-center">
+                              <button
+                                onClick={() => {
+                                  console.log("Item yang diklik:", item);
+                                  handleMarkAsRead(item);
+                                }}
+                              >
+                                <i
+                                  className={`fa fa-eye ${
+                                    item.isRead ? "text-gray-400" : "text-green-600"
+                                  }`}
+                                ></i>
+                              </button>
+                          </td>
                           </tr>
                         ))
                       ) : (
