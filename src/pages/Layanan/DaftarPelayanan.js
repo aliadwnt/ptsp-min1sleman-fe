@@ -29,29 +29,37 @@ const DaftarPelayanan = () => {
     selesaiCount: 0,
     ambilCount: 0,
   });
-  const [isSidebarOpen, setSidebarOpen] = useState(false); 
-  
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const result = await fetchDaftarPelayanan();
       setDataDaftarPelayanan(result);
-  
+
       const SemuaCount = result.length;
-      const baruCount = result.filter(item => item.status === "Baru").length;
-      const prosesCount = result.filter(item => item.status === "Proses").length;
-      const selesaiCount = result.filter(item => item.status === "Selesai").length;
-      const ambilCount = result.filter(item => item.status === "Diambil").length;
-      const tolakCount = result.filter(item => item.status === "Ditolak").length;
-  
-      setCounts({ 
-        Semua: SemuaCount, 
-        Baru: baruCount, 
-        Proses: prosesCount, 
-        Selesai: selesaiCount, 
-        Diambil: ambilCount, 
-        Ditolak: tolakCount 
+      const baruCount = result.filter((item) => item.status === "Baru").length;
+      const prosesCount = result.filter(
+        (item) => item.status === "Proses"
+      ).length;
+      const selesaiCount = result.filter(
+        (item) => item.status === "Selesai"
+      ).length;
+      const ambilCount = result.filter(
+        (item) => item.status === "Diambil"
+      ).length;
+      const tolakCount = result.filter(
+        (item) => item.status === "Ditolak"
+      ).length;
+
+      setCounts({
+        Semua: SemuaCount,
+        Baru: baruCount,
+        Proses: prosesCount,
+        Selesai: selesaiCount,
+        Diambil: ambilCount,
+        Ditolak: tolakCount,
       });
     } catch (error) {
       console.error("Failed to fetch data", error);
@@ -64,22 +72,33 @@ const DaftarPelayanan = () => {
   }, []);
 
   const handleSearch = (e) => {
-    const value = e.target.value; 
-    setSearchTerm(value); 
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setDataDaftarPelayanan(dataDaftarPelayanan);  
+      setDataDaftarPelayanan(dataDaftarPelayanan);
     } else {
-      const filteredData = dataDaftarPelayanan.filter((item) =>
-        String(item.no_reg || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.nama_pelayanan || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.perihal || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.kelengkapan || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.status || "").toLowerCase().includes(value.toLowerCase())
+      const filteredData = dataDaftarPelayanan.filter(
+        (item) =>
+          String(item.no_reg || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.nama_pelayanan || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.perihal || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.kelengkapan || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.status || "")
+            .toLowerCase()
+            .includes(value.toLowerCase())
       );
-      setDataDaftarPelayanan(filteredData);  
+      setDataDaftarPelayanan(filteredData);
     }
-  };  
+  };
 
   const handleTabChange = (status) => {
     setActiveTab(status);
@@ -103,17 +122,17 @@ const DaftarPelayanan = () => {
       case "Semua":
         return dataDaftarPelayanan;
       case "Baru":
-        return dataDaftarPelayanan.filter(item => item.status === "Baru");
+        return dataDaftarPelayanan.filter((item) => item.status === "Baru");
       case "Proses":
-        return dataDaftarPelayanan.filter(item => item.status === "Proses");
+        return dataDaftarPelayanan.filter((item) => item.status === "Proses");
       case "Selesai":
-        return dataDaftarPelayanan.filter(item => item.status === "Selesai");
+        return dataDaftarPelayanan.filter((item) => item.status === "Selesai");
       case "Diambil":
-        return dataDaftarPelayanan.filter(item => item.status === "Diambil");
+        return dataDaftarPelayanan.filter((item) => item.status === "Diambil");
       case "Ditolak":
-        return dataDaftarPelayanan.filter(item => item.status === "Ditolak");
+        return dataDaftarPelayanan.filter((item) => item.status === "Ditolak");
       case "":
-        return dataDaftarPelayanan.filter(item => item.status === "");
+        return dataDaftarPelayanan.filter((item) => item.status === "");
       default:
         return dataDaftarPelayanan;
     }
@@ -174,21 +193,21 @@ const DaftarPelayanan = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case "Semua":
-        return "fas fa-list text-gray-600"; 
+        return "fas fa-list text-gray-600";
       case "Baru":
-        return "fas fa-file text-yellow-600"; 
+        return "fas fa-file text-yellow-600";
       case "Proses":
-        return "fas fa-hourglass-half text-yellow-500"; 
+        return "fas fa-hourglass-half text-yellow-500";
       case "Selesai":
-        return "fas fa-check-circle text-green-600"; 
+        return "fas fa-check-circle text-green-600";
       case "Diambil":
-        return "fas fa-user-check text-blue-600"; 
+        return "fas fa-user-check text-blue-600";
       case "Ditolak":
         return "fas fa-times-circle text-red-600";
       case "":
-        return "fas fa-exclamation-circle text-orange-600 mr-2"; 
+        return "fas fa-exclamation-circle text-orange-600 mr-2";
       default:
-        return ""; 
+        return "";
     }
   };
 
@@ -229,43 +248,66 @@ const DaftarPelayanan = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col lg:flex-row">
-      <div className={`fixed inset-y-0 center-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}>
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col lg:flex-row">
+      <div
+        className={`fixed inset-y-0 center-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
         <Sidebar toggleSidebar={() => setSidebarOpen(!isSidebarOpen)} />
       </div>
-      <div className={`flex-1 lg:ml-64 transition-all duration-300 ease-in-out ${isSidebarOpen ? "ml-0" : "ml-0"}`}>
+      <div
+        className={`flex-1 lg:ml-64 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "ml-0" : "ml-0"
+        }`}
+      >
         <Header />
         <div className="p-4">
-          <div className="text-xl font-semibold text-gray-800 mb-4">Daftar Pelayanan</div>
-          {message && <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50" role="alert"><span className="font-medium">Sukses </span>{message}</div>}
-  
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            Daftar Pelayanan
+          </div>
+          {message && (
+            <div
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+              role="alert"
+            >
+              <span className="font-medium">Sukses </span>
+              {message}
+            </div>
+          )}
+
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
-              <input 
-                type="search" 
-                value={searchTerm} 
+            <form
+              onSubmit={handleSearch}
+              className="flex flex-grow justify-center"
+            >
+              <input
+                type="search"
+                value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" 
-                placeholder="Search..." 
-                required 
+                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search..."
               />
-              <button 
-                type="submit" 
-                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200">
+              <button
+                type="submit"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+              >
                 <i className="fas fa-search"></i>
               </button>
-              <button 
-                onClick={handleAdd} 
-                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700">
+              <button
+                onClick={handleAdd}
+                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
+              >
                 <i className="fas fa-plus"></i>
                 <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
-          <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-               <div className="flex flex-col w-full sm:w-1/2 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
+
+          {/* <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8"> */}
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="flex flex-col w-full sm:w-1/2 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
                 <ul
                   className="flex justify-between sm:justify-center -mb-px text-sm font-medium text-center ml-2"
                   id="default-tab"
@@ -273,7 +315,14 @@ const DaftarPelayanan = () => {
                   role="tablist"
                   style={{ listStyle: "none" }}
                 >
-                  {["Semua", "Baru", "Proses", "Selesai", "Diambil", "Ditolak"].map((tab) => (
+                  {[
+                    "Semua",
+                    "Baru",
+                    "Proses",
+                    "Selesai",
+                    "Diambil",
+                    "Ditolak",
+                  ].map((tab) => (
                     <li
                       key={tab}
                       className="mb-4 sm:mb-0 flex-1 text-center relative group"
@@ -281,7 +330,9 @@ const DaftarPelayanan = () => {
                     >
                       <button
                         className={`inline-block p-2 border-b-3 w-full ${
-                          activeTab === tab ? "border-green-900 text-black-600" : "text-gray-600"
+                          activeTab === tab
+                            ? "border-green-900 text-black-600"
+                            : "text-gray-600"
                         }`}
                         id={`${tab}-tab`}
                         onClick={() => handleTabChange(tab)}
@@ -291,7 +342,9 @@ const DaftarPelayanan = () => {
                         aria-selected={activeTab === tab}
                       >
                         <i
-                          className={`${getStatusIcon(tab)} mr-2 text-sm font-bold`}
+                          className={`${getStatusIcon(
+                            tab
+                          )} mr-2 text-sm font-bold`}
                         ></i>
                         <span className="ml-2 text-[16px]">{counts[tab]}</span>
                       </button>
@@ -303,74 +356,72 @@ const DaftarPelayanan = () => {
                 </ul>
               </div>
 
-              <div className="flex justify-center mt-6">
-  <div className="w-full max-w-4xl mx-auto"> 
-    <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
-      <table className="min-w-full table-fixed divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-200">
+              <div className="overflow-x-auto">
+                <table className="min-w-full w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                     <tr>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          No
-                        </th>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Nomor Registrasi
-                        </th>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Nama Layanan
-                        </th>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Perihal
-                        </th>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider hidden md:table-cell">
-                          Kelengkapan
-                        </th>
-                        <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider hidden md:table-cell">
-                          Status
-                        </th>
-                        <th className="px-14 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {getFilteredData().length > 0 ? (
-                        getFilteredData().map((item, index) => (
-                          <tr key={item.id}>
-                            <td className="px-3 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
-                              {index + 1}
-                              </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.no_reg}
-                              </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.nama_pelayanan}
-                              </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.perihal}
-                              </td>
-                            <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.kelengkapan}
-                              </td>
-                              <td className="px-3 py-6 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
-                                <i className={getStatusIcon(item.status)}></i>
-                                <span className="ml-2">{item.status}</span>
-                              </td>
-                            <td className="text-center">
-                              <div className="flex justify-center space-x-2">
-                                {/* Action Buttons */}
-                                <button
-                                  onClick={() => handlePreview(item)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Preview"
-                                >
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        No
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Nomor Registrasi
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Nama Layanan
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Perihal
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider hidden md:table-cell">
+                        Kelengkapan
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider hidden md:table-cell">
+                        Status
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {getFilteredData().length > 0 ? (
+                      getFilteredData().map((item, index) => (
+                        <tr key={item.id}>
+                          <td className="px-2 py-3 text-xs font-medium text-center text-gray-900">
+                            {index + 1}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                            {item.no_reg}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                            {item.nama_pelayanan}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                            {item.perihal}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900 hidden md:table-cell">
+                            {item.kelengkapan}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left hidden md:table-cell">
+                            <i className={getStatusIcon(item.status)}></i>
+                            <span className="ml-2">{item.status}</span>
+                          </td>
+                          <td className="text-center px-2 py-3">
+                            <div className="flex justify-center space-x-2">
+                              {/* Action Buttons */}
+                              <button
+                                onClick={() => handlePreview(item)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Preview"
+                              >
                                 <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>
-                                </button>
-                                <button 
+                              </button>
+                              <button
                                 onClick={() => handleExportPDF(item)}
                                 className="focus:outline-none"
                                 style={{
@@ -380,12 +431,12 @@ const DaftarPelayanan = () => {
                                 }}
                                 aria-label="Download"
                               >
-                                  <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
-                                </button>
-                                <button 
-                                onClick={() => 
-                                navigate(
-                                  `/update-daftar-pelayanan/${item.id}`
+                                <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
+                              </button>
+                              <button
+                                onClick={() =>
+                                  navigate(
+                                    `/update-daftar-pelayanan/${item.id}`
                                   )
                                 }
                                 className="focus:outline-none"
@@ -396,39 +447,36 @@ const DaftarPelayanan = () => {
                                 }}
                                 aria-label="Edit"
                               >
-                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                                </button>
-                                <button
-                                  onClick={() => handleDelete(item.id)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Delete"
-                                >
-                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                          colSpan="7"
-                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
-                          >
-                            No data available
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Delete"
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </div>
                           </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-                </div>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="7"
+                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
