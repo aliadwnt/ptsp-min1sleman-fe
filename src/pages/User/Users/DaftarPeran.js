@@ -27,15 +27,25 @@ const DaftarPeran = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataDaftarPengguna.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataDaftarPengguna(filteredData);
+  const handleSearch = (e) => {
+    const value = e.target.value;  
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setDataDaftarPengguna(dataDaftarPengguna);  
+    } else {
+      const filteredData = dataDaftarPengguna.filter((item) =>
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase()) ||
+        String(item.is_admin || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
+      );
+      setDataDaftarPengguna(filteredData); 
+    }
   };
+  
   
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -83,8 +93,8 @@ const DaftarPeran = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-11/12 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleSearch} 
+                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
               <button

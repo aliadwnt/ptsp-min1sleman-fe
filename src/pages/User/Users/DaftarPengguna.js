@@ -76,7 +76,7 @@ const DaftarPengguna = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deletePengguna(id);
         setSuccessMessage("Data berhasil dihapus");
@@ -88,14 +88,20 @@ const DaftarPengguna = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataDaftarPengguna.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataDaftarPengguna(filteredData);
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value); 
+  
+    if (!value) {
+      setDataDaftarPengguna(dataDaftarPengguna); 
+    } else {
+      const filteredData = dataDaftarPengguna.filter((item) =>
+        String(item.name || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.email || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.peran || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataDaftarPengguna(filteredData); 
+    }
   };
 
   const handleModalClose = () => {
@@ -149,7 +155,7 @@ const DaftarPengguna = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}  
                 className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
@@ -381,7 +387,7 @@ const DaftarPengguna = () => {
                     type="submit"
                     className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
                   >
-                    Update
+                    {currentDaftarPengguna ? "Update" : "Simpan"}
                   </button>
                 </div>
               </form>

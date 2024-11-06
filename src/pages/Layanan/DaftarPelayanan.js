@@ -29,7 +29,7 @@ const DaftarPelayanan = () => {
     selesaiCount: 0,
     ambilCount: 0,
   });
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false); 
   
   const navigate = useNavigate();
 
@@ -38,7 +38,6 @@ const DaftarPelayanan = () => {
       const result = await fetchDaftarPelayanan();
       setDataDaftarPelayanan(result);
   
-      // Update the counts based on the statuses
       const SemuaCount = result.length;
       const baruCount = result.filter(item => item.status === "Baru").length;
       const prosesCount = result.filter(item => item.status === "Proses").length;
@@ -64,25 +63,30 @@ const DaftarPelayanan = () => {
     fetchData();
   }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataDaftarPelayanan.filter
-    (item =>
-      String(item.no_reg || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(item.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(item.kelengkapan || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(item.status || "").toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setDataDaftarPelayanan(filteredData);
-  };
+  const handleSearch = (e) => {
+    const value = e.target.value; 
+    setSearchTerm(value); 
+  
+    if (!value) {
+      setDataDaftarPelayanan(dataDaftarPelayanan);  
+    } else {
+      const filteredData = dataDaftarPelayanan.filter((item) =>
+        String(item.no_reg || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.nama_pelayanan || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.perihal || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.kelengkapan || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.status || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataDaftarPelayanan(filteredData);  
+    }
+  };  
 
   const handleTabChange = (status) => {
     setActiveTab(status);
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteDaftarPelayanan(id);
         setMessage("Data berhasil dihapus");
@@ -161,7 +165,7 @@ const DaftarPelayanan = () => {
         </body>
         </html>
       `);
-      previewWindow.document.close(); // Close the document to render it
+      previewWindow.document.close();
     } else {
       console.error("Failed to open preview window.");
     }
@@ -240,7 +244,7 @@ const DaftarPelayanan = () => {
               <input 
                 type="search" 
                 value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)} 
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" 
                 placeholder="Search..." 
                 required 
@@ -261,7 +265,7 @@ const DaftarPelayanan = () => {
           <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="flex flex-col w-full sm:w-1/2 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
+               <div className="flex flex-col w-full sm:w-1/2 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
                 <ul
                   className="flex justify-between sm:justify-center -mb-px text-sm font-medium text-center ml-2"
                   id="default-tab"
@@ -298,7 +302,6 @@ const DaftarPelayanan = () => {
                   ))}
                 </ul>
               </div>
-
 
               <div className="flex justify-center mt-6">
   <div className="w-full max-w-4xl mx-auto"> 
@@ -348,7 +351,7 @@ const DaftarPelayanan = () => {
                             <td className="px-3 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
                               {item.kelengkapan}
                               </td>
-                              <td className="px-3 py-3 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
+                              <td className="px-3 py-6 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
                                 <i className={getStatusIcon(item.status)}></i>
                                 <span className="ml-2">{item.status}</span>
                               </td>

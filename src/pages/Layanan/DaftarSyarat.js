@@ -118,18 +118,20 @@ const DaftarSyarat = () => {
 
     search();
   }, [searchTerm, selectedUnit, id]);
+  
   const handleUnitChange = (e) => {
-    setSelectedUnit(e.target.value);
-  };
-
-  // const fetchSyaratData = async () => {
-  //   try {
-  //     const data = await fetchDaftarSyarat();
-  //     setDaftarSyarat(data);
-  //   } catch (error) {
-  //     setError("Error fetching Daftar Syarat: " + error.message);
-  //   }
-  // };
+    const selectedValue = e.target.value;
+    setSelectedUnit(selectedValue); 
+  
+    if (selectedValue) {
+      const filteredData = dataDaftarSyarat.filter((item) =>
+        String(item.unit || "").toLowerCase().includes(selectedValue.toLowerCase())
+      );
+      setDataDaftarSyarat(filteredData); 
+    } else {
+      setDataDaftarSyarat(dataDaftarSyarat); 
+    }
+  };  
 
   const fetchCurrentDaftarSyarat = async () => {
     if (currentDaftarSyarat) {
@@ -149,18 +151,21 @@ const DaftarSyarat = () => {
     fetchCurrentDaftarSyarat();
   }, [currentDaftarSyarat]);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataDaftarSyarat.filter(
-      (item) =>
-        String(item.unit || "")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        String(item.nama_pelayanan || "")
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-    );
-    setDataDaftarSyarat(filteredData);
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value); 
+  
+    if (!value) {
+      setDataDaftarSyarat(dataDaftarSyarat); 
+    } else {
+      const filteredData = dataDaftarSyarat.filter(
+        (item) =>
+          String(item.unit || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.nama_pelayanan || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.syarat || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataDaftarSyarat(filteredData);  
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -264,7 +269,7 @@ const DaftarSyarat = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-2/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
@@ -279,13 +284,13 @@ const DaftarSyarat = () => {
               <select
                 className="w-2/5 p-2 pl-4 text-sm border text-gray-400 border-gray-300 rounded-lg bg-gray-50 focus:ring-green-500 focus:border-green-500"
                 value={selectedUnit}
-                onChange={handleUnitChange}
+                onChange={handleUnitChange} 
               >
-                <option value="">Pilih Unit Pengolah</option>
+                <option value="" disabled selected>Pilih Unit Pengolah</option> {/* Read-only placeholder */}
                 {unit && unit.length > 0 ? (
-                  unit.map((unit, index) => (
-                    <option key={index} value={unit}>
-                      {unit}
+                  unit.map((unitItem, index) => (
+                    <option key={index} value={unitItem}>
+                      {unitItem}
                     </option>
                   ))
                 ) : (

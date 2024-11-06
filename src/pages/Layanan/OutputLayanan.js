@@ -32,15 +32,21 @@ const OutputLayanan = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    const filteredData = dataOutputLayanan.filter((item) =>
-      String(item.name || "").toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setOutputLayanan(filteredData);
-  };
+    const value = e.target.value;
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setOutputLayanan(dataOutputLayanan);  
+    } else {
+      const filteredData = dataOutputLayanan.filter((item) =>
+        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setOutputLayanan(filteredData); 
+    }
+  };  
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteOutputLayanan(id);
         setMessage("Data berhasil dihapus");
@@ -136,7 +142,7 @@ const OutputLayanan = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />

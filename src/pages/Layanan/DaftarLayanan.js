@@ -74,17 +74,26 @@ const DaftarLayanan = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    const filteredData = dataDaftarLayanan.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataDaftarLayanan(filteredData);
-  };
+    const value = e.target.value;
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setDataDaftarLayanan(dataDaftarLayanan);  
+    } else {
+      const filteredData = dataDaftarLayanan.filter((item) => {
+        return (
+          String(item.name || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.unit || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.jenis || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.output || "").toLowerCase().includes(value.toLowerCase())
+        );
+      });
+      setDataDaftarLayanan(filteredData); 
+    }
+  };   
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteDaftarLayanan(id);
         setMessage("Data berhasil dihapus");
@@ -181,7 +190,7 @@ const DaftarLayanan = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
@@ -243,7 +252,7 @@ const DaftarLayanan = () => {
               ) : (
                 <tr>
                           <td
-                            colSpan="3"
+                            colSpan="8"
                             className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
                           >
                             No data available

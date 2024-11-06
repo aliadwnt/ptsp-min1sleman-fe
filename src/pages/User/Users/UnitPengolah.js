@@ -33,17 +33,24 @@ const UnitPengolah = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    const filteredData = dataUnitPengolah.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataUnitPengolah(filteredData);
+    const value = e.target.value;  
+    setSearchTerm(value); 
+  
+    if (!value) {
+      setDataUnitPengolah(dataUnitPengolah);  
+    } else {
+      const filteredData = dataUnitPengolah.filter((item) =>
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
+      );
+      setDataUnitPengolah(filteredData);  
+    }
   };
+  
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteUnitPengolah(id);
         setMessage("Data berhasil dihapus");
@@ -147,7 +154,7 @@ const UnitPengolah = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
@@ -254,7 +261,7 @@ const UnitPengolah = () => {
                   <input
                     type="text"
                     name="name"
-                    defaultValue={currentUnitPengolah?.name || ""} // Change to use the name instead of id
+                    defaultValue={currentUnitPengolah?.name || ""} 
                     placeholder="Masukkan nama unit pengolah baru"
                     required
                     className="block w-full p-2 border border-gray-300 rounded mb-4"

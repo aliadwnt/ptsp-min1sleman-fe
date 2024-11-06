@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
-
 import {
   fetchMasterDisposisi,
   createMasterDisposisi,
@@ -33,18 +32,22 @@ const MasterDisposisi = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataMasterDisposisi.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataMasterDisposisi(filteredData);
-  };
+  const handleSearch = (e) => {
+    const value = e.target.value;  
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setDataMasterDisposisi(dataMasterDisposisi); 
+    } else {
+      const filteredData = dataMasterDisposisi.filter((item) =>
+        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataMasterDisposisi(filteredData);  
+    }
+  };  
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteMasterDisposisi(id);
         setMessage("Data berhasil dihapus");
@@ -141,7 +144,7 @@ const MasterDisposisi = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-full md:w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />

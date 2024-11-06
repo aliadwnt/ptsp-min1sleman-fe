@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PrivateRoute from '../src/components/privateRoute';
 
 import Home from './pages/Home';
 import Layanan from './pages/Layanan';
@@ -40,8 +41,6 @@ import CreateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/CreateDaftarP
 import UpdateDaftarPelayanan from './pages/Layanan/DaftarPelayanan/UpdateDaftarPelayanan';
 
 import DaftarNotifikasi from './pages/User/Notifications/DaftarNotifikasi';
-
-import PrivateRoute from '../src/components/privateRoute';
 
 function App() {
   return (

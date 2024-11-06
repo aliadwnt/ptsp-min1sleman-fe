@@ -47,14 +47,20 @@ const ArsipLayanan = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataArsipLayanan.filter((item) =>
-      String(item.nama_pelayanan || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataArsipLayanan(filteredData);
+  const handleSearch = (e) => {
+    const value = e.target.value; 
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setDataArsipLayanan(dataArsipLayanan);  
+    } else {
+      const filteredData = dataArsipLayanan.filter((item) =>
+        String(item.no_reg || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.nama_pelayanan || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.perihal || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataArsipLayanan(filteredData); 
+    }
   };
 
   const handleChange = (e, type, id) => {
@@ -203,7 +209,7 @@ const ArsipLayanan = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
@@ -223,25 +229,25 @@ const ArsipLayanan = () => {
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-200">
           <tr>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               No
             </th>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Nomor Registrasi
             </th>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Nama Layanan
             </th>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Perihal
             </th>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Arsip Masuk
             </th>
-            <th className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-3 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Arsip Keluar
             </th>
-            <th className="px-9 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+            <th className="px-9 sm:px-5 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
               Status
             </th>
           </tr>
@@ -251,19 +257,19 @@ const ArsipLayanan = () => {
           {dataArsipLayanan.length > 0 ? (
             dataArsipLayanan.map((item, index) => (
               <tr key={item.id}>
-                <td className="px-2 sm:px-4 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                <td className="px-2 sm:px-4 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
                   {index + 1}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                <td className="px-2 sm:px-4 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                   {item.no_reg}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                <td className="px-2 sm:px-4 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                   {item.nama_pelayanan}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                <td className="px-2 sm:px-4 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                   {item.perihal}
                 </td>
-                <td className="px-2 sm:px-4 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                <td className="px-2 sm:px-4 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
                   {item.arsip_masuk ? (
                     <>
                       <a
@@ -364,7 +370,7 @@ const ArsipLayanan = () => {
                     </>
                   )}
                 </td>
-                <td td className="px-3 py-3 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
+                <td td className="px-3 py-4 text-xs text-left text-gray-900 dark:text-gray-900 flex items-center justify-left">
                   <i className={getStatusIcon(item.status)}></i>
                    <span className="ml-2">{item.status}</span>
                 </td>

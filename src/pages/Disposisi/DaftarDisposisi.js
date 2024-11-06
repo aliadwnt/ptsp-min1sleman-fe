@@ -35,21 +35,26 @@ const DaftarDisposisi = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    const value = e.target.value; 
+    setSearchTerm(value); 
   
-    const filteredData = dataDaftarDisposisi.filter((item) => {
-      return (
-        String(item.no_surat || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.pengirim || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.tgl || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.perihal || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.penerima || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.diteruskan || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(item.waktu || "").toLowerCase().includes(searchTerm.toLowerCase()) 
-      );
-    });
+    if (!value) {
+      setFilteredData(dataDaftarDisposisi); 
+    } else {
+      const filteredData = dataDaftarDisposisi.filter((item) => {
+        return (
+          String(item.no_surat || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.nama_pengirim || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.tgl || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.perihal || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.nama_penerima || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.diteruskan || "").toLowerCase().includes(value.toLowerCase()) ||
+          String(item.waktu || "").toLowerCase().includes(value.toLowerCase())
+        );
+      });
   
-    setFilteredData(filteredData);
+      setFilteredData(filteredData); 
+    }
   };  
 
   const handleModalClose = () => {
@@ -95,7 +100,7 @@ const DaftarDisposisi = () => {
                   <input
                     type="search"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={handleSearch}
                     className="w-5/6 md:w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Search..."
                     required
@@ -117,7 +122,7 @@ const DaftarDisposisi = () => {
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No Surat</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Pengirim</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Tgl Surat</th>
+            <th className="px-12 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Tgl Surat</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Perihal</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Penerima</th>
             <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Diteruskan Kepada</th>
@@ -133,7 +138,13 @@ const DaftarDisposisi = () => {
                 <td className="px-6 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">{index + 1}</td>
                 <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.no_surat}</td>
                 <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.nama_pengirim}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.tgl}</td>
+                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
+                  {new Date(item.tgl).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </td>
                 <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.perihal}</td>
                 <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.nama_pemohon}</td>
                 <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.diteruskan_kepada}</td>
@@ -149,7 +160,7 @@ const DaftarDisposisi = () => {
           ) : (
             <tr>
                           <td
-                            colSpan="3"
+                            colSpan="10"
                             className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
                           >
                             No data available

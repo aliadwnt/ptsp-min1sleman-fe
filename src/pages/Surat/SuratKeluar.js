@@ -31,18 +31,23 @@ const SuratKeluar = () => {
     }
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const filteredData = dataSuratKeluar.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataSuratKeluar(filteredData);
+  const handleSearch = (e) => {
+    const value = e.target.value;  
+    setSearchTerm(value);  
+  
+    if (!value) {
+      setDataSuratKeluar(dataSuratKeluar); 
+    } else {
+      const filteredData = dataSuratKeluar.filter((item) =>
+        String(item.no_surat || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.ditujukan || "").toLowerCase().includes(value.toLowerCase())
+      );
+      setDataSuratKeluar(filteredData); 
+    }
   };
-
+  
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteSuratKeluar(id);
         setMessage("Data berhasil dihapus");
@@ -129,7 +134,7 @@ const SuratKeluar = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
@@ -143,7 +148,7 @@ const SuratKeluar = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus"></i>Tambah
+                <i className="fas fa-plus mr-1"></i>Tambah
               </button>
             </form>
           </div>

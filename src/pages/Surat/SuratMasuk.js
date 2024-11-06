@@ -32,17 +32,25 @@ const SuratMasuk = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    const filteredData = dataSuratMasuk.filter((item) =>
-      String(item.name || "")
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
-    setDataSuratMasuk(filteredData);
+    const value = e.target.value; 
+    setSearchTerm(value);
+  
+    if (!value) {
+      setDataSuratMasuk(dataSuratMasuk); 
+    } else {
+      const filteredData = dataSuratMasuk.filter((item) =>
+        String(item.no_agenda || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.no_surat || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.tanggal_surat || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.pengirim || "").toLowerCase().includes(value.toLowerCase()) ||
+        String(item.penerima || "").toLowerCase().includes(value.toLowerCase()) 
+      );
+      setDataSuratMasuk(filteredData);  
+    }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Yakin mau dihapus?")) {
+    if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteSuratMasuk(id);
         setMessage("Data berhasil dihapus");
@@ -148,7 +156,7 @@ const SuratMasuk = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
@@ -163,7 +171,7 @@ const SuratMasuk = () => {
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                <i className="fas fa-plus"></i>Tambah
+                <i className="fas fa-plus mr-1"></i>Tambah
               </button>
             </form>
           </div>
