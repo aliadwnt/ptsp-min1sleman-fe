@@ -18,6 +18,7 @@ const DaftarSyarat = () => {
   const [unit, setUnit] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState("");
   const [daftarSyarat, setDaftarSyarat] = useState([]);
+  const [daftarSyaratLayanan, setDaftarSyaratLayanan] = useState([]);
   const [syaratOptions, setSyaratOptions] = useState([]);
   const [selectedSyarat, setSelectedSyarat] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -35,7 +36,7 @@ const DaftarSyarat = () => {
     fetchData();
     fetchUnit();
     fetchSyarat();
-    fetchSyaratData();
+    // fetchSyaratData();
   }, [id]);
 
   const fetchSyarat = async () => {
@@ -76,17 +77,16 @@ const DaftarSyarat = () => {
       });
 
       setDataDaftarSyarat(combinedData);
-      setError(null); 
-      setSuccess("Data berhasil diambil!"); 
+      setError(null);
+      setSuccess("Data berhasil diambil!");
     } catch (error) {
       console.error("Error fetching Daftar Syarat:", error);
-      setSuccess(null); 
-      setError("Terjadi kesalahan saat mengambil data."); 
+      setSuccess(null);
+      setError("Terjadi kesalahan saat mengambil data.");
     }
   };
 
   useEffect(() => {
-    
     const search = async () => {
       if (searchTerm || selectedUnit) {
         try {
@@ -106,8 +106,8 @@ const DaftarSyarat = () => {
           });
 
           setDataDaftarSyarat(combinedData);
-          setError(null); 
-          setSuccess("Pencarian berhasil!"); 
+          setError(null);
+          setSuccess("Pencarian berhasil!");
         } catch (error) {
           console.error("Error during search:", error);
         }
@@ -122,19 +122,25 @@ const DaftarSyarat = () => {
     setSelectedUnit(e.target.value);
   };
 
-  const fetchSyaratData = async () => {
-    try {
-      const data = await fetchDaftarSyarat();
-      setDaftarSyarat(data);
-    } catch (error) {
-      setError("Error fetching Daftar Syarat: " + error.message);
-    }
-  };
+  // const fetchSyaratData = async () => {
+  //   try {
+  //     const data = await fetchDaftarSyarat();
+  //     setDaftarSyarat(data);
+  //   } catch (error) {
+  //     setError("Error fetching Daftar Syarat: " + error.message);
+  //   }
+  // };
 
   const fetchCurrentDaftarSyarat = async () => {
     if (currentDaftarSyarat) {
       const data = await fetchDaftarSyaratById(currentDaftarSyarat.id);
-      setDaftarSyarat(data.syarat || []);
+      const syarats =
+        data.DaftarSyarat && data.DaftarSyarat?.syarat_layanan
+          ? JSON.parse(data.DaftarSyarat?.syarat_layanan)
+          : [];
+
+      setDaftarSyarat(data.DaftarSyarat);
+      setDaftarSyaratLayanan(syarats);
       setSyaratTerpilih(data.syarat_terpilih || []);
     }
   };
@@ -145,50 +151,35 @@ const DaftarSyarat = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    const filteredData = dataDaftarSyarat.filter
-    (item =>
-      String(item.unit || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(item.nama_pelayanan || "").toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredData = dataDaftarSyarat.filter(
+      (item) =>
+        String(item.unit || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        String(item.nama_pelayanan || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
     );
     setDataDaftarSyarat(filteredData);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const currentData = await fetchDaftarSyaratById(currentDaftarSyarat.id);
-    const syaratId = currentData ? parseInt(currentData.syarat_id) : null;
-    const syarat_terpilih = daftarSyarat.map((syarat) => syarat.name);
 
     const data = {
-      unit: formData.get("unit"),
-      name: formData.get("name"),
-      jenis: formData.get("jenis"),
-      syarat_terpilih,
-      syarat_id: syaratId,
-      layanan_id: currentDaftarSyarat ? currentDaftarSyarat.id : null, // ID layanan, jika sedang mengedit
+      layanan_id: currentDaftarSyarat?.id,
+      syarat_id: daftarSyarat?.id,
+      daftar_syarat: daftarSyaratLayanan,
     };
 
-    console.log("Data sebelum dikirim:", data);
-
-    if (!data.unit || !data.name || data.syarat_terpilih.length === 0) {
-      setError(
-        "Semua field harus diisi dan syarat_terpilih harus berupa array yang tidak kosong."
-      );
-      return;
-    }
-
     try {
-      await updateDaftarSyarat(data);
-      setMessage(
-        currentDaftarSyarat
-          ? "Data berhasil diupdate"
-          : "Data baru berhasil ditambahkan dan diupdate"
-      );
-      await fetchSyaratData();
-      handleModalClose();
+      await updateDaftarSyarat(data).then(async () => {
+        setMessage("Data berhasil diupdate");
+        await fetchData();
+        handleModalClose();
+      });
+
+      // await fetchSyaratData();
     } catch (error) {
       setError("Error submitting data: " + error.message);
       console.error("Error detail:", error);
@@ -197,26 +188,26 @@ const DaftarSyarat = () => {
 
   const handleAddSyarat = () => {
     if (selectedSyarat) {
-      const alreadyExists = daftarSyarat.some(
-        (item) => item.name === selectedSyarat
+      const alreadyExists = daftarSyaratLayanan.some(
+        (item) => item === selectedSyarat
       );
       if (alreadyExists) {
         alert("Syarat sudah ditambahkan!");
         return;
       }
-      setDaftarSyarat((prev) => [...prev, { name: selectedSyarat }]);
+      setDaftarSyaratLayanan((prev) => [...prev, selectedSyarat]);
       setSelectedSyarat(""); // Reset setelah menambahkan
     }
   };
 
   const handleDeleteSyarat = (index) => {
-    setDaftarSyarat((prev) => prev.filter((_, i) => i !== index));
+    setDaftarSyaratLayanan((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
     setCurrentDaftarSyarat(null);
-    setDaftarSyarat([]);
+    setDaftarSyaratLayanan([]);
   };
 
   const toggleSidebar = () => {
@@ -278,13 +269,13 @@ const DaftarSyarat = () => {
                 placeholder="Search..."
                 required
               />
-             <button
-              type="submit"
-              onClick={handleSearch}
-              className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-            >
-              <i className="fas fa-search"></i>
-            </button>
+              <button
+                type="submit"
+                onClick={handleSearch}
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+              >
+                <i className="fas fa-search"></i>
+              </button>
               <select
                 className="w-2/5 p-2 pl-4 text-sm border text-gray-400 border-gray-300 rounded-lg bg-gray-50 focus:ring-green-500 focus:border-green-500"
                 value={selectedUnit}
@@ -498,12 +489,12 @@ const DaftarSyarat = () => {
                             <h3 className="text-lg font-semibold mb-4">
                               Daftar Syarat Layanan
                             </h3>
-                            {error && (
+                            {/* {error && (
                               <div className="text-red-500">{error}</div>
                             )}
                             {message && (
                               <div className="text-green-500">{message}</div>
-                            )}
+                            )} */}
                             <table className="min-w-full bg-white border border-gray-300">
                               <thead>
                                 <tr>
@@ -519,21 +510,22 @@ const DaftarSyarat = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {daftarSyarat.length > 0 ? (
-                                  daftarSyarat.map((syarat, index) => (
+                                {daftarSyaratLayanan.length > 0 ? (
+                                  daftarSyaratLayanan.map((syarat, index) => (
                                     <tr key={index}>
                                       <td className="px-4 py-2 border border-gray-300">
                                         {index + 1}
                                       </td>
                                       <td className="px-4 py-2 border border-gray-300">
-                                        {syarat.name}
+                                        {syarat}
                                       </td>
                                       <td className="px-4 py-2 border border-gray-300">
                                         <button
                                           className="bg-red-500 text-white px-2 py-1 rounded flex items-center space-x-2"
-                                          onClick={() =>
-                                            handleDeleteSyarat(index)
-                                          }
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDeleteSyarat(index);
+                                          }}
                                         >
                                           <i className="fas fa-trash"></i>
                                         </button>
