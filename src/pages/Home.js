@@ -7,7 +7,10 @@ import Footer from "../components/footer";
 import Jumbotron from "../components/jumbotron";
 import "../index.css";
 import { fetchDaftarLayanan } from "../services/daftarLayananService";
-import { fetchDaftarSyarat } from "../services/daftarSyaratService";
+import {
+  fetchDaftarSyarat,
+  fetchDaftarSyaratById,
+} from "../services/daftarSyaratService";
 import { handleSearch } from "../services/lacakPermohonanService";
 import { useParams } from "react-router-dom";
 
@@ -148,22 +151,22 @@ const HomePage = ({ daftarSyarat = [] }) => {
           </button>
         </div>
 
-         {/* Daftar Layanan */}
-         <div id="layanan" className="mt-8">
+        {/* Daftar Layanan */}
+        <div id="layanan" className="mt-8">
           <h1 className="text-2xl md:text-3xl font-semibold text-center">
             Daftar Layanan PTSP MIN 1 SLEMAN
           </h1>
           {daftarLayanan.length > 0 ? (
             daftarLayanan.map((item) => (
-              <div key={item.id} className="mt-3">
-                <div className="panel bg-gray-100 rounded-lg p-2 shadow-md mb-1 transition-transform transform hover:scale-105">
+              <div key={item.id} className="mt-2">
+                <div className="panel bg-gray-100 rounded-lg p-1 shadow-md mb-1 transition-transform transform">
                   <div className="item flex justify-between items-center">
-                    <div className="description text-sm md:text-lg font-semibold text-gray-800">
+                    <div className="description text-sm md:text-lg font-semibold text-gray-800 w-full break-words text-left md:text-left">
                       {item.name}
                     </div>
                     <div className="actions flex space-x-2">
                       <button
-                        className="btn bg-blue-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-blue-600 transition duration-300 text-xs sm:text-sm"
+                        className="btn bg-blue-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-blue-600 transition duration-300 text-xs sm:text-xs"
                         onClick={() =>
                           openModal({
                             id: item.id,
@@ -174,8 +177,8 @@ const HomePage = ({ daftarSyarat = [] }) => {
                         Lihat Syarat
                       </button>
                       <button
-                        className="btn bg-green-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-green-600 transition duration-300 text-xs sm:text-sm"
-                        onClick={() => navigate("/layanan")} // Tambahkan logika navigasi di sini
+                        className="btn bg-green-500 text-white font-semibold py-1 px-2 sm:py-2 sm:px-4 rounded-lg hover:bg-green-600 transition duration-300 text-xs"
+                        onClick={() => navigate("/layanan")}
                       >
                         Buat Permohonan
                       </button>
@@ -189,14 +192,13 @@ const HomePage = ({ daftarSyarat = [] }) => {
           )}
         </div>
 
-
         {/* Modal Detail Syarat Layanan */}
         <Dialog
           open={isModalOpen}
           onClose={closeModal}
           className="fixed z-10 inset-0 overflow-y-auto"
         >
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="flex items-start justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
               className="fixed inset-0 bg-gray-500 bg-opacity-75"
               aria-hidden="true"
@@ -208,16 +210,28 @@ const HomePage = ({ daftarSyarat = [] }) => {
             >
               &#8203;
             </span>
-            <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900">
+            <div className="inline-block align-top bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:top-0 sm:align-start sm:max-w-lg sm:w-full sm:p-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 border-b-2 border-gray-300 pb-2">
                 Syarat Pelayanan Publik
               </h3>
-              <div className="mt-2">
-                <span>
-                  Syarat dari Layanan{" "}
-                </span>
-                <br />
-                <ol className="list-decimal ml-3">
+
+              <div className="mt-4">
+                {(() => {
+                  const selectedId = currentData.id;
+                  const selectedLayanan = daftarLayanan.find(
+                    (item) => item.id === selectedId
+                  );
+
+                  return selectedLayanan ? (
+                    <span>
+                      Syarat dari Layanan{" "}
+                      <strong>{selectedLayanan.name}</strong>
+                    </span>
+                  ) : (
+                    <span>No layanan available</span>
+                  );
+                })()}
+                <ol className="list-decimal ml-10">
                   {currentData.syarat_layanan ? (
                     (() => {
                       try {
@@ -228,8 +242,6 @@ const HomePage = ({ daftarSyarat = [] }) => {
                         return parsedSyarat.length > 0 ? (
                           parsedSyarat.map((syarat, index) => (
                             <li key={index} className="mb-2">
-                              {" "}
-                              {/* Menambah jarak antar item */}
                               {syarat}
                             </li>
                           ))
@@ -246,7 +258,8 @@ const HomePage = ({ daftarSyarat = [] }) => {
                   )}
                 </ol>
               </div>
-              <div className="mt-5 flex-end">
+
+              <div className="mt-5 border-t border-gray-300 pt-4 flex justify-end">
                 <button type="button" className="btn" onClick={closeModal}>
                   Tutup
                 </button>

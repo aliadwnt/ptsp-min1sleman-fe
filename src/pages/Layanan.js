@@ -102,13 +102,17 @@ const Layanan = () => {
       if (responseData && responseData.data && responseData.data.no_reg) {
         const generatedNoReg = responseData.data.no_reg;
         const generatedNoSurat = responseData.data.no_surat;
-        const newItem = { ...formData, no_reg: generatedNoReg, no_surat: generatedNoSurat };
+        const newItem = {
+          ...formData,
+          no_reg: generatedNoReg,
+          no_surat: generatedNoSurat,
+        };
         try {
           await addNotification({
             message: `Layanan #${generatedNoReg}`,
-            no_surat:`${generatedNoSurat}`,
+            no_surat: `${generatedNoSurat}`,
             perihal: formData.perihal,
-            type:"pelayanan"
+            type: "pelayanan",
           });
         } catch (notificationError) {
           console.error("Gagal menambahkan notifikasi:", notificationError);
@@ -235,19 +239,12 @@ const Layanan = () => {
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="flex justify-between items-center">
-            <h2 className="font-family ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-gray-800 dark:text-gray-200">
+            <h2 className="font-family ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-gray-800">
               Buat Permohonan Layanan
             </h2>
-            {/* <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mr-8">
-              Cetak Bukti Permohonan
-            </button> */}
           </div>
 
           {error && <div className="text-red-600">{error}</div>}
-          {successMessage && (
-            <div className="text-green-600">{successMessage}</div>
-          )}
-
           <form
             className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
             onSubmit={handleSubmit}
@@ -314,7 +311,7 @@ const Layanan = () => {
             </div>
 
             <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_surat"
