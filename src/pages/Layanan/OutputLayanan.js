@@ -123,7 +123,7 @@ const OutputLayanan = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
             Output Layanan
           </div>
           {message && (
@@ -171,76 +171,74 @@ const OutputLayanan = () => {
             </form>
           </div>
 
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-200">
-                      <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                          No
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                          Output Layanan
-                        </th>
-                        <th className="px-5 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                      {dataOutputLayanan.length > 0 ? (
-                        dataOutputLayanan.map((item, index) => (
-                          <tr key={item.id}>
-                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
-                              {index + 1}
-                            </td>
-                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.name}
-                            </td>
-                            <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                              <button
-                                onClick={() => {
-                                  setCurrentOutputLayanan(item);
-                                  setModalOpen(true);
-                                }}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button>
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="10"
-                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                          >
-                            No data available
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        No
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Output Layanan
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {dataOutputLayanan.length > 0 ? (
+                      dataOutputLayanan.map((item, index) => (
+                        <tr key={item.id}>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                            {index + 1}
+                          </td>
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                            {item.name}
+                          </td>
+                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                            <button
+                              onClick={() => {
+                                setCurrentOutputLayanan(item);
+                                setModalOpen(true);
+                              }}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                            >
+                              <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                            </button>
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                            >
+                              <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                            </button>
                           </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="10"
+                          className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

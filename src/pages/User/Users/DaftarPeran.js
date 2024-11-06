@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/sidebar";
 import Header from "../../../components/header";
-import {
-  fetchDaftarPengguna
-} from "../../../services/daftarPenggunaService";
+import { fetchDaftarPengguna } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
 
 const DaftarPeran = () => {
@@ -28,25 +26,25 @@ const DaftarPeran = () => {
   };
 
   const handleSearch = (e) => {
-    const value = e.target.value;  
-    setSearchTerm(value);  
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setDataDaftarPengguna(dataDaftarPengguna);  
+      setDataDaftarPengguna(dataDaftarPengguna);
     } else {
-      const filteredData = dataDaftarPengguna.filter((item) =>
-        String(item.name || "")
-          .toLowerCase()
-          .includes(value.toLowerCase()) ||
-        String(item.is_admin || "")
-          .toLowerCase()
-          .includes(value.toLowerCase())
+      const filteredData = dataDaftarPengguna.filter(
+        (item) =>
+          String(item.name || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.is_admin || "")
+            .toLowerCase()
+            .includes(value.toLowerCase())
       );
-      setDataDaftarPengguna(filteredData); 
+      setDataDaftarPengguna(filteredData);
     }
   };
-  
-  
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -67,23 +65,25 @@ const DaftarPeran = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Peran</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
+            Daftar Peran
+          </div>
 
           {message && (
-          <div
-            className={`p-4 m-8 text-sm rounded-lg ${
-              message.includes("berhasil")
-                ? "text-green-800 bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                : "text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {message.includes("berhasil") ? "Sukses " : "Error "}
-            </span>
-            {message}
-          </div>
-        )}
+            <div
+              className={`p-4 m-8 text-sm rounded-lg ${
+                message.includes("berhasil")
+                  ? "text-green-800 bg-green-50 "
+                  : "text-red-800 bg-red-50"
+              }`}
+              role="alert"
+            >
+              <span className="font-medium">
+                {message.includes("berhasil") ? "Sukses " : "Error "}
+              </span>
+              {message}
+            </div>
+          )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
@@ -93,7 +93,7 @@ const DaftarPeran = () => {
               <input
                 type="search"
                 value={searchTerm}
-                onChange={handleSearch} 
+                onChange={handleSearch}
                 className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
@@ -106,33 +106,33 @@ const DaftarPeran = () => {
             </form>
           </div>
           <div className="flex justify-center">
-            <div className="w-full max-w-7xl">
-              <div className=" mr-4 ml-4 overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                <table className="min-w-full table-auto divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-200">
+            <div className="w-full max-w-4xl">
+              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
                         Nama Pengguna
                       </th>
-                      <th className="px-3 py-6 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
                         Peran
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {dataDaftarPengguna.length > 0 ? (
                       dataDaftarPengguna.map((item, index) => (
                         <tr key={item.id}>
-                          <td className="px-3 py-6 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
                             {index + 1}
                           </td>
-                          <td className="px-3 py-6 text-xs text-center text-gray-900 dark:text-gray-900">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
                             {item.name}
                           </td>
-                          <td className="px-3 py-6 text-xs text-center text-gray-900 dark:text-gray-900">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
                             {item.is_admin === 2
                               ? "SUPER ADMIN"
                               : item.is_admin === 1
@@ -145,7 +145,7 @@ const DaftarPeran = () => {
                       <tr>
                         <td
                           colSpan="5"
-                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
+                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                         >
                           No data available
                         </td>

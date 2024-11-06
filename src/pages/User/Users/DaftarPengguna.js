@@ -137,7 +137,7 @@ const DaftarPengguna = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 ">
             Daftar Pengguna
           </div>
 
@@ -146,7 +146,7 @@ const DaftarPengguna = () => {
           )}
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 "
               role="alert"
             >
               <span className="font-medium">Sukses </span>
@@ -184,91 +184,89 @@ const DaftarPengguna = () => {
             </form>
           </div>
 
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-hidden sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-200">
-                      <tr>
-                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          No
-                        </th>
-                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Nama Lengkap
-                        </th>
-                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-2 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Peran User
-                        </th>
-                        <th className="px-4 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                      {dataDaftarPengguna.length > 0 ? (
-                        dataDaftarPengguna.map((item, index) => (
-                          <tr key={item.id}>
-                            <td className="py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
-                              {index + 1}
-                            </td>
-                            <td className=" py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.name}
-                            </td>
-                            <td className=" py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.email}
-                            </td>
-                            <td className="py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                              {item.is_admin === 2
-                                ? "SUPER ADMIN"
-                                : item.is_admin === 1
-                                ? "ADMIN"
-                                : "USER"}
-                            </td>
-                            <td className=" py-4 text-xs text-center text-gray-900 whitespace-nowrap">
-                              <button
-                                onClick={() => handleEdit(item)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Edit user"
-                              >
-                                <i className="fas fa-edit text-green-600"></i>
-                              </button>
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Delete user"
-                              >
-                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td
-                            colSpan="5"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
-                          >
-                            No data available
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        No
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Nama Lengkap
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Email
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Peran User
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {dataDaftarPengguna.length > 0 ? (
+                      dataDaftarPengguna.map((item, index) => (
+                        <tr key={item.id}>
+                          <td className=" py-4 text-xs text-center text-gray-900">
+                            {index + 1}
+                          </td>
+                          <td className=" py-4 text-xs text-center text-gray-900">
+                            {item.name}
+                          </td>
+                          <td className=" py-4 text-xs text-center text-gray-900">
+                            {item.email}
+                          </td>
+                          <td className="py-4 text-xs text-center text-gray-900">
+                            {item.is_admin === 2
+                              ? "SUPER ADMIN"
+                              : item.is_admin === 1
+                              ? "ADMIN"
+                              : "USER"}
+                          </td>
+                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                            <button
+                              onClick={() => handleEdit(item)}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                              aria-label="Edit user"
+                            >
+                              <i className="fas fa-edit text-green-600"></i>
+                            </button>
+                            <button
+                              onClick={() => handleDelete(item.id)}
+                              className="focus:outline-none"
+                              style={{
+                                background: "none",
+                                border: "none",
+                                padding: 0,
+                              }}
+                              aria-label="Delete user"
+                            >
+                              <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
+                            </button>
                           </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="5"
+                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

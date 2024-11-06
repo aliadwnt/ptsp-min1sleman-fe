@@ -35,27 +35,41 @@ const DaftarDisposisi = () => {
   };
 
   const handleSearch = (e) => {
-    const value = e.target.value; 
-    setSearchTerm(value); 
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setFilteredData(dataDaftarDisposisi); 
+      setFilteredData(dataDaftarDisposisi);
     } else {
       const filteredData = dataDaftarDisposisi.filter((item) => {
         return (
-          String(item.no_surat || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.nama_pengirim || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.tgl || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.perihal || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.nama_penerima || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.diteruskan || "").toLowerCase().includes(value.toLowerCase()) ||
-          String(item.waktu || "").toLowerCase().includes(value.toLowerCase())
+          String(item.no_surat || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.nama_pengirim || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.tgl || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.perihal || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.nama_penerima || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.diteruskan || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.waktu || "")
+            .toLowerCase()
+            .includes(value.toLowerCase())
         );
       });
-  
-      setFilteredData(filteredData); 
+
+      setFilteredData(filteredData);
     }
-  };  
+  };
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -73,19 +87,32 @@ const DaftarDisposisi = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}>
+      <div
+        className={`fixed inset-y-0 left-0 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+      >
         <Sidebar toggleSidebar={toggleSidebar} />
       </div>
 
-      <div className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? "lg:ml-64" : "ml-0"} pl-4 lg:pl-64`}>
+      <div
+        className={`flex-1 transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pl-4 lg:pl-64`}
+      >
         <Header />
         <main>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Disposisi</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
+            Daftar Disposisi
+          </div>
 
           {message && (
-            <div className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <div
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+              role="alert"
+            >
               <span className="font-medium">Sukses </span>
               {message}
             </div>
@@ -96,7 +123,10 @@ const DaftarDisposisi = () => {
           ) : (
             <>
               <div className="flex items-center justify-center space-x-2 mb-4">
-                <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+                <form
+                  onSubmit={handleSearch}
+                  className="flex flex-grow justify-center"
+                >
                   <input
                     type="search"
                     value={searchTerm}
@@ -114,64 +144,111 @@ const DaftarDisposisi = () => {
                 </form>
               </div>
               <div className="flex justify-center">
-  <div className="w-full max-w-full p-1"> 
-    <div className="overflow-x-auto border border-gray-200 dark:border-gray-700 md:rounded-lg">
-      <table className="min-w-full  divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-200">
-          <tr>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">No Surat</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Pengirim</th>
-            <th className="px-12 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Tgl Surat</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Perihal</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Penerima</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Diteruskan Kepada</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Waktu Disposisi</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Catatan</th>
-            <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">Aksi</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-          {filteredData.length > 0 ? (
-            filteredData.map((item, index) => (
-              <tr key={item.id}>
-                <td className="px-6 py-4 text-xs font-medium text-center text-gray-900 dark:text-gray-900">{index + 1}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.no_surat}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.nama_pengirim}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">
-                  {new Date(item.tgl).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.perihal}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.nama_pemohon}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.diteruskan_kepada}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.waktu}</td>
-                <td className="px-6 py-4 text-xs text-center text-gray-900 dark:text-gray-900">{item.catatan}</td>
-                <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">
-                  <button onClick={() => handleDetail(item.no_reg)} className="focus:outline-none" style={{ background: "none", border: "none", padding: 0 }}>
-                    <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-                          <td
-                            colSpan="10"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider"
-                          >
-                            No data available
-                          </td>
+                <div className="w-full max-w-6xl">
+                  <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            No
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            No Surat
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Pengirim
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Tgl Surat
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Perihal
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Penerima
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Diteruskan Kepada
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Waktu Disposisi
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Catatan
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                            Aksi
+                          </th>
                         </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {filteredData.length > 0 ? (
+                          filteredData.map((item, index) => (
+                            <tr key={item.id}>
+                              <td className="px-6 py-4 text-xs font-medium text-center text-gray-900 ">
+                                {index + 1}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                                {item.no_surat}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                                {item.nama_pengirim}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                                {new Date(item.tgl).toLocaleDateString(
+                                  "id-ID",
+                                  {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900">
+                                {item.perihal}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900">
+                                {item.nama_pemohon}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900">
+                                {item.diteruskan_kepada}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900">
+                                {item.waktu}
+                              </td>
+                              <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                                {item.catatan}
+                              </td>
+                              <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">
+                                <button
+                                  onClick={() => handleDetail(item.no_reg)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                >
+                                  <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                              colSpan="10"
+                              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
+                              No data available
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </main>
