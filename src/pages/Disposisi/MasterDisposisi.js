@@ -33,18 +33,20 @@ const MasterDisposisi = () => {
   };
 
   const handleSearch = (e) => {
-    const value = e.target.value;  
-    setSearchTerm(value);  
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setDataMasterDisposisi(dataMasterDisposisi); 
+      setDataMasterDisposisi(dataMasterDisposisi);
     } else {
       const filteredData = dataMasterDisposisi.filter((item) =>
-        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
       );
-      setDataMasterDisposisi(filteredData);  
+      setDataMasterDisposisi(filteredData);
     }
-  };  
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
@@ -74,10 +76,14 @@ const MasterDisposisi = () => {
       name: name.value,
     };
 
-    const isDuplicate = dataMasterDisposisi.some((item) => item.name.toLowerCase() === MasterDisposisi.name.toLowerCase());
+    const isDuplicate = dataMasterDisposisi.some(
+      (item) => item.name.toLowerCase() === MasterDisposisi.name.toLowerCase()
+    );
     if (isDuplicate) {
-      setMessage("Master Disposisi Sudah tersedia, Masukkan Master Disposisi yang belum tersedia");
-      setIsError(true); 
+      setMessage(
+        "Master Disposisi Sudah tersedia, Masukkan Master Disposisi yang belum tersedia"
+      );
+      setIsError(true);
       return;
     }
 
@@ -89,13 +95,13 @@ const MasterDisposisi = () => {
         await createMasterDisposisi(MasterDisposisi);
         setMessage("Data berhasil ditambahkan");
       }
-      setIsError(false); 
+      setIsError(false);
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
-      setIsError(true); 
+      setIsError(true);
     }
   };
 
@@ -125,38 +131,49 @@ const MasterDisposisi = () => {
       >
         <Header />
         <div className="p-4">
-          <div className="text-xl font-semibold mb-4">Daftar Master Disposisi</div>
+          <div className="text-xl font-semibold mb-4">
+            Daftar Master Disposisi
+          </div>
 
           {message && (
             <div
               className={`p-4 m-2 text-sm ${
-                isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
+                isError
+                  ? "text-red-800 bg-red-50"
+                  : "text-green-800 bg-green-50"
               } rounded-lg`}
               role="alert"
             >
-              <span className="font-medium">{isError ? "Error" : "Sukses"}: </span>
+              <span className="font-medium">
+                {isError ? "Error" : "Sukses"}:{" "}
+              </span>
               {message}
             </div>
           )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-grow justify-center"
+            >
               <input
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-full md:w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
+
               <button
                 type="submit"
-                className="ml-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
+                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
               >
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
-                className="ml-1 flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
+                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
                 <i className="fas fa-plus"></i>
                 <span className="ml-1">Tambah</span>
@@ -171,17 +188,27 @@ const MasterDisposisi = () => {
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead className="bg-gray-50 dark:bg-gray-200">
                       <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">No</th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Master Disposisi</th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">Aksi</th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                          Master Disposisi
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                          Aksi
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                       {dataMasterDisposisi.length > 0 ? (
                         dataMasterDisposisi.map((item, index) => (
                           <tr key={item.id}>
-                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">{index + 1}</td>
-                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-900">{item.name}</td>
+                            <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 dark:text-gray-900">
+                              {index + 1}
+                            </td>
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 dark:text-gray-900">
+                              {item.name}
+                            </td>
                             <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                               <button
                                 onClick={() => {
@@ -189,14 +216,22 @@ const MasterDisposisi = () => {
                                   setModalOpen(true);
                                 }}
                                 className="focus:outline-none"
-                                style={{ background: "none", border: "none", padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
                               </button>
                               <button
                                 onClick={() => handleDelete(item.id)}
                                 className="focus:outline-none"
-                                style={{ background: "none", border: "none", padding: 0 }}
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
                               >
                                 <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
                               </button>
@@ -224,7 +259,9 @@ const MasterDisposisi = () => {
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
                 <h2 className="text-xl font-semibold mb-4">
-                  {currentMasterDisposisi ? "Edit Master Disposisi" : "Tambah Master Disposisi"}
+                  {currentMasterDisposisi
+                    ? "Edit Master Disposisi"
+                    : "Tambah Master Disposisi"}
                 </h2>
                 <form onSubmit={handleSubmit}>
                   <input

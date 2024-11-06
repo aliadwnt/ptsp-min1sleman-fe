@@ -13,7 +13,7 @@ const MasterSyarat = () => {
   const [dataMasterSyarat, setDataMasterSyarat] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false); 
+  const [isError, setIsError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -34,17 +34,19 @@ const MasterSyarat = () => {
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchTerm(value); 
-  
+    setSearchTerm(value);
+
     if (!value) {
-      setDataMasterSyarat(dataMasterSyarat); 
+      setDataMasterSyarat(dataMasterSyarat);
     } else {
       const filteredData = dataMasterSyarat.filter((item) =>
-        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
       );
-      setDataMasterSyarat(filteredData); 
+      setDataMasterSyarat(filteredData);
     }
-  };  
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
@@ -56,7 +58,7 @@ const MasterSyarat = () => {
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
-        setIsError(true); 
+        setIsError(true);
       }
     }
   };
@@ -67,39 +69,42 @@ const MasterSyarat = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { name } = e.target.elements;
+    e.preventDefault();
+    const { name } = e.target.elements;
 
-  const isDuplicate = dataMasterSyarat.some((item) => item.name.toLowerCase() === name.value.toLowerCase());
+    const isDuplicate = dataMasterSyarat.some(
+      (item) => item.name.toLowerCase() === name.value.toLowerCase()
+    );
 
-  if (isDuplicate) {
-    setMessage("Master Syarat sudah tersedia, Masukkan master syarat yang belum tersedia.");
-    setIsError(true); 
-    return; 
-  }
-
-  const MasterSyarat = {
-    name: name.value,
-  };
-
-  try {
-    if (currentMasterSyarat) {
-      await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
-      setMessage("Data berhasil diupdate");
-      setIsError(false);
-    } else {
-      await createMasterSyarat(MasterSyarat);
-      setMessage("Data berhasil ditambahkan");
-      setIsError(false);
+    if (isDuplicate) {
+      setMessage(
+        "Master Syarat sudah tersedia, Masukkan master syarat yang belum tersedia."
+      );
+      setIsError(true);
+      return;
     }
-    fetchData();
-    setModalOpen(false); 
-  } catch (error) {
-    console.error("Failed to save data:", error);
-    setMessage("Failed to save data");
-    setIsError(true); 
-  }
-};
+
+    const MasterSyarat = {
+      name: name.value,
+    };
+
+    try {
+      if (currentMasterSyarat) {
+        await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
+        setMessage("Data berhasil diupdate");
+      } else {
+        await createMasterSyarat(MasterSyarat);
+        setMessage("Data berhasil ditambahkan");
+      }
+      setIsError(false);
+      fetchData(); // Refresh data
+      setModalOpen(false); // Close modal after success
+    } catch (error) {
+      console.error("Failed to save data:", error);
+      setMessage("Failed to save data");
+      setIsError(true);
+    }
+  };
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -111,7 +116,7 @@ const MasterSyarat = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -126,7 +131,9 @@ const MasterSyarat = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Master Syarat Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+            Daftar Master Syarat Layanan
+          </div>
 
           {message && (
             <div
@@ -137,14 +144,16 @@ const MasterSyarat = () => {
               }`}
               role="alert"
             >
-              <span className="font-medium">{isError ? "Error" : "Sukses"} </span>
+              <span className="font-medium">
+                {isError ? "Error" : "Sukses"}{" "}
+              </span>
               {message}
             </div>
           )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSearch}
+              onSubmit={handleSubmit}
               className="flex flex-grow justify-center"
             >
               <input
@@ -162,6 +171,7 @@ const MasterSyarat = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >

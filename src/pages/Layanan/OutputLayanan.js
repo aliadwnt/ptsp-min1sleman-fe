@@ -33,17 +33,19 @@ const OutputLayanan = () => {
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);  
-  
+    setSearchTerm(value);
+
     if (!value) {
-      setOutputLayanan(dataOutputLayanan);  
+      setOutputLayanan(dataOutputLayanan);
     } else {
       const filteredData = dataOutputLayanan.filter((item) =>
-        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
       );
-      setOutputLayanan(filteredData); 
+      setOutputLayanan(filteredData);
     }
-  };  
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
@@ -67,16 +69,19 @@ const OutputLayanan = () => {
     e.preventDefault();
     const { name } = e.target.elements;
     const OutputLayanan = { name: name.value };
-  
+
     const isDuplicate = dataOutputLayanan.some(
       (item) => item.name.toLowerCase() === OutputLayanan.name.toLowerCase()
     );
-  
+
     if (isDuplicate) {
-      setMessage({ type: "error", text: "Data sudah ada, Masukkan Data yang lain" });
-      return; 
+      setMessage({
+        type: "error",
+        text: "Data sudah ada, Masukkan Data yang lain",
+      });
+      return;
     }
-  
+
     try {
       if (currentOutputLayanan) {
         await updateOutputLayanan(currentOutputLayanan.id, OutputLayanan);
@@ -91,7 +96,7 @@ const OutputLayanan = () => {
       console.error("Gagal menyimpan data:", error);
       setMessage({ type: "error", text: "Gagal menyimpan data" });
     }
-  };  
+  };
 
   const handleModalClose = () => {
     setModalOpen(false);
@@ -103,7 +108,7 @@ const OutputLayanan = () => {
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -118,25 +123,27 @@ const OutputLayanan = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Output Layanan</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+            Output Layanan
+          </div>
           {message && (
-        <div
-          className={`p-4 m-8 text-sm rounded-lg ${
-            message.type === "success"
-              ? "text-green-800 bg-green-50"
-              : "text-red-800 bg-red-50"
-          }`}
-          role="alert"
-        >
-          <span className="font-medium">
-            {message.type === "success" ? "Sukses: " : "Error: "}
-          </span>
-          {message.text}
-        </div>
-      )}
+            <div
+              className={`p-4 m-8 text-sm rounded-lg ${
+                message.type === "success"
+                  ? "text-green-800 bg-green-50"
+                  : "text-red-800 bg-red-50"
+              }`}
+              role="alert"
+            >
+              <span className="font-medium">
+                {message.type === "success" ? "Sukses: " : "Error: "}
+              </span>
+              {message.text}
+            </div>
+          )}
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSearch}
+              onSubmit={handleSubmit}
               className="flex flex-grow justify-center"
             >
               <input
@@ -154,11 +161,12 @@ const OutputLayanan = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-               <i className="fas fa-plus"></i>
-               <span className="ml-1">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
@@ -246,17 +254,14 @@ const OutputLayanan = () => {
                     ? "Edit Output Layanan"
                     : "Tambah Output Layanan"}
                 </h2>
-                <form
-                  onSubmit={handleSubmit}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
-                >
+                <form onSubmit={handleSubmit}>
                   <input
                     type="text"
                     name="name"
                     defaultValue={currentOutputLayanan?.name || ""}
-                    placeholder="Masukkan Output Pelayanan baru"
+                    placeholder="Nama Master Syarat"
                     required
-                    className="block w-full p-2 border border-gray-300 rounded"
+                    className="block w-full p-2 border border-gray-300 rounded mb-4"
                   />
 
                   <div className="flex justify-end col-span-2 space-x-2">

@@ -101,6 +101,17 @@ const UserProfileMenu = () => {
       console.error("Failed to log out:", error);
     }
   };
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+
+    if (interval > 1) return `${interval} hari yang lalu`;
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) return `${interval} jam yang lalu`;
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) return `${interval} menit yang lalu`;
+    return `${seconds} detik yang lalu`;
+  };
 
   const isActive = (path) => (location.pathname === path ? "bg-green-100" : "");
   const toggleSidebar = () => {
@@ -357,10 +368,8 @@ const UserProfileMenu = () => {
                               </p>
                             </>
                           )}
-
-                          <p className="text-sm text-gray-500">
-                            <strong>Tgl:</strong>{" "}
-                            {new Date(notification.created_at).toLocaleString()}
+                          <p className="text-xs text-gray-500">
+                            {timeAgo(notification.created_at).toLocaleString()}
                           </p>
                         </div>
                       </li>

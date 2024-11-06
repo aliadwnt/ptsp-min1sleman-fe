@@ -32,20 +32,22 @@ const JenisLayanan = () => {
   };
 
   const handleSearch = (e) => {
-    const value = e.target.value; 
-    setSearchTerm(value); 
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setDataJenisLayanan(dataJenisLayanan);  
+      setDataJenisLayanan(dataJenisLayanan);
     } else {
       const filteredData = dataJenisLayanan.filter((item) =>
-        String(item.name || "").toLowerCase().includes(value.toLowerCase())
+        String(item.name || "")
+          .toLowerCase()
+          .includes(value.toLowerCase())
       );
-  
-      setDataJenisLayanan(filteredData); 
+
+      setDataJenisLayanan(filteredData);
     }
   };
-  
+
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
@@ -67,36 +69,40 @@ const JenisLayanan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name } = e.target.elements;
-  
+
     const JenisLayanan = {
       name: name.value,
     };
-  
+
     // Check for duplicates
     const isDuplicate = dataJenisLayanan.some(
-      (item) => item.name.toLowerCase() === JenisLayanan.name.toLowerCase() && 
-                (!currentJenisLayanan || item.id !== currentJenisLayanan.id)
+      (item) =>
+        item.name.toLowerCase() === JenisLayanan.name.toLowerCase() &&
+        (!currentJenisLayanan || item.id !== currentJenisLayanan.id)
     );
-  
-   if (isDuplicate) {
-  setMessage({ text: "Nama layanan sudah ada. Silakan gunakan nama lain.", type: "error" });
-  return; // Exit the function if duplicate found
-}
 
-try {
-  if (currentJenisLayanan) {
-    await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
-    setMessage({ text: "Data berhasil diupdate", type: "success" });
-  } else {
-    await createJenisLayanan(JenisLayanan);
-    setMessage({ text: "Data berhasil ditambahkan", type: "success" });
-  }
-  fetchData();
-  setModalOpen(false); // Close modal
-} catch (error) {
-  console.error("Failed to save data:", error);
-  setMessage({ text: "Failed to save data", type: "error" });
-}
+    if (isDuplicate) {
+      setMessage({
+        text: "Nama layanan sudah ada. Silakan gunakan nama lain.",
+        type: "error",
+      });
+      return; // Exit the function if duplicate found
+    }
+
+    try {
+      if (currentJenisLayanan) {
+        await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
+        setMessage({ text: "Data berhasil diupdate", type: "success" });
+      } else {
+        await createJenisLayanan(JenisLayanan);
+        setMessage({ text: "Data berhasil ditambahkan", type: "success" });
+      }
+      fetchData();
+      setModalOpen(false); // Close modal
+    } catch (error) {
+      console.error("Failed to save data:", error);
+      setMessage({ text: "Failed to save data", type: "error" });
+    }
   };
 
   const handleModalClose = () => {
@@ -127,24 +133,24 @@ try {
           <h1 className="text-2xl font-semibold mb-4">Daftar Jenis Layanan</h1>
 
           {message && (
-  <div
-    className={`p-4 m-8 text-sm rounded-lg ${
-      message.type === "success"
-        ? "text-green-800 bg-green-50"
-        : "text-red-800 bg-red-50"
-    }`}
-    role="alert"
-  >
-    <span className="font-medium">
-      {message.type === "success" ? "Sukses: " : "Error: "}
-    </span>
-    {message.text}
-  </div>
-)}
+            <div
+              className={`p-4 m-8 text-sm rounded-lg ${
+                message.type === "success"
+                  ? "text-green-800 bg-green-50"
+                  : "text-red-800 bg-red-50"
+              }`}
+              role="alert"
+            >
+              <span className="font-medium">
+                {message.type === "success" ? "Sukses: " : "Error: "}
+              </span>
+              {message.text}
+            </div>
+          )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSearch}
+              onSubmit={handleSubmit}
               className="flex flex-grow justify-center"
             >
               <input
@@ -162,6 +168,7 @@ try {
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
@@ -172,9 +179,9 @@ try {
           </div>
 
           <div className="overflow-x-auto">
-          <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-200">
+            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-200">
                   <tr>
                     <th className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
                       No

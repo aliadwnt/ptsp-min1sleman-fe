@@ -27,7 +27,7 @@ const DaftarPengguna = () => {
   const fetchData = async () => {
     try {
       const response = await fetchDaftarPengguna();
-      console.log("Data fetched:", response); 
+      console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
@@ -90,17 +90,24 @@ const DaftarPengguna = () => {
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearchTerm(value); 
-  
+    setSearchTerm(value);
+
     if (!value) {
-      setDataDaftarPengguna(dataDaftarPengguna); 
+      setDataDaftarPengguna(dataDaftarPengguna);
     } else {
-      const filteredData = dataDaftarPengguna.filter((item) =>
-        String(item.name || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.email || "").toLowerCase().includes(value.toLowerCase()) ||
-        String(item.peran || "").toLowerCase().includes(value.toLowerCase())
+      const filteredData = dataDaftarPengguna.filter(
+        (item) =>
+          String(item.name || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.email || "")
+            .toLowerCase()
+            .includes(value.toLowerCase()) ||
+          String(item.peran || "")
+            .toLowerCase()
+            .includes(value.toLowerCase())
       );
-      setDataDaftarPengguna(filteredData); 
+      setDataDaftarPengguna(filteredData);
     }
   };
 
@@ -149,14 +156,14 @@ const DaftarPengguna = () => {
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSearch}
+              onSubmit={handleSubmit}
               className="flex flex-grow justify-center"
             >
               <input
                 type="search"
                 value={searchTerm}
-                onChange={handleSearch}  
-                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                onChange={handleSearch}
+                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
 
@@ -167,6 +174,7 @@ const DaftarPengguna = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >

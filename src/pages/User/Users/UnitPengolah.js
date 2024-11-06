@@ -33,21 +33,20 @@ const UnitPengolah = () => {
   };
 
   const handleSearch = (e) => {
-    const value = e.target.value;  
-    setSearchTerm(value); 
-  
+    const value = e.target.value;
+    setSearchTerm(value);
+
     if (!value) {
-      setDataUnitPengolah(dataUnitPengolah);  
+      setDataUnitPengolah(dataUnitPengolah);
     } else {
       const filteredData = dataUnitPengolah.filter((item) =>
         String(item.name || "")
           .toLowerCase()
           .includes(value.toLowerCase())
       );
-      setDataUnitPengolah(filteredData);  
+      setDataUnitPengolah(filteredData);
     }
   };
-  
 
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
@@ -76,13 +75,17 @@ const UnitPengolah = () => {
     const { name } = e.target.elements;
 
     const isDuplicate = dataUnitPengolah.some(
-      (item) => item.name.toLowerCase() === name.value.toLowerCase() && currentUnitPengolah?.id !== item.id
+      (item) =>
+        item.name.toLowerCase() === name.value.toLowerCase() &&
+        currentUnitPengolah?.id !== item.id
     );
 
     if (isDuplicate) {
-      setMessage("Unit Pengolah sudah tersedia, Masukkan unit pengolah yang belum tersedia"); // Error message for duplicates
-      setIsError(true); 
-      return; 
+      setMessage(
+        "Unit Pengolah sudah tersedia, Masukkan unit pengolah yang belum tersedia"
+      ); // Error message for duplicates
+      setIsError(true);
+      return;
     }
 
     formData.append("name", name.value);
@@ -101,7 +104,7 @@ const UnitPengolah = () => {
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
-      setIsError(true); 
+      setIsError(true);
     }
   };
 
@@ -109,13 +112,13 @@ const UnitPengolah = () => {
     setModalOpen(false);
     setCurrentUnitPengolah(null);
   };
-  
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
   return (
-<div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -130,7 +133,9 @@ const UnitPengolah = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Unit Pengolah</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+            Daftar Unit Pengolah
+          </div>
 
           {message && (
             <div
@@ -141,14 +146,16 @@ const UnitPengolah = () => {
               } rounded-lg`}
               role="alert"
             >
-              <span className="font-medium">{isError ? "Error " : "Sukses "}</span>
+              <span className="font-medium">
+                {isError ? "Error " : "Sukses "}
+              </span>
               {message}
             </div>
           )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSearch}
+              onSubmit={handleSubmit}
               className="flex flex-grow justify-center"
             >
               <input
@@ -166,11 +173,12 @@ const UnitPengolah = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
+                type="button" // Ensure this button doesn't submit the form
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
-                 <i className="fas fa-plus"></i>
-                 <span className="ml-1">Tambah</span>
+                <i className="fas fa-plus"></i>
+                <span className="ml-1">Tambah</span>
               </button>
             </form>
           </div>
@@ -261,7 +269,7 @@ const UnitPengolah = () => {
                   <input
                     type="text"
                     name="name"
-                    defaultValue={currentUnitPengolah?.name || ""} 
+                    defaultValue={currentUnitPengolah?.name || ""}
                     placeholder="Masukkan nama unit pengolah baru"
                     required
                     className="block w-full p-2 border border-gray-300 rounded mb-4"
