@@ -27,6 +27,11 @@ const LacakBerkas = () => {
     arsip_masuk: "",
     arsip_keluar: "",
   });
+  const [daftarDisposisi, setDaftarDisposisi] = useState({
+    diteruskan: "",
+    disposisi: "",
+    keterangan: "",
+  });
 
   const resetFields = () => {
     setFormData({
@@ -44,14 +49,6 @@ const LacakBerkas = () => {
     setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
   };
 
-  const fetchDisposisi = async () => {
-    try {
-      const response = await fetchDaftarDisposisi();
-      setDisposisi(response);
-    } catch (error) {
-      console.error("Error fetching daftar Disposisi:", error);
-    }
-  };
   const handleSearch = async () => {
     if (!no_reg) {
       alert("Nomor registrasi tidak boleh kosong");
@@ -80,7 +77,12 @@ const LacakBerkas = () => {
         alert("Data pelayanan tidak ditemukan");
         resetFields(); // Reset form jika data pelayanan tidak ditemukan
       }
+    } catch (error) {
+      console.error("Error fetching data pelayanan: ", error);
+      alert("Terjadi kesalahan saat mengambil data pelayanan");
+    }
 
+    try {
       // Ambil data arsip terlepas dari hasil data pelayanan
       const arsipData = await fetchLoadArsip(no_reg);
       if (arsipData) {
@@ -100,8 +102,37 @@ const LacakBerkas = () => {
         setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
       }
     } catch (error) {
-      console.error("Error fetching data: ", error);
-      alert("Terjadi kesalahan saat mengambil data");
+      console.error("Error fetching data arsip: ", error);
+      alert("Terjadi kesalahan saat mengambil data arsip");
+    }
+
+    try {
+      // Ambil data disposisi
+      const disposisiData = await fetchDaftarDisposisi(no_reg);
+      console.log("Disposisi Data:", disposisiData);
+
+      if (
+        disposisiData &&
+        Array.isArray(disposisiData) &&
+        disposisiData.length > 0
+      ) {
+        const mappedData = disposisiData.map((item) => ({
+          diteruskan: item.diteruskan,
+          disposisi: item.disposisi,
+          time: item.createdAt,
+          keterangan: item.keterangan,
+        }));
+        setDaftarDisposisi(mappedData);
+      } else {
+        console.warn(
+          "Data disposisi tidak ditemukan untuk nomor registrasi:",
+          no_reg
+        );
+        setDaftarDisposisi([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data disposisi: ", error);
+      alert("Terjadi kesalahan saat mengambil data disposisi");
     }
   };
 
@@ -300,126 +331,114 @@ const LacakBerkas = () => {
                   </div>
                 </form>
               </div>
-              <div className="w-full md:w-1/3 bg-white-100 p-4 rounded-lg shadow-lg">
-                <div>
-                  <div>
-                    <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          viewBox="0 0 30 30"
-                          fill="none"
-                        >
-                          <path
-                            d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                            fill="#1D8BE5"
-                          />
-                        </svg>
-                        <span className="text-blue-500 title mx-2">
-                          Riwayat Disposisi
-                        </span>
-                      </div>
-                    </h2>
-                    <table className="min-w-full bg-white">
-                      <div className="bg-white shadow-md rounded-lg p-6">
-                        <h2 className="text-lg font-semibold mb-4">
-                          Riwayat Disposisi
-                        </h2>
-                        <ul class="timeline">
-                          <li class="timeline-item">
-                            <div class="timeline-content">
-                              <div class="time">17 Oct 2022, 09:58:48</div>
-                              <div class="name">Pramana Yuda Sayeti, S.Kom</div>
-                              <div class="position">
-                                Ahli Pertama - Pranata Komputer
-                              </div>
-                              <div class="note">[mohon_tindaklanjuti]</div>
-                            </div>
-                          </li>
-                          <li class="timeline-item">
-                            <div class="timeline-content">
-                              <div class="time">17 Oct 2022, 10:55:01</div>
-                              <div class="name">Yossef Yuda, S.HI, MA</div>
-                              <div class="position">
-                                Kepala Sub Bagian Tata Usaha
-                              </div>
-                              <div class="note">[mohon_tindaklanjuti]</div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </table>
-                  </div>
-                  <div className="bg-white shadow-md rounded-lg p-6 mt-2">
-                    <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100 ">
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          viewBox="0 0 30 30"
-                          fill="none"
-                        >
-                          <path
-                            d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                            fill="#1D8BE5"
-                          />
-                        </svg>
-                        <span className="text-blue-500 title mx-2">
-                          Arsip Layanan
-                        </span>
-                      </div>
-                    </h2>
-                    <div className="flex justify-between w-full mt-1 px-2">
-                      {/* Arsip Masuk */}
-                      <div className="w-1/2 pr-2">
-                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Arsip Masuk
-                        </label>
-                        {arsipLayanan.arsip_masuk ? (
-                          <button
-                            onClick={() =>
-                              window.open(arsipLayanan.arsip_masuk, "_blank")
-                            }
-                            className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
-                          >
-                            Lihat Dokumen
-                          </button>
-                        ) : (
-                          <button
-                            disabled
-                            className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
-                          >
-                            Tidak Tersedia
-                          </button>
-                        )}
-                      </div>
-                      {/* Arsip Keluar */}
-                      <div className="w-1/2 pl-2">
-                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          Arsip Keluar
-                        </label>
-                        {arsipLayanan.arsip_keluar ? (
-                          <button
-                            onClick={() =>
-                              window.open(arsipLayanan.arsip_keluar, "_blank")
-                            }
-                            className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition w-full"
-                          >
-                            Lihat Dokumen
-                          </button>
-                        ) : (
-                          <button
-                            disabled
-                            className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
-                          >
-                            Tidak Tersedia
-                          </button>
-                        )}
-                      </div>
+
+              {daftarDisposisi && daftarDisposisi.length > 0 && (
+                <div className="w-full md:w-1/3 bg-white p-4 rounded-lg shadow-lg">
+                  <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
+                    <div className="flex items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="30"
+                        height="30"
+                        viewBox="0 0 30 30"
+                        fill="none"
+                      >
+                        <path
+                          d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                          fill="#1D8BE5"
+                        />
+                      </svg>
+                      <span className="text-blue-500 title mx-2">
+                        Riwayat Disposisi
+                      </span>
                     </div>
+                  </h2>
+
+                  <div className="bg-white shadow-md rounded-lg p-6">
+                    <ul className="timeline">
+                      {daftarDisposisi.map((item, index) => (
+                        <li className="timeline-item" key={index}>
+                          <div className="timeline-content">
+                            <div className="time">
+                              {new Date(item.time).toLocaleString()}
+                            </div>
+                            <div className="name">{item.diteruskan}</div>
+                            <div className="position">{item.keterangan}</div>
+                            <div className="note">{item.disposisi}</div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-white shadow-md rounded-lg p-6 mt-2">
+                <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100 ">
+                  <div className="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="30"
+                      height="30"
+                      viewBox="0 0 30 30"
+                      fill="none"
+                    >
+                      <path
+                        d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                        fill="#1D8BE5"
+                      />
+                    </svg>
+                    <span className="text-blue-500 title mx-2">
+                      Arsip Layanan
+                    </span>
+                  </div>
+                </h2>
+                <div className="flex justify-between w-full mt-1 px-2">
+                  {/* Arsip Masuk */}
+                  <div className="w-1/2 pr-2">
+                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                      Arsip Masuk
+                    </label>
+                    {arsipLayanan.arsip_masuk ? (
+                      <button
+                        onClick={() =>
+                          window.open(arsipLayanan.arsip_masuk, "_blank")
+                        }
+                        className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                      >
+                        Lihat Dokumen
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
+                      >
+                        Tidak Tersedia
+                      </button>
+                    )}
+                  </div>
+                  {/* Arsip Keluar */}
+                  <div className="w-1/2 pl-2">
+                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                      Arsip Keluar
+                    </label>
+                    {arsipLayanan.arsip_keluar ? (
+                      <button
+                        onClick={() =>
+                          window.open(arsipLayanan.arsip_keluar, "_blank")
+                        }
+                        className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                      >
+                        Lihat Dokumen
+                      </button>
+                    ) : (
+                      <button
+                        disabled
+                        className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
+                      >
+                        Tidak Tersedia
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

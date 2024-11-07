@@ -187,11 +187,11 @@ const DetailDisposisi = () => {
       );
       console.log("Update berhasil:", updatedData);
 
-      const notificationMessage = { 
+      const notificationMessage = {
         message: `Disposisi #${formData.no_reg} `,
         diteruskan: formData.diteruskan,
         disposisi: formData.disposisi,
-        type: "disposisi"
+        type: "disposisi",
       };
       addNotification(notificationMessage);
 
@@ -486,50 +486,52 @@ const DetailDisposisi = () => {
               </div>
             </div>
             <div>
-              <table className="min-w-full">
-                <div className=" rounded-lg p-6">
-                  <table className="min-w-full bg-white">
-                    <div className="bg-white shadow-md rounded-lg p-6">
-                      <h2 className="text-l font-bold mb-3 p-2 bg-white-100 shadow-md rounded ">
-                        <div className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30"
-                            height="30"
-                            viewBox="0 0 30 30"
-                            fill="none"
-                          >
-                            <path
-                              d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                              fill="#11ad00"
-                            />
-                          </svg>
-                          <span className="text-green-500 title mx-2">
-                            Riwayat Disposisi
-                          </span>
-                        </div>
-                      </h2>
-                      <ul className="timeline">
-                        {Array.isArray(daftarDisposisi) &&
-                          daftarDisposisi.map((item, index) => (
-                            <li className="timeline-item" key={index}>
-                              <div className="timeline-content">
-                                <div className="time">
-                                  {new Date(item.time).toLocaleString()}
+              {daftarDisposisi && daftarDisposisi.length > 0 && (
+                <table className="min-w-full">
+                  <div className=" rounded-lg p-6">
+                    <table className="min-w-full bg-white">
+                      <div className="bg-white shadow-md rounded-lg p-6">
+                        <h2 className="text-l font-bold mb-3 p-2 bg-white-100 shadow-md rounded ">
+                          <div className="flex items-center">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="30"
+                              height="30"
+                              viewBox="0 0 30 30"
+                              fill="none"
+                            >
+                              <path
+                                d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                                fill="#11ad00"
+                              />
+                            </svg>
+                            <span className="text-green-500 title mx-2">
+                              Riwayat Disposisi
+                            </span>
+                          </div>
+                        </h2>
+                        <ul className="timeline">
+                          {Array.isArray(daftarDisposisi) &&
+                            daftarDisposisi.map((item, index) => (
+                              <li className="timeline-item" key={index}>
+                                <div className="timeline-content">
+                                  <div className="time">
+                                    {new Date(item.time).toLocaleString()}
+                                  </div>
+                                  <div className="name">{item.diteruskan}</div>
+                                  <div className="position">
+                                    {item.keterangan}
+                                  </div>
+                                  <div className="note">{item.disposisi}</div>
                                 </div>
-                                <div className="name">{item.diteruskan}</div>
-                                <div className="position">
-                                  {item.keterangan}
-                                </div>
-                                <div className="note">{item.disposisi}</div>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
-                  </table>
-                </div>
-              </table>
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    </table>
+                  </div>
+                </table>
+              )}
               <div className="rounded-lg p-6">
                 <div className="bg-white shadow-md rounded-lg p-6">
                   <h2 className="text-ll font-bold mb-3 p-2 bg-white-100 shadow-md rounded">
