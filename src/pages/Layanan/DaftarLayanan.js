@@ -272,7 +272,7 @@ const DaftarLayanan = () => {
                           <td className="px-2 py-6 text-xs text-center text-gray-900">
                             {item.duration}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium ">
+                          <td className="text-center flex items-center justify-center px-6 py-4 ">
                             <button
                               onClick={() => handleEdit(item)}
                               className="focus:outline-none mr-auto"
