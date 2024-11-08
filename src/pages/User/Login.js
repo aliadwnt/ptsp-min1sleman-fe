@@ -24,14 +24,23 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-center bg-cover relative" style={{ backgroundImage: `url(${require('../../images/backgroundLoginRegister.jpg')})` }}>
+    <div className="h-screen flex items-center justify-center bg-center bg-cover relative" 
+        style={{ backgroundImage: `url(${require('../../images/backgroundLoginRegister.jpg')})` }}>
       
       <motion.div 
-        className="bg-white p-5 rounded-lg shadow-lg max-w-md w-full mx-auto mt-16 relative"
+        className="bg-white p-5 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
         initial={{ opacity: 0, y: -50 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.5 }}
       >
+        <div className="flex justify-center mb-2">
+          <img 
+            src={require('../../../src/images/logo_min_1.png')}
+            alt="Logo"
+            className="w-16 h-16" 
+          />
+        </div>
+
         <motion.h2
           className="font-family text-3xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
           initial={{ scale: 0.8, opacity: 0 }}
