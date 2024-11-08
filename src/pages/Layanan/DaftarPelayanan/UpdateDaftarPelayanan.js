@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../components/header";
 import Sidebar from "../../../components/sidebar";
-import {
-  fetchDaftarPelayananById,
-  updateDaftarPelayanan,
-} from "../../../services/daftarPelayananService";
+import { fetchDaftarPelayananById, updateDaftarPelayanan } from "../../../services/daftarPelayananService";
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import "../../../App";
+import LoadingPage from "../../../components/loadingPage";
 
 const LayananUpdate = () => {
   const [formData, setFormData] = useState({
@@ -32,10 +30,10 @@ const LayananUpdate = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Fetch data layanan berdasarkan ID
   const fetchLayanan = async () => {
+    setLoading(true); 
     try {
-      const layanan = await fetchDaftarPelayananById(id); // Fetch layanan by ID
+      const layanan = await fetchDaftarPelayananById(id);
       if (layanan) {
         setFormData(layanan);
       } else {
@@ -44,10 +42,13 @@ const LayananUpdate = () => {
     } catch (error) {
       setError("Error fetching layanan: " + error.message);
       console.error("Error fetching layanan:", error);
+    } finally {
+      setLoading(false); 
     }
   };
 
   const fetchJenisLayananData = async () => {
+    setLoading(true);  // Start loading when fetching data
     try {
       const data = await fetchJenisLayanan();
       if (Array.isArray(data)) {
@@ -58,13 +59,15 @@ const LayananUpdate = () => {
     } catch (error) {
       setError("Error fetching Jenis Layanan: " + error.message);
       console.error("Error fetching Jenis Layanan:", error);
+    } finally {
+      setLoading(false);  // Stop loading after data is fetched
     }
   };
 
   useEffect(() => {
     fetchLayanan(); // Fetch data layanan untuk update
     fetchJenisLayananData(); // Fetch data jenis layanan
-  }, [id]); // Jalankan fetch ketika komponen mount atau `id` berubah
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -79,7 +82,7 @@ const LayananUpdate = () => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
-    setLoading(true);
+    setLoading(true);  // Start loading during form submission
 
     try {
       const formDataToSend = new FormData();
@@ -93,26 +96,26 @@ const LayananUpdate = () => {
         }
       }
 
-      await updateDaftarPelayanan(id, formDataToSend); // Update layanan by ID
+      await updateDaftarPelayanan(id, formDataToSend);
       setSuccessMessage("Data berhasil diperbarui!");
-
-      // Redirect ke halaman /layanan/daftar-layanan setelah sukses
       navigate("/layanan/daftar-pelayanan");
     } catch (error) {
       setError("Gagal memperbarui data: " + error.message);
       console.error("Gagal memperbarui data:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
   };
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
-  };
+  }
 
   return (
     <div className="min-h-screen  bg-gray-50 pb-0 m-0een  m-0 flex relative">
-      {/* Sidebar */}
+       {loading && <LoadingPage />}
+       
+       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

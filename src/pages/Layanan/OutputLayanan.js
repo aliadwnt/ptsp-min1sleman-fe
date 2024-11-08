@@ -8,6 +8,7 @@ import {
   deleteOutputLayanan,
 } from "../../services/outputLayananService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage"; 
 
 const OutputLayanan = () => {
   const [dataOutputLayanan, setOutputLayanan] = useState([]);
@@ -16,6 +17,7 @@ const OutputLayanan = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentOutputLayanan, setCurrentOutputLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Output Layanan`;
@@ -25,6 +27,7 @@ const OutputLayanan = () => {
   const fetchData = async () => {
     try {
       const response = await fetchOutputLayanan();
+      setIsLoading(false); 
       setOutputLayanan(response);
     } catch (error) {
       console.error("Error fetching Output Layanan:", error);
@@ -51,14 +54,17 @@ const OutputLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteOutputLayanan(id);
-        setMessage("Data berhasil dihapus");
-        fetchData();
+        setMessage({ text: "Data berhasil dihapus", type: "success" });
+        setIsLoading(true); 
+        await fetchData(); 
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
+        setMessage({ text: "Gagal menghapus data", type: "error" }); 
+      } finally {
+        setIsLoading(false);
       }
     }
-  };
+  };  
 
   const handleAdd = () => {
     setCurrentOutputLayanan(null);
@@ -86,9 +92,11 @@ const OutputLayanan = () => {
       if (currentOutputLayanan) {
         await updateOutputLayanan(currentOutputLayanan.id, OutputLayanan);
         setMessage({ type: "success", text: "Data berhasil diupdate" });
+        setIsLoading(true); 
       } else {
         await createOutputLayanan(OutputLayanan);
         setMessage({ type: "success", text: "Data berhasil ditambahkan" });
+        setIsLoading(true); 
       }
       fetchData();
       setModalOpen(false);
@@ -106,6 +114,10 @@ const OutputLayanan = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
@@ -177,13 +189,13 @@ const OutputLayanan = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Output Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 ppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

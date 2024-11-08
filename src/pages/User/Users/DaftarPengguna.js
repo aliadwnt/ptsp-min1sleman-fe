@@ -8,6 +8,7 @@ import {
   deletePengguna,
 } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
+import LoadingPage from "../../../components/loadingPage";
 
 const DaftarPengguna = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
@@ -18,6 +19,7 @@ const DaftarPengguna = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pengguna`;
@@ -29,10 +31,16 @@ const DaftarPengguna = () => {
       const response = await fetchDaftarPengguna();
       console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
+      setIsLoading(false); 
     }
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,9 +60,11 @@ const DaftarPengguna = () => {
         console.log("Updating user with ID:", currentDaftarPengguna.id);
         await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
         setSuccessMessage("Data berhasil diperbarui");
+        setIsLoading(true); 
       } else {
         await createDaftarPengguna(DaftarPengguna);
         setSuccessMessage("Data berhasil ditambahkan");
+        setIsLoading(true); 
       }
 
       fetchData();
@@ -190,19 +200,19 @@ const DaftarPengguna = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Lengkap
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Email
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Peran User
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

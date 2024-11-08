@@ -6,6 +6,7 @@ import TableService from "../../components/table-service";
 import AppCard from "../../components/app-card"; 
 import Card from "../../components/card"; 
 import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
+import LoadingPage from "../../components/loadingPage"; 
 
 const DashboardAdmin = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -13,6 +14,7 @@ const DashboardAdmin = () => {
     const [totalDiproses, setTotalDiproses] = useState(0);
     const [totalDiterima, setTotalDiterima] = useState(0);
     const [totalDitolak, setTotalDitolak] = useState(0);
+    const [isLoading, setIsLoading] = useState(true); // State untuk loading
 
     const toggleSidebar = () => setSidebarOpen(prevState => !prevState);
 
@@ -23,14 +25,21 @@ const DashboardAdmin = () => {
             setTotalDiproses(dataPelayanan.filter(item => item.status === 'Proses').length);
             setTotalDiterima(dataPelayanan.filter(item => item.status === 'Diambil').length);
             setTotalDitolak(dataPelayanan.filter(item => item.status === 'Ditolak').length);
+            setIsLoading(false); // Set loading selesai setelah data selesai di-fetch
         } catch (error) {
             console.error("Failed to fetch data", error);
+            setIsLoading(false); // Jika terjadi error, hentikan loading
         }
     };  
 
     useEffect(() => {
         fetchData();
     }, []);
+
+    // Menampilkan LoadingPage jika isLoading true
+    if (isLoading) {
+        return <LoadingPage />;
+    }
 
     return (
         <div className="h-screen bg-gray-100 flex relative">
@@ -51,7 +60,6 @@ const DashboardAdmin = () => {
                     <Card title="Total Diterima" count={totalDiterima} iconColor="text-green-600" bgColor="bg-green-100" iconPath="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     <Card title="Total Ditolak" count={totalDitolak} iconColor="text-red-600" bgColor="bg-red-100" iconPath="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
                 </section>
-
 
                 <div className="flex flex-col lg:flex-row gap-4 mx-auto max-w-7xl sm:px-0 lg:px-8 my-6">
                     <DonutChart />

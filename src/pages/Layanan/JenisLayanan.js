@@ -8,6 +8,7 @@ import {
   deleteJenisLayanan,
 } from "../../services/jenisLayananService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage"; 
 
 const JenisLayanan = () => {
   const [dataJenisLayanan, setDataJenisLayanan] = useState([]);
@@ -16,6 +17,7 @@ const JenisLayanan = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentJenisLayanan, setCurrentJenisLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Jenis Layanan`;
@@ -26,8 +28,10 @@ const JenisLayanan = () => {
     try {
       const response = await fetchJenisLayanan();
       setDataJenisLayanan(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Jenis Layanan:", error);
+      setIsLoading(false); 
     }
   };
 
@@ -53,13 +57,16 @@ const JenisLayanan = () => {
       try {
         await deleteJenisLayanan(id);
         setMessage("Data berhasil dihapus");
-        fetchData();
+        setIsLoading(true); 
+        await fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
+        setMessage("Gagal menghapus data");
+        setIsLoading(false); 
       }
     }
   };
+  
 
   const handleAdd = () => {
     setCurrentJenisLayanan(null);
@@ -86,22 +93,25 @@ const JenisLayanan = () => {
         text: "Nama layanan sudah ada. Silakan gunakan nama lain.",
         type: "error",
       });
-      return; // Exit the function if duplicate found
+      return; 
     }
 
     try {
       if (currentJenisLayanan) {
         await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
         setMessage({ text: "Data berhasil diupdate", type: "success" });
+        setIsLoading(true); 
       } else {
         await createJenisLayanan(JenisLayanan);
         setMessage({ text: "Data berhasil ditambahkan", type: "success" });
+        setIsLoading(true); 
       }
       fetchData();
-      setModalOpen(false); // Close modal
+      setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage({ text: "Failed to save data", type: "error" });
+      setIsLoading(false); 
     }
   };
 
@@ -113,6 +123,10 @@ const JenisLayanan = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">

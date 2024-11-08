@@ -11,6 +11,7 @@ import { fetchUnitPengolah } from "../../services/unitPengolahService";
 import { fetchJenisLayanan } from "../../services/jenisLayananService";
 import { fetchOutputLayanan } from "../../services/outputLayananService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage"; 
 
 const DaftarLayanan = () => {
   const [dataDaftarLayanan, setDataDaftarLayanan] = useState([]);
@@ -18,10 +19,11 @@ const DaftarLayanan = () => {
   const [jenisOptions, setJenisOptions] = useState([]);
   const [outputOptions, setOutputOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState(null); // Perubahan di sini
+  const [message, setMessage] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Layanan";
@@ -41,8 +43,10 @@ const DaftarLayanan = () => {
     try {
       const response = await fetchDaftarLayanan();
       setDataDaftarLayanan(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Daftar Layanan:", error);
+      setIsLoading(false); 
     }
   };
 
@@ -105,6 +109,7 @@ const DaftarLayanan = () => {
       try {
         await deleteDaftarLayanan(id);
         setMessage({ type: "success", text: "Data berhasil dihapus" });
+        setIsLoading(true); 
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
@@ -132,9 +137,11 @@ const DaftarLayanan = () => {
       if (currentDaftarLayanan) {
         await updateDaftarLayanan(currentDaftarLayanan.id, daftarLayanan);
         setMessage({ type: "success", text: "Data berhasil diupdate" });
+        setIsLoading(true); 
       } else {
         await createDaftarLayanan(daftarLayanan);
         setMessage({ type: "success", text: "Data berhasil ditambahkan" });
+        setIsLoading(true); 
       }
       fetchData();
       handleModalClose();
@@ -153,6 +160,10 @@ const DaftarLayanan = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
@@ -227,25 +238,25 @@ const DaftarLayanan = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Unit Pengolah
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Jenis Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Output Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Durasi Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

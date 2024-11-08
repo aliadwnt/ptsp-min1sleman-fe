@@ -8,6 +8,7 @@ import {
   deleteUnitPengolah,
 } from "../../../services/unitPengolahService";
 import "../../../App.css";
+import LoadingPage from "../../../components/loadingPage"; 
 
 const UnitPengolah = () => {
   const [dataUnitPengolah, setDataUnitPengolah] = useState([]);
@@ -17,6 +18,7 @@ const UnitPengolah = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentUnitPengolah, setCurrentUnitPengolah] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Unit Pengolah`;
@@ -27,8 +29,10 @@ const UnitPengolah = () => {
     try {
       const response = await fetchUnitPengolah();
       setDataUnitPengolah(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Unit Pengolah:", error);
+      setIsLoading(false); 
     }
   };
 
@@ -54,11 +58,13 @@ const UnitPengolah = () => {
         await deleteUnitPengolah(id);
         setMessage("Data berhasil dihapus");
         setIsError(false);
+        setIsLoading(true); 
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
         setIsError(true);
+        setIsLoading(false); 
       }
     }
   };
@@ -67,6 +73,10 @@ const UnitPengolah = () => {
     setCurrentUnitPengolah(null);
     setModalOpen(true);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,9 +104,11 @@ const UnitPengolah = () => {
       if (currentUnitPengolah) {
         await updateUnitPengolah(currentUnitPengolah.id, formData);
         setMessage("Data berhasil diupdate");
+        setIsLoading(true);
       } else {
         await createUnitPengolah(formData);
         setMessage("Data berhasil ditambahkan");
+        setIsLoading(true);
       }
       setIsError(false);
       fetchData();
@@ -188,13 +200,13 @@ const UnitPengolah = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                         No
                       </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Unit Pengolah
                       </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

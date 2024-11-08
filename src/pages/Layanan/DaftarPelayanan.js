@@ -11,9 +11,9 @@ import {
 import { exportpdf } from "../../services/layananService";
 import PdfTemplate from "../pdf/TemplatePelayanan";
 import "../../App.css";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
+import LoadingPage from "../../components/loadingPage"; 
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -29,6 +29,7 @@ const DaftarPelayanan = () => {
     selesaiCount: 0,
     ambilCount: 0,
   });
+  const [isLoading, setIsLoading] = useState(true);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -61,8 +62,10 @@ const DaftarPelayanan = () => {
         Diambil: ambilCount,
         Ditolak: tolakCount,
       });
+      setIsLoading(false); 
     } catch (error) {
       console.error("Failed to fetch data", error);
+      setIsLoading(false); 
     }
   };
 
@@ -70,6 +73,10 @@ const DaftarPelayanan = () => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pelayanan`;
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const handleSearch = (e) => {
     const value = e.target.value;

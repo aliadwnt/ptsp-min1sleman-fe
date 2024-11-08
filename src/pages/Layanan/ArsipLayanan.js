@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
 import { UploadIcon } from "@heroicons/react/outline";
-
+import LoadingPage from "../../components/loadingPage";
 import {
   fetchArsipLayanan,
   saveArsipMasuk,
@@ -20,6 +20,7 @@ const ArsipLayanan = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MAN 1 YOGYAKARTA - Arsip Layanan`;
@@ -42,17 +43,21 @@ const ArsipLayanan = () => {
       });
 
       setDataArsipLayanan(combinedData);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Arsip Layanan:", error);
+      setIsLoading(false);
     }
   };
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
+    setIsLoading(false); 
 
     if (!value) {
       setDataArsipLayanan(dataArsipLayanan);
+      setIsLoading(false); 
     } else {
       const filteredData = dataArsipLayanan.filter(
         (item) =>
@@ -69,6 +74,9 @@ const ArsipLayanan = () => {
       setDataArsipLayanan(filteredData);
     }
   };
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const handleChange = (e, type, id) => {
     const { files } = e.target;

@@ -8,15 +8,17 @@ import {
   deleteMasterDisposisi,
 } from "../../services/masterDisposisiService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage"; 
 
 const MasterDisposisi = () => {
   const [dataMasterDisposisi, setDataMasterDisposisi] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false); // New state for error tracking
+  const [isError, setIsError] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterDisposisi, setCurrentMasterDisposisi] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Master Disposisi`;
@@ -27,14 +29,17 @@ const MasterDisposisi = () => {
     try {
       const response = await fetchMasterDisposisi();
       setDataMasterDisposisi(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Master Disposisi:", error);
+      setIsLoading(false); 
     }
   };
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
+    setIsLoading(false); 
 
     if (!value) {
       setDataMasterDisposisi(dataMasterDisposisi);
@@ -45,6 +50,7 @@ const MasterDisposisi = () => {
           .includes(value.toLowerCase())
       );
       setDataMasterDisposisi(filteredData);
+      setIsLoading(false); 
     }
   };
 
@@ -98,6 +104,7 @@ const MasterDisposisi = () => {
       setIsError(false);
       fetchData();
       setModalOpen(false);
+      setIsLoading(true);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -113,6 +120,10 @@ const MasterDisposisi = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
@@ -187,13 +198,13 @@ const MasterDisposisi = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Master Disposisi
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

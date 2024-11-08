@@ -12,6 +12,7 @@ import { fetchUnitPengolah } from "../../services/unitPengolahService";
 import { fetchMasterSyarat } from "../../services/masterSyaratService";
 import "../../App.css";
 import { useParams } from "react-router-dom";
+import LoadingPage from "../../components/loadingPage"; 
 
 const DaftarSyarat = () => {
   const { id } = useParams();
@@ -30,13 +31,13 @@ const DaftarSyarat = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [dataDaftarSyarat, setDataDaftarSyarat] = useState([]);
   const [success, setSuccess] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Syarat";
     fetchData();
     fetchUnit();
     fetchSyarat();
-    // fetchSyaratData();
   }, [id]);
 
   const fetchSyarat = async () => {
@@ -44,12 +45,14 @@ const DaftarSyarat = () => {
       const response = await fetchMasterSyarat();
       if (Array.isArray(response) && response.length > 0) {
         setSyaratOptions(response);
+        setIsLoading(false); 
       } else {
         setSyaratOptions([]);
       }
     } catch (error) {
       console.error("Error fetching master syarat:", error);
       setError("Gagal memuat syarat.");
+      setIsLoading(false); 
     }
   };
 
@@ -122,18 +125,19 @@ const DaftarSyarat = () => {
   const handleUnitChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedUnit(selectedValue);
-
+  
     if (selectedValue) {
+      setIsLoading(true);
       const filteredData = dataDaftarSyarat.filter((item) =>
-        String(item.unit || "")
-          .toLowerCase()
-          .includes(selectedValue.toLowerCase())
+        String(item.unit || "").toLowerCase().includes(selectedValue.toLowerCase())
       );
       setDataDaftarSyarat(filteredData);
     } else {
       setDataDaftarSyarat(dataDaftarSyarat);
     }
-  };
+  
+    setIsLoading(false);
+  };  
 
   const fetchCurrentDaftarSyarat = async () => {
     if (currentDaftarSyarat) {
@@ -188,6 +192,7 @@ const DaftarSyarat = () => {
     try {
       await updateDaftarSyarat(data);
       setMessage("Data berhasil diupdate");
+      setIsLoading(true); 
       await fetchData();
       handleModalClose();
     } catch (error) {
@@ -212,7 +217,7 @@ const DaftarSyarat = () => {
         return;
       }
       setDaftarSyaratLayanan((prev) => [...prev, selectedSyarat]);
-      setSelectedSyarat(""); // Reset setelah menambahkan
+      setSelectedSyarat(""); 
     }
   };
 
@@ -229,6 +234,10 @@ const DaftarSyarat = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">

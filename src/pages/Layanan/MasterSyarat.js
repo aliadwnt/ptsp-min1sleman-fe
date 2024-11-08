@@ -8,6 +8,7 @@ import {
   deleteMasterSyarat,
 } from "../../services/masterSyaratService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage"; 
 
 const MasterSyarat = () => {
   const [dataMasterSyarat, setDataMasterSyarat] = useState([]);
@@ -17,6 +18,7 @@ const MasterSyarat = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Master Syarat Layanan`;
@@ -27,8 +29,10 @@ const MasterSyarat = () => {
     try {
       const response = await fetchMasterSyarat();
       setDataMasterSyarat(response);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Master Syarat:", error);
+      setIsLoading(false);
     }
   };
 
@@ -53,7 +57,7 @@ const MasterSyarat = () => {
       try {
         await deleteMasterSyarat(id);
         setMessage("Data berhasil dihapus");
-        setIsError(false);
+        setIsLoading(true);
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
@@ -92,13 +96,15 @@ const MasterSyarat = () => {
       if (currentMasterSyarat) {
         await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
         setMessage("Data berhasil diupdate");
+        setIsLoading(true);
       } else {
         await createMasterSyarat(MasterSyarat);
         setMessage("Data berhasil ditambahkan");
+        setIsLoading(true);
       }
       setIsError(false);
-      fetchData(); // Refresh data
-      setModalOpen(false); // Close modal after success
+      fetchData(); 
+      setModalOpen(false); 
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -114,6 +120,10 @@ const MasterSyarat = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">

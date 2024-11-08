@@ -12,6 +12,7 @@ import {
 } from "../services/daftarSyaratService";
 import { handleSearch } from "../services/lacakPermohonanService";
 import { useParams } from "react-router-dom";
+import LoadingPage from "../components/loadingPage"; 
 
 const HomePage = ({ daftarSyarat = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +24,8 @@ const HomePage = ({ daftarSyarat = [] }) => {
   const [daftarLayanan, setDaftarLayanan] = useState([]);
   const [no_reg, setNoReg] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // State untuk menangani kesalahan
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -42,8 +44,10 @@ const HomePage = ({ daftarSyarat = [] }) => {
       });
 
       setDaftarLayanan(combinedData);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Syarat:", error);
+      setIsLoading(false);
     }
   };
 
@@ -51,6 +55,9 @@ const HomePage = ({ daftarSyarat = [] }) => {
     document.title = "PTSP MIN 1 SLEMAN- Daftar Syarat";
     fetchData();
   }, [id]);
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const openModal = (data) => {
     setCurrentData(data);

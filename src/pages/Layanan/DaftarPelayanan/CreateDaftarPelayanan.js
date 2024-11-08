@@ -5,7 +5,7 @@ import Sidebar from "../../../components/sidebar";
 import { createDaftarPelayanan } from "../../../services/daftarPelayananService";
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import { uploadSingle } from "../../../services/uploadService";
-import "../../../App";
+import LoadingPage from "../../../components/loadingPage"; 
 
 const Layanan = () => {
   const [formData, setFormData] = useState({
@@ -27,6 +27,7 @@ const Layanan = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,12 +36,15 @@ const Layanan = () => {
         const data = await fetchJenisLayanan();
         if (Array.isArray(data)) {
           setLayananOptions(data);
+          setIsLoading(false);
         } else {
           throw new Error("Data is not an array");
+          setIsLoading(false);
         }
       } catch (error) {
         setError("Error fetching Jenis Layanan: " + error.message);
         console.error("Error fetching Jenis Layanan:", error);
+        setIsLoading(false);
       }
     };
 
@@ -51,8 +55,10 @@ const Layanan = () => {
     const { name, value, files } = e.target;
     if (name === "filename") {
       setFormData({ ...formData, [name]: files[0] });
+      setIsLoading(false);
     } else {
       setFormData({ ...formData, [name]: value });
+      setIsLoading(false);
     }
   };
 
@@ -73,6 +79,7 @@ const Layanan = () => {
       };
       await createDaftarPelayanan(dataToSend);
       setSuccessMessage("Data berhasil disimpan!");
+      setIsLoading(false);
       navigate("/layanan/daftar-pelayanan");
     } catch (error) {
       setError("Gagal menyimpan data: " + error.message);
@@ -80,9 +87,16 @@ const Layanan = () => {
       setLoading(false);
     }
   };
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
+    setIsLoading(false);
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 m-0 flex relative">
       {/* Sidebar */}
@@ -91,7 +105,7 @@ const Layanan = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
@@ -256,42 +270,42 @@ const Layanan = () => {
                 />
               </div>
 
-              {/* Catatan dan Upload File */}
-              <div>
+              {/* File Upload */}
+              <div className="md:col-span-2">
+                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  File Lampiran
+                </label>
+                <input
+                  type="file"
+                  name="filename"
+                  onChange={handleChange}
+                  accept=".pdf,.docx,.jpg,.png"
+                />
+              </div>
+
+              {/* Catatan */}
+              <div className="md:col-span-2">
                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                   Catatan
                 </label>
                 <textarea
                   className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                   name="catatan"
-                  placeholder="Catatan"
                   value={formData.catatan}
                   onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                  Upload File
-                </label>
-                <input
-                  className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                  name="filename"
-                  type="file"
-                  onChange={handleChange}
+                  placeholder="Catatan"
                 />
               </div>
             </div>
 
-            {/* Button */}
-            <div className="flex items-center justify-between mt-6">
+            {/* Submit Button */}
+            <div className="mt-6">
               <button
-                className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
                 type="submit"
+                className="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-200"
                 disabled={loading}
               >
-                {loading ? "Loading..." : "Simpan"}
+                {loading ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
           </form>

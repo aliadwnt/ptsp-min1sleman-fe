@@ -3,12 +3,14 @@ import Sidebar from "../../../components/sidebar";
 import Header from "../../../components/header";
 import { fetchDaftarPengguna } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
+import LoadingPage from "../../../components/loadingPage";
 
 const DaftarPeran = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
   const [message, setMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Peran`;
@@ -20,10 +22,16 @@ const DaftarPeran = () => {
       const response = await fetchDaftarPengguna();
       console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
+      setIsLoading(false); 
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
+      setIsLoading(false); 
     }
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+}
 
   const handleSearch = (e) => {
     const value = e.target.value;
