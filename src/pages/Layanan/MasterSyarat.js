@@ -153,7 +153,7 @@ const MasterSyarat = () => {
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-              onSubmit={handleSubmit}
+             onSubmit={handleSearch}
               className="flex flex-grow justify-center"
             >
               <input

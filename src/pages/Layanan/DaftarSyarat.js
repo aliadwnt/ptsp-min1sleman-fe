@@ -283,7 +283,6 @@ const DaftarSyarat = () => {
                 onChange={handleSearch}
                 className="w-2/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
-                required
               />
               <button
                 type="submit"
