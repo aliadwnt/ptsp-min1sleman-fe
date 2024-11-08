@@ -150,34 +150,34 @@ const DaftarDisposisi = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No Surat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Pengirim
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Tgl Surat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Perihal
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Penerima
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Diteruskan Kepada
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Waktu Disposisi
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Catatan
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -217,14 +217,19 @@ const DaftarDisposisi = () => {
                             <td className="px-6 py-4 text-xs text-center text-gray-900 ">
                               {item.catatan}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
-                              <button
-                                onClick={() => handleDetail(item.no_reg)}
-                                className="text-green-500 hover:text-green-700"
-                              >
-                                Lihat Detail
-                              </button>
-                            </td>
+                            <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">
+                                <button
+                                  onClick={() => handleDetail(item.no_reg)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                >
+                                  <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
+                                </button>
+                              </td>
                           </tr>
                         ))
                       ) : (
