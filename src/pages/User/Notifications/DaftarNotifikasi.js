@@ -6,7 +6,7 @@ import {
   markNotificationAsRead,
 } from "../../../services/notificationService";
 import "../../../App.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -86,11 +86,13 @@ const Notifications = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Daftar Notifikasi</div>
+          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
+            Daftar Notifikasi
+          </div>
 
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
               role="alert"
             >
               <span className="font-medium">Sukses </span>
@@ -98,96 +100,115 @@ const Notifications = () => {
             </div>
           )}
 
-          <div className="flex flex-col mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-200">
-                      <tr>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          No
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Created At
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
-                          Notifikasi
-                        </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                      {Notifications.length > 0 ? (
-                        Notifications.map((item, index) => (
-                          <tr key={item.id}>
-                            <td className="px-4 py-2 text-sm text-center">
-                              {index + 1}
-                            </td>
-                            <td className="px-6 py-2 text-sm text-center">
-                              {(() => {
-                                const date = new Date(item.created_at);
-                                const today = new Date();
-                                const yesterday = new Date(today);
-                                yesterday.setDate(today.getDate() - 1);
+          <div className="flex justify-center">
+            <div className="w-full max-w-4xl">
+              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        No
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Created At
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Notifikasi
+                      </th>
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Aksi
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {Notifications.length > 0 ? (
+                      Notifications.map((item, index) => (
+                        <tr key={item.id}>
+                          <td className="px-4 py-2 text-sm text-center">
+                            {index + 1}
+                          </td>
+                          <td className="px-6 py-2 text-sm text-center">
+                            {(() => {
+                              const date = new Date(item.created_at);
+                              const today = new Date();
+                              const yesterday = new Date(today);
+                              yesterday.setDate(today.getDate() - 1);
 
-                                // Check if the date is today, yesterday, or another day
-                                if (date.toDateString() === today.toDateString()) {
-                                  return `Today, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-                                } else if (date.toDateString() === yesterday.toDateString()) {
-                                  return `Yesterday, ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-                                } else {
-                                  return date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ", " +
-                                        date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                                }
-                              })()}
-                            </td>
-                            <td className="px-6 py-2 text-center">
-                              {item.message.type === "disposisi" ? (
-                                <div>
-                                  <strong className="text-sm text-gray-700">
-                                    {item.message.message ||
-                                      "Tidak ada pesan disposisi"}
-                                    :
-                                  </strong>
-                                  <p className="text-sm text-gray-700">
-                                    {item.message.disposisi ||
-                                      "Tidak ada informasi"}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    {item.message.diteruskan ||
-                                      "Tidak ada informasi"}
-                                  </p>
-                                  <span className="text-xs text-gray-500">
-                                    {timeAgo(item.created_at)}
-                                  </span>
-                                </div>
-                              ) : (
-                                <div>
-                                  <strong className="text-sm text-gray-700">
-                                    {item.message.message ||
-                                      "Tidak ada pesan layanan"}
-                                    :
-                                  </strong>
-                                  <p className="text-sm text-gray-700">
-                                    <strong>No Surat:</strong>{" "}
-                                    {item.message.no_surat ||
-                                      "Tidak ada nomor surat"}
-                                  </p>
-                                  <p className="text-sm text-gray-700">
-                                    <strong>Perihal:</strong>{" "}
-                                    {item.message.perihal ||
-                                      "Tidak ada perihal"}
-                                  </p>
-                                  <span className="text-xs text-gray-500">
-                                    {timeAgo(item.created_at)}
-                                  </span>
-                                </div>
-                              )}
-                            </td>
-                            <td className="px-10 py-2 text-center">
+                              // Check if the date is today, yesterday, or another day
+                              if (
+                                date.toDateString() === today.toDateString()
+                              ) {
+                                return `Today, ${date.toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}`;
+                              } else if (
+                                date.toDateString() === yesterday.toDateString()
+                              ) {
+                                return `Yesterday, ${date.toLocaleTimeString(
+                                  [],
+                                  { hour: "2-digit", minute: "2-digit" }
+                                )}`;
+                              } else {
+                                return (
+                                  date.toLocaleDateString("id-ID", {
+                                    weekday: "long",
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }) +
+                                  ", " +
+                                  date.toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })
+                                );
+                              }
+                            })()}
+                          </td>
+                          <td className="px-6 py-2 text-center">
+                            {item.message.type === "disposisi" ? (
+                              <div>
+                                <strong className="text-sm text-gray-700">
+                                  {item.message.message ||
+                                    "Tidak ada pesan disposisi"}
+                                  :
+                                </strong>
+                                <p className="text-sm text-gray-700">
+                                  {item.message.disposisi ||
+                                    "Tidak ada informasi"}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                  {item.message.diteruskan ||
+                                    "Tidak ada informasi"}
+                                </p>
+                                <span className="text-xs text-gray-500">
+                                  {timeAgo(item.created_at)}
+                                </span>
+                              </div>
+                            ) : (
+                              <div>
+                                <strong className="text-sm text-gray-700">
+                                  {item.message.message ||
+                                    "Tidak ada pesan layanan"}
+                                  :
+                                </strong>
+                                <p className="text-sm text-gray-700">
+                                  <strong>No Surat:</strong>{" "}
+                                  {item.message.no_surat ||
+                                    "Tidak ada nomor surat"}
+                                </p>
+                                <p className="text-sm text-gray-700">
+                                  <strong>Perihal:</strong>{" "}
+                                  {item.message.perihal || "Tidak ada perihal"}
+                                </p>
+                                <span className="text-xs text-gray-500">
+                                  {timeAgo(item.created_at)}
+                                </span>
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-10 py-2 text-center">
                             <div className="flex items-center space-x-4 justify-center">
                               <button
                                 onClick={() => {
@@ -198,28 +219,39 @@ const Notifications = () => {
                               >
                                 <i
                                   className={`fa fa-eye ${
-                                    item.isRead ? "text-gray-400" : "text-green-600"
+                                    item.isRead
+                                      ? "text-gray-400"
+                                      : "text-green-600"
                                   }`}
                                 ></i>
-                                <span className={item.isRead ? "text-gray-400" : "text-green-600"}>
-                                  {item.isRead ? "Mark as Read" : "Mark as Read"}
+                                <span
+                                  className={
+                                    item.isRead
+                                      ? "text-gray-400"
+                                      : "text-green-600"
+                                  }
+                                >
+                                  {item.isRead
+                                    ? "Mark as Read"
+                                    : "Mark as Read"}
                                 </span>
                               </button>
                             </div>
                           </td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan="4" className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
-                          >
-                            No data available
-                          </td>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                      ))
+                    ) : (
+                      <tr>
+                        <td
+                          colSpan="4"
+                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
+                        >
+                          No data available
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
