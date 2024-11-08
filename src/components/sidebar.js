@@ -15,8 +15,8 @@ const Sidebar = (isOpen) => {
 
   const getLinkClass = (path) => {
     return location.pathname === path
-      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100 dark:bg-gray-100 dark:text-gray-700"
-      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-200";
+      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100"
+      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100";
   };
 
   const toggleDropdown = () => {
@@ -116,7 +116,7 @@ const Sidebar = (isOpen) => {
             {/* Dropdown for Surat Menyurat */}
             <div
               onClick={toggleDropdown}
-              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-00 w-full text-left cursor-pointer`}
+              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 w-full text-left cursor-pointer`}
               ref={dropdownRef}
             >
               <i className="fas fa-envelope mr-2"></i> Surat Menyurat

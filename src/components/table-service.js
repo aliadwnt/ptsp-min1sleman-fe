@@ -34,22 +34,22 @@ const TableService = () => {
             <b className="text-lg">Tabel Pelayanan</b>
             <div className="overflow-x-auto">
                 <div className="inline-block min-w-full py-2 align-middle">
-                    <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg">
-                        <table className="min-w-full divide-y  divide-gray-200 dark:divide-gray-700">
-                            <thead className="bg-gray-50 dark:bg-gray-200">
+                    <div className="overflow-hidden border border-gray-200 rounded-lg">
+                        <table className="min-w-full divide-y  divide-gray-200">
+                            <thead className="bg-gray-50 ">
                                 <tr>
-                                    <th className="px-4 py-3 text-sm font-medium text-center text-gray-500 dark:text-gray-900"> {/* Padding lebih besar */}
+                                    <th className="px-4 py-3 text-sm font-medium text-center text-gray-500"> {/* Padding lebih besar */}
                                         No
                                     </th>
-                                    <th className="px-4 py-3 text-sm font-medium text-left text-gray-500 dark:text-gray-900">
+                                    <th className="px-4 py-3 text-sm font-medium text-left text-gray-500">
                                         Unit Pengolah
                                     </th>
-                                    <th className="px-4 py-3 text-sm font-medium text-center text-gray-500 dark:text-gray-900">
+                                    <th className="px-4 py-3 text-sm font-medium text-center text-gray-500">
                                         Total Layanan
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                            <tbody className="bg-white divide-y divide-gray-200 ">
                                 {services.map((service) => (
                                     <tr key={service.id}>
                                         <td className="px-4 py-3 text-sm text-center">{service.id}</td> {/* Padding di kolom data ditingkatkan */}

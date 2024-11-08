@@ -41,7 +41,7 @@ const DashboardAdmin = () => {
             </div>
             <div className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? "lg:ml-64" : "ml-0"} pl-0 lg:pl-64`}>
                 <Header />
-                <div className="text-xl mt-4 ml-4 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">
+                <div className="text-xl mt-4 ml-4 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
                     Dashboard PTSP MIN 1 SLEMAN
                 </div>
 
