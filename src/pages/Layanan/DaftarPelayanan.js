@@ -308,74 +308,74 @@ const DaftarPelayanan = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-4xl">
             <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
-  <ul
-    className="flex justify-between sm:justify-center -mb-px text-sm font-medium text-center ml-2 space-x-6 w-full"
-    id="default-tab"
-    data-tabs-toggle="#default-tab-content"
-    role="tablist"
-  >
-    {[
-      "Semua",
-      "Baru",
-      "Proses",
-      "Selesai",
-      "Diambil",
-      "Ditolak",
-    ].map((tab) => (
-      <li
-        key={tab}
-        className="mb-4 sm:mb-0 flex-1 text-center relative group"
-        role="presentation"
-      >
-        <button
-          className={`inline-block p-2 border-b-3 w-full transition-all duration-300 ease-in-out transform ${
-            activeTab === tab
-              ? "border-green-900 text-black-600 scale-110"
-              : "text-gray-600"
-          }`}
-          id={`${tab}-tab`}
-          onClick={() => handleTabChange(tab)}
-          type="button"
-          role="tab"
-          aria-controls={tab}
-          aria-selected={activeTab === tab}
-        >
-          <i
-            className={`${getStatusIcon(tab)} mr-2 text-sm font-bold`}
-          ></i>
-          <span className="ml-2 text-[16px]">{counts[tab]}</span>
-        </button>
-        <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-          {tab.charAt(0).toUpperCase() + tab.slice(1)}
-        </span>
-      </li>
-    ))}
-  </ul>
-</div>
+              <ul
+                className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center ml-2 space-x-4 w-full"
+                id="default-tab"
+                data-tabs-toggle="#default-tab-content"
+                role="tablist"
+              >
+                {[
+                  "Semua",
+                  "Baru",
+                  "Proses",
+                  "Selesai",
+                  "Diambil",
+                  "Ditolak",
+                ].map((tab) => (
+                  <li
+                    key={tab}
+                    className="mb-4 sm:mb-0 flex-auto text-center relative group"
+                    role="presentation"
+                  >
+                    <button
+                      className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
+                        activeTab === tab
+                          ? "border-green-900 text-black-600 scale-110"
+                          : "text-gray-600"
+                      }`}
+                      id={`${tab}-tab`}
+                      onClick={() => handleTabChange(tab)}
+                      type="button"
+                      role="tab"
+                      aria-controls={tab}
+                      aria-selected={activeTab === tab}
+                    >
+                      <i
+                        className={`${getStatusIcon(tab)} mr-2 text-sm font-bold`}
+                      ></i>
+                      <span className="ml-2 text-[16px]">{counts[tab]}</span>
+                    </button>
+                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
               <div className="overflow-x-auto">
                 <table className="min-w-full w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nomor Registrasi
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Perihal
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider hidden md:table-cell">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                         Kelengkapan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider hidden md:table-cell">
+                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
                         Status
                       </th>
-                      <th className="px-12 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                      <th className="px-12 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>
@@ -399,7 +399,7 @@ const DaftarPelayanan = () => {
                           <td className="px-2 py-3 text-xs text-center text-gray-900 hidden md:table-cell">
                             {item.kelengkapan}
                           </td>
-                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left hidden md:table-cell">
+                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left md:table-cell">
                             <i className={getStatusIcon(item.status)}></i>
                             <span className="ml-2">{item.status}</span>
                           </td>

@@ -6,8 +6,10 @@ import {
   markNotificationAsRead,
 } from "../../../services/notificationService";
 import "../../../App.css";
+import { useNavigate } from 'react-router-dom';
 
 const Notifications = () => {
+  const navigate = useNavigate();
   const [Notifications, setNotifications] = useState([]);
   const [message] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -106,13 +108,13 @@ const Notifications = () => {
                         <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Created At
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Notifikasi
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-900 uppercase tracking-wider">
+                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>
@@ -186,18 +188,24 @@ const Notifications = () => {
                               )}
                             </td>
                             <td className="px-10 py-2 text-center">
+                            <div className="flex items-center space-x-4 justify-center">
                               <button
                                 onClick={() => {
                                   console.log("Item yang diklik:", item);
                                   handleMarkAsRead(item);
                                 }}
+                                className="flex items-center space-x-2"
                               >
                                 <i
                                   className={`fa fa-eye ${
                                     item.isRead ? "text-gray-400" : "text-green-600"
                                   }`}
                                 ></i>
+                                <span className={item.isRead ? "text-gray-400" : "text-green-600"}>
+                                  {item.isRead ? "Mark as Read" : "Mark as Read"}
+                                </span>
                               </button>
+                            </div>
                           </td>
                           </tr>
                         ))

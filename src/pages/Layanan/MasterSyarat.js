@@ -187,13 +187,13 @@ const MasterSyarat = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                         Master Syarat
                       </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 font-bold uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

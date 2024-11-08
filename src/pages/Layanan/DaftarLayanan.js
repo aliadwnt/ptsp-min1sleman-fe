@@ -18,7 +18,7 @@ const DaftarLayanan = () => {
   const [jenisOptions, setJenisOptions] = useState([]);
   const [outputOptions, setOutputOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null); // Perubahan di sini
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -104,11 +104,11 @@ const DaftarLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteDaftarLayanan(id);
-        setMessage("Data berhasil dihapus");
+        setMessage({ type: "success", text: "Data berhasil dihapus" });
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Gagal menghapus data");
+        setMessage({ type: "error", text: "Gagal menghapus data" });
       }
     }
   };
@@ -131,23 +131,23 @@ const DaftarLayanan = () => {
     try {
       if (currentDaftarLayanan) {
         await updateDaftarLayanan(currentDaftarLayanan.id, daftarLayanan);
-        setMessage("Data berhasil diupdate");
+        setMessage({ type: "success", text: "Data berhasil diupdate" });
       } else {
         await createDaftarLayanan(daftarLayanan);
-        setMessage("Data berhasil ditambahkan");
+        setMessage({ type: "success", text: "Data berhasil ditambahkan" });
       }
       fetchData();
       handleModalClose();
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Gagal menyimpan data");
+      setMessage({ type: "error", text: "Gagal menyimpan data" });
     }
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
     setCurrentDaftarLayanan(null);
-    setMessage("");
+    setMessage(null);
   };
 
   const toggleSidebar = () => {
@@ -419,7 +419,7 @@ const DaftarLayanan = () => {
                       type="submit"
                       className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
                     >
-                      Update
+                      {currentDaftarLayanan ? "Update" : "Tambah"}
                     </button>
                   </div>
                 </form>
