@@ -44,7 +44,7 @@ const RegisterForm = () => {
   >
     
       <motion.div 
-         className="bg-white p-5 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
+         className="bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
         initial={{ opacity: 0, y: -50 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.5 }}
@@ -59,7 +59,7 @@ const RegisterForm = () => {
         </div>
 
         <motion.h2
-          className="font-family text-3xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
+          className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -67,7 +67,7 @@ const RegisterForm = () => {
           REGISTER
         </motion.h2>
         <motion.h5 
-          className="font-family text-lg font-semibold text-center text-gray-700 mb-3"
+          className="font-family text-lg font-semibold text-center text-gray-700"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}

@@ -42,7 +42,7 @@ const LoginForm = () => {
         </div>
 
         <motion.h2
-          className="font-family text-3xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
+          className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
