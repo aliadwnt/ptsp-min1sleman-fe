@@ -16,6 +16,12 @@ const RegisterForm = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setErrorMessage('Password harus terdiri dari minimal 8 karakter, mengandung huruf besar, dan angka.');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setErrorMessage('Password dan konfirmasi password tidak cocok');
       return;
@@ -29,6 +35,7 @@ const RegisterForm = () => {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
+      setErrorMessage('');
 
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
@@ -38,18 +45,15 @@ const RegisterForm = () => {
 
   return (
     <div 
-    className="h-screen flex items-center justify-center bg-center bg-cover" 
-    style={{ backgroundImage: `url(${backgroundImage})` }}
-    
-  >
-    
+      className="h-screen flex items-center justify-center bg-center bg-cover" 
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <motion.div 
-         className="bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
+        className="font-family bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
         initial={{ opacity: 0, y: -50 }} 
         animate={{ opacity: 1, y: 0 }} 
         transition={{ duration: 0.5 }}
       >
-
         <div className="flex justify-center mb-2">
           <img 
             src={require('../../../src/images/logo_min_1.png')}
@@ -67,7 +71,7 @@ const RegisterForm = () => {
           REGISTER
         </motion.h2>
         <motion.h5 
-          className="font-family text-lg font-semibold text-center text-gray-700"
+          className="text-lg font-semibold text-center text-gray-700"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -85,7 +89,7 @@ const RegisterForm = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="font-family  mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="font-family mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-blue-500"
               placeholder="Nama Lengkap"
               required
             />

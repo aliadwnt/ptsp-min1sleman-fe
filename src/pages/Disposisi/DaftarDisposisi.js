@@ -88,7 +88,6 @@ const DaftarDisposisi = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  // Show loading page if still loading
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -150,34 +149,34 @@ const DaftarDisposisi = () => {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           No Surat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Pengirim
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-20 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Tgl Surat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Perihal
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Penerima
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Diteruskan Kepada
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Waktu Disposisi
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Catatan
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Aksi
                         </th>
                       </tr>

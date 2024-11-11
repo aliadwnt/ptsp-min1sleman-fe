@@ -302,7 +302,7 @@ const Layanan = () => {
             <div className="mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-200"
+                className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
                 disabled={loading}
               >
                 {loading ? "Menyimpan..." : "Simpan"}

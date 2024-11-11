@@ -37,8 +37,13 @@ const UpdatePassword = () => {
     setErrorMessages({});
     setSuccessMessage("");
 
-    if (!formData.newPassword || formData.newPassword.length === 0) {
-      setErrorMessages({ newPassword: "New password is required" });
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!passwordRegex.test(formData.newPassword)) {
+      setErrorMessages({
+        newPassword:
+          "Password harus terdiri dari minimal 8 karakter, mengandung huruf besar, dan angka.",
+      });
       setLoading(false);
       return;
     }

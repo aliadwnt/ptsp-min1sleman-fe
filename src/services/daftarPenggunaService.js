@@ -66,7 +66,7 @@ export const createDaftarPengguna = async (DaftarPengguna) => {
     return response.data;
   } catch (error) {
     console.error("Failed to add pengguna:", error);
-    throw new Error(error.response?.data?.message || "Failed to register user"); // Provide a more descriptive error message
+    throw new Error(error.response?.data?.message || "Failed to register user");
   }
 };
 
@@ -136,7 +136,7 @@ export const updateDaftarPengguna = async (id, DaftarPengguna) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.put(
-      `${API_URL_PENGGUNA}/${id}`,
+      `${API_URL_PENGGUNA}/${id}`, 
       DaftarPengguna,
       {
         headers: {
@@ -148,10 +148,15 @@ export const updateDaftarPengguna = async (id, DaftarPengguna) => {
     console.log("Successfully Updated User:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error updating pengguna:", error);
+    if (error.response) {
+      console.error("Server responded with error:", error.response.data);
+    } else {
+      console.error("Error updating pengguna:", error.message);
+    }
     throw error;
   }
 };
+
 export const deletePengguna = async (id) => {
   const token = localStorage.getItem("token");
   try {

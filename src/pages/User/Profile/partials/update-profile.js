@@ -9,17 +9,17 @@ function UpdateProfile() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    // password: "",
   });
-  // const [emailVerified, setEmailVerified] = useState(false);
   const [saved, setSaved] = useState(false);
   const [nothingChanged, setNothingChanged] = useState(false);
-  const [resent, setResent] = useState(false);
   const [initialData, setInitialData] = useState({
     name: "",
     email: "",
-    // password: "",
   });
+  const [error, setError] = useState(null);
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(true);
+  const [resent, setResent] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,14 +31,12 @@ function UpdateProfile() {
           setFormData({
             name: data.name,
             email: data.email,
-            // password: "",
           });
           setInitialData({
             name: data.name,
             email: data.email,
-            // password: "",
           });
-          // setEmailVerified(data.hasVerifiedEmail);
+          setEmailVerified(data.emailVerified);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -48,31 +46,50 @@ function UpdateProfile() {
     fetchData();
   }, []);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const token = localStorage.getItem("token");
+    const userId = JSON.parse(atob(token.split(".")[1])).userId;
+
     if (
       formData.name === initialData.name &&
-      formData.email === initialData.email &&
-      !formData.password
+      formData.email === initialData.email
     ) {
       setNothingChanged(true);
       setSaved(false);
     } else {
       try {
-        const userData = { ...formData };
-        if (!userData.password) delete userData.password;
-
-        console.log("Data yang dikirim:", userData);
-
-        await updateDaftarPengguna(userData);
+        const updatedData = await updateDaftarPengguna(userId, formData);
+        console.log("Data yang berhasil diupdate:", updatedData);
         setSaved(true);
         setNothingChanged(false);
+        setError(null);
+
+        if (formData.email !== initialData.email) {
+          await sendEmailVerification(userId, formData.email);
+          setVerificationSent(true);
+          setEmailVerified(false);
+        }
       } catch (error) {
         console.error("Error updating user data:", error);
         setSaved(false);
+        setNothingChanged(false);
+        setError("Gagal memperbarui data pengguna. Cek kembali input Anda.");
       }
+    }
+  };
+
+  const handleResendVerification = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const userId = JSON.parse(atob(token.split(".")[1])).userId;
+      await sendEmailVerification(userId, formData.email);
+      setResent(true);
+      setVerificationSent(false);
+    } catch (error) {
+      console.error("Error resending verification email:", error);
+      setError("Gagal mengirim ulang email verifikasi.");
     }
   };
 
@@ -87,9 +104,7 @@ function UpdateProfile() {
           <p>Update your account's profile information and email address.</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit}>
-          {/* Name */}
           <div className="col-span-6 sm:col-span-4 mb-4">
             <label
               htmlFor="name"
@@ -110,7 +125,6 @@ function UpdateProfile() {
             />
           </div>
 
-          {/* Email */}
           <div className="col-span-6 sm:col-span-4 mb-4">
             <label
               htmlFor="email"
@@ -131,27 +145,26 @@ function UpdateProfile() {
             />
           </div>
 
-          {/* Email Verification
-                    {!emailVerified && (
-                        <div className="mt-4">
-                            <p className="text-sm text-gray-600">
-                                Your email address is unverified.
-                                <button
-                                    type="button"
-                                    className="text-sm text-green-600 underline hover:text-green-900"
-                                    onClick={handleResendVerification}
-                                >
-                                    Click here to re-send the verification email.
-                                </button>
-                            </p>
+          {!emailVerified && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600">
+                Your email address is unverified.
+                <button
+                  type="button"
+                  className="text-sm text-green-600 underline hover:text-green-900"
+                  onClick={handleResendVerification}
+                >
+                  Click here to re-send the verification email.
+                </button>
+              </p>
 
-                            {resent && (
-                                <p className="mt-2 text-sm font-medium text-green-600">
-                                    A new verification link has been sent to your email address.
-                                </p>
-                            )}
-                        </div>
-                    )} */}
+              {resent && (
+                <p className="mt-2 text-sm font-medium text-green-600">
+                  A new verification link has been sent to your email address.
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Actions */}
           <div className="actions mt-4">
@@ -162,13 +175,22 @@ function UpdateProfile() {
               Save
             </button>
 
-            {/* Success messages */}
             {saved && (
-              <span className="action-message ml-3 text-green-600">Saved.</span>
+              <span className="action-message ml-3 text-green-600">
+                Update Profile Berhasil!
+              </span>
             )}
             {nothingChanged && (
               <span className="action-message ml-3 text-yellow-600">
-                Nothing Changed.
+                Tidak ada perubahan pada profil
+              </span>
+            )}
+            {error && (
+              <span className="action-message ml-3 text-red-600">{error}</span>
+            )}
+            {verificationSent && (
+              <span className="action-message ml-3 text-green-600">
+                Email verifikasi telah dikirim.
               </span>
             )}
           </div>
