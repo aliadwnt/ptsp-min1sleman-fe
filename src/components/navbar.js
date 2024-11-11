@@ -10,6 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const userRole = localStorage.getItem("userRole");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -184,24 +185,29 @@ const Navbar = () => {
                               </div>
                             </div>
                             <div className="border-t border-gray-200"></div>
-                            <button
-                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                              onClick={() => navigate("/dashboard")}
-                            >
-                              Dashboard
-                            </button>
-                            <button
-                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                              onClick={() => navigate("/user/settings")}
-                            >
-                              Settings
-                            </button>
-                            <button
-                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                              onClick={() => navigate("/profile/edit")}
-                            >
-                              Profile
-                            </button>
+                            {/* Tampilkan tombol ini hanya jika userRole adalah 1 atau 2 */}
+                            {(userRole === "1" || userRole === "2") && (
+                              <>
+                                <button
+                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                  onClick={() => navigate("/dashboard")}
+                                >
+                                  Dashboard
+                                </button>
+                                <button
+                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                  onClick={() => navigate("/user/settings")}
+                                >
+                                  Settings
+                                </button>
+                                <button
+                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                                  onClick={() => navigate("/profile/edit")}
+                                >
+                                  Profile
+                                </button>
+                              </>
+                            )}
                             <button
                               className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                               onClick={handleLogout}
@@ -263,24 +269,29 @@ const Navbar = () => {
                         </div>
                       </div>
                       <div className="border-t border-gray-200"></div>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/dashboard")}
-                      >
-                        Dashboard
-                      </button>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/user/settings")}
-                      >
-                        Settings
-                      </button>
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={() => navigate("/profile/edit")}
-                      >
-                        Profile
-                      </button>
+                      {/* Tampilkan tombol ini hanya jika userRole adalah 1 atau 2 */}
+                      {(userRole === "1" || userRole === "2") && (
+                        <>
+                          <button
+                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            onClick={() => navigate("/dashboard")}
+                          >
+                            Dashboard
+                          </button>
+                          <button
+                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            onClick={() => navigate("/user/settings")}
+                          >
+                            Settings
+                          </button>
+                          <button
+                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            onClick={() => navigate("/profile/edit")}
+                          >
+                            Profile
+                          </button>
+                        </>
+                      )}
                       <button
                         className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                         onClick={handleLogout}
