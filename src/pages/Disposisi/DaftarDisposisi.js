@@ -4,7 +4,7 @@ import Header from "../../components/header";
 import { useNavigate } from "react-router-dom";
 import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const DaftarDisposisi = () => {
@@ -12,7 +12,6 @@ const DaftarDisposisi = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarDisposisi, setCurrentDaftarDisposisi] = useState(null);
   const navigate = useNavigate();
@@ -58,9 +57,6 @@ const DaftarDisposisi = () => {
           String(item.perihal || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
-          String(item.nama_penerima || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
           String(item.diteruskan || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
@@ -72,11 +68,6 @@ const DaftarDisposisi = () => {
 
       setFilteredData(filteredData);
     }
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setCurrentDaftarDisposisi(null);
   };
 
   const handleDetail = (no_reg) => {
@@ -95,7 +86,7 @@ const DaftarDisposisi = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -127,7 +118,10 @@ const DaftarDisposisi = () => {
 
           <>
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <form onSubmit={handleSearch} className="flex flex-grow justify-center">
+              <form
+                onSubmit={handleSearch}
+                className="flex flex-grow justify-center"
+              >
                 <input
                   type="search"
                   value={searchTerm}
@@ -166,10 +160,7 @@ const DaftarDisposisi = () => {
                           Perihal
                         </th>
                         <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
-                          Penerima
-                        </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
-                          Diteruskan Kepada
+                          Diteruskan Ke-
                         </th>
                         <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                           Waktu Disposisi
@@ -206,9 +197,6 @@ const DaftarDisposisi = () => {
                               {item.perihal}
                             </td>
                             <td className="px-6 py-4 text-xs text-center text-gray-900 ">
-                              {item.nama_penerima}
-                            </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
                               {item.diteruskan}
                             </td>
                             <td className="px-6 py-4 text-xs text-center text-gray-900 ">
@@ -218,18 +206,18 @@ const DaftarDisposisi = () => {
                               {item.catatan}
                             </td>
                             <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">
-                                <button
-                                  onClick={() => handleDetail(item.no_reg)}
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                >
-                                  <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
-                                </button>
-                              </td>
+                              <button
+                                onClick={() => handleDetail(item.no_reg)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
+                              </button>
+                            </td>
                           </tr>
                         ))
                       ) : (

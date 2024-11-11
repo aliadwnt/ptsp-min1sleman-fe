@@ -10,7 +10,7 @@ import { fetchMasterDisposisi } from "../../services/masterDisposisiService";
 import { fetchDaftarPengguna } from "../../services/daftarPenggunaService";
 import {
   updateDaftarDisposisi,
-  fetchDaftarDisposisi,
+  fetchDaftarDisposisiByNoReg,
 } from "../../services/daftarDisposisiService";
 import { addNotification } from "../../services/notificationService";
 import "../../App";
@@ -88,7 +88,7 @@ const DetailDisposisi = () => {
     }
 
     try {
-      const disposisiData = await fetchDaftarDisposisi(no_reg);
+      const disposisiData = await fetchDaftarDisposisiByNoReg(no_reg);
       console.log("Disposisi Data:", disposisiData);
 
       if (

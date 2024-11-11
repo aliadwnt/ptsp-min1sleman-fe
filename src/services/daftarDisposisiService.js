@@ -2,7 +2,17 @@ import axios from "axios";
 
 const API_URL = "/api_s/daftar-disposisi";
 
-export const fetchDaftarDisposisi = async (no_reg) => {
+export const fetchDaftarDisposisi = async () => {
+  try {
+    const response = await axios.get(API_URL);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching daftar disposisi:", error);
+    throw error;
+  }
+};
+
+export const fetchDaftarDisposisiByNoReg = async (no_reg) => {
   try {
     const response = await axios.get(`${API_URL}/${no_reg}`);
     return response.data;
@@ -12,7 +22,12 @@ export const fetchDaftarDisposisi = async (no_reg) => {
   }
 };
 
-export const updateDaftarDisposisi = async (no_reg, diteruskan, disposisi,keterangan) => {
+export const updateDaftarDisposisi = async (
+  no_reg,
+  diteruskan,
+  disposisi,
+  keterangan
+) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.put(
@@ -21,7 +36,7 @@ export const updateDaftarDisposisi = async (no_reg, diteruskan, disposisi,ketera
         no_reg: no_reg,
         diteruskan,
         disposisi: disposisi,
-        keterangan
+        keterangan,
       },
       {
         headers: {
@@ -38,4 +53,3 @@ export const updateDaftarDisposisi = async (no_reg, diteruskan, disposisi,ketera
     throw error;
   }
 };
-

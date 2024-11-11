@@ -6,7 +6,7 @@ import {
   fetchLacakBerkas,
   fetchLoadArsip,
 } from "../services/lacakBerkasService";
-import { fetchDaftarDisposisi } from "../services/daftarDisposisiService";
+import { fetchDaftarDisposisiByNoReg } from "../services/daftarDisposisiService";
 import Favicon from "../components/Favicon";
 
 const LacakBerkas = () => {
@@ -109,7 +109,7 @@ const LacakBerkas = () => {
 
     try {
       // Ambil data disposisi
-      const disposisiData = await fetchDaftarDisposisi(no_reg);
+      const disposisiData = await fetchDaftarDisposisiByNoReg(no_reg);
       console.log("Disposisi Data:", disposisiData);
 
       if (
@@ -161,6 +161,7 @@ const LacakBerkas = () => {
                 Cari
               </button>
             </div>
+
             <div className="flex flex-col md:flex-row gap-8">
               <div className="w-full md:w-2/3 bg-white-100 p-4 rounded-lg shadow-lg">
                 <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
@@ -334,113 +335,122 @@ const LacakBerkas = () => {
                 </form>
               </div>
 
-              {daftarDisposisi && daftarDisposisi.length > 0 && (
-                <div className="w-full md:w-1/3 bg-white p-4 rounded-lg shadow-lg">
-                  <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
-                    <div className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30"
-                        height="30"
-                        viewBox="0 0 30 30"
-                        fill="none"
-                      >
-                        <path
-                          d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                          fill="#1D8BE5"
-                        />
-                      </svg>
-                      <span className="text-blue-500 title mx-2">
-                        Riwayat Disposisi
-                      </span>
+              <div className="w-full md:w-1/3 bg-white-100 p-4 rounded-lg shadow-lg">
+                <div>
+                  {daftarDisposisi && daftarDisposisi.length > 0 && (
+                    <div>
+                      <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
+                        <div className="flex items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            viewBox="0 0 30 30"
+                            fill="none"
+                          >
+                            <path
+                              d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                              fill="#1D8BE5"
+                            />
+                          </svg>
+                          <span className="text-blue-500 title mx-2">
+                            Riwayat Disposisi
+                          </span>
+                        </div>
+                      </h2>
+
+                      <table className="min-w-full bg-white">
+                        <div className="bg-white shadow-md rounded-lg p-6">
+                          <ul class="timeline">
+                            {daftarDisposisi.map((item, index) => (
+                              <li className="timeline-item" key={index}>
+                                <div className="timeline-content">
+                                  <div className="time">
+                                    {new Date(item.time).toLocaleString()}
+                                  </div>
+                                  <div className="name">{item.diteruskan}</div>
+                                  <div className="position">
+                                    {item.keterangan}
+                                  </div>
+                                  <div className="note">{item.disposisi}</div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </table>
                     </div>
-                  </h2>
+                  )}
 
-                  <div className="bg-white shadow-md rounded-lg p-6">
-                    <ul className="timeline">
-                      {daftarDisposisi.map((item, index) => (
-                        <li className="timeline-item" key={index}>
-                          <div className="timeline-content">
-                            <div className="time">
-                              {new Date(item.time).toLocaleString()}
-                            </div>
-                            <div className="name">{item.diteruskan}</div>
-                            <div className="position">{item.keterangan}</div>
-                            <div className="note">{item.disposisi}</div>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
+                  <div className="bg-white shadow-md rounded-lg p-6 mt-2">
+                    <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100 ">
+                      <div className="flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="30"
+                          height="30"
+                          viewBox="0 0 30 30"
+                          fill="none"
+                        >
+                          <path
+                            d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                            fill="#1D8BE5"
+                          />
+                        </svg>
+                        <span className="text-blue-500 title mx-2">
+                          Arsip Layanan
+                        </span>
+                      </div>
+                    </h2>
+                    <div className="flex justify-between w-full mt-1 px-2">
+                      {/* Arsip Masuk */}
+                      <div className="w-1/2 pr-2">
+                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                          Arsip Masuk
+                        </label>
+                        {arsipLayanan.arsip_masuk ? (
+                          <button
+                            onClick={() =>
+                              window.open(arsipLayanan.arsip_masuk, "_blank")
+                            }
+                            className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                          >
+                            Lihat Dokumen
+                          </button>
+                        ) : (
+                          <button
+                            disabled
+                            className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
+                          >
+                            Tidak Tersedia
+                          </button>
+                        )}
+                      </div>
 
-              <div className="bg-white shadow-md rounded-lg p-6 mt-2">
-                <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100 ">
-                  <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="30"
-                      viewBox="0 0 30 30"
-                      fill="none"
-                    >
-                      <path
-                        d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                        fill="#1D8BE5"
-                      />
-                    </svg>
-                    <span className="text-blue-500 title mx-2">
-                      Arsip Layanan
-                    </span>
-                  </div>
-                </h2>
-                <div className="flex justify-between w-full mt-1 px-2">
-                  {/* Arsip Masuk */}
-                  <div className="w-1/2 pr-2">
-                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                      Arsip Masuk
-                    </label>
-                    {arsipLayanan.arsip_masuk ? (
-                      <button
-                        onClick={() =>
-                          window.open(arsipLayanan.arsip_masuk, "_blank")
-                        }
-                        className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
-                      >
-                        Lihat Dokumen
-                      </button>
-                    ) : (
-                      <button
-                        disabled
-                        className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
-                      >
-                        Tidak Tersedia
-                      </button>
-                    )}
-                  </div>
-                  {/* Arsip Keluar */}
-                  <div className="w-1/2 pl-2">
-                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                      Arsip Keluar
-                    </label>
-                    {arsipLayanan.arsip_keluar ? (
-                      <button
-                        onClick={() =>
-                          window.open(arsipLayanan.arsip_keluar, "_blank")
-                        }
-                        className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
-                      >
-                        Lihat Dokumen
-                      </button>
-                    ) : (
-                      <button
-                        disabled
-                        className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
-                      >
-                        Tidak Tersedia
-                      </button>
-                    )}
+                      {/* Arsip Keluar */}
+                      <div className="w-1/2 pl-2">
+                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                          Arsip Keluar
+                        </label>
+                        {arsipLayanan.arsip_keluar ? (
+                          <button
+                            onClick={() =>
+                              window.open(arsipLayanan.arsip_keluar, "_blank")
+                            }
+                            className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                          >
+                            Lihat Dokumen
+                          </button>
+                        ) : (
+                          <button
+                            disabled
+                            className="bg-gray-300 text-gray-600 font-bold py-1 px-2 rounded cursor-not-allowed w-full"
+                          >
+                            Tidak Tersedia
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -448,6 +458,7 @@ const LacakBerkas = () => {
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
