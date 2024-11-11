@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createDaftarPengguna } from '../../services/daftarPenggunaService'; 
 import { motion } from 'framer-motion';
@@ -13,6 +13,9 @@ const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Register";
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
