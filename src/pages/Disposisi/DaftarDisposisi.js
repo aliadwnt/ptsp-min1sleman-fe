@@ -16,7 +16,7 @@ const DaftarDisposisi = () => {
   const [currentDaftarDisposisi, setCurrentDaftarDisposisi] = useState(null);
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state for data
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Disposisi`;

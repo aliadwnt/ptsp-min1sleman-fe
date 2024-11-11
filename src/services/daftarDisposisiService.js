@@ -45,8 +45,8 @@ export const updateDaftarDisposisi = async (
         },
       }
     );
-
-    console.log("Updated Daftar Disposisi:", response.data);
+    
+    console.log("updating Daftar Disposisi:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error updating Daftar Disposisi:", error);

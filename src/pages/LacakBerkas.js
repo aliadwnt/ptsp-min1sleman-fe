@@ -11,7 +11,6 @@ import Favicon from "../components/Favicon";
 
 const LacakBerkas = () => {
   const [no_reg, setNoReg] = useState("");
-  const [disposisi, setDisposisi] = useState([]);
   const [formData, setFormData] = useState({
     no_reg: "",
     nama_pelayanan: "",
