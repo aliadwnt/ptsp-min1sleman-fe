@@ -1,70 +1,63 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../components/navbar"; 
-import Footer from "../components/footer"; 
-import { useNavigate, useParams } from 'react-router-dom';
-import { fetchLacakPermohonan } from '../services/lacakPermohonanService';
-import { exportpdf } from "../services/layananService"; 
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchLacakPermohonan } from "../services/lacakPermohonanService";
+import { exportpdf } from "../services/layananService";
 import PdfTemplate from "./pdf/TemplatePelayanan";
-import ReactDOMServer from 'react-dom/server'; 
-import "../index.css"; 
+import ReactDOMServer from "react-dom/server";
+import "../index.css";
 
 const LacakPermohonan = () => {
-  const { no_reg } = useParams(); 
-  const [formData, setFormData] = useState(null); 
+  const { no_reg } = useParams();
+  const [formData, setFormData] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!no_reg) {
       console.error("No registration number provided.");
-      navigate("/"); 
+      navigate("/");
       return;
     }
 
     const fetchData = async () => {
       try {
-        const data = await fetchLacakPermohonan(no_reg); 
-        setFormData(data); 
+        const data = await fetchLacakPermohonan(no_reg);
+        setFormData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [no_reg, navigate]); 
+  }, [no_reg, navigate]);
 
   const handleExportPDF = async () => {
     if (!formData) {
       console.error("No form data available for PDF export.");
       return;
     }
-    
-    const htmlTemplate = <PdfTemplate noReg={formData.no_reg} data={formData} />; 
-  
+
+    const htmlTemplate = (
+      <PdfTemplate noReg={formData.no_reg} data={formData} />
+    );
+
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
-  
-    await exportpdf(htmlString, formData.no_reg); 
+
+    await exportpdf(htmlString, formData.no_reg);
   };
-  
+
   if (!formData) {
-    return <div className="text-center py-10">Loading...</div>; 
+    return <div className="text-center py-10">Loading...</div>;
   }
   return (
     <div>
       <Navbar />
-      <h2 className="font-family text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mx-8 mt-4">
-          Permohonan Pelayanan
-        </h2> 
-      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-        <div className="flex justify-between items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"></h2>
-          <button
-            onClick={handleExportPDF} // Updated to call the correct export function
-            className="font-family bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded"
-          >
-            Cetak Bukti Permohonan
-          </button>
-        </div>
+      <h1 className="font-family text-xl font-semibold leading-tight text-gray-800 mt-10 text-center sm:text-left">
+        DATA PERMOHONAN PELAYANAN
+      </h1>
 
+      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
         <div className="font-family bg-white shadow rounded-lg mx-8 py-8">
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-wrap -mx-3 mb-6">
@@ -83,7 +76,7 @@ const LacakPermohonan = () => {
                 />
               </div>
 
-              <div className="w-full md:w-1/2 px-2 mb-6 md:mb-0">
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="layanan"
@@ -98,7 +91,7 @@ const LacakPermohonan = () => {
                 />
               </div>
             </div>
-            <div className="w-full mb-6">
+            <div className="w-full mb-6 px-2 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="perihal"
@@ -209,7 +202,7 @@ const LacakPermohonan = () => {
               </div>
             </div>
 
-            <div className="w-full mb-6">
+            <div className="w-full mb-6 px-2 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="catatan"
@@ -224,6 +217,15 @@ const LacakPermohonan = () => {
               />
             </div>
           </form>
+          <div className="flex justify-between items-center mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"></h2>
+            <button
+              onClick={handleExportPDF}
+              className="font-family bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded w-4/5 sm:w-auto sm:max-w-xs mx-auto"
+            >
+              Cetak Bukti Permohonan
+            </button>
+          </div>
         </div>
       </div>
       <Footer />
@@ -232,4 +234,3 @@ const LacakPermohonan = () => {
 };
 
 export default LacakPermohonan;
-

@@ -149,7 +149,7 @@ const LacakBerkas = () => {
                 type="text"
                 value={no_reg}
                 onChange={(e) => setNoReg(e.target.value)}
-                placeholder="Masukkan Nomor Registrasi"
+                placeholder="Masukkan No Registrasi"
                 className="w-full p-2 border rounded-lg"
               />
               <button
