@@ -14,6 +14,7 @@ import "../../App.css";
 import { useNavigate } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
 import LoadingPage from "../../components/loadingPage"; 
+import Favicon from "../../components/Favicon";
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -256,6 +257,7 @@ const DaftarPelayanan = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col lg:flex-row">
+      <Favicon />
       <div
         className={`fixed inset-y-0 center-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

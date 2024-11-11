@@ -9,12 +9,13 @@ import {
 } from "../../../services/unitPengolahService";
 import "../../../App.css";
 import LoadingPage from "../../../components/loadingPage"; 
+import Favicon from "../../../components/Favicon";
 
 const UnitPengolah = () => {
   const [dataUnitPengolah, setDataUnitPengolah] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false); // State to track if there's an error
+  const [isError, setIsError] = useState(false); 
   const [modalOpen, setModalOpen] = useState(false);
   const [currentUnitPengolah, setCurrentUnitPengolah] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -131,6 +132,7 @@ const UnitPengolah = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+        <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

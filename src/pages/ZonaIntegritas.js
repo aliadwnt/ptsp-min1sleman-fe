@@ -1,13 +1,14 @@
 import React from 'react';
-import Navbar from '../components/navbar'; // Pastikan path sudah benar
-import Footer from '../components/footer'; // Pastikan path sudah benar
-import '../index.css'; // Jika kamu menggunakan file CSS terpisah
+import Navbar from '../components/navbar'; 
+import Footer from '../components/footer'; 
+import '../index.css'; 
+import Favicon from '../components/Favicon';
 
 const ZonaIntegritas = () => {
   return (
     <div>
       <Navbar />
-
+      <Favicon />
       <div className="p-12 font-family">
         <h1 className="text-3xl text-center font-semibold">Zona Integritas</h1>
         <div className="additional-content mt-5 text-center">

@@ -7,6 +7,7 @@ import {
 } from "../../../services/notificationService";
 import "../../../App.css";
 import { useNavigate } from "react-router-dom";
+import Favicon from "../../../components/Favicon";
 
 const Notifications = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const Notifications = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      {/* Sidebar */}
+     <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

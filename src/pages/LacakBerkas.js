@@ -7,6 +7,7 @@ import {
   fetchLoadArsip,
 } from "../services/lacakBerkasService";
 import { fetchDaftarDisposisi } from "../services/daftarDisposisiService";
+import Favicon from "../components/Favicon";
 
 const LacakBerkas = () => {
   const [no_reg, setNoReg] = useState("");
@@ -139,6 +140,7 @@ const LacakBerkas = () => {
   return (
     <div className="font-poppins">
       <Navbar />
+      <Favicon />
       <div className="BodyLacakBerkas">
         <div className="bg-blue-600"></div>
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">

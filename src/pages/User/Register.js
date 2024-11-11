@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createDaftarPengguna } from '../../services/daftarPenggunaService'; 
 import { motion } from 'framer-motion';
 import backgroundImage from '../../images/backgroundLoginRegister.jpg';
+import Favicon from "../../components/Favicon";
 
 const RegisterForm = () => {
   const [name, setName] = useState('');
@@ -48,6 +49,7 @@ const RegisterForm = () => {
       className="h-screen flex items-center justify-center bg-center bg-cover" 
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+        <Favicon/>
       <motion.div 
         className="font-family bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
         initial={{ opacity: 0, y: -50 }} 

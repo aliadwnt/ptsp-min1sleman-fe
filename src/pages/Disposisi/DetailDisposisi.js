@@ -14,6 +14,7 @@ import {
 } from "../../services/daftarDisposisiService";
 import { addNotification } from "../../services/notificationService";
 import "../../App";
+import Favicon from "../../components/Favicon";
 
 const DetailDisposisi = () => {
   const { no_reg } = useParams();
@@ -37,7 +38,6 @@ const DetailDisposisi = () => {
     arsip_keluar: "",
   });
 
-  // Fungsi untuk reset field
   const resetFields = () => {
     setFormData({
       no_reg: "",
@@ -87,7 +87,6 @@ const DetailDisposisi = () => {
       alert("Terjadi kesalahan saat mengambil data pelayanan");
     }
 
-    // Ambil data disposisi
     try {
       const disposisiData = await fetchDaftarDisposisi(no_reg);
       console.log("Disposisi Data:", disposisiData);
@@ -113,10 +112,8 @@ const DetailDisposisi = () => {
       }
     } catch (error) {
       console.error("Error fetching data disposisi: ", error);
-      // alert("Terjadi kesalahan saat mengambil data disposisi");
     }
 
-    // Ambil data arsip
     try {
       const arsipData = await fetchLoadArsip(no_reg);
       if (arsipData) {
@@ -140,7 +137,6 @@ const DetailDisposisi = () => {
       console.warn(
         "Data arsip tidak dapat diambil, tetapi pelayanan tetap tampil."
       );
-      // Tetap set state arsipLayanan meskipun terjadi error
       setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
     }
   };
@@ -225,7 +221,7 @@ const DetailDisposisi = () => {
 
   return (
     <div className="bodyadmin flex relative">
-      {/* Sidebar */}
+    <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

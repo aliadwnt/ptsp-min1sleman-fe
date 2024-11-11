@@ -7,6 +7,7 @@ import { exportpdf } from "../services/layananService";
 import PdfTemplate from "./pdf/TemplatePelayanan";
 import ReactDOMServer from "react-dom/server";
 import "../index.css";
+import Favicon from "../components/Favicon";
 
 const LacakPermohonan = () => {
   const { no_reg } = useParams();
@@ -53,6 +54,7 @@ const LacakPermohonan = () => {
   return (
     <div>
       <Navbar />
+      <Favicon />
       <h1 className="font-family text-xl font-semibold leading-tight text-gray-800 mt-10 text-center sm:text-left">
         DATA PERMOHONAN PELAYANAN
       </h1>

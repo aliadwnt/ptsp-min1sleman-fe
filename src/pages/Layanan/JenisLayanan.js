@@ -9,6 +9,7 @@ import {
 } from "../../services/jenisLayananService";
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage"; 
+import Favicon from "../../components/Favicon";
 
 const JenisLayanan = () => {
   const [dataJenisLayanan, setDataJenisLayanan] = useState([]);
@@ -81,7 +82,6 @@ const JenisLayanan = () => {
       name: name.value,
     };
 
-    // Check for duplicates
     const isDuplicate = dataJenisLayanan.some(
       (item) =>
         item.name.toLowerCase() === JenisLayanan.name.toLowerCase() &&
@@ -130,6 +130,7 @@ const JenisLayanan = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
+      <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

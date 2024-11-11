@@ -11,6 +11,7 @@ import PdfTemplate from "./pdf/TemplatePelayanan";
 import withReactContent from "sweetalert2-react-content";
 import ReactDOMServer from "react-dom/server";
 import "../App";
+import Favicon from "../components/Favicon";
 
 const MySwal = withReactContent(Swal);
 const Layanan = () => {
@@ -235,6 +236,7 @@ const Layanan = () => {
   return (
     <div className="font-family">
       <Navbar />
+      <Favicon/>
       <div className="bg-blue-600"></div>
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">

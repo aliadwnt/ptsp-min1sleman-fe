@@ -7,6 +7,7 @@ import AppCard from "../../components/app-card";
 import Card from "../../components/card"; 
 import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
 import LoadingPage from "../../components/loadingPage"; 
+import Favicon from "../../components/Favicon";
 
 const DashboardAdmin = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -14,7 +15,7 @@ const DashboardAdmin = () => {
     const [totalDiproses, setTotalDiproses] = useState(0);
     const [totalDiterima, setTotalDiterima] = useState(0);
     const [totalDitolak, setTotalDitolak] = useState(0);
-    const [isLoading, setIsLoading] = useState(true); // State untuk loading
+    const [isLoading, setIsLoading] = useState(true); 
 
     const toggleSidebar = () => setSidebarOpen(prevState => !prevState);
 
@@ -25,10 +26,10 @@ const DashboardAdmin = () => {
             setTotalDiproses(dataPelayanan.filter(item => item.status === 'Proses').length);
             setTotalDiterima(dataPelayanan.filter(item => item.status === 'Diambil').length);
             setTotalDitolak(dataPelayanan.filter(item => item.status === 'Ditolak').length);
-            setIsLoading(false); // Set loading selesai setelah data selesai di-fetch
+            setIsLoading(false); 
         } catch (error) {
             console.error("Failed to fetch data", error);
-            setIsLoading(false); // Jika terjadi error, hentikan loading
+            setIsLoading(false);
         }
     };  
 
@@ -36,13 +37,13 @@ const DashboardAdmin = () => {
         fetchData();
     }, []);
 
-    // Menampilkan LoadingPage jika isLoading true
     if (isLoading) {
         return <LoadingPage />;
     }
 
     return (
         <div className="h-screen bg-gray-100 flex relative">
+       <Favicon />
             <div
                 className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
             >

@@ -9,6 +9,7 @@ import {
 } from "../../../services/daftarPenggunaService";
 import "../../../App.css";
 import LoadingPage from "../../../components/loadingPage";
+import Favicon from "../../../components/Favicon";
 
 const DaftarPengguna = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
@@ -133,6 +134,7 @@ const DaftarPengguna = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+      <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

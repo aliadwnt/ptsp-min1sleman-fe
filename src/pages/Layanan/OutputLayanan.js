@@ -9,6 +9,7 @@ import {
 } from "../../services/outputLayananService";
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage"; 
+import Favicon from "../../components/Favicon";
 
 const OutputLayanan = () => {
   const [dataOutputLayanan, setOutputLayanan] = useState([]);
@@ -121,6 +122,7 @@ const OutputLayanan = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+      <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -173,7 +175,7 @@ const OutputLayanan = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
-                type="button" // Ensure this button doesn't submit the form
+                type="button" 
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >

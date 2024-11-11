@@ -13,6 +13,7 @@ import {
 import { handleSearch } from "../services/lacakPermohonanService";
 import { useParams } from "react-router-dom";
 import LoadingPage from "../components/loadingPage"; 
+import Favicon from "../components/Favicon";
 
 const HomePage = ({ daftarSyarat = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,13 +47,13 @@ const HomePage = ({ daftarSyarat = [] }) => {
       setDaftarLayanan(combinedData);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching Daftar Syarat:", error);
+      console.error("Error fetching Syarat Layanan:", error);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    document.title = "PTSP MIN 1 SLEMAN- Daftar Syarat";
+    document.title = "PTSP MIN 1 SLEMAN - Home";
     fetchData();
   }, [id]);
   if (isLoading) {
@@ -81,10 +82,10 @@ const HomePage = ({ daftarSyarat = [] }) => {
       syarat_layanan: formData.get("syarat_layanan"),
     };
     setLoading(true);
-    setError(null); // Reset error sebelum pencarian
+    setError(null); 
 
     try {
-      const result = await handleSearch(no_reg); // Panggil fungsi pencarian
+      const result = await handleSearch(no_reg); 
       if (result) {
         navigate(`/lacak-permohonan/${no_reg}`);
       } else {
@@ -100,8 +101,8 @@ const HomePage = ({ daftarSyarat = [] }) => {
   return (
     <div>
       <Navbar />
+      <Favicon/>
       <Jumbotron />
-
       <div className="p-12 font-family">
         <h1 className="text-3xl text-center font-semibold">Tentang PTSP</h1>
         <div className="additional-content mt-4 ml-9 text-start">

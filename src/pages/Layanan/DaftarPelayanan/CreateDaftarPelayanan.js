@@ -6,6 +6,7 @@ import { createDaftarPelayanan } from "../../../services/daftarPelayananService"
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import { uploadSingle } from "../../../services/uploadService";
 import LoadingPage from "../../../components/loadingPage"; 
+import Favicon from "../../../components/Favicon";
 
 const Layanan = () => {
   const [formData, setFormData] = useState({
@@ -99,7 +100,7 @@ const Layanan = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 m-0 flex relative">
-      {/* Sidebar */}
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

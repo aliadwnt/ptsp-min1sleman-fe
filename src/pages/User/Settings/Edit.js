@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/sidebar';
 import Header from '../../../components/header';
+import Favicon from "../../../components/Favicon";
 
 const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
-    // Definisikan supported languages
     const supportedLanguages = {
         en: 'English',
         id: 'Bahasa Indonesia'
     };
 
-    const [selectedLanguage, setSelectedLanguage] = useState('en'); // Bahasa default adalah English
+    const [selectedLanguage, setSelectedLanguage] = useState('en'); 
     const [isSaving, setIsSaving] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
 
@@ -33,6 +33,7 @@ const LanguageForm = ({ onSubmit, successMessage, errorMessage }) => {
 
     return (
         <div className="min-h-screen flex bg-gray-100">
+          <Favicon/>
             <Sidebar />
             <div className="flex-1 lg:ml-64">
                 <Header />

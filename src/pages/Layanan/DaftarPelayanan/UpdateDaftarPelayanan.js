@@ -6,6 +6,7 @@ import { fetchDaftarPelayananById, updateDaftarPelayanan } from "../../../servic
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import "../../../App";
 import LoadingPage from "../../../components/loadingPage";
+import Favicon from "../../../components/Favicon";
 
 const LayananUpdate = () => {
   const [formData, setFormData] = useState({
@@ -48,7 +49,7 @@ const LayananUpdate = () => {
   };
 
   const fetchJenisLayananData = async () => {
-    setLoading(true);  // Start loading when fetching data
+    setLoading(true);  
     try {
       const data = await fetchJenisLayanan();
       if (Array.isArray(data)) {
@@ -60,13 +61,13 @@ const LayananUpdate = () => {
       setError("Error fetching Jenis Layanan: " + error.message);
       console.error("Error fetching Jenis Layanan:", error);
     } finally {
-      setLoading(false);  // Stop loading after data is fetched
+      setLoading(false);  
     }
   };
 
   useEffect(() => {
-    fetchLayanan(); // Fetch data layanan untuk update
-    fetchJenisLayananData(); // Fetch data jenis layanan
+    fetchLayanan(); 
+    fetchJenisLayananData();
   }, [id]);
 
   const handleChange = (e) => {
@@ -82,7 +83,7 @@ const LayananUpdate = () => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
-    setLoading(true);  // Start loading during form submission
+    setLoading(true); 
 
     try {
       const formDataToSend = new FormData();
@@ -114,8 +115,7 @@ const LayananUpdate = () => {
   return (
     <div className="min-h-screen  bg-gray-50 pb-0 m-0een  m-0 flex relative">
        {loading && <LoadingPage />}
-       
-       {/* Sidebar */}
+       <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

@@ -4,6 +4,7 @@ import '../../index.css';
 import { loginPengguna } from '../../services/daftarPenggunaService';
 import Navbar from '../../components/navbar';
 import { motion } from 'framer-motion';
+import Favicon from "../../components/Favicon";
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ const LoginForm = () => {
   return (
     <div className="h-screen flex items-center justify-center bg-center bg-cover relative" 
         style={{ backgroundImage: `url(${require('../../images/backgroundLoginRegister.jpg')})` }}>
-      
+        <Favicon/>
       <motion.div 
         className="bg-white p-5 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
         initial={{ opacity: 0, y: -50 }} 

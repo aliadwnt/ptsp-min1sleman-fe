@@ -9,6 +9,7 @@ import {
 } from "../../services/masterDisposisiService";
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage"; 
+import Favicon from "../../components/Favicon";
 
 const MasterDisposisi = () => {
   const [dataMasterDisposisi, setDataMasterDisposisi] = useState([]);
@@ -127,7 +128,7 @@ const MasterDisposisi = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
-      {/* Sidebar */}
+      <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
