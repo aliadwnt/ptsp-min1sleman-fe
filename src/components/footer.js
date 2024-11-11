@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../images/logo-kemenag.png";
+import logo from "../images/logo_min_1 copy.png";
+
 const Footer = () => {
   return (
     <footer

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../images/logo-kemenag.png";
+import logo from "../images/logo_min_1 copy.png";
 import "../App.css";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
 
