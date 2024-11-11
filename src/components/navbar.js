@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../images/logo-kemenag.png";
+import logo from "../images/logo_min_1 copy.png";
 import "../App.css";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
 
@@ -56,13 +56,14 @@ const Navbar = () => {
 
   const renderMenuItems = (isMobile = false) => {
     const menuPaths = [
-      "/",
-      "/layanan",
-      "/visi-misi",
-      "/lacak-berkas",
-      "/zona-integritas",
+      { path: "/", label: "Beranda" },
+      { path: "/layanan", label: "Layanan" },
+      { path: "/visi-misi", label: "Visi & Misi" },
+      { path: "/lacak-berkas", label: "Lacak Berkas" },
+      { path: "/zona-integritas", label: "Zona Integritas" },
     ];
-    return menuPaths.map((path, index) => (
+
+    return menuPaths.map(({ path, label }, index) => (
       <li key={index}>
         <Link
           to={path}
@@ -72,11 +73,11 @@ const Navbar = () => {
                 ? "text-blue-600 font-bold"
                 : "text-white font-bold"
               : isMobile
-              ? "text-gray-00 cursor-pointer hover:text-blue-500 cursor-pointer hover:text-blue-500 hover:text-blue-600" // Pastikan ini untuk hover di mobile
-              : "text-white hover:text-blue-600" // Hover untuk desktop
+              ? "text-gray-800 cursor-pointer hover:text-blue-500"
+              : "text-white hover:text-blue-600"
           }`}
         >
-          {path === "/" ? "Beranda" : path.replace("/", "").replace("-", " ")}
+          {label}
         </Link>
       </li>
     ));

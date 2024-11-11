@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import Navbar from '../components/navbar';
 import Footer from '../components/footer'; 
-import '../index.css'; 
 import Favicon from '../components/Favicon';
+import '../index.css'; 
 
 const VisiMisi = () => {
+  useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Visi Misi";
+  }, []);
+
   return (
     <div>
-      <Navbar />
       <Favicon />
+      <Navbar />
       <div className="p-12 font-family">
         <h1 className="text-3xl text-center font-semibold">Visi dan Misi</h1>
         <div className="additional-content mt-5 text-center">
@@ -19,7 +23,6 @@ const VisiMisi = () => {
           </div>
         </div>
       </div>
-
       <Footer /> 
     </div>
   );

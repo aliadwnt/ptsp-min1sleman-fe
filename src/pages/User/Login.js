@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../index.css';
 import { loginPengguna } from '../../services/daftarPenggunaService';
@@ -11,6 +11,9 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Login";
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

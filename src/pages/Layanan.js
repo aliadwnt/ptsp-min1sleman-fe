@@ -49,6 +49,7 @@ const Layanan = () => {
   };
 
   useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Layanan";
     fetchData();
   }, []);
 

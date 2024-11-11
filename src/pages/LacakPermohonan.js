@@ -13,8 +13,8 @@ const LacakPermohonan = () => {
   const { no_reg } = useParams();
   const [formData, setFormData] = useState(null);
   const navigate = useNavigate();
-
   useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Lacak Permohonan";
     if (!no_reg) {
       console.error("No registration number provided.");
       navigate("/");

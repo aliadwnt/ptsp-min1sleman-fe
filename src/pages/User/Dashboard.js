@@ -68,7 +68,7 @@ const DashboardAdmin = () => {
                 </div>
 
                 <div className="py-4 space-y-4 sm:py-8 sm:space-y-8 w-full">
-                    <AppCard title="Welcome to PTSP MIN 1 SLEMAN" description={`You are logged in as Admin.`} />
+                    <AppCard title="Welcome to PTSP MIN 1 SLEMAN" />
                 </div>
             </div>
         </div>

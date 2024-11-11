@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import "../App";
@@ -33,6 +33,9 @@ const LacakBerkas = () => {
     disposisi: "",
     keterangan: "",
   });
+  useEffect(() => {
+    document.title = "PTSP MIN 1 SLEMAN - Lacak Berkas";
+  }, []);
 
   const resetFields = () => {
     setFormData({
