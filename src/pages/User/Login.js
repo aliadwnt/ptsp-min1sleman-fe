@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../index.css";
 import { loginPengguna } from "../../services/daftarPenggunaService";
 import Navbar from "../../components/navbar";
@@ -58,13 +58,15 @@ const LoginForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-center mb-2">
-          <img
-            src={require("../../../src/images/logo_min_1.png")}
-            alt="Logo"
-            className="w-16 h-16"
-          />
-        </div>
+        <Link to="/">
+          <div className="flex justify-center mb-2">
+            <img
+              src={require("../../../src/images/logo_min_1.png")}
+              alt="Logo"
+              className="w-16 h-16"
+            />
+          </div>
+        </Link>
 
         <motion.h2
           className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
@@ -117,10 +119,13 @@ const LoginForm = () => {
             Login
           </button>
           <div
-            className="font-family mt-2 text-center text-gray-700 cursor-pointer hover:text-blue-500 transition-colors duration-300"
+            className="font-family mt-2 text-center text-gray-700 cursor-pointer transition-colors duration-300"
             onClick={() => navigate("/register")}
           >
-            Belum punya akun? Daftar di sini
+            Belum punya akun?{" "}
+            <span className="text-blue-500 hover:underline">
+              Daftar di sini
+            </span>
           </div>
         </form>
       </motion.div>

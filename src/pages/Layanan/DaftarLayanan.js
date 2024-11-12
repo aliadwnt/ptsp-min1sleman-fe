@@ -11,7 +11,7 @@ import { fetchUnitPengolah } from "../../services/unitPengolahService";
 import { fetchJenisLayanan } from "../../services/jenisLayananService";
 import { fetchOutputLayanan } from "../../services/outputLayananService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const DaftarLayanan = () => {
@@ -44,10 +44,10 @@ const DaftarLayanan = () => {
     try {
       const response = await fetchDaftarLayanan();
       setDataDaftarLayanan(response);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Layanan:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -110,7 +110,7 @@ const DaftarLayanan = () => {
       try {
         await deleteDaftarLayanan(id);
         setMessage({ type: "success", text: "Data berhasil dihapus" });
-        setIsLoading(true); 
+        setIsLoading(true);
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
@@ -138,11 +138,11 @@ const DaftarLayanan = () => {
       if (currentDaftarLayanan) {
         await updateDaftarLayanan(currentDaftarLayanan.id, daftarLayanan);
         setMessage({ type: "success", text: "Data berhasil diupdate" });
-        setIsLoading(true); 
+        setIsLoading(true);
       } else {
         await createDaftarLayanan(daftarLayanan);
         setMessage({ type: "success", text: "Data berhasil ditambahkan" });
-        setIsLoading(true); 
+        setIsLoading(true);
       }
       fetchData();
       handleModalClose();
@@ -155,7 +155,6 @@ const DaftarLayanan = () => {
   const handleModalClose = () => {
     setModalOpen(false);
     setCurrentDaftarLayanan(null);
-    setMessage(null);
   };
 
   const toggleSidebar = () => {
@@ -164,11 +163,11 @@ const DaftarLayanan = () => {
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -234,7 +233,7 @@ const DaftarLayanan = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-6xl">
+            <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
@@ -266,7 +265,7 @@ const DaftarLayanan = () => {
                     {dataDaftarLayanan.length > 0 ? (
                       dataDaftarLayanan.map((item, index) => (
                         <tr key={item.id}>
-                           <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
                             {index + 1}
                           </td>
                           <td className="px-2 py-6 text-xs text-center text-gray-900">

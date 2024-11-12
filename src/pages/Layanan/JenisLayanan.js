@@ -8,7 +8,7 @@ import {
   deleteJenisLayanan,
 } from "../../services/jenisLayananService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const JenisLayanan = () => {
@@ -29,10 +29,10 @@ const JenisLayanan = () => {
     try {
       const response = await fetchJenisLayanan();
       setDataJenisLayanan(response);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Jenis Layanan:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -57,17 +57,22 @@ const JenisLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteJenisLayanan(id);
-        setMessage("Data berhasil dihapus");
-        setIsLoading(true); 
+        setMessage({
+          type: "success", // Menentukan tipe pesan sukses
+          text: "Data berhasil dihapus",
+        });
+        setIsLoading(true);
         await fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Gagal menghapus data");
-        setIsLoading(false); 
+        setMessage({
+          type: "error", // Menentukan tipe pesan error
+          text: "Gagal menghapus data",
+        });
+        setIsLoading(false);
       }
     }
   };
-  
 
   const handleAdd = () => {
     setCurrentJenisLayanan(null);
@@ -93,25 +98,25 @@ const JenisLayanan = () => {
         text: "Nama layanan sudah ada. Silakan gunakan nama lain.",
         type: "error",
       });
-      return; 
+      return;
     }
 
     try {
       if (currentJenisLayanan) {
         await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
         setMessage({ text: "Data berhasil diupdate", type: "success" });
-        setIsLoading(true); 
+        setIsLoading(true);
       } else {
         await createJenisLayanan(JenisLayanan);
         setMessage({ text: "Data berhasil ditambahkan", type: "success" });
-        setIsLoading(true); 
+        setIsLoading(true);
       }
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage({ text: "Failed to save data", type: "error" });
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -126,11 +131,11 @@ const JenisLayanan = () => {
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -199,13 +204,13 @@ const JenisLayanan = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nama Layanan
                       </th>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 ppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 ppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../services/authService";
 import { motion } from "framer-motion";
 import backgroundImage from "../../images/backgroundLoginRegister.jpg";
@@ -25,6 +25,12 @@ const RegisterForm = () => {
       setErrorMessage(
         "Password harus terdiri dari minimal 8 karakter, mengandung huruf besar, dan angka."
       );
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Format email tidak valid. example@gmail.com");
       return;
     }
 
@@ -63,13 +69,15 @@ const RegisterForm = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-center mb-2">
-          <img
-            src={require("../../../src/images/logo_min_1.png")}
-            alt="Logo"
-            className="w-16 h-16"
-          />
-        </div>
+        <Link to="/">
+          <div className="flex justify-center mb-2">
+            <img
+              src={require("../../../src/images/logo_min_1.png")}
+              alt="Logo"
+              className="w-16 h-16"
+            />
+          </div>
+        </Link>
 
         <motion.h2
           className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
@@ -147,10 +155,11 @@ const RegisterForm = () => {
             Register
           </button>
           <div
-            className="font-family mt-2 text-center text-gray-700 cursor-pointer hover:text-blue-500 transition-colors duration-300"
+            className="font-family mt-2 text-center text-gray-700 cursor-pointer transition-colors duration-300"
             onClick={() => navigate("/login")}
           >
-            Sudah punya akun? Login di sini
+            Sudah punya akun?{" "}
+            <span className="text-blue-500 hover:underline">Login di sini</span>
           </div>
         </form>
       </motion.div>
