@@ -156,15 +156,25 @@ const DaftarPengguna = () => {
           </div>
 
           {successMessage && (
-            <p className="text-green-500 mb-2 font-bolde">{successMessage}</p>
+            <div
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+              role="alert"
+            >
+              <div>
+                <p className="font-medium">Sukses!</p>
+                <p>{successMessage}</p>
+              </div>
+            </div>
           )}
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50 "
+              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
-              {message}
+              <div>
+                <span className="font-medium">Sukses! </span>
+                {message}
+              </div>
             </div>
           )}
 

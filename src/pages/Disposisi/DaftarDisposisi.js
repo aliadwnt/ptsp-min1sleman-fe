@@ -156,16 +156,16 @@ const DaftarDisposisi = () => {
                         <th className="px-20 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Tgl Surat
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider  hidden md:table-cell">
                           Perihal
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
                           Diteruskan Ke-
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
                           Waktu Disposisi
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
                           Catatan
                         </th>
                         <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
@@ -193,16 +193,16 @@ const DaftarDisposisi = () => {
                                 year: "numeric",
                               })}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
                               {item.perihal}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
                               {item.diteruskan}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
                               {item.waktu}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
                               {item.catatan}
                             </td>
                             <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">

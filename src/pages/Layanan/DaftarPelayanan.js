@@ -378,7 +378,7 @@ const DaftarPelayanan = () => {
                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Perihal
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Kelengkapan
                       </th>
                       <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
@@ -405,10 +405,10 @@ const DaftarPelayanan = () => {
                           <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {item.perihal}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 hidden md:table-cell">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {item.kelengkapan}
                           </td>
-                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left md:table-cell">
+                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left hidden md:table-cell">
                             <i className={getStatusIcon(item.status)}></i>
                             <span className="ml-2">{item.status}</span>
                           </td>

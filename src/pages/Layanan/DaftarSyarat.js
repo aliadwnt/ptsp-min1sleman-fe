@@ -193,7 +193,7 @@ const DaftarSyarat = () => {
     try {
       await updateDaftarSyarat(data);
       setMessage("Data berhasil diupdate");
-      setIsLoading(true); 
+      setIsLoading(true);
       await fetchData();
       handleModalClose();
     } catch (error) {
@@ -235,10 +235,6 @@ const DaftarSyarat = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-
-  if (isLoading) {
-    return <LoadingPage />;
-}
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
