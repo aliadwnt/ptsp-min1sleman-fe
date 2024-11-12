@@ -72,7 +72,7 @@ const Notifications = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-     <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -125,10 +125,10 @@ const Notifications = () => {
                     {Notifications.length > 0 ? (
                       Notifications.map((item, index) => (
                         <tr key={item.id}>
-                          <td className="px-4 py-2 text-sm text-center">
+                           <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {index + 1}
                           </td>
-                          <td className="px-6 py-2 text-sm text-center">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {(() => {
                               const date = new Date(item.created_at);
                               const today = new Date();
@@ -167,7 +167,7 @@ const Notifications = () => {
                               }
                             })()}
                           </td>
-                          <td className="px-6 py-2 text-center">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {item.message.type === "disposisi" ? (
                               <div>
                                 <strong className="text-sm text-gray-700">
@@ -209,7 +209,7 @@ const Notifications = () => {
                               </div>
                             )}
                           </td>
-                          <td className="px-10 py-2 text-center">
+                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                             <div className="flex items-center space-x-4 justify-center">
                               <button
                                 onClick={() => {

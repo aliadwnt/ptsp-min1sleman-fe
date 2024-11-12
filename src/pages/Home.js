@@ -36,27 +36,27 @@ const HomePage = ({ daftarSyarat = [] }) => {
         fetchDaftarLayanan(),
         fetchDaftarSyarat(id),
       ]);
-  
+
       // Mengelompokkan layanan berdasarkan unit
       const groupedData = layananResponse.reduce((acc, layanan) => {
         const syarat = syaratResponse.filter(
           (syarat) => syarat.layanan_id === layanan.id
         );
-  
+
         const unitName = layanan.unit; // Ambil unit dari layanan
-  
+
         if (!acc[unitName]) {
           acc[unitName] = { name: unitName, layanan: [] };
         }
-  
+
         acc[unitName].layanan.push({
           ...layanan,
           syarat_layanan: syarat.map((s) => s.syarat_layanan),
         });
-  
+
         return acc; // Ensure we return the accumulator (acc)
       }, {});
-  
+
       // Mengubah groupedData menjadi array dan mengatur ke state
       setUnitLayanan(Object.values(groupedData));
       setIsLoading(false); // Menghentikan tampilan loading
@@ -65,7 +65,6 @@ const HomePage = ({ daftarSyarat = [] }) => {
       setIsLoading(false); // Menghentikan tampilan loading jika ada error
     }
   };
-  
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Home";
@@ -105,7 +104,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
       syarat_layanan: formData.get("syarat_layanan"),
     };
     setLoading(true);
-    setError(null); 
+    setError(null);
 
     try {
       const result = await handleSearch(no_reg);
@@ -139,7 +138,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
             rangka terciptanya tata kelola pemerintahan yang baik dan bersih.
           </p>
           <div className="mt-5 flex flex-wrap">
-          <div className="w-full md:w-1/2 p-2 text-start">
+            <div className="w-full md:w-1/2 p-2 text-start">
               <span>
                 Dengan konsep ini, pengguna layanan cukup datang ke PTSP dan
                 bertemu dengan petugas front office (FO) kemudian menunggu
@@ -175,159 +174,185 @@ const HomePage = ({ daftarSyarat = [] }) => {
 
         {/* Daftar Layanan */}
         <div id="layanan" className="mt-12 max-w-7xl mx-auto px-4">
-  <h1 className="text-2xl md:text-4xl font-semibold text-center text-gray-800 mb-6">
-    Daftar Layanan PTSP MIN 1 SLEMAN
-  </h1>
-  {unitLayanan.length > 0 ? (
-    unitLayanan.map((unit, index) => (
-      <div key={index} className="mt-8">
-        <div className="flex justify-between items-center border-b pb-3 mb-4">
-          <h2 className="text-m md:text-xl font-semibold text-gray-800">{unit.name}</h2>
-          <button
-            className="flex items-center space-x-2 text-gray-600 hover:text-blue-600"
-            onClick={() => toggleUnit(unit.name)}
-          >
-            <span>{openUnits[unit.name] ? "Tutup" : "Buka"}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className={`w-5 h-5 transform transition-transform duration-300 ${
-                openUnits[unit.name] ? "rotate-180" : ""
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-        </div>
-
-        {openUnits[unit.name] && (
-          <div className="mt-4 space-y-4">
-            {unit.layanan.length > 0 ? (
-              unit.layanan.map((layanan) => (
-                <div key={layanan.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex justify-between items-center p-4">
-                    <div className="text-m font-semibold text-gray-800">{layanan.name}</div>
-                    <div className="actions flex flex-wrap justify-center gap-4">
-                      <button
-                        className="btn bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-200 w-full sm:w-44 md:w-auto"
-                        onClick={() =>
-                          openModal({
-                            id: layanan.id,
-                            syarat_layanan: layanan.syarat_layanan,
-                          })
-                        }
-                      >
-                        Lihat Syarat
-                      </button>
-                      <button
-                        className="btn bg-green-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-600 transition duration-200 w-full sm:w-44 md:w-auto"
-                        onClick={() => navigate("/layanan")}
-                      >
-                        Buat Permohonan
-                      </button>
-                    </div>
-
-                  </div>
+          <h1 className="text-2xl md:text-4xl font-semibold text-center text-gray-800 mb-6">
+            Daftar Layanan PTSP MIN 1 SLEMAN
+          </h1>
+          {unitLayanan.length > 0 ? (
+            unitLayanan.map((unit, index) => (
+              <div key={index} className="mt-8">
+                <div className="flex justify-between items-center border-b pb-3 mb-4">
+                  <h2 className="text-m md:text-xl font-semibold text-gray-800">
+                    {unit.name}
+                  </h2>
+                  <button
+                    className="flex items-center space-x-2 text-gray-600 hover:text-blue-600"
+                    onClick={() => toggleUnit(unit.name)}
+                  >
+                    <span>{openUnits[unit.name] ? "Tutup" : "Buka"}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`w-5 h-5 transform transition-transform duration-300 ${
+                        openUnits[unit.name] ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
                 </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">Tidak ada layanan tersedia</p>
-            )}
-          </div>
-        )}
-      </div>
-    ))
-  ) : (
-    <p className="text-center text-gray-500">Tidak ada unit pengolah ditemukan</p>
-  )}
-</div>
 
-<Dialog open={isModalOpen} onClose={closeModal} className="fixed z-10 inset-0 overflow-y-auto">
-  <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-    <div
-      className="fixed inset-0 bg-gray-500 bg-opacity-75"
-      aria-hidden="true"
-      onClick={closeModal}
-    ></div>
-    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
-      &#8203;
-    </span>
-    <div className="inline-block align-top bg-white rounded-lg shadow-xl transform transition-all sm:top-0 sm:align-start sm:max-w-lg sm:w-full sm:p-6">
-      <h3 className="text-lg leading-6 font-semibold text-gray-900 border-b-2 border-gray-300 pb-2">
-        Syarat Pelayanan Publik
-      </h3>
+                {openUnits[unit.name] && (
+                  <div className="mt-4 space-y-4">
+                    {unit.layanan.length > 0 ? (
+                      unit.layanan.map((layanan) => (
+                        <div
+                          key={layanan.id}
+                          className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                        >
+                          <div className="flex justify-between items-center p-2">
+                            <div className="text-m text-gray-800">
+                              {layanan.name}
+                            </div>
+                            <div className="actions flex flex-wrap justify-center gap-4">
+                              <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
+                                <button
+                                  className="btn bg-blue-500 text-white font-semibold py-1 px-3 text-sm rounded-lg hover:bg-green-600 transition duration-200 w-full sm:w-32 md:w-auto flex-shrink-0"
+                                  onClick={() =>
+                                    openModal({
+                                      id: layanan.id,
+                                      syarat_layanan: layanan.syarat_layanan,
+                                    })
+                                  }
+                                >
+                                  Lihat Syarat
+                                </button>
 
-      <div className="mt-4">
-        {(() => {
-          const selectedId = currentData.id;
-          console.log('currentData.id:', selectedId);
-
-          const selectedLayanan = unitLayanan
-            .flatMap((unit) => unit.layanan) 
-            .find((item) => item.id === selectedId);
-
-          console.log('selectedLayanan:', selectedLayanan); 
-
-          return selectedLayanan ? (
-            <span>
-              Syarat dari Layanan{" "}
-              <strong>{selectedLayanan.name}</strong>
-            </span>
+                                <button
+                                  className="btn bg-green-500 text-white font-semibold py-1 px-1 text-sm rounded-lg hover:bg-green-600 transition duration-200 w-full sm:w-32 md:w-auto flex-shrink-1"
+                                  onClick={() => navigate("/layanan")}
+                                >
+                                  Buat Permohonan
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-center text-gray-500">
+                        Tidak ada layanan tersedia
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))
           ) : (
-            <span>No layanan available</span>
-          );
-        })()}
-
-        <ol className="list-inside list-disc ml-6 mt-4">
-          {currentData.syarat_layanan ? (
-            (() => {
-              try {
-                const parsedSyarat = JSON.parse(currentData.syarat_layanan);
-                return parsedSyarat.length > 0 ? (
-                  parsedSyarat.map((syarat, index) => (
-                    <li key={index} className="text-left mb-2 text-sm text-gray-700">
-                      {syarat}
-                    </li>
-                  ))
-                ) : (
-                  <li>No data available</li>
-                );
-              } catch (error) {
-                console.error("Invalid JSON:", error);
-                return <li>Error parsing syarat layanan</li>;
-              }
-            })()
-          ) : (
-            <li>No data available</li>
+            <p className="text-center text-gray-500">
+              Tidak ada unit pengolah ditemukan
+            </p>
           )}
-        </ol>
-
-        <div className="text-left mt-3 text-gray-500 italic text-sm">
-          *Mohon melengkapi persyaratan di atas sebelum melakukan permohonan layanan.
         </div>
-      </div>
 
-      <div className="mt-5 border-t border-gray-300 pt-4 flex justify-end">
-        <button
-          type="button"
-          className="font-semibold bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg transition duration-200"
-          onClick={closeModal}
+        <Dialog
+          open={isModalOpen}
+          onClose={closeModal}
+          className="fixed z-10 inset-0 overflow-y-auto"
         >
-          Tutup
-        </button>
-      </div>
-    </div>
-  </div>
-</Dialog>
+          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div
+              className="fixed inset-0 bg-gray-500 bg-opacity-75"
+              aria-hidden="true"
+              onClick={closeModal}
+            ></div>
+            <span
+              className="hidden sm:inline-block sm:align-middle sm:h-screen"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+            <div className="inline-block align-top bg-white rounded-lg shadow-xl transform transition-all sm:top-0 sm:align-start sm:max-w-lg sm:w-full sm:p-6">
+              <h3 className="text-lg leading-6 font-semibold text-gray-900 border-b-2 border-gray-300 pb-2">
+                Syarat Pelayanan Publik
+              </h3>
 
-<div className="text-center mt-8">
+              <div className="mt-4">
+                {(() => {
+                  const selectedId = currentData.id;
+                  console.log("currentData.id:", selectedId);
+
+                  const selectedLayanan = unitLayanan
+                    .flatMap((unit) => unit.layanan)
+                    .find((item) => item.id === selectedId);
+
+                  console.log("selectedLayanan:", selectedLayanan);
+
+                  return selectedLayanan ? (
+                    <span>
+                      Syarat dari Layanan{" "}
+                      <strong>{selectedLayanan.name}</strong>
+                    </span>
+                  ) : (
+                    <span>No layanan available</span>
+                  );
+                })()}
+
+                <ol className="list-inside list-disc ml-6 mt-4">
+                  {currentData.syarat_layanan ? (
+                    (() => {
+                      try {
+                        const parsedSyarat = JSON.parse(
+                          currentData.syarat_layanan
+                        );
+                        return parsedSyarat.length > 0 ? (
+                          parsedSyarat.map((syarat, index) => (
+                            <li
+                              key={index}
+                              className="text-left mb-2 text-sm text-gray-700"
+                            >
+                              {syarat}
+                            </li>
+                          ))
+                        ) : (
+                          <li>No data available</li>
+                        );
+                      } catch (error) {
+                        console.error("Invalid JSON:", error);
+                        return <li>Error parsing syarat layanan</li>;
+                      }
+                    })()
+                  ) : (
+                    <li>No data available</li>
+                  )}
+                </ol>
+
+                <div className="text-left mt-3 text-gray-500 italic text-sm">
+                  *Mohon melengkapi persyaratan di atas sebelum melakukan
+                  permohonan layanan.
+                </div>
+              </div>
+
+              <div className="mt-5 border-t border-gray-300 pt-4 flex justify-end">
+                <button
+                  type="button"
+                  className="font-semibold bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg transition duration-200"
+                  onClick={closeModal}
+                >
+                  Tutup
+                </button>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+
+        <div className="text-center mt-8">
           <h1 className="text-3xl font-semibold">Lacak Permohonan Layanan</h1>
           <p className="mb-4">
             Masukkan No. Registrasi untuk melacak Permohonan
@@ -358,8 +383,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
       </div>
 
       <Footer />
-
-      </div>
+    </div>
   );
 };
 
