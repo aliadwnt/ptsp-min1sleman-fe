@@ -21,8 +21,10 @@ const DaftarPengguna = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const userRole = localStorage.getItem("userRole");
 
   useEffect(() => {
+    const role = localStorage.getItem("userRole");
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pengguna`;
     fetchData();
   }, []);
@@ -32,16 +34,16 @@ const DaftarPengguna = () => {
       const response = await fetchDaftarPengguna();
       console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -61,11 +63,11 @@ const DaftarPengguna = () => {
         console.log("Updating user with ID:", currentDaftarPengguna.id);
         await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
         setSuccessMessage("Data berhasil diperbarui");
-        setIsLoading(true); 
+        setIsLoading(true);
       } else {
         await createDaftarPengguna(DaftarPengguna);
         setSuccessMessage("Data berhasil ditambahkan");
-        setIsLoading(true); 
+        setIsLoading(true);
       }
 
       fetchData();
@@ -134,7 +136,7 @@ const DaftarPengguna = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -185,14 +187,16 @@ const DaftarPengguna = () => {
               >
                 <i className="fas fa-search"></i>
               </button>
-              <button
-                type="button" // Ensure this button doesn't submit the form
-                onClick={handleAdd}
-                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
-              >
-                <i className="fas fa-plus"></i>
-                <span className="ml-1">Tambah</span>
-              </button>
+              {userRole === "2" && (
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
+                >
+                  <i className="fas fa-plus"></i>
+                  <span className="ml-1">Tambah</span>
+                </button>
+              )}
             </form>
           </div>
 
@@ -214,9 +218,11 @@ const DaftarPengguna = () => {
                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Peran User
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Aksi
-                      </th>
+                      {userRole === "2" && (
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Aksi
+                        </th>
+                      )}
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -239,32 +245,34 @@ const DaftarPengguna = () => {
                               ? "ADMIN"
                               : "USER"}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <button
-                              onClick={() => handleEdit(item)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                              aria-label="Edit user"
-                            >
-                              <i className="fas fa-edit text-green-600"></i>
-                            </button>
-                            <button
-                              onClick={() => handleDelete(item.id)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                              aria-label="Delete user"
-                            >
-                              <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
-                            </button>
-                          </td>
+                          {userRole === "2" && (
+                            <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                              <button
+                                onClick={() => handleEdit(item)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Edit user"
+                              >
+                                <i className="fas fa-edit text-green-600"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Delete user"
+                              >
+                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </td>
+                          )}
                         </tr>
                       ))
                     ) : (
@@ -288,6 +296,7 @@ const DaftarPengguna = () => {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
               <h2 className="text-lg font-bold">Tambah Pengguna / Users</h2>
+
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">

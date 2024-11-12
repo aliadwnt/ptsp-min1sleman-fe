@@ -1,6 +1,21 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api_s/users'; 
+const API_URL = '/api_s/users'; 
+
+export const register = async (DaftarPengguna) => {
+    try {
+      const response = await axios.post(`${API_URL}/register`, DaftarPengguna, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Succesfully Created User:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to add pengguna:", error);
+      throw new Error(error.response?.data?.message || "Failed to register user");
+    }
+  };
 
 const login = async (email, password) => {
     try {

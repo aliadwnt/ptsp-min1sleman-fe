@@ -56,9 +56,11 @@ export const logoutPengguna = async () => {
 };
 
 export const createDaftarPengguna = async (DaftarPengguna) => {
+  const token = localStorage.getItem("token");
   try {
-    const response = await axios.post(`${API_URL}/register`, DaftarPengguna, {
+    const response = await axios.post(`${API_URL_PENGGUNA}`, DaftarPengguna, {
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -136,7 +138,7 @@ export const updateDaftarPengguna = async (id, DaftarPengguna) => {
   const token = localStorage.getItem("token");
   try {
     const response = await axios.put(
-      `${API_URL_PENGGUNA}/${id}`, 
+      `${API_URL_PENGGUNA}/${id}`,
       DaftarPengguna,
       {
         headers: {
@@ -160,7 +162,7 @@ export const updateDaftarPengguna = async (id, DaftarPengguna) => {
 export const deletePengguna = async (id) => {
   const token = localStorage.getItem("token");
   try {
-    const response = await axios.delete(`${API_URL_PENGGUNA}/${id}`,{
+    const response = await axios.delete(`${API_URL_PENGGUNA}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

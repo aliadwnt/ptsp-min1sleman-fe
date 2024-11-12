@@ -1,17 +1,17 @@
-import React, { useState , useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createDaftarPengguna } from '../../services/daftarPenggunaService'; 
-import { motion } from 'framer-motion';
-import backgroundImage from '../../images/backgroundLoginRegister.jpg';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../services/authService";
+import { motion } from "framer-motion";
+import backgroundImage from "../../images/backgroundLoginRegister.jpg";
 import Favicon from "../../components/Favicon";
 
 const RegisterForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Register";
@@ -22,48 +22,52 @@ const RegisterForm = () => {
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
     if (!passwordRegex.test(password)) {
-      setErrorMessage('Password harus terdiri dari minimal 8 karakter, mengandung huruf besar, dan angka.');
+      setErrorMessage(
+        "Password harus terdiri dari minimal 8 karakter, mengandung huruf besar, dan angka."
+      );
       return;
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage('Password dan konfirmasi password tidak cocok');
+      setErrorMessage("Password dan konfirmasi password tidak cocok");
       return;
     }
 
     try {
-      await createDaftarPengguna({ name, email, password });
-      
-      setSuccessMessage('Pendaftaran berhasil! Anda akan diarahkan ke halaman login.');
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setErrorMessage('');
+      await register({ name, email, password });
 
-      setTimeout(() => navigate('/login'), 2000);
+      setSuccessMessage(
+        "Pendaftaran berhasil! Anda akan diarahkan ke halaman login."
+      );
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setErrorMessage("");
+
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       setErrorMessage(error.message);
     }
   };
 
   return (
-    <div 
-      className="h-screen flex items-center justify-center bg-center bg-cover" 
+    <div
+      className="h-screen flex items-center justify-center bg-center bg-cover"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-        <Favicon/>
-      <motion.div 
+      <Favicon />
+      <motion.div
         className="font-family bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
-        initial={{ opacity: 0, y: -50 }} 
-        animate={{ opacity: 1, y: 0 }} 
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div className="flex justify-center mb-2">
-          <img 
-            src={require('../../../src/images/logo_min_1.png')}
+          <img
+            src={require("../../../src/images/logo_min_1.png")}
             alt="Logo"
-            className="w-16 h-16" 
+            className="w-16 h-16"
           />
         </div>
 
@@ -75,7 +79,7 @@ const RegisterForm = () => {
         >
           REGISTER
         </motion.h2>
-        <motion.h5 
+        <motion.h5
           className="text-lg font-semibold text-center text-gray-700"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -84,8 +88,12 @@ const RegisterForm = () => {
           PTSP MIN 1 SLEMAN
         </motion.h5>
 
-        {errorMessage && <p className="text-red-500 mb-2 font-bold">{errorMessage}</p>}
-        {successMessage && <p className="text-green-500 mb-2 font-bold">{successMessage}</p>}
+        {errorMessage && (
+          <p className="text-red-500 mb-2 font-bold">{errorMessage}</p>
+        )}
+        {successMessage && (
+          <p className="text-green-500 mb-2 font-bold">{successMessage}</p>
+        )}
 
         <form onSubmit={handleRegister}>
           <div className="mb-2">
@@ -132,15 +140,15 @@ const RegisterForm = () => {
               required
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="font-family mt-3 w-full py-2 bg-blue-500 text-white font-semibold rounded transition-all duration-300 ease-in-out transform hover:bg-blue-700 hover:scale-105"
           >
             Register
           </button>
-          <div 
+          <div
             className="font-family mt-2 text-center text-gray-700 cursor-pointer hover:text-blue-500 transition-colors duration-300"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate("/login")}
           >
             Sudah punya akun? Login di sini
           </div>
