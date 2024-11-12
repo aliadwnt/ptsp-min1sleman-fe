@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { deleteDaftarPengguna } from "../../../../services/daftarPenggunaService";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../../../../components/loadingPage"; 
 
 function DeleteAccount({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State for error messages
-  const [success, setSuccess] = useState(""); // State for success messages
+  const [error, setError] = useState(""); 
+  const [success, setSuccess] = useState(""); 
+  const [isLoading, setIsLoading] = useState(false); 
   const navigate = useNavigate();
 
   const confirmUserDeletion = () => {
@@ -18,6 +20,7 @@ function DeleteAccount({ userId }) {
   const deleteUser = async () => {
     if (password) {
       try {
+        setIsLoading(true); 
         console.log("UserId:", userId);
         console.log("Password:", password);
         await deleteDaftarPengguna(userId, { password });
@@ -25,11 +28,13 @@ function DeleteAccount({ userId }) {
         setSuccess("Your account has been successfully deleted.");
         setIsModalOpen(false);
         setPassword("");
+        setIsLoading(false); 
 
         navigate("/");
       } catch (error) {
         console.error("Failed to delete account:", error);
         setError("Failed to delete account. Please check your password.");
+        setIsLoading(false); 
       }
     } else {
       setError("Password is required to delete your account.");
@@ -38,6 +43,7 @@ function DeleteAccount({ userId }) {
 
   return (
     <div className="container mx-auto px-4 py-2">
+      {isLoading && <LoadingPage />}
       <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-auto">
         <h2 className="text-lg font-semibold">Delete Account</h2>
         <p className="text-sm text-gray-600">
@@ -56,7 +62,6 @@ function DeleteAccount({ userId }) {
             Delete Account
           </button>
         </div>
-        {/* Modal for confirming account deletion */}
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
@@ -105,7 +110,6 @@ function DeleteAccount({ userId }) {
           </div>
         )}
         {success && <p className="mt-4 text-sm text-green-600">{success}</p>}{" "}
-        {/* Success message after deletion */}
       </div>
     </div>
   );

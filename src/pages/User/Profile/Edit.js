@@ -5,6 +5,7 @@ import UpdateProfile from "./partials/update-profile";
 import UpdatePassword from "./partials/update-password";
 import DeleteAccount from "./partials/delete-account";
 import "../../../App.css";
+import Favicon from "../../../components/Favicon";
 
 const Profile = ({}) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -19,7 +20,7 @@ const Profile = ({}) => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
-      {/* Sidebar */}
+      <Favicon/>
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

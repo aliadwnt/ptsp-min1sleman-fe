@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  changePassword,
-  getUserById,
-} from "../../../../services/daftarPenggunaService";
+import { changePassword, getUserById } from "../../../../services/daftarPenggunaService";
+
+const LoadingPage = () => (
+  <div className="flex justify-center items-center h-screen">
+    <div className="spinner-border animate-spin inline-block w-16 h-16 border-4 border-green-600 border-t-transparent rounded-full" />
+  </div>
+);
 
 const UpdatePassword = () => {
   const [formData, setFormData] = useState({
@@ -77,14 +80,16 @@ const UpdatePassword = () => {
     }
   };
 
+  if (loading) {
+    return <LoadingPage />;
+  }
+
   return (
     <div className="container mx-auto px-4 py-2">
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-full mx-auto">
         <h2 className="text-lg font-semibold">{"Update Password"}</h2>
         <p className="text-sm text-gray-600">
-          {
-            "Ensure your account is using a long, random password to stay secure."
-          }
+          {"Ensure your account is using a long, random password to stay secure."}
         </p>
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
