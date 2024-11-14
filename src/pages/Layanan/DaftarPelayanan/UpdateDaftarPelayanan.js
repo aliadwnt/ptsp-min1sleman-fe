@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../components/header";
 import Sidebar from "../../../components/sidebar";
-import { fetchDaftarPelayananById, updateDaftarPelayanan } from "../../../services/daftarPelayananService";
+import {
+  fetchDaftarPelayananById,
+  updateDaftarPelayanan,
+} from "../../../services/daftarPelayananService";
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import "../../../App";
 import LoadingPage from "../../../components/loadingPage";
@@ -32,7 +35,7 @@ const LayananUpdate = () => {
   const { id } = useParams();
 
   const fetchLayanan = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const layanan = await fetchDaftarPelayananById(id);
       if (layanan) {
@@ -44,12 +47,12 @@ const LayananUpdate = () => {
       setError("Error fetching layanan: " + error.message);
       console.error("Error fetching layanan:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const fetchJenisLayananData = async () => {
-    setLoading(true);  
+    setLoading(true);
     try {
       const data = await fetchJenisLayanan();
       if (Array.isArray(data)) {
@@ -61,12 +64,12 @@ const LayananUpdate = () => {
       setError("Error fetching Jenis Layanan: " + error.message);
       console.error("Error fetching Jenis Layanan:", error);
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchLayanan(); 
+    fetchLayanan();
     fetchJenisLayananData();
   }, [id]);
 
@@ -83,7 +86,7 @@ const LayananUpdate = () => {
     e.preventDefault();
     setError(null);
     setSuccessMessage("");
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const formDataToSend = new FormData();
@@ -99,23 +102,25 @@ const LayananUpdate = () => {
 
       await updateDaftarPelayanan(id, formDataToSend);
       setSuccessMessage("Data berhasil diperbarui!");
-      navigate("/layanan/daftar-pelayanan");
+      navigate("/layanan/daftar-pelayanan", {
+        state: { message: "Data berhasil diperbarui!", isError: false },
+      });
     } catch (error) {
       setError("Gagal memperbarui data: " + error.message);
       console.error("Gagal memperbarui data:", error);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
-  }
+  };
 
   return (
     <div className="min-h-screen  bg-gray-50 pb-0 m-0een  m-0 flex relative">
-       {loading && <LoadingPage />}
-       <Favicon/>
+      {loading && <LoadingPage />}
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

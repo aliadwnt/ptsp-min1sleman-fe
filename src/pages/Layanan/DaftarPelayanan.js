@@ -11,15 +11,17 @@ import {
 import { exportpdf } from "../../services/layananService";
 import PdfTemplate from "../pdf/TemplatePelayanan";
 import "../../App.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const location = useLocation();
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarPelayanan, setCurrentDaftarPelayanan] = useState(null);
   const [activeTab, setActiveTab] = useState("Semua");
@@ -63,21 +65,25 @@ const DaftarPelayanan = () => {
         Diambil: ambilCount,
         Ditolak: tolakCount,
       });
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Failed to fetch data", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pelayanan`;
     fetchData();
-  }, []);
+    if (location.state) {
+      setMessage(location.state.message);
+      setIsError(location.state.isError);
+    }
+  }, [location.state]);
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -152,18 +158,6 @@ const DaftarPelayanan = () => {
     navigate("/create-daftar-pelayanan");
   };
 
-  const handleDocument = async (id) => {
-    try {
-      const data = await previewPdf(id);
-      if (data && data.url) {
-        window.open(data.url, "_blank");
-      } else {
-        console.error("Gagal memuat dokumen");
-      }
-    } catch (error) {
-      console.error("Terjadi kesalahan saat membuka dokumen", error);
-    }
-  };
   const handleExportPDF = async (item) => {
     if (!item) {
       console.error("No item data available for PDF export.");
@@ -239,11 +233,13 @@ const DaftarPelayanan = () => {
         await createDaftarPelayanan(DaftarPelayanan);
         setMessage("Data berhasil ditambahkan");
       }
+      setIsError(false);
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
+      setMessage("Gagal menyimpan data");
+      setIsError(true);
     }
   };
 
@@ -273,14 +269,20 @@ const DaftarPelayanan = () => {
         <Header />
         <div className="p-4">
           <div className="text-xl font-semibold text-gray-800 mb-4">
-            Daftar Pelayanan
+            <i className="fas fa-list mr-2"></i> Daftar Pelayanan
           </div>
           {message && (
             <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+              className={`p-4 m-2 text-sm ${
+                isError
+                  ? "text-red-800 bg-red-50"
+                  : "text-green-800 bg-green-50"
+              } rounded-lg`}
               role="alert"
             >
-              <span className="font-medium">Sukses </span>
+              <span className="font-medium">
+                {isError ? "Error" : "Sukses"}:{" "}
+              </span>
               {message}
             </div>
           )}
@@ -316,51 +318,53 @@ const DaftarPelayanan = () => {
           {/* <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8"> */}
           <div className="flex justify-center">
             <div className="w-full max-w-4xl">
-            <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
-              <ul
-                className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center ml-2 space-x-4 w-full"
-                id="default-tab"
-                data-tabs-toggle="#default-tab-content"
-                role="tablist"
-              >
-                {[
-                  "Semua",
-                  "Baru",
-                  "Proses",
-                  "Selesai",
-                  "Diambil",
-                  "Ditolak",
-                ].map((tab) => (
-                  <li
-                    key={tab}
-                    className="mb-4 sm:mb-0 flex-auto text-center relative group"
-                    role="presentation"
-                  >
-                    <button
-                      className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
-                        activeTab === tab
-                          ? "border-green-900 text-black-600 scale-110"
-                          : "text-gray-600"
-                      }`}
-                      id={`${tab}-tab`}
-                      onClick={() => handleTabChange(tab)}
-                      type="button"
-                      role="tab"
-                      aria-controls={tab}
-                      aria-selected={activeTab === tab}
+              <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
+                <ul
+                  className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center ml-2 space-x-4 w-full"
+                  id="default-tab"
+                  data-tabs-toggle="#default-tab-content"
+                  role="tablist"
+                >
+                  {[
+                    "Semua",
+                    "Baru",
+                    "Proses",
+                    "Selesai",
+                    "Diambil",
+                    "Ditolak",
+                  ].map((tab) => (
+                    <li
+                      key={tab}
+                      className="mb-4 sm:mb-0 flex-auto text-center relative group"
+                      role="presentation"
                     >
-                      <i
-                        className={`${getStatusIcon(tab)} mr-2 text-sm font-bold`}
-                      ></i>
-                      <span className="ml-2 text-[16px]">{counts[tab]}</span>
-                    </button>
-                    <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                      <button
+                        className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
+                          activeTab === tab
+                            ? "border-green-900 text-black-600 scale-110"
+                            : "text-gray-600"
+                        }`}
+                        id={`${tab}-tab`}
+                        onClick={() => handleTabChange(tab)}
+                        type="button"
+                        role="tab"
+                        aria-controls={tab}
+                        aria-selected={activeTab === tab}
+                      >
+                        <i
+                          className={`${getStatusIcon(
+                            tab
+                          )} mr-2 text-sm font-bold`}
+                        ></i>
+                        <span className="ml-2 text-[16px]">{counts[tab]}</span>
+                      </button>
+                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="overflow-x-auto">
                 <table className="min-w-full w-full divide-y divide-gray-200">

@@ -308,7 +308,7 @@ const UserProfileMenu = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-l font-semibold text-gray-800">
                   Anda Memiliki {newNotifications.length} Notifikasi Baru
                 </h2>
                 <button
@@ -375,7 +375,7 @@ const UserProfileMenu = () => {
                       </li>
                     ))
                   ) : (
-                    <li className="text-lg font-bold text-gray-700">
+                    <li className="text-m font-bold text-gray-700">
                       Tidak ada notifikasi baru.
                     </li>
                   )}

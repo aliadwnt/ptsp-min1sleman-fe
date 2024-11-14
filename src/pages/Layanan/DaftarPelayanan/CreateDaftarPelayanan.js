@@ -5,7 +5,7 @@ import Sidebar from "../../../components/sidebar";
 import { createDaftarPelayanan } from "../../../services/daftarPelayananService";
 import { fetchJenisLayanan } from "../../../services/jenisLayananService";
 import { uploadSingle } from "../../../services/uploadService";
-import LoadingPage from "../../../components/loadingPage"; 
+import LoadingPage from "../../../components/loadingPage";
 import Favicon from "../../../components/Favicon";
 
 const Layanan = () => {
@@ -81,7 +81,9 @@ const Layanan = () => {
       await createDaftarPelayanan(dataToSend);
       setSuccessMessage("Data berhasil disimpan!");
       setIsLoading(false);
-      navigate("/layanan/daftar-pelayanan");
+      navigate("/layanan/daftar-pelayanan", {
+        state: { message: "Data berhasil ditambahkan!", isError: false },
+      });
     } catch (error) {
       setError("Gagal menyimpan data: " + error.message);
     } finally {
@@ -303,10 +305,10 @@ const Layanan = () => {
             <div className="mt-6">
               <button
                 type="submit"
-                className="px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
+                className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition duration-200"
                 disabled={loading}
               >
-                {loading ? "Menyimpan..." : "Simpan"}
+                {loading ? "Loading..." : "Simpan"}
               </button>
             </div>
           </form>
