@@ -181,9 +181,9 @@ const DaftarLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0">
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Layanan
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+          <i className="fas fa-th-list mr-2"></i> Daftar Layanan
           </div>
 
           {message && (
@@ -428,7 +428,7 @@ const DaftarLayanan = () => {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                      className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                     >
                       {currentDaftarLayanan ? "Update" : "Tambah"}
                     </button>

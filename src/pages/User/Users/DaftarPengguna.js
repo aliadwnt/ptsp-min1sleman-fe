@@ -150,9 +150,9 @@ const DaftarPengguna = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 ">
-            Daftar Pengguna
+        <div className="p-4">
+        <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-users mr-2"></i> Daftar Pengguna
           </div>
 
           {successMessage && (
@@ -422,9 +422,9 @@ const DaftarPengguna = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                   >
-                    {currentDaftarPengguna ? "Update" : "Simpan"}
+                    {currentDaftarPengguna ? "Update" : "Tambah"}
                   </button>
                 </div>
               </form>

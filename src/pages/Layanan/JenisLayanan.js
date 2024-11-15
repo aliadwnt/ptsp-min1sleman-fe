@@ -150,7 +150,9 @@ const JenisLayanan = () => {
       >
         <Header />
         <div className="p-4">
-          <h1 className="text-2xl font-semibold mb-4">Daftar Jenis Layanan</h1>
+        <div className="text-xl font-semibold text-gray-800 mb-4">
+        <i className="fas fa-tags mr-2"></i> Daftar Jenis Layanan
+          </div>
 
           {message && (
             <div
@@ -298,9 +300,9 @@ const JenisLayanan = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
                     >
-                      {currentJenisLayanan ? "Update" : "Simpan"}
+                      {currentJenisLayanan ? "Update" : "Tambah"}
                     </button>
                   </div>
                 </form>

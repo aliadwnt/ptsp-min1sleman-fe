@@ -8,7 +8,7 @@ import {
   deleteMasterSyarat,
 } from "../../services/masterSyaratService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const MasterSyarat = () => {
@@ -104,8 +104,8 @@ const MasterSyarat = () => {
         setIsLoading(true);
       }
       setIsError(false);
-      fetchData(); 
-      setModalOpen(false); 
+      fetchData();
+      setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
@@ -124,11 +124,11 @@ const MasterSyarat = () => {
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -142,9 +142,10 @@ const MasterSyarat = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-5 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Master Syarat Layanan
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-check-circle mr-2"></i> Daftar Master Syarat
+            Layanan
           </div>
 
           {message && (
@@ -165,7 +166,7 @@ const MasterSyarat = () => {
 
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-             onSubmit={handleSearch}
+              onSubmit={handleSearch}
               className="flex flex-grow justify-center"
             >
               <input
@@ -199,13 +200,13 @@ const MasterSyarat = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         No
                       </th>
-                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                         Master Syarat
                       </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
                         Aksi
                       </th>
                     </tr>
@@ -293,7 +294,7 @@ const MasterSyarat = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
                     >
                       {currentMasterSyarat ? "Update" : "Simpan"}
                     </button>

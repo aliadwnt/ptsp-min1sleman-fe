@@ -16,7 +16,7 @@ const DaftarDisposisi = () => {
   const [currentDaftarDisposisi, setCurrentDaftarDisposisi] = useState(null);
   const navigate = useNavigate();
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Disposisi`;
@@ -101,9 +101,9 @@ const DaftarDisposisi = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <main>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Disposisi
+        <main className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-list mr-2"></i> Daftar Disposisi
           </div>
 
           {message && (

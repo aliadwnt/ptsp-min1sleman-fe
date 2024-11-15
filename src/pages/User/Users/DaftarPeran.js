@@ -23,16 +23,16 @@ const DaftarPeran = () => {
       const response = await fetchDaftarPengguna();
       console.log("Data fetched:", response);
       setDataDaftarPengguna(response);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -60,7 +60,7 @@ const DaftarPeran = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
-     <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -75,8 +75,8 @@ const DaftarPeran = () => {
       >
         <Header />
         <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Peran
+          <div className="text-xl mt-2 ml-15 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
+            <i className="fas fa-user-tag mr-2"></i> Daftar Peran
           </div>
 
           {message && (

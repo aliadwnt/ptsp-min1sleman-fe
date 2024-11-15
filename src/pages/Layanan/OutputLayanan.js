@@ -8,7 +8,7 @@ import {
   deleteOutputLayanan,
 } from "../../services/outputLayananService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const OutputLayanan = () => {
@@ -28,7 +28,7 @@ const OutputLayanan = () => {
   const fetchData = async () => {
     try {
       const response = await fetchOutputLayanan();
-      setIsLoading(false); 
+      setIsLoading(false);
       setOutputLayanan(response);
     } catch (error) {
       console.error("Error fetching Output Layanan:", error);
@@ -56,16 +56,16 @@ const OutputLayanan = () => {
       try {
         await deleteOutputLayanan(id);
         setMessage({ text: "Data berhasil dihapus", type: "success" });
-        setIsLoading(true); 
-        await fetchData(); 
+        setIsLoading(true);
+        await fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage({ text: "Gagal menghapus data", type: "error" }); 
+        setMessage({ text: "Gagal menghapus data", type: "error" });
       } finally {
         setIsLoading(false);
       }
     }
-  };  
+  };
 
   const handleAdd = () => {
     setCurrentOutputLayanan(null);
@@ -93,11 +93,11 @@ const OutputLayanan = () => {
       if (currentOutputLayanan) {
         await updateOutputLayanan(currentOutputLayanan.id, OutputLayanan);
         setMessage({ type: "success", text: "Data berhasil diupdate" });
-        setIsLoading(true); 
+        setIsLoading(true);
       } else {
         await createOutputLayanan(OutputLayanan);
         setMessage({ type: "success", text: "Data berhasil ditambahkan" });
-        setIsLoading(true); 
+        setIsLoading(true);
       }
       fetchData();
       setModalOpen(false);
@@ -118,11 +118,11 @@ const OutputLayanan = () => {
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -136,9 +136,9 @@ const OutputLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Output Layanan
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-file-alt mr-2"></i> Output Layanan
           </div>
           {message && (
             <div
@@ -157,7 +157,7 @@ const OutputLayanan = () => {
           )}
           <div className="flex items-center justify-center space-x-2 mb-4">
             <form
-             onSubmit={handleSearch}
+              onSubmit={handleSearch}
               className="flex flex-grow justify-center"
             >
               <input
@@ -175,7 +175,7 @@ const OutputLayanan = () => {
                 <i className="fas fa-search"></i>
               </button>
               <button
-                type="button" 
+                type="button"
                 onClick={handleAdd}
                 className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
               >
@@ -286,7 +286,7 @@ const OutputLayanan = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded"
                     >
                       {currentOutputLayanan ? "Update" : "Simpan"}
                     </button>

@@ -610,7 +610,7 @@ const DetailDisposisi = () => {
                     <button
                       type="button"
                       onClick={handleUpdateDisposisi}
-                      className="w-full mb-6 bg-green-600 text-white rounded-lg py-2 hover:bg-green-700"
+                      className="w-full mb-6 bg-green-500 text-white rounded-lg py-2 hover:bg-green-700"
                     >
                       Disposisikan
                     </button>

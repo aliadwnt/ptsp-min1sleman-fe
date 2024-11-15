@@ -12,7 +12,7 @@ import { fetchUnitPengolah } from "../../services/unitPengolahService";
 import { fetchMasterSyarat } from "../../services/masterSyaratService";
 import "../../App.css";
 import { useParams } from "react-router-dom";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const DaftarSyarat = () => {
@@ -46,14 +46,14 @@ const DaftarSyarat = () => {
       const response = await fetchMasterSyarat();
       if (Array.isArray(response) && response.length > 0) {
         setSyaratOptions(response);
-        setIsLoading(false); 
+        setIsLoading(false);
       } else {
         setSyaratOptions([]);
       }
     } catch (error) {
       console.error("Error fetching master syarat:", error);
       setError("Gagal memuat syarat.");
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -126,19 +126,21 @@ const DaftarSyarat = () => {
   const handleUnitChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedUnit(selectedValue);
-  
+
     if (selectedValue) {
       setIsLoading(true);
       const filteredData = dataDaftarSyarat.filter((item) =>
-        String(item.unit || "").toLowerCase().includes(selectedValue.toLowerCase())
+        String(item.unit || "")
+          .toLowerCase()
+          .includes(selectedValue.toLowerCase())
       );
       setDataDaftarSyarat(filteredData);
     } else {
       setDataDaftarSyarat(dataDaftarSyarat);
     }
-  
+
     setIsLoading(false);
-  };  
+  };
 
   const fetchCurrentDaftarSyarat = async () => {
     if (currentDaftarSyarat) {
@@ -218,7 +220,7 @@ const DaftarSyarat = () => {
         return;
       }
       setDaftarSyaratLayanan((prev) => [...prev, selectedSyarat]);
-      setSelectedSyarat(""); 
+      setSelectedSyarat("");
     }
   };
 
@@ -238,7 +240,7 @@ const DaftarSyarat = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-     <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -252,9 +254,9 @@ const DaftarSyarat = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0">
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Syarat
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-list-alt mr-2"></i> Daftar Syarat
           </div>
 
           {message && (
@@ -417,165 +419,186 @@ const DaftarSyarat = () => {
                   </tbody>
                 </table>
 
-{/* Modal */}
-{modalOpen && (
-  <div className="fixed inset-0 flex items-center justify-center z-50">
-    <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-4xl">
-    <h2 className="text-xl font-semibold mb-4">Update Daftar Syarat</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Left Side: Form Fields */}
-          <div className="space-y-4">
-            <div>
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="unit"
-              >
-                Nama Layanan
-              </label>
-              <input
-                type="text"
-                name="name"
-                defaultValue={currentDaftarSyarat?.name || ""}
-                readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
-              />
-            </div>
+                {/* Modal */}
+                {modalOpen && (
+                  <div className="fixed inset-0 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-4xl">
+                      <h2 className="text-xl font-semibold mb-4">
+                        Update Daftar Syarat
+                      </h2>
+                      <form onSubmit={handleSubmit}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {/* Left Side: Form Fields */}
+                          <div className="space-y-4">
+                            <div>
+                              <label
+                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                htmlFor="unit"
+                              >
+                                Nama Layanan
+                              </label>
+                              <input
+                                type="text"
+                                name="name"
+                                defaultValue={currentDaftarSyarat?.name || ""}
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                              />
+                            </div>
 
-            <div>
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="unit"
-              >
-                Unit Pengolah
-              </label>
-              <input
-                type="text"
-                name="unit"
-                defaultValue={currentDaftarSyarat?.unit || ""}
-                readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
-              />
-            </div>
+                            <div>
+                              <label
+                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                htmlFor="unit"
+                              >
+                                Unit Pengolah
+                              </label>
+                              <input
+                                type="text"
+                                name="unit"
+                                defaultValue={currentDaftarSyarat?.unit || ""}
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                              />
+                            </div>
 
-            <div>
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="jenis"
-              >
-                Jenis
-              </label>
-              <input
-                type="text"
-                name="jenis"
-                defaultValue={currentDaftarSyarat?.jenis || ""}
-                readOnly
-                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
-              />
-            </div>
+                            <div>
+                              <label
+                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                htmlFor="jenis"
+                              >
+                                Jenis
+                              </label>
+                              <input
+                                type="text"
+                                name="jenis"
+                                defaultValue={currentDaftarSyarat?.jenis || ""}
+                                readOnly
+                                className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                              />
+                            </div>
 
-            <div>
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="daftar_syarat"
-              >
-                Daftar Syarat
-              </label>
-              <div className="mb-4 flex items-center">
-                <select
-                  name="syarat"
-                  className="w-full px-3 py-2 border border-gray-300 rounded"
-                  value={selectedSyarat}
-                  onChange={(e) => setSelectedSyarat(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Pilih Item Syarat Layanan
-                  </option>
-                  {syaratOptions.length > 0 ? (
-                    syaratOptions.map((syarat) => (
-                      <option key={syarat.id} value={syarat.name}>
-                        {syarat.name}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>
-                      Tidak ada syarat tersedia
-                    </option>
-                  )}
-                </select>
-                <button
-                  type="button"
-                  className="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                  onClick={handleAddSyarat}
-                >
-                  Tambah
-                </button>
-              </div>
-            </div>
-          </div>
+                            <div>
+                              <label
+                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                htmlFor="daftar_syarat"
+                              >
+                                Daftar Syarat
+                              </label>
+                              <div className="mb-4 flex items-center">
+                                <select
+                                  name="syarat"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded"
+                                  value={selectedSyarat}
+                                  onChange={(e) =>
+                                    setSelectedSyarat(e.target.value)
+                                  }
+                                >
+                                  <option value="" disabled>
+                                    Pilih Item Syarat Layanan
+                                  </option>
+                                  {syaratOptions.length > 0 ? (
+                                    syaratOptions.map((syarat) => (
+                                      <option
+                                        key={syarat.id}
+                                        value={syarat.name}
+                                      >
+                                        {syarat.name}
+                                      </option>
+                                    ))
+                                  ) : (
+                                    <option value="" disabled>
+                                      Tidak ada syarat tersedia
+                                    </option>
+                                  )}
+                                </select>
+                                <button
+                                  type="button"
+                                  className="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                  onClick={handleAddSyarat}
+                                >
+                                  Tambah
+                                </button>
+                              </div>
+                            </div>
+                          </div>
 
-          <div className="md:col-span-1 mt-6 md:mt-0">
-            <h3 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Daftar Syarat Layanan</h3>
-            <table className="min-w-full bg-white border border-gray-300">
-              <thead>
-                <tr>
-                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">No</th>
-                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">Nama Syarat</th>
-                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">Aksi</th>
-                </tr>
-              </thead>
-              <tbody>
-                {daftarSyaratLayanan.length > 0 ? (
-                  daftarSyaratLayanan.map((syarat, index) => (
-                    <tr key={index}>
-                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 tracking-wider">{index + 1}</td>
-                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 tracking-wider">{syarat}</td>
-                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">
-                        <button
-                          className="bg-red-500 text-white px-2 py-1 rounded flex items-center space-x-2"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDeleteSyarat(index);
-                          }}
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3" className="px-4 py-2 border border-gray-300 text-center">
-                      Tidak ada syarat ditambahkan
-                    </td>
-                  </tr>
+                          <div className="md:col-span-1 mt-6 md:mt-0">
+                            <h3 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                              Daftar Syarat Layanan
+                            </h3>
+                            <table className="min-w-full bg-white border border-gray-300">
+                              <thead>
+                                <tr>
+                                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                    No
+                                  </th>
+                                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                    Nama Syarat
+                                  </th>
+                                  <th className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                    Aksi
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {daftarSyaratLayanan.length > 0 ? (
+                                  daftarSyaratLayanan.map((syarat, index) => (
+                                    <tr key={index}>
+                                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 tracking-wider">
+                                        {index + 1}
+                                      </td>
+                                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 tracking-wider">
+                                        {syarat}
+                                      </td>
+                                      <td className="px-2 py-3 border text-center text-xs font-medium text-gray-800 uppercase tracking-wider">
+                                        <button
+                                          className="bg-red-500 text-white px-2 py-1 rounded flex items-center space-x-2"
+                                          onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDeleteSyarat(index);
+                                          }}
+                                        >
+                                          <i className="fas fa-trash"></i>
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))
+                                ) : (
+                                  <tr>
+                                    <td
+                                      colSpan="3"
+                                      className="px-4 py-2 border border-gray-300 text-center"
+                                    >
+                                      Tidak ada syarat ditambahkan
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        {/* Modal Actions */}
+                        <div className="mt-6 flex justify-end space-x-2">
+                          <button
+                            type="button"
+                            onClick={handleModalClose}
+                            className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="submit"
+                            className="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                          >
+                            Simpan
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Modal Actions */}
-        <div className="mt-6 flex justify-end space-x-2">
-          <button
-            type="button"
-            onClick={handleModalClose}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-          >
-            Batal
-          </button>
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-4 py-2 rounded"
-          >
-            Simpan
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-
               </div>
             </div>
           </div>

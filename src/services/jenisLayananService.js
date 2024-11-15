@@ -53,7 +53,7 @@ export const deleteJenisLayanan = async (id) => {
         const response = await axios.delete(`${API_URL}/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`, 
-                "Content-Type": "application/json",
+              
             }
         });
         console.log('Deleted jenis layanan:', response.data); 

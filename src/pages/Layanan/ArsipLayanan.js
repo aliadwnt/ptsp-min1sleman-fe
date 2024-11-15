@@ -54,11 +54,11 @@ const ArsipLayanan = () => {
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setIsLoading(false); 
+    setIsLoading(false);
 
     if (!value) {
       setDataArsipLayanan(dataArsipLayanan);
-      setIsLoading(false); 
+      setIsLoading(false);
     } else {
       const filteredData = dataArsipLayanan.filter(
         (item) =>
@@ -77,7 +77,7 @@ const ArsipLayanan = () => {
   };
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   const handleChange = (e, type, id) => {
     const { files } = e.target;
@@ -170,7 +170,6 @@ const ArsipLayanan = () => {
       } else if (type === "keluar") {
         await saveArsipKeluar(dataToSend);
       }
-
       setSuccessMessage("Data berhasil disimpan!");
       fetchData();
     } catch (error) {
@@ -193,7 +192,7 @@ const ArsipLayanan = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-     <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -207,9 +206,9 @@ const ArsipLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Arsip Layanan
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-archive mr-2"></i> Daftar Arsip Layanan
           </div>
           {message && (
             <div
@@ -294,7 +293,7 @@ const ArsipLayanan = () => {
                                   href={item.arsip_masuk}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="bg-green-800 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                  className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
                                 >
                                   Preview
                                 </a>
@@ -343,7 +342,7 @@ const ArsipLayanan = () => {
                                   href={item.arsip_keluar}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="bg-green-800 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                  className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
                                 >
                                   Preview
                                 </a>

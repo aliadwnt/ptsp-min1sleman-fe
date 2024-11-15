@@ -14,12 +14,14 @@ export const fetchDaftarSyarat = async () => {
 
 
 export const updateDaftarSyarat = async (DaftarSyarat) => {
+  const token = localStorage.getItem("token");
   try {
     console.log("Data yang akan diupdate:", DaftarSyarat); // Debug data sebelum dikirim
 
     const response = await axios.put(`${API_URL}/update`, DaftarSyarat, {
       headers: {
         "Content-Type": "application/json",
+        Authorization : `Bearer ${token}`,
       },
     });
 

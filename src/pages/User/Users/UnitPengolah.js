@@ -146,9 +146,9 @@ const UnitPengolah = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Unit Pengolah
+        <div className="p-4">
+        <div className="text-xl font-semibold text-gray-800 mb-4">
+          <i className="fas fa-sitemap mr-2"></i>  Daftar Unit Pengolah
           </div>
 
           {message && (
@@ -282,7 +282,7 @@ const UnitPengolah = () => {
                     type="text"
                     name="name"
                     defaultValue={currentUnitPengolah?.name || ""}
-                    placeholder="Masukkan nama unit pengolah baru"
+                    placeholder="Masukkan nama unit pengolah"
                     required
                     className="block w-full p-2 border border-gray-300 rounded mb-4"
                   />
@@ -296,9 +296,9 @@ const UnitPengolah = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-green-500 text-white px-4 py-2 rounded"
                     >
-                      {currentUnitPengolah ? "Update" : "Simpan"}
+                      {currentUnitPengolah ? "Update" : "Tambah"}
                     </button>
                   </div>
                 </form>

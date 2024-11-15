@@ -8,14 +8,14 @@ import {
   deleteMasterDisposisi,
 } from "../../services/masterDisposisiService";
 import "../../App.css";
-import LoadingPage from "../../components/loadingPage"; 
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const MasterDisposisi = () => {
   const [dataMasterDisposisi, setDataMasterDisposisi] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false); 
+  const [isError, setIsError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterDisposisi, setCurrentMasterDisposisi] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -30,17 +30,17 @@ const MasterDisposisi = () => {
     try {
       const response = await fetchMasterDisposisi();
       setDataMasterDisposisi(response);
-      setIsLoading(false); 
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Master Disposisi:", error);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setIsLoading(false); 
+    setIsLoading(false);
 
     if (!value) {
       setDataMasterDisposisi(dataMasterDisposisi);
@@ -51,7 +51,7 @@ const MasterDisposisi = () => {
           .includes(value.toLowerCase())
       );
       setDataMasterDisposisi(filteredData);
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -124,11 +124,11 @@ const MasterDisposisi = () => {
 
   if (isLoading) {
     return <LoadingPage />;
-}
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0 flex relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -144,7 +144,7 @@ const MasterDisposisi = () => {
         <Header />
         <div className="p-4">
           <div className="text-xl font-semibold mb-4">
-            Daftar Master Disposisi
+            <i className="fas fa-folder-open mr-2"></i> Daftar Master Disposisi
           </div>
 
           {message && (
@@ -292,7 +292,7 @@ const MasterDisposisi = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="bg-green-500 text-white hover:bg-green-700 px-4 py-2 rounded"
                     >
                       {currentMasterDisposisi ? "Update" : "Tambah"}
                     </button>
