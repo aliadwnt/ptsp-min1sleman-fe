@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
+import { uploadSingle } from "../../services/uploadService";
 import {
   fetchSuratMasuk,
   createSuratMasuk,
@@ -8,20 +9,45 @@ import {
   deleteSuratMasuk,
 } from "../../services/suratMasukService";
 import "../../App.css";
+import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 
 const SuratMasuk = () => {
   const [dataSuratMasuk, setDataSuratMasuk] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentSuratMasuk, setCurrentSuratMasuk] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    no_agenda: "",
+    no_surat: "",
+    tgl_surat: "",
+    perihal: "",
+    pengirim: "",
+    penerima: "",
+    file_surat: "",
+  });
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Surat Masuk`;
     fetchData();
-  }, []);
+
+    if (currentSuratMasuk) {
+      setFormData({
+        no_agenda: currentSuratMasuk.no_agenda || "",
+        no_surat: currentSuratMasuk.no_surat || "",
+        tgl_surat: currentSuratMasuk.tgl_surat || "",
+        pengirim: currentSuratMasuk.pengirim || "",
+        penerima: currentSuratMasuk.penerima || "",
+        perihal: currentSuratMasuk.perihal || "",
+        file_surat: currentSuratMasuk.file_surat || "",
+      });
+    }
+  }, [currentSuratMasuk]);
 
   const fetchData = async () => {
     try {
@@ -47,12 +73,12 @@ const SuratMasuk = () => {
           String(item.no_surat || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
-          String(item.tanggal_surat || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(item.pengirim || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
+          // String(item.tanggal_surat || "")
+          //   .toLowerCase()
+          //   .includes(value.toLowerCase()) ||
+          // String(item.pengirim || "")
+          //   .toLowerCase()
+          //   .includes(value.toLowerCase()) ||
           String(item.penerima || "")
             .toLowerCase()
             .includes(value.toLowerCase())
@@ -81,44 +107,47 @@ const SuratMasuk = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccessMessage("");
+    setLoading(true);
 
-    const formData = new FormData();
-    const {
-      no_agenda,
-      no_surat,
-      tanggal_surat,
-      pengirim,
-      penerima,
-      disposisi,
-      surat,
-      lampiran,
-    } = e.target.elements;
-
-    formData.append("no_agenda", no_agenda.value);
-    formData.append("no_surat", no_surat.value);
-    formData.append("tanggal_surat", tanggal_surat.value);
-    formData.append("pengirim", pengirim.value);
-    formData.append("penerima", penerima.value);
-    formData.append("disposisi", disposisi.value);
-    formData.append("surat", surat.value);
-
-    if (lampiran.files.length > 0) {
-      formData.append("lampiran", lampiran.files[0]);
-    }
+    console.log(formData); // Log formData to check if all values are correct
 
     try {
+      let uploadedFileUrl = "";
+      if (formData.file_surat && formData.file_surat instanceof File) {
+        uploadedFileUrl = await uploadSingle(formData.file_surat);
+      }
+
+      const dataToSend = {
+        ...formData,
+        file_surat: uploadedFileUrl || formData.file_surat,
+      };
+
       if (currentSuratMasuk) {
-        await updateSuratMasuk(currentSuratMasuk.id, formData);
+        await updateSuratMasuk(currentSuratMasuk.id, dataToSend);
         setMessage("Data berhasil diupdate");
       } else {
-        await createSuratMasuk(formData);
+        await createSuratMasuk(dataToSend);
         setMessage("Data berhasil ditambahkan");
       }
+
       fetchData();
       setModalOpen(false);
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage("Failed to save data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "file_surat") {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -133,7 +162,7 @@ const SuratMasuk = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
-      <Favicon/>
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -147,9 +176,9 @@ const SuratMasuk = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
-            Daftar Surat Masuk
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-inbox mr-2"></i>Daftar Surat Masuk
           </div>
 
           {message && (
@@ -215,13 +244,10 @@ const SuratMasuk = () => {
                         Penerima
                       </th>
                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Disposisi
+                        Perihal
                       </th>
                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Surat
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Lampiran
                       </th>
                       <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Aksi
@@ -232,32 +258,47 @@ const SuratMasuk = () => {
                     {dataSuratMasuk.length > 0 ? (
                       dataSuratMasuk.map((item, index) => (
                         <tr key={item.id}>
-                           <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="px-1 py-1 text-xs text-center text-gray-900">
                             {index + 1}
                           </td>
                           <td className="px-1 py-1 text-xs text-center text-gray-900">
                             {item.no_agenda}
                           </td>
-                         <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="px-1 py-1 text-xs text-center text-gray-900">
                             {item.no_surat}
                           </td>
                           <td className="px-1 py-1 text-xs text-center text-gray-900">
-                            {item.tanggal_surat}
+                            {new Date(item.tgl_surat).toLocaleDateString(
+                              "id-ID",
+                              {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
                           </td>
-                           <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="px-1 py-1 text-xs text-center text-gray-900">
                             {item.pengirim}
                           </td>
                           <td className="px-1 py-1 text-xs text-center text-gray-900">
                             {item.penerima}
                           </td>
                           <td className="px-1 py-1 text-xs text-center text-gray-900">
-                            {item.disposisi}
-                          </td>
-                         <td className="px-1 py-1 text-xs text-center text-gray-900">
-                            {item.surat}
+                            {item.perihal}
                           </td>
                           <td className="px-1 py-1 text-xs text-center text-gray-900">
-                            {item.lampiran}
+                            {item.file_surat && (
+                              <>
+                                <a
+                                  href={item.file_surat}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                >
+                                  Preview
+                                </a>
+                              </>
+                            )}
                           </td>
                           <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                             <button
@@ -306,76 +347,117 @@ const SuratMasuk = () => {
 
           {/* Modal */}
           {modalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-50">
-                <h2 className="text-xl font-semibold mb-4">
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
+                <h2 className="text-xl font-semibold mb-2 ">
+                  {" "}
+                  <i className="fas fa-inbox mr-2"></i>
                   {currentSuratMasuk
                     ? "Edit Surat Masuk"
                     : "Tambah Surat Masuk"}
                 </h2>
                 <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    name="no_agenda"
-                    defaultValue={currentSuratMasuk?.no_agenda || ""}
-                    placeholder="No Agenda"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="no_surat"
-                    defaultValue={currentSuratMasuk?.no_surat || ""}
-                    placeholder="No Surat"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="date"
-                    name="tanggal_surat"
-                    defaultValue={currentSuratMasuk?.tanggal_surat || ""}
-                    placeholder="Tanggal Surat"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="pengirim"
-                    defaultValue={currentSuratMasuk?.pengirim || ""}
-                    placeholder="Pengirim"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="penerima"
-                    defaultValue={currentSuratMasuk?.penerima || ""}
-                    placeholder="Penerima"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="disposisi"
-                    defaultValue={currentSuratMasuk?.disposisi || ""}
-                    placeholder="Disposisi"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="text"
-                    name="surat"
-                    defaultValue={currentSuratMasuk?.surat || ""}
-                    placeholder="Surat"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
-                  <input
-                    type="file"
-                    name="lampiran"
-                    accept=".pdf,.doc,.docx,.jpg,.png"
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  />
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      No. Agenda
+                    </label>
+                    <input
+                      type="text"
+                      name="no_agenda"
+                      defaultValue={formData?.no_agenda || ""}
+                      onChange={handleChange}
+                      placeholder="No Agenda"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      No. Surat
+                    </label>
+                    <input
+                      type="text"
+                      name="no_surat"
+                      defaultValue={formData?.no_surat || ""}
+                      onChange={handleChange}
+                      placeholder="No Surat"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tanggal Surat
+                    </label>
+                    <input
+                      type="date"
+                      name="tgl_surat"
+                      defaultValue={
+                        currentSuratMasuk?.tgl_surat
+                          ? new Date(currentSuratMasuk?.tgl_surat)
+                              .toISOString()
+                              .split("T")[0]
+                          : ""
+                      }
+                      onChange={handleChange}
+                      placeholder="Tanggal Surat"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-1"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Pengirim
+                    </label>
+                    <input
+                      type="text"
+                      name="pengirim"
+                      defaultValue={formData?.pengirim || ""}
+                      onChange={handleChange}
+                      placeholder="Pengirim"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Penerima
+                    </label>
+                    <input
+                      type="text"
+                      name="penerima"
+                      defaultValue={formData?.penerima || ""}
+                      onChange={handleChange}
+                      placeholder="Penerima"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Perihal
+                    </label>
+                    <input
+                      type="text"
+                      name="perihal"
+                      defaultValue={formData?.perihal || ""}
+                      onChange={handleChange}
+                      placeholder="Perihal"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Upload File Surat
+                    </label>
+                    <input
+                      type="file"
+                      name="file_surat"
+                      onChange={handleChange}
+                      className="block w-full p-2 border border-gray-300 rounded mb-4"
+                    />
+                  </div>
                   <div className="flex justify-end space-x-2">
                     <button
                       type="button"
@@ -386,7 +468,7 @@ const SuratMasuk = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-600 text-white px-4 py-2 rounded"
+                      className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition duration-200"
                     >
                       {currentSuratMasuk ? "Update" : "Tambah"}
                     </button>

@@ -86,8 +86,9 @@ const Notifications = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div>
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2">
+        <div className="p-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
+            <i className="fas fa-bell white-bell mr-2"></i>
             Daftar Notifikasi
           </div>
 
@@ -125,7 +126,7 @@ const Notifications = () => {
                     {Notifications.length > 0 ? (
                       Notifications.map((item, index) => (
                         <tr key={item.id}>
-                           <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="px-2 py-3 text-xs text-center text-gray-900">
                             {index + 1}
                           </td>
                           <td className="px-2 py-3 text-xs text-center text-gray-900">

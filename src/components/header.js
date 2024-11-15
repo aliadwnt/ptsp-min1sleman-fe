@@ -312,7 +312,7 @@ const UserProfileMenu = () => {
                   Anda Memiliki {newNotifications.length} Notifikasi Baru
                 </h2>
                 <button
-                  className="text-sm bg-blue-500 text-white hover:bg-blue-600 px-2 py-1 rounded-md transition duration-150 ease-in-out"
+                  className="text-sm bg-green-500 text-white hover:bg-green-700 px-2 py-1 rounded-md transition duration-150 ease-in-out"
                   onClick={() => {
                     navigate("/user/daftar-notifikasi");
                     console.log("Melihat semua notifikasi:", notifications);
