@@ -31,38 +31,38 @@ const HomePage = ({ daftarSyarat = [] }) => {
 
   const fetchData = async () => {
     try {
-      // Ambil data layanan dan syarat layanan secara bersamaan
       const [layananResponse, syaratResponse] = await Promise.all([
         fetchDaftarLayanan(),
         fetchDaftarSyarat(id),
       ]);
 
-      // Mengelompokkan layanan berdasarkan unit
-      const groupedData = layananResponse.reduce((acc, layanan) => {
-        const syarat = syaratResponse.filter(
-          (syarat) => syarat.layanan_id === layanan.id
+      const groupedData = syaratResponse.reduce((acc, syarat) => {
+        const layanan = layananResponse.find(
+          (layanan) => layanan.id === syarat.layanan_id
         );
 
-        const unitName = layanan.unit; // Ambil unit dari layanan
+        if (layanan) {
+          const unitName = layanan.unit;
 
-        if (!acc[unitName]) {
-          acc[unitName] = { name: unitName, layanan: [] };
+          if (!acc[unitName]) {
+            acc[unitName] = { name: unitName, layanan: [] };
+          }
+
+          acc[unitName].layanan.push({
+            ...layanan,
+            name: syarat.name,
+            syarat_layanan: syarat.syarat_layanan,
+          });
         }
 
-        acc[unitName].layanan.push({
-          ...layanan,
-          syarat_layanan: syarat.map((s) => s.syarat_layanan),
-        });
-
-        return acc; // Ensure we return the accumulator (acc)
+        return acc;
       }, {});
 
-      // Mengubah groupedData menjadi array dan mengatur ke state
       setUnitLayanan(Object.values(groupedData));
-      setIsLoading(false); // Menghentikan tampilan loading
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
-      setIsLoading(false); // Menghentikan tampilan loading jika ada error
+      setIsLoading(false);
     }
   };
 
@@ -223,7 +223,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
                             <div className="actions flex flex-wrap justify-center gap-4">
                               <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
                                 <button
-                                  className="btn bg-blue-500 text-white font-semibold py-1 px-3 text-sm rounded-lg hover:bg-green-600 transition duration-200 w-full sm:w-32 md:w-auto flex-shrink-0"
+                                  className="btn bg-blue-500 text-white font-semibold py-1 px-3 text-sm rounded-lg hover:bg-blue-700 transition duration-200 w-full sm:w-32 md:w-auto flex-shrink-0"
                                   onClick={() =>
                                     openModal({
                                       id: layanan.id,
@@ -278,12 +278,12 @@ const HomePage = ({ daftarSyarat = [] }) => {
             >
               &#8203;
             </span>
-            <div className="inline-block align-top bg-white rounded-lg shadow-xl transform transition-all sm:top-0 sm:align-start sm:max-w-lg sm:w-full sm:p-6">
+            <div className="inline-block align-top bg-white rounded-lg shadow-xl transform transition-all sm:top-0 sm:align-start sm:max-w-lg sm:w-full sm:p-6 sm:mx-4 sm:my-8 max-w-xs w-full p-4">
               <h3 className="text-lg leading-6 font-semibold text-gray-900 border-b-2 border-gray-300 pb-2">
                 Syarat Pelayanan Publik
               </h3>
 
-              <div className="mt-4">
+              <div className="mt-2">
                 {(() => {
                   const selectedId = currentData.id;
                   console.log("currentData.id:", selectedId);
@@ -325,7 +325,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
                         );
                       } catch (error) {
                         console.error("Invalid JSON:", error);
-                        return <li>Error parsing syarat layanan</li>;
+                        return <li>syarat layanan belum tersedia</li>;
                       }
                     })()
                   ) : (
@@ -333,7 +333,7 @@ const HomePage = ({ daftarSyarat = [] }) => {
                   )}
                 </ol>
 
-                <div className="text-left mt-3 text-gray-500 italic text-sm">
+                <div className="text-left mt-4 text-gray-500 italic text-sm">
                   *Mohon melengkapi persyaratan di atas sebelum melakukan
                   permohonan layanan.
                 </div>
