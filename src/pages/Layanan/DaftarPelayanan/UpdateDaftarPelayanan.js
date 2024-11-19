@@ -142,7 +142,7 @@ const LayananUpdate = () => {
           {successMessage && (
             <div className="text-green-600">{successMessage}</div>
           )}
-          <div className="w-full bg-white shadow-md rounded px-8 pt-6 pb-8  mx-auto max-w-5xl">
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <form onSubmit={handleSubmit}>
               <h2 className="text-xl font-poppins font-semibold mb-6 text-gray-700 text-center">
                 Update Permohonan Pelayanan

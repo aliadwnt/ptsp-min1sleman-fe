@@ -154,7 +154,7 @@ const SuratKeluar = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
 
@@ -178,25 +178,25 @@ const SuratKeluar = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No Surat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         tgl surat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Ditujukan Kepada
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Isi Ringkas
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -204,14 +204,14 @@ const SuratKeluar = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataSuratKeluar.length > 0 ? (
                       dataSuratKeluar.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-1 py-1 text-xs font-medium text-center text-gray-900">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.no_surat}
                           </td>
-                          <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {new Date(item.tgl_surat).toLocaleDateString(
                               "id-ID",
                               {
@@ -221,13 +221,13 @@ const SuratKeluar = () => {
                               }
                             )}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.ditujukan}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.isi_surat}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => {
                                 setCurrentSuratKeluar(item);
@@ -276,12 +276,14 @@ const SuratKeluar = () => {
           {modalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-xl font-semibold mb-2">
-                  <i className="fas fa-paper-plane mr-2"></i>
-                  {currentSuratKeluar
-                    ? "Edit Surat Keluar"
-                    : "Tambah Surat Keluar"}
-                </h2>
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <i
+            className={`mr-2 p-2 rounded-full text-white ${
+              currentSuratKeluar ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
+            }`}
+            ></i>
+            {currentSuratKeluar ? "Edit Surat Keluar" : "Tambah Surat Keluar"}
+        </h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -348,7 +350,7 @@ const SuratKeluar = () => {
                     className="block w-full p-2 border border-gray-300 rounded mb-4"
                   /> */}
                   <div className="flex justify-end space-x-2">
-                  <button
+                    <button
                       type="button"
                       onClick={handleModalClose}
                       className="bg-gray-300 text-gray-700 px-4 py-2 rounded"

@@ -276,11 +276,14 @@ const JenisLayanan = () => {
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-xl font-semibold mb-4">
-                  {currentJenisLayanan
-                    ? "Edit Jenis Layanan"
-                    : "Tambah Jenis Layanan"}
-                </h2>
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <i
+                  className={`mr-2 p-2 rounded-full text-white ${
+                    currentJenisLayanan ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
+                  }`}
+                ></i>
+                {currentJenisLayanan ? "Edit Jenis Layanan" : "Tambah Jenis Layanan"}
+            </h2>
                 <form onSubmit={handleSubmit}>
                   <input
                     type="text"

@@ -228,9 +228,8 @@ const ArsipLayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-4/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
-                required
               />
               <button
                 type="submit"
@@ -242,30 +241,30 @@ const ArsipLayanan = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
+            <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nomor Registrasi
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Perihal
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Arsip Masuk
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Arsip Keluar
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Status
                       </th>
                     </tr>
@@ -273,20 +272,20 @@ const ArsipLayanan = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataArsipLayanan.length > 0 ? (
                       dataArsipLayanan.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.no_reg}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.nama_pelayanan}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.perihal}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.arsip_masuk ? (
                               <>
                                 <a
@@ -335,7 +334,7 @@ const ArsipLayanan = () => {
                               </>
                             )}
                           </td>
-                          <td className="px-2 sm:px-4 py-2 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.arsip_keluar ? (
                               <>
                                 <a
@@ -385,10 +384,7 @@ const ArsipLayanan = () => {
                               </>
                             )}
                           </td>
-                          <td
-                            td
-                            className="px-3 py-4 text-xs text-left text-gray-900 flex items-center justify-left"
-                          >
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             <i className={getStatusIcon(item.status)}></i>
                             <span className="ml-2">{item.status}</span>
                           </td>

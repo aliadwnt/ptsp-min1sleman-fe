@@ -327,9 +327,14 @@ const DaftarLayanan = () => {
           {modalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-lg font-bold">
-                  {currentDaftarLayanan ? "Edit" : "Simpan"} Layanan
-                </h2>
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <i
+                  className={`mr-2 p-2 rounded-full text-white ${
+                    currentDaftarLayanan ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
+                  }`}
+                ></i>
+                {currentDaftarLayanan ? "Edit Daftar Layanan" : "Tambah Daftar Layanan"}
+            </h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">

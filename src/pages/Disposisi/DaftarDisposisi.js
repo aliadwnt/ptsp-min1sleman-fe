@@ -126,7 +126,7 @@ const DaftarDisposisi = () => {
                   type="search"
                   value={searchTerm}
                   onChange={handleSearch}
-                  className="w-5/6 md:w-5/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-4/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search..."
                   required
                 />
@@ -139,36 +139,36 @@ const DaftarDisposisi = () => {
               </form>
             </div>
             <div className="flex justify-center">
-              <div className="w-full max-w-6xl">
+              <div className="w-full max-w-5xl">
                 <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           No
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           No Surat
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Pengirim
                         </th>
-                        <th className="px-20 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Tgl Surat
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider  hidden md:table-cell">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Perihal
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Diteruskan Ke-
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Waktu Disposisi
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider hidden md:table-cell">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Catatan
                         </th>
-                        <th className="px-4 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
                         </th>
                       </tr>
@@ -176,36 +176,36 @@ const DaftarDisposisi = () => {
                     <tbody className="bg-white divide-y divide-gray-200">
                       {filteredData.length > 0 ? (
                         filteredData.map((item, index) => (
-                          <tr key={item.id}>
-                            <td className="px-6 py-4 text-xs font-medium text-center text-gray-900 ">
+                          <tr key={item.id} className="hover:bg-gray-100">
+                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {index + 1}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.no_surat}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.nama_pengirim}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 ">
+                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {new Date(item.tgl).toLocaleDateString("id-ID", {
                                 day: "2-digit",
                                 month: "long",
                                 year: "numeric",
                               })}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
+                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.perihal}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.diteruskan}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
+                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.waktu}
                             </td>
-                            <td className="px-6 py-4 text-xs text-center text-gray-900 hidden md:table-cell">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.catatan}
                             </td>
-                            <td className="text-center flex items-center justify-center px-4 py-4 whitespace-nowrap text-xs font-medium space-x-2">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button
                                 onClick={() => handleDetail(item.no_reg)}
                                 className="focus:outline-none"

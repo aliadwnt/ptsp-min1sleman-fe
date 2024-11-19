@@ -151,7 +151,7 @@ const DaftarPengguna = () => {
       >
         <Header />
         <div className="p-4">
-        <div className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="text-xl font-semibold text-gray-800 mb-4">
             <i className="fas fa-users mr-2"></i> Daftar Pengguna
           </div>
 
@@ -187,7 +187,7 @@ const DaftarPengguna = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
 
@@ -211,25 +211,25 @@ const DaftarPengguna = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
+            <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Lengkap
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Email
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Peran User
                       </th>
                       {userRole === "2" && (
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
                         </th>
                       )}
@@ -238,17 +238,17 @@ const DaftarPengguna = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataDaftarPengguna.length > 0 ? (
                       dataDaftarPengguna.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className=" py-4 text-xs text-center text-gray-900">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className=" py-4 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.name}
                           </td>
-                          <td className=" py-4 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.email}
                           </td>
-                          <td className="py-4 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.is_admin === 2
                               ? "SUPER ADMIN"
                               : item.is_admin === 1
@@ -256,7 +256,7 @@ const DaftarPengguna = () => {
                               : "USER"}
                           </td>
                           {userRole === "2" && (
-                            <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button
                                 onClick={() => handleEdit(item)}
                                 className="focus:outline-none"

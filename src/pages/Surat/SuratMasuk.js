@@ -200,7 +200,7 @@ const SuratMasuk = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
               />
@@ -220,36 +220,36 @@ const SuratMasuk = () => {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full max-w-6xl">
+            <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No Agenda
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No Surat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Tanggal Surat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Pengirim
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Penerima
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Perihal
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Surat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -257,17 +257,17 @@ const SuratMasuk = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataSuratMasuk.length > 0 ? (
                       dataSuratMasuk.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.no_agenda}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.no_surat}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {new Date(item.tgl_surat).toLocaleDateString(
                               "id-ID",
                               {
@@ -277,16 +277,16 @@ const SuratMasuk = () => {
                               }
                             )}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.pengirim}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.penerima}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.perihal}
                           </td>
-                          <td className="px-1 py-1 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.file_surat && (
                               <>
                                 <a
@@ -300,7 +300,7 @@ const SuratMasuk = () => {
                               </>
                             )}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => {
                                 setCurrentSuratMasuk(item);
@@ -345,138 +345,160 @@ const SuratMasuk = () => {
             </div>
           </div>
 
-          {/* Modal */}
-          {modalOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-xl font-semibold mb-2 ">
-                  {" "}
-                  <i className="fas fa-inbox mr-2"></i>
-                  {currentSuratMasuk
-                    ? "Edit Surat Masuk"
-                    : "Tambah Surat Masuk"}
-                </h2>
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      No. Agenda
-                    </label>
-                    <input
-                      type="text"
-                      name="no_agenda"
-                      defaultValue={formData?.no_agenda || ""}
-                      onChange={handleChange}
-                      placeholder="No Agenda"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      No. Surat
-                    </label>
-                    <input
-                      type="text"
-                      name="no_surat"
-                      defaultValue={formData?.no_surat || ""}
-                      onChange={handleChange}
-                      placeholder="No Surat"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Tanggal Surat
-                    </label>
-                    <input
-                      type="date"
-                      name="tgl_surat"
-                      defaultValue={
-                        currentSuratMasuk?.tgl_surat
-                          ? new Date(currentSuratMasuk?.tgl_surat)
-                              .toISOString()
-                              .split("T")[0]
-                          : ""
-                      }
-                      onChange={handleChange}
-                      placeholder="Tanggal Surat"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-1"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Pengirim
-                    </label>
-                    <input
-                      type="text"
-                      name="pengirim"
-                      defaultValue={formData?.pengirim || ""}
-                      onChange={handleChange}
-                      placeholder="Pengirim"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Penerima
-                    </label>
-                    <input
-                      type="text"
-                      name="penerima"
-                      defaultValue={formData?.penerima || ""}
-                      onChange={handleChange}
-                      placeholder="Penerima"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Perihal
-                    </label>
-                    <input
-                      type="text"
-                      name="perihal"
-                      defaultValue={formData?.perihal || ""}
-                      onChange={handleChange}
-                      placeholder="Perihal"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Upload File Surat
-                    </label>
-                    <input
-                      type="file"
-                      name="file_surat"
-                      onChange={handleChange}
-                      className="block w-full p-2 border border-gray-300 rounded mb-4"
-                    />
-                  </div>
-                  <div className="flex justify-end space-x-2">
-                    <button
-                      type="button"
-                      onClick={handleModalClose}
-                      className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
-                    >
-                      Batal
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition duration-200"
-                    >
-                      {currentSuratMasuk ? "Update" : "Tambah"}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
+{/* Modal */}
+{modalOpen && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+        <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <i
+            className={`mr-2 p-2 rounded-full text-white ${
+              currentSuratMasuk ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
+            }`}
+            ></i>
+            {currentSuratMasuk ? "Edit Surat Masuk" : "Tambah Surat Masuk"}
+        </h2>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              No. Agenda
+            </label>
+            <input
+              type="text"
+              name="no_agenda"
+              defaultValue={formData?.no_agenda || ""}
+              onChange={handleChange}
+              placeholder="No Agenda"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              No. Surat
+            </label>
+            <input
+              type="text"
+              name="no_surat"
+              defaultValue={formData?.no_surat || ""}
+              onChange={handleChange}
+              placeholder="No Surat"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Pengirim
+            </label>
+            <input
+              type="text"
+              name="pengirim"
+              defaultValue={formData?.pengirim || ""}
+              onChange={handleChange}
+              placeholder="Pengirim"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tanggal Surat
+            </label>
+            <input
+              type="date"
+              name="tgl_surat"
+              defaultValue={
+                currentSuratMasuk?.tgl_surat
+                  ? new Date(currentSuratMasuk?.tgl_surat)
+                      .toISOString()
+                      .split("T")[0]
+                  : ""
+              }
+              onChange={handleChange}
+              placeholder="Tanggal Surat"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-1"
+            />
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Pengirim
+            </label>
+            <input
+              type="text"
+              name="pengirim"
+              defaultValue={formData?.pengirim || ""}
+              onChange={handleChange}
+              placeholder="Pengirim"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Penerima
+            </label>
+            <input
+              type="text"
+              name="penerima"
+              defaultValue={formData?.penerima || ""}
+              onChange={handleChange}
+              placeholder="Penerima"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Perihal
+            </label>
+            <input
+              type="text"
+              name="perihal"
+              defaultValue={formData?.perihal || ""}
+              onChange={handleChange}
+              placeholder="Perihal"
+              required
+              className="block w-full p-2 border border-gray-300 rounded mb-4"
+            />
+          </div>
+          <div className="col-span-2 mb-3">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Upload File Surat
+          </label>
+          <input
+            type="file"
+            name="file_surat"
+            onChange={handleChange}
+            className="block w-full p-2 border border-gray-300 rounded mb-4"
+          />
+        </div>
+        </div>
+        <div className="flex justify-end space-x-2 col-span-2">
+          <button
+            type="button"
+            onClick={handleModalClose}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded"
+          >
+            Batal
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition duration-200"
+          >
+            {currentSuratMasuk ? "Update" : "Tambah"}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
         </div>
       </div>
     </div>
