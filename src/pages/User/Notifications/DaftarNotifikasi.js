@@ -233,9 +233,7 @@ const Notifications = () => {
                                       : "text-green-600"
                                   }
                                 >
-                                  {item.isRead
-                                    ? "Mark as Read"
-                                    : "Mark as Read"}
+                                  {item.isRead ? "Viewed" : "Mark as Viewed"}
                                 </span>
                               </button>
                             </div>

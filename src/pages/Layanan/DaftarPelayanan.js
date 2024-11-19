@@ -78,8 +78,10 @@ const DaftarPelayanan = () => {
     if (location.state) {
       setMessage(location.state.message);
       setIsError(location.state.isError);
+
+      navigate(location.pathname, { replace: true });
     }
-  }, [location.state]);
+  }, [location.state, navigate]);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -296,7 +298,7 @@ const DaftarPelayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
               <button
@@ -317,7 +319,7 @@ const DaftarPelayanan = () => {
 
           {/* <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8"> */}
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
+            <div className="w-full max-w-5xl">
               <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
                 <ul
                   className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center ml-2 space-x-4 w-full"
