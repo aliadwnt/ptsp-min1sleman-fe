@@ -171,7 +171,7 @@ const JenisLayanan = () => {
           )}
 
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <form
+          <form
               onSubmit={handleSearch}
               className="flex flex-grow justify-center"
             >
@@ -179,7 +179,7 @@ const JenisLayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-3/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
 
@@ -203,16 +203,16 @@ const JenisLayanan = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-4xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+              <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                     <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 ppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -220,14 +220,14 @@ const JenisLayanan = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataJenisLayanan.length > 0 ? (
                       dataJenisLayanan.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                        <tr key={item.id}className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.name}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => {
                                 setCurrentJenisLayanan(item);

@@ -173,7 +173,7 @@ const MasterSyarat = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-3/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
 
@@ -197,16 +197,16 @@ const MasterSyarat = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-4xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Master Syarat
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500  uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -214,14 +214,14 @@ const MasterSyarat = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataMasterSyarat.length > 0 ? (
                       dataMasterSyarat.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs font-medium text-center text-gray-900">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.name}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => {
                                 setCurrentMasterSyarat(item);
@@ -270,14 +270,18 @@ const MasterSyarat = () => {
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <i
-                  className={`mr-2 p-2 rounded-full text-white ${
-                    currentMasterSyarat ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
-                  }`}
-                ></i>
-                {currentMasterSyarat ? "Edit Master Syarat" : "Tambah Master Syarat"}
-            </h2>
+                <h2 className="text-xl font-semibold mb-4 flex items-center">
+                  <i
+                    className={`mr-2 p-2 rounded-full text-white ${
+                      currentMasterSyarat
+                        ? "bg-green-600 fas fa-pencil-alt"
+                        : "bg-green-600 fas fa-plus"
+                    }`}
+                  ></i>
+                  {currentMasterSyarat
+                    ? "Edit Master Syarat"
+                    : "Tambah Master Syarat"}
+                </h2>
                 <form onSubmit={handleSubmit}>
                   <input
                     type="text"

@@ -51,7 +51,7 @@ const DaftarDisposisi = () => {
           String(item.nama_pengirim || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
-          String(item.tgl || "")
+          String(item.no_reg || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           String(item.perihal || "")
@@ -177,29 +177,29 @@ const DaftarDisposisi = () => {
                       {filteredData.length > 0 ? (
                         filteredData.map((item, index) => (
                           <tr key={item.id} className="hover:bg-gray-100">
-                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {index + 1}
                             </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.no_surat}
                             </td>
-                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.nama_pengirim}
                             </td>
-                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {new Date(item.tgl).toLocaleDateString("id-ID", {
                                 day: "2-digit",
                                 month: "long",
                                 year: "numeric",
                               })}
                             </td>
-                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.perihal}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.diteruskan}
                             </td>
-                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.waktu}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">

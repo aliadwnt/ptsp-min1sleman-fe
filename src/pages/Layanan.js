@@ -279,7 +279,7 @@ const Layanan = () => {
                   NAMA LAYANAN
                 </label>
                 <select
-                  className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 pr-8 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                   name="nama_pelayanan"
                   value={formData.nama_pelayanan}
                   onChange={handleChange}
@@ -295,7 +295,7 @@ const Layanan = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
+            <div className="w-full md:w-1/1 mb-3 p-1 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="perihal"
@@ -303,7 +303,7 @@ const Layanan = () => {
                 PERIHAL
               </label>
               <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                 name="perihal"
                 type="text"
                 placeholder="Perihal"
@@ -313,7 +313,7 @@ const Layanan = () => {
               />
             </div>
 
-            <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="flex flex-wrap -mx-3">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -359,7 +359,7 @@ const Layanan = () => {
                   NAMA PEMOHON
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                   name="nama_pemohon"
                   type="text"
                   placeholder="Nama Pemohon"
@@ -373,16 +373,22 @@ const Layanan = () => {
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor="no_hp"
                 >
-                  NO.HP PEMOHON
+                  NO HP PEMOHON
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                   name="no_hp"
                   type="tel"
                   placeholder="Nomor HP"
                   value={formData.no_hp}
                   onChange={handleChange}
                   required
+                  pattern="^[0-9]{10,}$" 
+                  minLength="10"  
+                  onInvalid={(e) => {
+                    e.preventDefault(); 
+                    alert("Nomor HP harus berupa angka dan minimal 10 digit");
+                  }}
                 />
               </div>
             </div>
@@ -396,7 +402,7 @@ const Layanan = () => {
                   ALAMAT
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                   name="alamat"
                   type="text"
                   placeholder="Alamat"
@@ -413,7 +419,7 @@ const Layanan = () => {
                   NAMA PENGIRIM
                 </label>
                 <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                   name="nama_pengirim"
                   type="text"
                   placeholder="Nama Pengirim"
@@ -429,10 +435,10 @@ const Layanan = () => {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="filename"
               >
-                UPLOAD BERKAS (PDF)
+                UPLOAD BERKAS PERSYARATAN (PDF)
               </label>
               <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                 name="filename"
                 type="file"
                 onChange={handleChange}
@@ -446,7 +452,7 @@ const Layanan = () => {
                 CATATAN
               </label>
               <textarea
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                className="mb-3 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
                 name="catatan"
                 placeholder="Catatan"
                 value={formData.catatan}

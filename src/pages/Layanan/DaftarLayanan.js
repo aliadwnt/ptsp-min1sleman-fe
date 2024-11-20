@@ -183,7 +183,7 @@ const DaftarLayanan = () => {
         <Header />
         <div className="p-4">
           <div className="text-xl font-semibold text-gray-800 mb-4">
-          <i className="fas fa-th-list mr-2"></i> Daftar Layanan
+            <i className="fas fa-th-list mr-2"></i> Daftar Layanan
           </div>
 
           {message && (
@@ -211,7 +211,7 @@ const DaftarLayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-3/4 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-4/6 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
                 required
               />
@@ -235,28 +235,28 @@ const DaftarLayanan = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Unit Pengolah
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Jenis Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Output Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Durasi Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -264,26 +264,26 @@ const DaftarLayanan = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {dataDaftarLayanan.length > 0 ? (
                       dataDaftarLayanan.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900 ">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-6 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.unit}
                           </td>
-                          <td className="px-2 py-6 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.name}
                           </td>
-                          <td className="px-2 py-6 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.jenis}
                           </td>
-                          <td className="px-2 py-6 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.output}
                           </td>
-                          <td className="px-2 py-6 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.duration}
                           </td>
-                          <td className="text-center flex items-center justify-center px-6 py-4 ">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => handleEdit(item)}
                               className="focus:outline-none mr-auto"
@@ -327,14 +327,18 @@ const DaftarLayanan = () => {
           {modalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <i
-                  className={`mr-2 p-2 rounded-full text-white ${
-                    currentDaftarLayanan ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
-                  }`}
-                ></i>
-                {currentDaftarLayanan ? "Edit Daftar Layanan" : "Tambah Daftar Layanan"}
-            </h2>
+                <h2 className="text-xl font-semibold mb-4 flex items-center">
+                  <i
+                    className={`mr-2 p-2 rounded-full text-white ${
+                      currentDaftarLayanan
+                        ? "bg-green-600 fas fa-pencil-alt"
+                        : "bg-green-600 fas fa-plus"
+                    }`}
+                  ></i>
+                  {currentDaftarLayanan
+                    ? "Edit Daftar Layanan"
+                    : "Tambah Daftar Layanan"}
+                </h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">

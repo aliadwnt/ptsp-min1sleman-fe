@@ -46,6 +46,23 @@
   font-family: 'Poppins', sans-serif;
 }
 
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.typing-effect {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+  animation: typing 3s steps(30) 1s 1 normal both;
+}
+
 .mt22 {
   text-align: start; 
   display: flex;

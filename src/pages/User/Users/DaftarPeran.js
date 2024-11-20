@@ -116,7 +116,7 @@ const DaftarPeran = () => {
             </form>
           </div>
           <div className="flex justify-center">
-            <div className="w-full max-w-5xl">
+            <div className="w-full max-w-4xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">

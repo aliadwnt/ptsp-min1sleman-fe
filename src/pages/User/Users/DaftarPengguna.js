@@ -22,6 +22,10 @@ const DaftarPengguna = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const userRole = localStorage.getItem("userRole");
+  const [formValues, setFormValues] = useState({
+    password: "",
+    is_admin: null,
+  });
 
   useEffect(() => {
     const role = localStorage.getItem("userRole");
@@ -80,11 +84,6 @@ const DaftarPengguna = () => {
 
   const handleAdd = () => {
     setCurrentDaftarPengguna(null);
-    setModalOpen(true);
-  };
-
-  const handleEdit = (item) => {
-    setCurrentDaftarPengguna(item);
     setModalOpen(true);
   };
 
@@ -256,9 +255,12 @@ const DaftarPengguna = () => {
                               : "USER"}
                           </td>
                           {userRole === "2" && (
-                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button
-                                onClick={() => handleEdit(item)}
+                                onClick={() => {
+                                  setCurrentDaftarPengguna(item);
+                                  setModalOpen(true);
+                                }}
                                 className="focus:outline-none"
                                 style={{
                                   background: "none",
@@ -267,7 +269,7 @@ const DaftarPengguna = () => {
                                 }}
                                 aria-label="Edit user"
                               >
-                                <i className="fas fa-edit text-green-600"></i>
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
                               </button>
                               <button
                                 onClick={() => handleDelete(item.id)}
@@ -305,8 +307,18 @@ const DaftarPengguna = () => {
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-              <h2 className="text-lg font-bold">Tambah Pengguna / Users</h2>
-
+              <h2 className="text-xl font-semibold mb-4 flex items-center">
+                <i
+                  className={`mr-2 p-2 rounded-full text-white ${
+                    currentDaftarPengguna
+                      ? "bg-green-600 fas fa-pencil-alt"
+                      : "bg-green-600 fas fa-plus"
+                  }`}
+                ></i>
+                {currentDaftarPengguna
+                  ? "Edit Daftar Pengguna"
+                  : "Tambah Daftar Pengguna"}
+              </h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700">
@@ -355,7 +367,7 @@ const DaftarPengguna = () => {
                         : "Masukkan password"
                     }
                     onChange={(e) => {
-                      setCurrentDaftarPengguna((prev) => ({
+                      setFormValues((prev) => ({
                         ...prev,
                         password: e.target.value,
                       }));
@@ -377,7 +389,7 @@ const DaftarPengguna = () => {
                         name="is_admin"
                         value="1" // nilai 1 untuk admin
                         onChange={(e) => {
-                          setCurrentDaftarPengguna((prev) => ({
+                          setFormValues((prev) => ({
                             ...prev,
                             is_admin: Number(e.target.value),
                           }));
@@ -396,7 +408,7 @@ const DaftarPengguna = () => {
                         name="is_admin"
                         value="2" // nilai 2 untuk super admin
                         onChange={(e) => {
-                          setCurrentDaftarPengguna((prev) => ({
+                          setFormValues((prev) => ({
                             ...prev,
                             is_admin: Number(e.target.value),
                           }));

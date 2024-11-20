@@ -78,11 +78,10 @@ const LacakBerkas = () => {
         });
       } else {
         alert("Data pelayanan tidak ditemukan");
-        resetFields(); // Reset form jika data pelayanan tidak ditemukan
+        resetFields();
       }
     } catch (error) {
       console.error("Error fetching data pelayanan: ", error);
-      alert("Terjadi kesalahan saat mengambil data pelayanan");
     }
 
     try {
@@ -135,7 +134,7 @@ const LacakBerkas = () => {
       }
     } catch (error) {
       console.error("Error fetching data disposisi: ", error);
-      alert("Terjadi kesalahan saat mengambil data disposisi");
+      // alert("Terjadi kesalahan saat mengambil data disposisi");
     }
   };
 
@@ -158,7 +157,7 @@ const LacakBerkas = () => {
               />
               <button
                 onClick={handleSearch}
-                className="mx-3 w-1/2 bg-blue-500 text-white py-2 rounded-lg"
+                className="mx-3 w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700"
               >
                 Cari
               </button>

@@ -369,28 +369,28 @@ const DaftarPelayanan = () => {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="min-w-full w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nomor Registrasi
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Perihal
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Kelengkapan
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Status
                       </th>
-                      <th className="px-12 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -398,27 +398,27 @@ const DaftarPelayanan = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {getFilteredData().length > 0 ? (
                       getFilteredData().map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs font-medium text-center text-gray-900">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.no_reg}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.nama_pelayanan}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.perihal}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.kelengkapan}
                           </td>
-                          <td className="px-2 py-3 text-xs text-left text-gray-900 flex items-center justify-left hidden md:table-cell">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             <i className={getStatusIcon(item.status)}></i>
                             <span className="ml-2">{item.status}</span>
                           </td>
-                          <td className="text-center px-2 py-3">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <div className="flex justify-center space-x-2">
                               {/* Action Buttons */}
                               <button

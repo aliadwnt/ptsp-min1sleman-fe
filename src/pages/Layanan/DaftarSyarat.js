@@ -324,24 +324,24 @@ const DaftarSyarat = () => {
           </div>
           {/* Table for displaying data */}
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
+            <div className="w-full max-w-5xl">
               <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
+                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         No
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Unit Pengolah
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Nama Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Syarat Layanan
                       </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                         Aksi
                       </th>
                     </tr>
@@ -350,17 +350,17 @@ const DaftarSyarat = () => {
                     {Array.isArray(dataDaftarSyarat) &&
                     dataDaftarSyarat.length > 0 ? (
                       dataDaftarSyarat.map((item, index) => (
-                        <tr key={item.id}>
-                          <td className="px-2 py-3 text-xs font-medium text-center text-gray-900 ">
+                        <tr key={item.id} className="hover:bg-gray-100">
+                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {index + 1}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.unit}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                             {item.name}
                           </td>
-                          <td className="px-2 py-3 text-xs text-center text-gray-900">
+                          <td className="max-w-xs truncate px-2 py-3 text-xs text-left text-gray-900 border border-gray-200">
                             {(() => {
                               try {
                                 const syaratArray = Array.isArray(
@@ -371,7 +371,9 @@ const DaftarSyarat = () => {
                                 return syaratArray.length > 0 ? (
                                   <ul>
                                     {syaratArray.map((syarat, index) => (
-                                      <li key={index}>{syarat} </li>
+                                      <li key={index}>
+                                        <span>{index + 1}. </span> {syarat}
+                                      </li>
                                     ))}
                                   </ul>
                                 ) : (
@@ -387,7 +389,7 @@ const DaftarSyarat = () => {
                             })()}
                           </td>
 
-                          <td className="text-center flex items-center justify-center px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                             <button
                               onClick={() => {
                                 handleAddSyarat(item.id);
@@ -401,7 +403,7 @@ const DaftarSyarat = () => {
                                 padding: 0,
                               }}
                             >
-                              <i className="fas fa-edit text-green-600"></i>
+                              <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
                             </button>
                           </td>
                         </tr>
@@ -424,7 +426,9 @@ const DaftarSyarat = () => {
                   <div className="fixed inset-0 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-4xl">
                       <h2 className="text-xl font-semibold mb-4 flex items-center">
-                        <i className={`mr-2 p-2 rounded-full text-white bg-green-600 fas fa-pencil-alt`}></i>
+                        <i
+                          className={`mr-2 p-2 rounded-full text-white bg-green-600 fas fa-pencil-alt`}
+                        ></i>
                         Update Daftar Syarat
                       </h2>
                       <form onSubmit={handleSubmit}>
