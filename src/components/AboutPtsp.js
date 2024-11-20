@@ -16,11 +16,12 @@ const TentangPTSP = () => {
           </p>
 
       <div className="additional-content mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-blue-50 rounded-lg shadow-md p-6">
+      <div className="bg-blue-50 rounded-lg shadow-md p-6 transform hover:scale-105 hover:shadow-lg transition duration-300">
           <h2 className="text-xl font-semibold text-blue-700 mb-4">Tujuan PTSP</h2>
           <p className="text-black mb-4">
             Dengan konsep ini, pengguna layanan cukup datang ke PTSP dan bertemu dengan petugas front office (FO) 
-            kemudian menunggu proses selanjutnya. Adapun Tujuan dari PTSP Adalah:
+            kemudian menunggu proses selanjutnya. 
+            <p>Adapun Tujuan dari PTSP Adalah: </p>
           </p>
           <ul className="list-disc ml-5 text-black space-y-2">
             <li>Mendekatkan Pelayanan Kepada Masyarakat</li>
@@ -31,7 +32,7 @@ const TentangPTSP = () => {
         </div>
 
         {/* Sasaran PTSP */}
-        <div className="bg-blue-50 rounded-lg shadow-md p-6">
+        <div className="bg-blue-50 rounded-lg shadow-md p-6 transform hover:scale-105 hover:shadow-lg transition duration-300">
           <h2 className="text-xl font-semibold text-blue-700 mb-4">Sasaran PTSP</h2>
           <p className="text-black mb-4">
             Sasaran PTSP: Terwujudnya pelayanan publik yang cepat, mudah, transparan, pasti dan akuntabel dalam upaya meningkatkan 

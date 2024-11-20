@@ -21,6 +21,23 @@ const MasterDisposisi = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = dataMasterDisposisi.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(dataMasterDisposisi.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Master Disposisi`;
     fetchData();
@@ -43,7 +60,7 @@ const MasterDisposisi = () => {
     setIsLoading(false);
 
     if (!value) {
-      setDataMasterDisposisi(dataMasterDisposisi);
+      fetchData();
     } else {
       const filteredData = dataMasterDisposisi.filter((item) =>
         String(item.name || "")
@@ -193,74 +210,116 @@ const MasterDisposisi = () => {
             </form>
           </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Master Disposisi
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dataMasterDisposisi.length > 0 ? (
-                      dataMasterDisposisi.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.name}
-                          </td>
-                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <button
-                              onClick={() => {
-                                setCurrentMasterDisposisi(item);
-                                setModalOpen(true);
-                              }}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                            </button>
-                            <button
-                              onClick={() => handleDelete(item.id)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                            </button>
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
+            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+              Daftar Master Disposisi di MIN 1 SLEMAN
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-4xl">
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Master Disposisi
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.name}
+                            </td>
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                              <button
+                                onClick={() => {
+                                  setCurrentMasterDisposisi(item);
+                                  setModalOpen(true);
+                                }}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="3"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="3"
-                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -268,14 +327,18 @@ const MasterDisposisi = () => {
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
-                <i
-                  className={`mr-2 p-2 rounded-full text-white ${
-                    currentMasterDisposisi ? "bg-green-600 fas fa-pencil-alt" : "bg-green-600 fas fa-plus"
-                  }`}
-                ></i>
-                {currentMasterDisposisi ? "Edit Master Disposisi" : "Tambah Master Disposisi"}
-            </h2>
+                <h2 className="text-xl font-semibold mb-4 flex items-center">
+                  <i
+                    className={`mr-2 p-2 rounded-full text-white ${
+                      currentMasterDisposisi
+                        ? "bg-green-600 fas fa-pencil-alt"
+                        : "bg-green-600 fas fa-plus"
+                    }`}
+                  ></i>
+                  {currentMasterDisposisi
+                    ? "Edit Master Disposisi"
+                    : "Tambah Master Disposisi"}
+                </h2>
                 <form onSubmit={handleSubmit}>
                   <input
                     type="text"

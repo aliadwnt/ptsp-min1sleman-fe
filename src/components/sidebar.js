@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../images/logo_min_1 copy.png";
 import "../App.css";
 
-const Sidebar = (isOpen) => {
+const Sidebar = ({ isOpen }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
@@ -15,8 +15,8 @@ const Sidebar = (isOpen) => {
 
   const getLinkClass = (path) => {
     return location.pathname === path
-      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-100"
-      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100";
+      ? "block pl-3 pr-4 py-2 text-gray-900 bg-gray-200 rounded-lg hover:shadow-md"
+      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 rounded-lg";
   };
 
   const toggleDropdown = () => {
@@ -50,7 +50,7 @@ const Sidebar = (isOpen) => {
         aria-controls="sidebar-multi-level-sidebar"
         type="button"
         onClick={toggleSidebar}
-        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-white-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
+        className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-white-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -69,69 +69,53 @@ const Sidebar = (isOpen) => {
       </button>
 
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } sm:translate-x-0 bg-white`}
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-white shadow-lg ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:translate-x-0`}
         aria-label="Sidebar"
       >
-        <Link to="/" className="sidebar-header block p-4">
+        <Link to="/" className="sidebar-header block p-4 bg-[#006747] rounded-b-lg shadow-md">
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
           <div>
-            <p className="text-center font-bold text-white">
-              PTSP MIN 1 SLEMAN
-            </p>
+            <p className="font-family text-center font-bold text-white">PTSP MIN 1 SLEMAN</p>
           </div>
         </Link>
         <div
           className="overflow-y-auto h-full bg-white border-gray-300"
           style={{ maxHeight: "calc(100vh - 56px)" }}
         >
-          <div>
-            <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
-              <b>Home</b>
-            </div>
-            <Link to="/dashboard" className={getLinkClass("/dashboard")}>
-              <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
-            </Link>
+          <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
+            <b>Home</b>
           </div>
+          <Link to="/dashboard" className={getLinkClass("/dashboard")}>
+            <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
+          </Link>
 
           {/* Kelola Pelayanan Section */}
           <div>
             <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
               <b>Kelola Pelayanan</b>
             </div>
-            <Link
-              to="/layanan/daftar-pelayanan"
-              className={getLinkClass("/layanan/daftar-pelayanan")}
-            >
+            <Link to="/layanan/daftar-pelayanan" className={getLinkClass("/layanan/daftar-pelayanan")}>
               <i className="fas fa-list mr-2"></i> Daftar Pelayanan
             </Link>
-            <Link
-              to="/layanan/arsip-layanan"
-              className={getLinkClass("/layanan/arsip-layanan")}
-            >
+            <Link to="/layanan/arsip-layanan" className={getLinkClass("/layanan/arsip-layanan")}>
               <i className="fas fa-archive mr-2"></i> Arsip Pelayanan
             </Link>
 
             {/* Dropdown for Surat Menyurat */}
             <div
               onClick={toggleDropdown}
-              className={`block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 w-full text-left cursor-pointer`}
+              className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 w-full text-left cursor-pointer"
               ref={dropdownRef}
             >
               <i className="fas fa-envelope mr-2"></i> Surat Menyurat
               {openDropdown === "surat" && (
-                <div className="ml-4">
-                  <Link
-                    to="/surat/surat-masuk"
-                    className={getLinkClass("/surat/surat-masuk")}
-                  >
+                <div className="ml-4 space-y-2">
+                  <Link to="/surat/surat-masuk" className={getLinkClass("/surat/surat-masuk")}>
                     <i className="fas fa-inbox mr-2"></i> Surat Masuk
                   </Link>
-                  <Link
-                    to="/surat/surat-keluar"
-                    className={getLinkClass("/surat/surat-keluar")}
-                  >
+                  <Link to="/surat/surat-keluar" className={getLinkClass("/surat/surat-keluar")}>
                     <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
                   </Link>
                 </div>
@@ -144,16 +128,10 @@ const Sidebar = (isOpen) => {
             <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
               <b>Kelola Disposisi</b>
             </div>
-            <Link
-              to="/disposisi/master-disposisi"
-              className={getLinkClass("/disposisi/master-disposisi")}
-            >
+            <Link to="/disposisi/master-disposisi" className={getLinkClass("/disposisi/master-disposisi")}>
               <i className="fas fa-folder-open mr-2"></i> Master Disposisi
             </Link>
-            <Link
-              to="/disposisi/daftar-disposisi"
-              className={getLinkClass("/disposisi/daftar-disposisi")}
-            >
+            <Link to="/disposisi/daftar-disposisi" className={getLinkClass("/disposisi/daftar-disposisi")}>
               <i className="fas fa-list mr-2"></i> Daftar Disposisi
             </Link>
           </div>

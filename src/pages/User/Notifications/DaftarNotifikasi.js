@@ -211,7 +211,8 @@ const Notifications = () => {
                             )}
                           </td>
                           <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <div className="flex items-center space-x-4 justify-center">
+                            <div className="column items-center space-x-4 justify-center">
+                              {/* Tombol Mark as Viewed */}
                               <button
                                 onClick={() => {
                                   console.log("Item yang diklik:", item);
@@ -221,23 +222,31 @@ const Notifications = () => {
                               >
                                 <i
                                   className={`fa fa-eye ${
-                                    item.isRead
-                                      ? "text-gray-400"
-                                      : "text-green-600"
+                                    item.isRead ? "text-gray-400" : "text-green-600"
                                   }`}
                                 ></i>
                                 <span
                                   className={
-                                    item.isRead
-                                      ? "text-gray-400"
-                                      : "text-green-600"
+                                    item.isRead ? "text-gray-400" : "text-green-600"
                                   }
                                 >
                                   {item.isRead ? "Viewed" : "Mark as Viewed"}
                                 </span>
                               </button>
+                              <button
+                                onClick={() => {
+                                  console.log("View detail untuk item:", item);
+                                  navigate(`/detail-disposisi/${item.no_reg || item.id}`);
+                                }}
+                                className="mt-1 flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                              >
+                                <i className="fa fa-info-circle"></i>
+                                <span>View Detail</span>
+                              </button>
+
                             </div>
                           </td>
+
                         </tr>
                       ))
                     ) : (

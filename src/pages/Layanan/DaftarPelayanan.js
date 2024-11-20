@@ -34,6 +34,8 @@ const DaftarPelayanan = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const navigate = useNavigate();
 
@@ -151,6 +153,18 @@ const DaftarPelayanan = () => {
         return dataDaftarPelayanan.filter((item) => item.status === "");
       default:
         return dataDaftarPelayanan;
+    }
+  };
+  const filteredData = getFilteredData();
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
     }
   };
 
@@ -298,7 +312,7 @@ const DaftarPelayanan = () => {
                 type="search"
                 value={searchTerm}
                 onChange={handleSearch}
-                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white-50 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Search..."
               />
               <button
@@ -317,178 +331,220 @@ const DaftarPelayanan = () => {
             </form>
           </div>
 
-          {/* <div className="flex flex-col sm:flex-row mx-auto max-w-7xl sm:px-6 lg:px-8"> */}
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
-              <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-1 sm:mb-1 mr-auto">
-                <ul
-                  className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center ml-2 space-x-4 w-full"
-                  id="default-tab"
-                  data-tabs-toggle="#default-tab-content"
-                  role="tablist"
-                >
-                  {[
-                    "Semua",
-                    "Baru",
-                    "Proses",
-                    "Selesai",
-                    "Diambil",
-                    "Ditolak",
-                  ].map((tab) => (
-                    <li
-                      key={tab}
-                      className="mb-4 sm:mb-0 flex-auto text-center relative group"
-                      role="presentation"
-                    >
-                      <button
-                        className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
-                          activeTab === tab
-                            ? "border-green-900 text-black-600 scale-110"
-                            : "text-gray-600"
-                        }`}
-                        id={`${tab}-tab`}
-                        onClick={() => handleTabChange(tab)}
-                        type="button"
-                        role="tab"
-                        aria-controls={tab}
-                        aria-selected={activeTab === tab}
+              <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+                <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+                  Daftar Pelayanan di MIN 1 SLEMAN
+                </h2>
+                <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-4 sm:mb-1 mr-auto">
+                  <ul
+                    className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center space-x-2 w-full"
+                    id="default-tab"
+                    data-tabs-toggle="#default-tab-content"
+                    role="tablist"
+                  >
+                    {[
+                      "Semua",
+                      "Baru",
+                      "Proses",
+                      "Selesai",
+                      "Diambil",
+                      "Ditolak",
+                    ].map((tab) => (
+                      <li
+                        key={tab}
+                        className="mb-4 sm:mb-0 flex-auto text-center relative group"
+                        role="presentation"
                       >
-                        <i
-                          className={`${getStatusIcon(
-                            tab
-                          )} mr-2 text-sm font-bold`}
-                        ></i>
-                        <span className="ml-2 text-[16px]">{counts[tab]}</span>
-                      </button>
-                      <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nomor Registrasi
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nama Layanan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Perihal
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Kelengkapan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Status
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {getFilteredData().length > 0 ? (
-                      getFilteredData().map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.no_reg}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.nama_pelayanan}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.perihal}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.kelengkapan}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            <i className={getStatusIcon(item.status)}></i>
-                            <span className="ml-2">{item.status}</span>
-                          </td>
-                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <div className="flex justify-center space-x-2">
-                              {/* Action Buttons */}
-                              <button
-                                onClick={() => handlePreview(item)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Preview"
-                              >
-                                <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>
-                              </button>
-                              <button
-                                onClick={() => handleExportPDF(item)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Download"
-                              >
-                                <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
-                              </button>
-                              <button
-                                onClick={() =>
-                                  navigate(
-                                    `/update-daftar-pelayanan/${item.id}`
-                                  )
-                                }
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Edit"
-                              >
-                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button>
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Delete"
-                              >
-                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
-                            </div>
+                        <button
+                          className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
+                            activeTab === tab
+                              ? "border-green-900 text-black-600 scale-110"
+                              : "text-gray-600"
+                          }`}
+                          id={`${tab}-tab`}
+                          onClick={() => handleTabChange(tab)}
+                          type="button"
+                          role="tab"
+                          aria-controls={tab}
+                          aria-selected={activeTab === tab}
+                        >
+                          <i
+                            className={`${getStatusIcon(
+                              tab
+                            )} mr-2 text-sm font-bold`}
+                          ></i>
+                          <span className="ml-2 text-[16px]">
+                            {counts[tab]}
+                          </span>
+                        </button>
+                        <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
+                          {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nomor Registrasi
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nama Layanan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Perihal
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Kelengkapan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Status
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.no_reg}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.nama_pelayanan}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.perihal}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.kelengkapan}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <i className={getStatusIcon(item.status)}></i>
+                              <span className="ml-2">{item.status}</span>
+                            </td>
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                              <div className="flex justify-center space-x-2">
+                                {/* Action Buttons */}
+                                <button
+                                  onClick={() => handlePreview(item)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Preview"
+                                >
+                                  <i className="fas fa-file-alt text-blue-600 hover:text-gray-800"></i>
+                                </button>
+                                <button
+                                  onClick={() => handleExportPDF(item)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Download"
+                                >
+                                  <i className="fas fa-download text-yellow-600 hover:text-yellow-900 ml-1"></i>
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    navigate(
+                                      `/update-daftar-pelayanan/${item.id}`
+                                    )
+                                  }
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Edit"
+                                >
+                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(item.id)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Delete"
+                                >
+                                  <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="7"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="7"
-                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>

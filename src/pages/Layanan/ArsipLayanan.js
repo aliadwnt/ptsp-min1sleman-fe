@@ -22,6 +22,19 @@ const ArsipLayanan = () => {
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = dataArsipLayanan.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(dataArsipLayanan.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   useEffect(() => {
     document.title = `PTSP MAN 1 YOGYAKARTA - Arsip Layanan`;
@@ -57,7 +70,7 @@ const ArsipLayanan = () => {
     setIsLoading(false);
 
     if (!value) {
-      setDataArsipLayanan(dataArsipLayanan);
+      fetchData();
       setIsLoading(false);
     } else {
       const filteredData = dataArsipLayanan.filter(
@@ -240,168 +253,214 @@ const ArsipLayanan = () => {
             </form>
           </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-5xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nomor Registrasi
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nama Layanan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Perihal
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Arsip Masuk
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Arsip Keluar
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dataArsipLayanan.length > 0 ? (
-                      dataArsipLayanan.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.no_reg}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.nama_pelayanan}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.perihal}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.arsip_masuk ? (
-                              <>
-                                <a
-                                  href={item.arsip_masuk}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
-                                >
-                                  Preview
-                                </a>
-                                <input
-                                  type="file"
-                                  id={`uploadKeluar-${item.id}`}
-                                  onChange={(e) =>
-                                    handleChange(e, "keluar", item.id)
-                                  }
-                                  className="hidden"
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <input
-                                  type="file"
-                                  id={`uploadMasuk-${item.id}`}
-                                  onChange={(e) =>
-                                    handleChange(e, "masuk", item.id)
-                                  }
-                                  className="hidden"
-                                />
-                                <button
-                                  onClick={() =>
-                                    document
-                                      .getElementById(`uploadMasuk-${item.id}`)
-                                      .click()
-                                  }
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Delete"
-                                >
-                                  <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
-                                </button>
-                              </>
-                            )}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.arsip_keluar ? (
-                              <>
-                                <a
-                                  href={item.arsip_keluar}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
-                                >
-                                  Preview
-                                </a>
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+              Daftar Arsip Layanan di MIN 1 SLEMAN
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-5xl">
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nomor Registrasi
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nama Layanan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Perihal
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Arsip Masuk
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Arsip Keluar
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Status
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.no_reg}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.nama_pelayanan}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.perihal}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.arsip_masuk ? (
+                                <>
+                                  <a
+                                    href={item.arsip_masuk}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                  >
+                                    Preview
+                                  </a>
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <input
+                                    type="file"
+                                    id={`uploadMasuk-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "masuk", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                  <button
+                                    onClick={() =>
+                                      document
+                                        .getElementById(
+                                          `uploadMasuk-${item.id}`
+                                        )
+                                        .click()
+                                    }
+                                    className="focus:outline-none"
+                                    style={{
+                                      background: "none",
+                                      border: "none",
+                                      padding: 0,
+                                    }}
+                                    aria-label="Delete"
+                                  >
+                                    <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                  </button>
+                                </>
+                              )}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.arsip_keluar ? (
+                                <>
+                                  <a
+                                    href={item.arsip_keluar}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                  >
+                                    Preview
+                                  </a>
 
-                                <input
-                                  type="file"
-                                  id={`uploadKeluar-${item.id}`}
-                                  onChange={(e) =>
-                                    handleChange(e, "keluar", item.id)
-                                  }
-                                  className="hidden"
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <input
-                                  type="file"
-                                  id={`uploadKeluar-${item.id}`}
-                                  onChange={(e) =>
-                                    handleChange(e, "keluar", item.id)
-                                  }
-                                  className="hidden"
-                                />
-                                <button
-                                  onClick={() =>
-                                    document
-                                      .getElementById(`uploadKeluar-${item.id}`)
-                                      .click()
-                                  }
-                                  className="focus:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                  aria-label="Delete"
-                                >
-                                  <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
-                                </button>
-                              </>
-                            )}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            <i className={getStatusIcon(item.status)}></i>
-                            <span className="ml-2">{item.status}</span>
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                </>
+                              ) : (
+                                <>
+                                  <input
+                                    type="file"
+                                    id={`uploadKeluar-${item.id}`}
+                                    onChange={(e) =>
+                                      handleChange(e, "keluar", item.id)
+                                    }
+                                    className="hidden"
+                                  />
+                                  <button
+                                    onClick={() =>
+                                      document
+                                        .getElementById(
+                                          `uploadKeluar-${item.id}`
+                                        )
+                                        .click()
+                                    }
+                                    className="focus:outline-none"
+                                    style={{
+                                      background: "none",
+                                      border: "none",
+                                      padding: 0,
+                                    }}
+                                    aria-label="Delete"
+                                  >
+                                    <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                  </button>
+                                </>
+                              )}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <i className={getStatusIcon(item.status)}></i>
+                              <span className="ml-2">{item.status}</span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="7"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="7"
-                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>

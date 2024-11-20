@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart } from 'chart.js/auto';
-import { fetchOutputLayanan } from '../services/outputLayananService';
 import { fetchDaftarPelayanan } from '../services/daftarPelayananService';
 
 const DiagramPelayanan = () => {

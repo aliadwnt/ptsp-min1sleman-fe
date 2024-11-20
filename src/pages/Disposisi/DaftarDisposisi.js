@@ -18,6 +18,20 @@ const DaftarDisposisi = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Disposisi`;
     fetchData();
@@ -41,7 +55,7 @@ const DaftarDisposisi = () => {
     setSearchTerm(value);
 
     if (!value) {
-      setFilteredData(dataDaftarDisposisi);
+      fetchData();
     } else {
       const filteredData = dataDaftarDisposisi.filter((item) => {
         return (
@@ -138,97 +152,146 @@ const DaftarDisposisi = () => {
                 </button>
               </form>
             </div>
-            <div className="flex justify-center">
-              <div className="w-full max-w-5xl">
-                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          No
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          No Surat
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Pengirim
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Tgl Surat
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Perihal
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Diteruskan Ke-
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Waktu Disposisi
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Catatan
-                        </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Aksi
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredData.length > 0 ? (
-                        filteredData.map((item, index) => (
-                          <tr key={item.id} className="hover:bg-gray-100">
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {index + 1}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.no_surat}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.nama_pengirim}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {new Date(item.tgl).toLocaleDateString("id-ID", {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.perihal}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.diteruskan}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.waktu}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.catatan}
-                            </td>
-                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                              <button
-                                onClick={() => handleDetail(item.no_reg)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                              >
-                                <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
-                              </button>
-                            </td>
-                          </tr>
-                        ))
-                      ) : (
+
+            <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+              <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+                Daftar Disposisi di MIN 1 SLEMAN
+              </h2>
+              <div className="flex justify-center">
+                <div className="w-full max-w-5xl">
+                  <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                      <thead className="bg-gray-50">
                         <tr>
-                          <td colSpan="10" className="text-center py-4">
-                            No data found
-                          </td>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            No
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            No Surat
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Pengirim
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Tgl Surat
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Perihal
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Diteruskan Ke-
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Waktu Disposisi
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Catatan
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Aksi
+                          </th>
                         </tr>
-                      )}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {currentData.length > 0 ? (
+                          currentData.map((item, index) => (
+                            <tr key={item.id} className="hover:bg-gray-100">
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {(currentPage - 1) * itemsPerPage + index + 1}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.no_surat}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.nama_pengirim}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {new Date(item.tgl).toLocaleDateString(
+                                  "id-ID",
+                                  {
+                                    day: "2-digit",
+                                    month: "long",
+                                    year: "numeric",
+                                  }
+                                )}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.perihal}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.diteruskan}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.waktu}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.catatan}
+                              </td>
+                              <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                                <button
+                                  onClick={() => handleDetail(item.no_reg)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                >
+                                  <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td
+                            colSpan="9"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
+                          >
+                            No data available
+                          </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === 1
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      Previous
+                    </button>
+                    {Array.from({ length: totalPages }, (_, index) => (
+                      <button
+                        key={index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`px-3 py-1 rounded border mr-1 ${
+                          currentPage === index + 1
+                            ? "bg-green-500 text-white hover:bg-green-700"
+                            : "bg-white text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className={`px-3 py-1 rounded border ${
+                        currentPage === totalPages
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

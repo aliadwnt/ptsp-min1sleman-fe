@@ -48,75 +48,74 @@ const LayananList = ({ unitLayanan }) => {
 
   return (
     <div id="layanan" className="mt-12 max-w-7xl mx-auto px-4">
-      <h1 className="text-3xl md:text-4xl font-semibold text-center text-gray-800 mb-8">
+        <h1 className="text-3xl md:text-4xl font-semibold text-center text-blue-900 mb-8">
         Daftar Layanan PTSP MIN 1 SLEMAN
-      </h1>
-      {unitLayanan.length > 0 ? (
+        </h1>
+        {unitLayanan.length > 0 ? (
         unitLayanan.map((unit, index) => (
-          <div key={index} className="mt-8">
+            <div key={index} className="mt-8">
             <div className="flex justify-between items-center border-b pb-3 mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">{unit.name}</h2>
-              <button
+                <h2 className="text-xl font-semibold text-gray-800">{unit.name}</h2>
+                <button
                 className="flex items-center space-x-2 text-gray-600 hover:text-blue-600"
                 onClick={() => toggleUnit(unit.name)}
-              >
+                >
                 <span>{openUnits[unit.name] ? "Tutup" : "Buka"}</span>
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className={`w-5 h-5 transform transition-transform duration-300 ${openUnits[unit.name] ? "rotate-180" : ""}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`w-5 h-5 transform transition-transform duration-300 ${openUnits[unit.name] ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
                 >
-                  <path
+                    <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     d="M19 9l-7 7-7-7"
-                  />
+                    />
                 </svg>
-              </button>
+                </button>
             </div>
 
             {openUnits[unit.name] && (
-             <div className="mt-4 space-y-4">
-             {unit.layanan.length > 0 ? (
-               unit.layanan.map((layanan) => (
-                 <div
-                   key={layanan.id}
-                   className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-                 >
-                   <div className="flex flex-col sm:flex-row justify-between items-center p-4">
-                     <div className="text-lg text-gray-800 font-semibold">{layanan.name}</div>
-                     <div className="flex gap-4 w-full sm:w-auto flex-col sm:flex-row sm:gap-4 mt-4 sm:mt-0">
-                       <button
-                         className="btn bg-blue-500 text-white font-semibold py-2 px-4 text-sm rounded-lg hover:bg-green-500 transition duration-200 w-full sm:w-auto mt-2 sm:mt-0"
-                         onClick={() => openLayananModal(layanan)}
-                       >
-                         Lihat Syarat
-                       </button>
-           
-                       <button
-                         className="btn bg-green-500 text-white font-semibold py-2 px-4 text-sm rounded-lg hover:bg-green-600 transition duration-200 w-full sm:w-auto mt-2 sm:mt-0"
-                         onClick={() => handleSearchRequest(layanan.no_reg)}
-                       >
-                         Buat Permohonan
-                       </button>
-                     </div>
-                   </div>
-                 </div>
-               ))
-             ) : (
-               <p className="text-center text-gray-500">Tidak ada layanan tersedia</p>
-             )}
-           </div>
-           
+                <div className="mt-6 space-y-6">
+                {unit.layanan.length > 0 ? (
+                    unit.layanan.map((layanan) => (
+                        <div
+                        key={layanan.id}
+                        className="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:scale-105"
+                      >
+                        <div className="flex flex-col sm:flex-row justify-between items-center p-3 hover:bg-gray-100 transition duration-300 rounded-lg">
+                          <div className="text-md text-gray-800 font-semibold">{layanan.name}</div>
+                          <div className="flex gap-2 w-full sm:w-auto flex-col sm:flex-row sm:gap-2 sm:mt-0">
+                            <button
+                              className="btn bg-blue-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-blue-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
+                              onClick={() => openLayananModal(layanan)}
+                            >
+                              Lihat Syarat
+                            </button>
+                      
+                            <button
+                              className="btn bg-green-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
+                              onClick={() => handleSearchRequest(layanan.no_reg)}
+                            >
+                              Buat Permohonan
+                            </button>
+                          </div>
+                        </div>
+                      </div>           
+                    ))
+                ) : (
+                    <p className="text-center text-gray-500">Tidak ada layanan tersedia</p>
+                )}
+                </div>
             )}
-          </div>
+            </div>
         ))
-      ) : (
+        ) : (
         <p className="text-center text-gray-500">Tidak ada unit pengolah ditemukan</p>
-      )}
+        )}
 
       {/* Modal Syarat Layanan */}
       <Dialog open={isModalOpen} onClose={closeModal} className="fixed z-10 inset-0 overflow-y-auto">

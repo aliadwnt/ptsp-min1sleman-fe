@@ -26,6 +26,22 @@ const DaftarPengguna = () => {
     password: "",
     is_admin: null,
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = dataDaftarPengguna.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(dataDaftarPengguna.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   useEffect(() => {
     const role = localStorage.getItem("userRole");
@@ -105,7 +121,7 @@ const DaftarPengguna = () => {
     setSearchTerm(value);
 
     if (!value) {
-      setDataDaftarPengguna(dataDaftarPengguna);
+      fetchData();
     } else {
       const filteredData = dataDaftarPengguna.filter(
         (item) =>
@@ -209,96 +225,138 @@ const DaftarPengguna = () => {
             </form>
           </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-5xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nama Lengkap
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Email
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Peran User
-                      </th>
-                      {userRole === "2" && (
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Aksi
-                        </th>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dataDaftarPengguna.length > 0 ? (
-                      dataDaftarPengguna.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.name}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.email}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.is_admin === 2
-                              ? "SUPER ADMIN"
-                              : item.is_admin === 1
-                              ? "ADMIN"
-                              : "USER"}
-                          </td>
-                          {userRole === "2" && (
-                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                              <button
-                                onClick={() => {
-                                  setCurrentDaftarPengguna(item);
-                                  setModalOpen(true);
-                                }}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Edit user"
-                              >
-                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                              </button>
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="focus:outline-none"
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  padding: 0,
-                                }}
-                                aria-label="Delete user"
-                              >
-                                <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
-                              </button>
-                            </td>
-                          )}
-                        </tr>
-                      ))
-                    ) : (
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+              Daftar Pengguna di MIN 1 SLEMAN
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-5xl">
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
                       <tr>
-                        <td
-                          colSpan="5"
-                          className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nama Lengkap
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Email
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Peran User
+                        </th>
+                        {userRole === "2" && (
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Aksi
+                          </th>
+                        )}
                       </tr>
-                    )}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.name}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.email}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.is_admin === 2
+                                ? "SUPER ADMIN"
+                                : item.is_admin === 1
+                                ? "ADMIN"
+                                : "USER"}
+                            </td>
+                            {userRole === "2" && (
+                              <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                                <button
+                                  onClick={() => {
+                                    setCurrentDaftarPengguna(item);
+                                    setModalOpen(true);
+                                  }}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Edit user"
+                                >
+                                  <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(item.id)}
+                                  className="focus:outline-none"
+                                  style={{
+                                    background: "none",
+                                    border: "none",
+                                    padding: 0,
+                                  }}
+                                  aria-label="Delete user"
+                                >
+                                  <i className="ml-2 fas fa-trash text-red-600 hover:text-red-900"></i>
+                                </button>
+                              </td>
+                            )}
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            No data available
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -33,6 +33,19 @@ const DaftarSyarat = () => {
   const [dataDaftarSyarat, setDataDaftarSyarat] = useState([]);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = dataDaftarSyarat.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(dataDaftarSyarat.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Syarat";
@@ -322,104 +335,146 @@ const DaftarSyarat = () => {
               </select>
             </form>
           </div>
-          {/* Table for displaying data */}
-          <div className="flex justify-center">
-            <div className="w-full max-w-5xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Unit Pengolah
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Nama Layanan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Syarat Layanan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200 ">
-                    {Array.isArray(dataDaftarSyarat) &&
-                    dataDaftarSyarat.length > 0 ? (
-                      dataDaftarSyarat.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.unit}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.name}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-left text-gray-900 border border-gray-200">
-                            {(() => {
-                              try {
-                                const syaratArray = Array.isArray(
-                                  item.syarat_layanan
-                                )
-                                  ? item.syarat_layanan
-                                  : JSON.parse(item.syarat_layanan || "[]");
-                                return syaratArray.length > 0 ? (
-                                  <ul>
-                                    {syaratArray.map((syarat, index) => (
-                                      <li key={index}>
-                                        <span>{index + 1}. </span> {syarat}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                ) : (
-                                  <span>No syarat available</span>
-                                );
-                              } catch (error) {
-                                console.error(
-                                  "Error parsing syarat_layanan:",
-                                  error
-                                );
-                                return <span>No syarat available</span>;
-                              }
-                            })()}
-                          </td>
 
-                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <button
-                              onClick={() => {
-                                handleAddSyarat(item.id);
-                                setCurrentDaftarSyarat(item);
-                                setModalOpen(true);
-                              }}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                            </button>
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
+            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+              Daftar Syarat Layanan di MIN 1 SLEMAN
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-5xl">
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Unit Pengolah
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Nama Layanan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Syarat Layanan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200 ">
+                      {Array.isArray(dataDaftarSyarat) &&
+                      currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.unit}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.name}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-left text-gray-900 border border-gray-200">
+                              {(() => {
+                                try {
+                                  const syaratArray = Array.isArray(
+                                    item.syarat_layanan
+                                  )
+                                    ? item.syarat_layanan
+                                    : JSON.parse(item.syarat_layanan || "[]");
+                                  return syaratArray.length > 0 ? (
+                                    <ul>
+                                      {syaratArray.map((syarat, index) => (
+                                        <li key={index}>
+                                          <span>{index + 1}. </span> {syarat}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <span>No syarat available</span>
+                                  );
+                                } catch (error) {
+                                  console.error(
+                                    "Error parsing syarat_layanan:",
+                                    error
+                                  );
+                                  return <span>No syarat available</span>;
+                                }
+                              })()}
+                            </td>
+
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                              <button
+                                onClick={() => {
+                                  handleAddSyarat(item.id);
+                                  setCurrentDaftarSyarat(item);
+                                  setModalOpen(true);
+                                }}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="5"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            Tidak ada data yang tersedia
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="5"
-                          className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Tidak ada data yang tersedia
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
 
                 {/* Modal */}
                 {modalOpen && (

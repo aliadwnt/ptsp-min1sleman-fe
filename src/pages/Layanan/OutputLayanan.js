@@ -19,6 +19,19 @@ const OutputLayanan = () => {
   const [currentOutputLayanan, setCurrentOutputLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = dataOutputLayanan.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(dataOutputLayanan.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Output Layanan`;
@@ -185,74 +198,116 @@ const OutputLayanan = () => {
             </form>
           </div>
 
-          <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Output Layanan
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {dataOutputLayanan.length > 0 ? (
-                      dataOutputLayanan.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.name}
-                          </td>
-                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <button
-                              onClick={() => {
-                                setCurrentOutputLayanan(item);
-                                setModalOpen(true);
-                              }}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
-                            </button>
-                            <button
-                              onClick={() => handleDelete(item.id)}
-                              className="focus:outline-none"
-                              style={{
-                                background: "none",
-                                border: "none",
-                                padding: 0,
-                              }}
-                            >
-                              <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
-                            </button>
+          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
+            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
+              Daftar Output Layanan di MIN 1 SLEMAN
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-full max-w-4xl">
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          No
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Output Layanan
+                        </th>
+                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                          Aksi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {currentData.length > 0 ? (
+                        currentData.map((item, index) => (
+                          <tr key={item.id} className="hover:bg-gray-100">
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(currentPage - 1) * itemsPerPage + index + 1}
+                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.name}
+                            </td>
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                              <button
+                                onClick={() => {
+                                  setCurrentOutputLayanan(item);
+                                  setModalOpen(true);
+                                }}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fas fa-edit text-green-600 hover:text-green-900"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDelete(item.id)}
+                                className="focus:outline-none"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                              >
+                                <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="10"
+                            className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
+                            No data available
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="10"
-                          className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === 1
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, index) => (
+                    <button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      className={`px-3 py-1 rounded border mr-1 ${
+                        currentPage === index + 1
+                          ? "bg-green-500 text-white hover:bg-green-700"
+                          : "bg-white text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded border mr-1 ${
+                      currentPage === totalPages
+                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                        : "bg-white text-gray-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>
