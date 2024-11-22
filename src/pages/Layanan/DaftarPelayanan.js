@@ -283,63 +283,62 @@ const DaftarPelayanan = () => {
         }`}
       >
         <Header />
+        {message && (
+          <div
+            className={`flex justify-center items-center p-4 m-2 text-sm ${
+              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
+            } rounded-lg`}
+            role="alert"
+          >
+            <span className="font-medium">
+              {isError ? "Error" : "Sukses"}:{" "}
+            </span>
+            {message}
+          </div>
+        )}
         <div className="p-4">
-          <div className="text-xl font-semibold text-gray-800 mb-4">
-            <i className="fas fa-list mr-2"></i> Daftar Pelayanan
-          </div>
-          {message && (
-            <div
-              className={`p-4 m-2 text-sm ${
-                isError
-                  ? "text-red-800 bg-red-50"
-                  : "text-green-800 bg-green-50"
-              } rounded-lg`}
-              role="alert"
-            >
-              <span className="font-medium">
-                {isError ? "Error" : "Sukses"}:{" "}
-              </span>
-              {message}
-            </div>
-          )}
-
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-grow justify-center"
-            >
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={handleSearch}
-                className="w-2/3 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search..."
-              />
-              <button
-                type="submit"
-                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-              >
-                <i className="fas fa-search"></i>
-              </button>
-              <button
-                onClick={handleAdd}
-                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
-              >
-                <i className="fas fa-plus"></i>
-                <span className="ml-1">Tambah</span>
-              </button>
-            </form>
-          </div>
-
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
-                <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
-                  Daftar Pelayanan di MIN 1 SLEMAN
-                </h2>
+                <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+                  <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
+                    <i className="fas fa-list mr-2"></i> Daftar Pelayanan
+                  </div>
+                  <form
+                    onSubmit={handleSearch}
+                    className="flex flex-grow justify-end space-x-2"
+                  >
+                    <input
+                      type="search"
+                      value={searchTerm}
+                      onChange={handleSearch}
+                      className="w-full md:w-64 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Search..."
+                    />
+
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => window.location.reload()}
+                        className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                      >
+                        <i className="fas fa-sync-alt text-xs"></i>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleAdd}
+                        className="flex items-center justify-center bg-green-600 text-white rounded-lg py-1 px-3 hover:bg-green-700"
+                      >
+                        <i className="fas fa-plus text-xs"></i>
+                        <span className="ml-1 text-sm">Tambah</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
                 <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-4 sm:mb-1 mr-auto">
                   <ul
-                    className="flex flex-wrap justify-center -mb-px text-sm font-medium text-center space-x-2 w-full"
+                    className="flex flex-wrap justify-center w-full text-sm font-medium text-center space-x-4"
                     id="default-tab"
                     data-tabs-toggle="#default-tab-content"
                     role="tablist"
@@ -357,11 +356,11 @@ const DaftarPelayanan = () => {
                         className="mb-4 sm:mb-0 flex-auto text-center relative group"
                         role="presentation"
                       >
-                        <button
-                          className={`inline-block p-2 border-b-3 w-full sm:w-auto transition-all duration-300 ease-in-out transform ${
+                        <div
+                          className={`bg-slate-50 p-2 rounded-lg shadow-sm flex flex-col items-center transition-all duration-300 focus:outline-none hover:bg-slate-100 ${
                             activeTab === tab
-                              ? "border-green-900 text-black-600 scale-110"
-                              : "text-gray-600"
+                              ? "text-green-900 font-semibold shadow-lg"
+                              : "text-gray-600 hover:text-green-700"
                           }`}
                           id={`${tab}-tab`}
                           onClick={() => handleTabChange(tab)}
@@ -370,18 +369,18 @@ const DaftarPelayanan = () => {
                           aria-controls={tab}
                           aria-selected={activeTab === tab}
                         >
-                          <i
-                            className={`${getStatusIcon(
-                              tab
-                            )} mr-2 text-sm font-bold`}
-                          ></i>
-                          <span className="ml-2 text-[16px]">
-                            {counts[tab]}
-                          </span>
-                        </button>
-                        <span className="absolute left-1/2 transform -translate-x-1/2 -translate-y-0 mb-2 hidden group-hover:block bg-gray-100 p-1 text-xs text-gray-600 rounded-lg shadow-lg">
-                          {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                        </span>
+                          <div className="flex items-center space-x-2">
+                            <i className={`${getStatusIcon(tab)} text-lg`}></i>
+                            <span className="text-base">{counts[tab]}</span>
+                          </div>
+                          <div
+                            className={`h-[2px] transition-all duration-300 mt-1 rounded-full ${
+                              activeTab === tab
+                                ? "bg-green-700 w-12"
+                                : "bg-gray-300 w-8"
+                            }`}
+                          ></div>
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -408,7 +407,7 @@ const DaftarPelayanan = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Status
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                        <th className="px-12 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
                         </th>
                       </tr>
@@ -508,42 +507,49 @@ const DaftarPelayanan = () => {
                     </tbody>
                   </table>
                 </div>
-                <div className="flex justify-end mt-4">
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className={`px-3 py-1 rounded border mr-1 ${
-                      currentPage === 1
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    Previous
-                  </button>
-                  {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                      key={index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`px-3 py-1 rounded border mr-1 ${
-                        currentPage === index + 1
-                          ? "bg-green-500 text-white hover:bg-green-700"
-                          : "bg-white text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className={`px-3 py-1 rounded border mr-1 ${
-                      currentPage === totalPages
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    Next
-                  </button>
+                <div className="flex justify-center mt-4 mb-6">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    {currentPage > 1 && (
+                      <div
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                      >
+                        <i className="fas fa-chevron-left text-sm md:text-lg"></i>
+                      </div>
+                    )}
+
+                    {Array.from({ length: totalPages }, (_, index) => {
+                      const pageNumber = index + 1;
+                      if (
+                        pageNumber >= currentPage - 2 &&
+                        pageNumber <= currentPage + 2
+                      ) {
+                        return (
+                          <div
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`px-3 py-1 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base ${
+                              currentPage === pageNumber
+                                ? "text-green-800 font-medium border-b-2 border-green-800"
+                                : "text-gray-700 hover:text-green-500 hover:border-b-2 hover:border-gray-300"
+                            }`}
+                          >
+                            {pageNumber}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    {currentPage < totalPages && (
+                      <div
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                      >
+                        <i className="fas fa-chevron-right text-sm md:text-lg"></i>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

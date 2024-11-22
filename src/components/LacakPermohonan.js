@@ -16,12 +16,14 @@ const LacakPermohonanForm = ({ onSearch, loading, error }) => {
   return (
     <div className="bg-gradient-to-r from-blue-100 via-blue-200 to-blue-300 rounded-lg shadow-lg p-8 max-w-xl mx-auto mt-12 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-4">Lacak Permohonan Layanan</h1>
+        <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+          Lacak Permohonan Layanan
+        </h1>
         <p className="text-m text-gray-600 mb-6">
           Masukkan No. Registrasi untuk melacak Permohonan
         </p>
-        {error && <p className="text-red-500 mb-4">{error}</p>} {/* Display error message if any */}
-
+        {error && <p className="text-red-500 mb-4">{error}</p>}{" "}
+        {/* Display error message if any */}
         <form
           onSubmit={handleFormSubmit}
           className="space-y-4 bg-white shadow-md rounded-lg p-6"
@@ -32,7 +34,6 @@ const LacakPermohonanForm = ({ onSearch, loading, error }) => {
             onChange={handleInputChange}
             className="w-full p-3 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
             placeholder="Masukkan No. Registrasi"
-            required
           />
           <button
             type="submit"

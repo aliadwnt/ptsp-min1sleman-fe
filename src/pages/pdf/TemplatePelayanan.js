@@ -1,4 +1,6 @@
 import React from "react";
+import Logo from '../../images/logo_man_1.png';
+
 const PdfTemplate = ({ data }) => {
   return (
     <div className="a-4-1">
@@ -602,11 +604,7 @@ const PdfTemplate = ({ data }) => {
     <div className="w-full p-5">
     <div className="form-1">
         <div className="kop">
-          <img
-            className="logo-geschool-bulat-3"
-            src="https://seeklogo.com/images/M/man-1-yogyakarta-logo-25AA3AE0FF-seeklogo.com.png"
-            alt="Logo"
-          />
+        <img className="logo-geschool-bulat-3" src={Logo} alt="" />
           <div className="text">
             <div className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta">
               <span>
@@ -739,13 +737,9 @@ const PdfTemplate = ({ data }) => {
         </div>
       </div>
       <div className="form-2">
-        {/* Duplicate form logic for the second form if needed */}
+
         <div className="kop">
-          <img
-            className="logo-geschool-bulat-3"
-            src="https://seeklogo.com/images/M/man-1-yogyakarta-logo-25AA3AE0FF-seeklogo.com.png"
-            alt="Logo"
-          />
+        <img className="logo-geschool-bulat-3" src={Logo} alt="" />
           <div className="text">
             <div className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta">
               <span>

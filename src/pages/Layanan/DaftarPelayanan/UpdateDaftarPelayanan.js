@@ -235,11 +235,14 @@ const LayananUpdate = () => {
                   </label>
                   <input
                     className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                    name="tgl"
                     type="date"
-                    value={formData.tgl}
+                    name="tgl"
                     onChange={handleChange}
-                    required
+                    value={
+                      formData?.tgl
+                        ? new Date(formData?.tgl).toISOString().split("T")[0]
+                        : ""
+                    }
                   />
                 </div>
               </div>
@@ -381,7 +384,7 @@ const LayananUpdate = () => {
                   </label>
                   <textarea
                     className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                    name="perihal"
+                    name="catatan"
                     value={formData.catatan}
                     onChange={handleChange}
                     required

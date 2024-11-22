@@ -19,7 +19,7 @@ const DaftarDisposisi = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(6);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -99,7 +99,7 @@ const DaftarDisposisi = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -108,7 +108,6 @@ const DaftarDisposisi = () => {
       >
         <Sidebar toggleSidebar={toggleSidebar} />
       </div>
-
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
           isSidebarOpen ? "lg:ml-64" : "ml-0"
@@ -116,47 +115,49 @@ const DaftarDisposisi = () => {
       >
         <Header />
         <main className="p-4">
-          <div className="text-xl font-semibold text-gray-800 mb-4">
-            <i className="fas fa-list mr-2"></i> Daftar Disposisi
-          </div>
-
-          {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
-              role="alert"
-            >
-              <span className="font-medium">Sukses </span>
-              {message}
-            </div>
-          )}
-
           <>
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <form
+            <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+                <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
+                  <i className="fas fa-list mr-2"></i> Daftar Disposisi
+                </div>
+                <form
                 onSubmit={handleSearch}
-                className="flex flex-grow justify-center"
+                className="flex items-center space-x-2 w-full md:w-auto"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={3}
+                  stroke="currentColor"
+                  className="w-5 h-5 text-green-700"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M11 19a8 8 0 100-16 8 8 0 000 16zm-6-6h.01M16.39 16.39L21 21"
+                  />
+                </svg>
                 <input
                   type="search"
                   value={searchTerm}
                   onChange={handleSearch}
-                  className="w-4/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search..."
-                  required
                 />
-                <button
-                  type="submit"
-                  className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-                >
-                  <i className="fas fa-search"></i>
-                </button>
               </form>
-            </div>
+              </div>
 
-            <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
-              <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
-                Daftar Disposisi di MIN 1 SLEMAN
-              </h2>
+              {message && (
+                <div
+                  className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
+                  role="alert"
+                >
+                  <span className="font-medium">Sukses </span>
+                  {message}
+                </div>
+              )}
               <div className="flex justify-center">
                 <div className="w-full max-w-5xl">
                   <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
@@ -245,52 +246,59 @@ const DaftarDisposisi = () => {
                         ) : (
                           <tr>
                             <td
-                            colSpan="9"
-                            className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
-                          >
-                            No data available
-                          </td>
+                              colSpan="9"
+                              className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
+                            >
+                              No data available
+                            </td>
                           </tr>
                         )}
                       </tbody>
                     </table>
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className={`px-3 py-1 rounded border mr-1 ${
-                        currentPage === 1
-                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                          : "bg-white text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      Previous
-                    </button>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                      <button
-                        key={index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                        className={`px-3 py-1 rounded border mr-1 ${
-                          currentPage === index + 1
-                            ? "bg-green-500 text-white hover:bg-green-700"
-                            : "bg-white text-gray-700 hover:bg-gray-100"
-                        }`}
-                      >
-                        {index + 1}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className={`px-3 py-1 rounded border ${
-                        currentPage === totalPages
-                          ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                          : "bg-white text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      Next
-                    </button>
+                  <div className="flex justify-center mt-4 mb-6">
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      {currentPage > 1 && (
+                        <div
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                        >
+                          <i className="fas fa-chevron-left text-sm md:text-lg"></i>
+                        </div>
+                      )}
+
+                      {Array.from({ length: totalPages }, (_, index) => {
+                        const pageNumber = index + 1;
+                        if (
+                          pageNumber >= currentPage - 2 &&
+                          pageNumber <= currentPage + 2
+                        ) {
+                          return (
+                            <div
+                              key={pageNumber}
+                              onClick={() => handlePageChange(pageNumber)}
+                              className={`px-3 py-1 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base ${
+                                currentPage === pageNumber
+                                  ? "text-green-800 font-medium border-b-2 border-green-800"
+                                  : "text-gray-700 hover:text-green-500 hover:border-b-2 hover:border-gray-300"
+                              }`}
+                            >
+                              {pageNumber}
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
+
+                      {currentPage < totalPages && (
+                        <div
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                        >
+                          <i className="fas fa-chevron-right text-sm md:text-lg"></i>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,94 +1,126 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Chart } from 'chart.js/auto';
-import { fetchDaftarPelayanan } from '../services/daftarPelayananService';
+import React, { useEffect, useState, useRef } from "react";
+import { Chart } from "chart.js/auto";
+import { fetchDaftarPelayanan } from "../services/daftarPelayananService";
 
 const DiagramPelayanan = () => {
-    const [chartData, setChartData] = useState({ labels: [], data: [], backgroundColor: [] });
-    const chartRef = useRef(null);
-    const usedColors = new Set(); 
+  const [chartData, setChartData] = useState({
+    labels: [],
+    data: [],
+    backgroundColor: [],
+  });
+  const chartRef = useRef(null);
+  const usedColors = useRef(new Set());
 
-    const generateRandomColor = () => {
-        let color;
-        do {
-            const hue = Math.floor(Math.random() * 360); 
-            const saturation = 70 + Math.random() * 20;  
-            const lightness = 50 + Math.random() * 20;  
-            color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-        } while (usedColors.has(color)); 
-        
-        usedColors.add(color); 
-        return color;
+  // Fungsi untuk menghasilkan warna acak unik
+  const generateRandomColor = () => {
+    let color;
+    do {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = 70 + Math.random() * 20;
+      const lightness = 50 + Math.random() * 20;
+      color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    } while (usedColors.current.has(color));
+
+    usedColors.current.add(color);
+    return color;
+  };
+
+  // Mengambil data layanan dan memprosesnya
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const daftarResponse = await fetchDaftarPelayanan();
+
+        const labels = [
+          ...new Set(daftarResponse.map((item) => item.nama_pelayanan)),
+        ];
+
+        const values = labels.map((label) =>
+          daftarResponse.filter((item) => item.nama_pelayanan === label).length
+        );
+
+        const backgroundColor = labels.map(() => generateRandomColor());
+
+        setChartData({ labels, data: values, backgroundColor });
+      } catch (error) {
+        console.error("Gagal mengambil data:", error);
+      }
     };
-    
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const daftarResponse = await fetchDaftarPelayanan();
 
-                // Get unique 'nama_pelayanan' labels
-                const labels = [...new Set(daftarResponse.map(item => item.nama_pelayanan))];
+    getData();
+  }, []);
 
-                // Count occurrences of each 'nama_pelayanan'
-                const values = labels.map(label => 
-                    daftarResponse.filter(item => item.nama_pelayanan === label).length
-                );
-                
-                const backgroundColor = labels.map(() => generateRandomColor());
+  // Menginisialisasi diagram saat data tersedia
+  useEffect(() => {
+    const ctx = chartRef.current?.getContext("2d");
 
-                setChartData({ labels, data: values, backgroundColor });
-            } catch (error) {
-                console.error("Failed to fetch data", error);
-            }
-        };
+    if (ctx) {
+      const chartInstance = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: "Total",
+              data: chartData.data,
+              backgroundColor: chartData.backgroundColor,
+              hoverOffset: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem) =>
+                  `${tooltipItem.label}: ${tooltipItem.raw} layanan`,
+              },
+            },
+            legend: {
+              display: false,
+            },
+          },
+        },
+      });
 
-        getData();
-    }, []);
+      return () => {
+        chartInstance.destroy();
+      };
+    }
+  }, [chartData]);
 
-    useEffect(() => {
-        const ctx = chartRef.current?.getContext('2d');
-        
-        if (ctx) {
-            const chartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        label: 'Total',
-                        data: chartData.data,
-                        backgroundColor: chartData.backgroundColor,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            });
+  return (
+<div className="bg-white shadow-lg rounded-lg w-full md:w-1/2 lg:w-2/3 p-6 mx-auto">
+  {/* Judul */}
+  <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+    Diagram Pelayanan
+  </h2>
 
-            return () => {
-                chartInstance.destroy();
-            };
-        }
-    }, [chartData]);
+  {/* Seksi Diagram */}
+  <div className="relative w-full h-64 md:h-72 lg:h-80 mt-6">
+    <canvas ref={chartRef} className="h-full w-full"></canvas>
+  </div>
 
-    return (
-        <div className="bg-white shadow rounded-lg w-full md:w-1/2 lg:w-2/3 p-4 text-left mx-auto">
-            <h2 className="text-lg font-semibold mb-4 text-center md:text-left">Diagram Pelayanan</h2>
-            
-            <div className="flex flex-wrap items-start justify-center md:justify-start bg-white text-xs mt-2">
-                {chartData.labels.map((label, index) => (
-                    <div key={index} className="flex items-center mb-1 md:mr-4">
-                        <div className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: chartData.backgroundColor[index] }}></div>
-                        <span>{label}</span>
-                    </div>
-                ))}
-            </div>
-            
-            <div className="relative w-full h-64 md:h-72 lg:h-80 mt-4">
-                <canvas ref={chartRef} className="h-full w-full"></canvas>
-            </div>
-        </div>
-    );
+  {/* Seksi Label di Bawah */}
+  <div className="grid grid-cols-2 gap-x-4 gap-y-2 bg-white text-xs mt-4">
+    {chartData.labels.map((label, index) => (
+      <div
+        key={index}
+        className="flex items-center space-x-2 px-2 py-1 transform transition-transform duration-200 hover:scale-105 hover:shadow-md"
+      >
+        <div
+          className="w-3 h-3 rounded-full shadow"
+          style={{ backgroundColor: chartData.backgroundColor[index] }}
+        ></div>
+        <span className="text-gray-700 font-medium">{label}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+  );
 };
 
 export default DiagramPelayanan;

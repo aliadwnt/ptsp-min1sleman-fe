@@ -144,7 +144,7 @@ const UnitPengolah = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -159,60 +159,57 @@ const UnitPengolah = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
+        {message && (
+          <div
+            className={`flex justify-center items-center p-4 m-2 text-sm ${
+              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
+            } rounded-lg`}
+            role="alert"
+          >
+            <span className="font-medium">
+              {isError ? "Error" : "Sukses"}:{" "}
+            </span>
+            {message}
+          </div>
+        )}
         <div className="p-4">
-          <div className="text-xl font-semibold text-gray-800 mb-4">
-            <i className="fas fa-sitemap mr-2"></i> Daftar Unit Pengolah
-          </div>
-
-          {message && (
-            <div
-              className={`p-4 m-8 text-sm ${
-                isError
-                  ? "text-red-800 bg-red-50"
-                  : "text-green-800 bg-green-50"
-              } rounded-lg`}
-              role="alert"
-            >
-              <span className="font-medium">
-                {isError ? "Error " : "Sukses "}
-              </span>
-              {message}
-            </div>
-          )}
-
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-grow justify-center"
-            >
-              <input
-                type="search"
-                value={searchTerm}
-                onChange={handleSearch}
-                className="w-3/5 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Search..."
-              />
-
-              <button
-                type="submit"
-                className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200"
-              >
-                <i className="fas fa-search"></i>
-              </button>
-              <button
-                type="button" // Ensure this button doesn't submit the form
-                onClick={handleAdd}
-                className="flex items-center justify-center bg-green-600 text-white rounded-lg py-2 px-4 hover:bg-green-700"
-              >
-                <i className="fas fa-plus"></i>
-                <span className="ml-1">Tambah</span>
-              </button>
-            </form>
-          </div>
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
-            <h2 className="text-l font-poppins font-semibold mb-6 text-gray-700 text-left">
-              Daftar Unit Pengolah di MIN 1 SLEMAN
-            </h2>
+            <div className="flex flex-col md:flex-row justify-between items-center mb-2">
+              <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
+                <i className="fas fa-sitemap mr-2"></i> Daftar Unit Pengolah
+              </div>
+
+              <form
+                onSubmit={handleSearch}
+                className="flex flex-grow justify-end space-x-2"
+              >
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="w-full md:w-64 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Search..."
+                />
+
+                <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                  >
+                    <i className="fas fa-sync-alt text-xs"></i>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAdd}
+                    className="flex items-center justify-center bg-green-600 text-white rounded-lg py-1 px-3 hover:bg-green-700"
+                  >
+                    <i className="fas fa-plus text-xs"></i>
+                    <span className="ml-1 text-sm">Tambah</span>
+                  </button>
+                </div>
+              </form>
+            </div>
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
                 <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
@@ -235,7 +232,7 @@ const UnitPengolah = () => {
                         currentData.map((item, index) => (
                           <tr key={item.id} className="hover:bg-gray-100">
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {(currentPage - 1) * itemsPerPage + index + 1}
+                              {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.name}
@@ -282,42 +279,49 @@ const UnitPengolah = () => {
                     </tbody>
                   </table>
                 </div>
-                <div className="flex justify-end mt-4">
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className={`px-3 py-1 rounded border mr-1 ${
-                      currentPage === 1
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    Previous
-                  </button>
-                  {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                      key={index + 1}
-                      onClick={() => handlePageChange(index + 1)}
-                      className={`px-3 py-1 rounded border mr-1 ${
-                        currentPage === index + 1
-                          ? "bg-green-500 text-white hover:bg-green-700"
-                          : "bg-white text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className={`px-3 py-1 rounded border ${
-                      currentPage === totalPages
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    Next
-                  </button>
+                <div className="flex justify-center mt-4 mb-6">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    {currentPage > 1 && (
+                      <div
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                      >
+                        <i className="fas fa-chevron-left text-sm md:text-lg"></i>
+                      </div>
+                    )}
+
+                    {Array.from({ length: totalPages }, (_, index) => {
+                      const pageNumber = index + 1;
+                      if (
+                        pageNumber >= currentPage - 2 &&
+                        pageNumber <= currentPage + 2
+                      ) {
+                        return (
+                          <div
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`px-3 py-1 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base ${
+                              currentPage === pageNumber
+                                ? "text-green-800 font-medium border-b-2 border-green-800"
+                                : "text-gray-700 hover:text-green-500 hover:border-b-2 hover:border-gray-300"
+                            }`}
+                          >
+                            {pageNumber}
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    {currentPage < totalPages && (
+                      <div
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        className="px-3 py-1 text-gray-700 hover:bg-gray-100 cursor-pointer transition duration-200 ease-in-out text-sm md:text-base"
+                      >
+                        <i className="fas fa-chevron-right text-sm md:text-lg"></i>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

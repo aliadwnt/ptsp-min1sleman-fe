@@ -101,14 +101,8 @@ function App() {
         <Route path="/layanan/daftar-syarat" element={<DaftarSyarat />} />
         <Route path="/user/settings" element={<Settings />} />
         <Route path="/profile/edit" element={<EditProfile />} />
-        <Route
-          path="/create-daftar-pelayanan"
-          element={<CreateDaftarPelayanan />}
-        />
-        <Route
-          path="/update-daftar-pelayanan/:id"
-          element={<UpdateDaftarPelayanan />}
-        />
+        <Route path="/create-daftar-pelayanan"element={<CreateDaftarPelayanan />}/>
+        <Route path="/update-daftar-pelayanan/:id"element={<UpdateDaftarPelayanan />}/>
       </Routes>
     </Router>
   );

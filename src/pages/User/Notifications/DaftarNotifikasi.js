@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/sidebar";
 import Header from "../../../components/header";
+import Favicon from "../../../components/Favicon";
 import {
   fetchNotification,
   markNotificationAsRead,
 } from "../../../services/notificationService";
-import "../../../App.css";
-import { useNavigate } from "react-router-dom";
-import Favicon from "../../../components/Favicon";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Notifications = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [Notifications, setNotifications] = useState([]);
-  const [message] = useState("");
+  const [notifications, setNotifications] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(id);
+  }, [id]);
 
-  const fetchData = async () => {
+  const fetchData = async (id) => {
     try {
-      const response = await fetchNotification();
-      console.log("Fetched notifications:", response);
-
+      const response = await fetchNotification(id);
       const sortedNotifications = response.notifications.sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
       );
-
       setNotifications(sortedNotifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -35,15 +31,8 @@ const Notifications = () => {
   };
 
   const handleMarkAsRead = async (notification) => {
-    if (!notification || !notification.id) {
-      console.error("Notification is invalid:", notification);
-      return;
-    }
-
     try {
-      const result = await markNotificationAsRead(notification.id);
-      console.log(result.message);
-
+      await markNotificationAsRead(notification.id);
       setNotifications((prevNotifications) =>
         prevNotifications.map((notif) =>
           notif.id === notification.id ? { ...notif, isRead: true } : notif
@@ -54,10 +43,47 @@ const Notifications = () => {
     }
   };
 
+  const handleDetail = (no_reg) => {
+    console.log("Value of no_reg:", no_reg);
+    if (!no_reg) {
+      console.error("no_reg is undefined or null");
+      return;
+    }
+    navigate(`/disposisi/detail-disposisi/${no_reg}`);
+  };
+  const extractNoReg = (message) => {
+    const match = message.match(/#(\d+)/);
+    return match ? match[1] : null;
+  };
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      // Panggil API untuk menandai semua notifikasi sebagai sudah dibaca
+      const unreadNotifications = notifications.filter((notif) => !notif.isRead);
+      const promises = unreadNotifications.map((notif) =>
+        markNotificationAsRead(notif.id)
+      );
+  
+      await Promise.all(promises);
+  
+      // Update state
+      setNotifications((prevNotifications) =>
+        prevNotifications.map((notif) => ({ ...notif, isRead: true }))
+      );
+      console.log("Semua notifikasi telah ditandai sebagai sudah dibaca.");
+    } catch (error) {
+      console.error("Gagal menandai semua notifikasi sebagai sudah dibaca:", error);
+    }
+  };
+  
+
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
     let interval = Math.floor(seconds / 31536000);
-
+    if (interval > 1) return `${interval} tahun yang lalu`;
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) return `${interval} bulan yang lalu`;
+    interval = Math.floor(seconds / 86400);
     if (interval > 1) return `${interval} hari yang lalu`;
     interval = Math.floor(seconds / 3600);
     if (interval > 1) return `${interval} jam yang lalu`;
@@ -66,20 +92,21 @@ const Notifications = () => {
     return `${seconds} detik yang lalu`;
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-100 flex flex-col relative">
       <Favicon />
+      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
+
+      {/* Main Content */}
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
           isSidebarOpen ? "lg:ml-64" : "ml-0"
@@ -87,180 +114,146 @@ const Notifications = () => {
       >
         <Header />
         <div className="p-4">
-          <div className="text-xl font-semibold text-gray-800 mb-4">
-            <i className="fas fa-bell white-bell mr-2"></i>
-            Daftar Notifikasi
-          </div>
-
-          {message && (
-            <div
-              className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
-              role="alert"
-            >
-              <span className="font-medium">Sukses </span>
-              {message}
-            </div>
-          )}
-
           <div className="flex justify-center">
-            <div className="w-full max-w-4xl">
-              <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        No
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Created At
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Notifikasi
-                      </th>
-                      <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                        Aksi
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {Notifications.length > 0 ? (
-                      Notifications.map((item, index) => (
-                        <tr key={item.id} className="hover:bg-gray-100">
-                          <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {(() => {
-                              const date = new Date(item.created_at);
-                              const today = new Date();
-                              const yesterday = new Date(today);
-                              yesterday.setDate(today.getDate() - 1);
+            <div className="w-full max-w-5xl">
+              <div className="bg-white shadow-lg rounded-lg px-6 py-8">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold text-gray-800">
+                    <i className="fas fa-list mr-2"></i> Daftar Notifikasi
+                  </h2>
+                  <button
+                    onClick={handleMarkAllAsRead}
+                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-transform duration-300 shadow-lg transform ${
+                      notifications.some((notif) => !notif.isRead)
+                        ? "bg-green-500 hover:bg-green-600 text-white"
+                        : "bg-gray-300 text-gray-400 cursor-not-allowed"
+                    } ${notifications.some((notif) => !notif.isRead) && "hover:scale-105"}`}
+                    disabled={!notifications.some((notif) => !notif.isRead)}
+                  >
+                    <i
+                      className={`fas fa-check-circle ${
+                        notifications.some((notif) => !notif.isRead)
+                          ? "text-white"
+                          : "text-gray-400"
+                      }`}
+                    ></i>
+                    <span>Tandai Semua Sudah Dibaca</span>
+                  </button>
+                </div>
 
-                              // Check if the date is today, yesterday, or another day
-                              if (
-                                date.toDateString() === today.toDateString()
-                              ) {
-                                return `Today, ${date.toLocaleTimeString([], {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}`;
-                              } else if (
-                                date.toDateString() === yesterday.toDateString()
-                              ) {
-                                return `Yesterday, ${date.toLocaleTimeString(
-                                  [],
-                                  { hour: "2-digit", minute: "2-digit" }
-                                )}`;
+                {/* Notifications */}
+                <div className="space-y-4">
+                  {notifications.length > 0 ? (
+                    notifications.map((item) => (
+                      <div
+                        key={item.id}
+                        className={`p-4 rounded-lg shadow-md flex items-center space-x-4 transition-all duration-300 ${
+                          item.isRead
+                            ? "bg-gray-50 border border-gray-300"
+                            : "bg-white border-l-4 border-green-500"
+                        }`}
+                      >
+                        {/* Icon */}
+                        <div className="flex-shrink-0">
+                          <span
+                            className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${
+                              item.isRead ? "bg-gray-400" : "bg-green-500"
+                            }`}
+                          >
+                            <i
+                              className={`fas ${
+                                item.isRead ? "fa-check" : "fa-bell"
+                              } text-sm`}
+                            ></i>
+                          </span>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1">
+                          {item.message.type === "disposisi" ? (
+                            <div>
+                              <h4 className="font-bold text-gray-800 text-sm">
+                                {item.message.message ||
+                                  "Tidak ada pesan disposisi"}
+                                :
+                              </h4>
+                              <p className="text-gray-500 text-xs mb-1">
+                                {item.message.disposisi ||
+                                  "Tidak ada informasi disposisi"}
+                              </p>
+                              <p className="text-gray-500 text-xs mb-1">
+                                {item.message.diteruskan ||
+                                  "Tidak ada informasi diteruskan"}
+                              </p>
+                              <span className="text-xs text-gray-500">
+                                {timeAgo(item.created_at)}
+                              </span>
+                            </div>
+                          ) : (
+                            <div>
+                              <h4 className="font-bold text-gray-800 text-sm">
+                                {item.message.message ||
+                                  "Tidak ada pesan layanan"}
+                              </h4>
+                              <p className="text-gray-500 text-xs mb-1">
+                                Nomor Surat : 
+                                {item.message.no_surat ||
+                                  "Tidak ada nomor surat"}
+                              </p>
+                              <p className="text-gray-500 text-xs mb-1">
+                                Perihal : 
+                                {item.message.perihal || "Tidak ada perihal"}
+                              </p>
+                              <span className="text-xs text-gray-500">
+                                {timeAgo(item.created_at)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col items-end space-y-2">
+                          <button
+                            onClick={() => {
+                              const noReg = extractNoReg(item.message.message);
+                              if (noReg) {
+                                handleMarkAsRead(item);
+                                handleDetail(noReg);
                               } else {
-                                return (
-                                  date.toLocaleDateString("id-ID", {
-                                    weekday: "long",
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }) +
-                                  ", " +
-                                  date.toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  })
+                                console.error(
+                                  "No registration number found in message:",
+                                  item.message.message
                                 );
                               }
-                            })()}
-                          </td>
-                          <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                            {item.message.type === "disposisi" ? (
-                              <div>
-                                <strong className="text-sm text-gray-700">
-                                  {item.message.message ||
-                                    "Tidak ada pesan disposisi"}
-                                  :
-                                </strong>
-                                <p className="text-sm text-gray-700">
-                                  {item.message.disposisi ||
-                                    "Tidak ada informasi"}
-                                </p>
-                                <p className="text-sm text-gray-700">
-                                  {item.message.diteruskan ||
-                                    "Tidak ada informasi"}
-                                </p>
-                                <span className="text-xs text-gray-500">
-                                  {timeAgo(item.created_at)}
-                                </span>
-                              </div>
-                            ) : (
-                              <div>
-                                <strong className="text-sm text-gray-700">
-                                  {item.message.message ||
-                                    "Tidak ada pesan layanan"}
-                                  :
-                                </strong>
-                                <p className="text-sm text-gray-700">
-                                  <strong>No Surat:</strong>{" "}
-                                  {item.message.no_surat ||
-                                    "Tidak ada nomor surat"}
-                                </p>
-                                <p className="text-sm text-gray-700">
-                                  <strong>Perihal:</strong>{" "}
-                                  {item.message.perihal || "Tidak ada perihal"}
-                                </p>
-                                <span className="text-xs text-gray-500">
-                                  {timeAgo(item.created_at)}
-                                </span>
-                              </div>
-                            )}
-                          </td>
-                          <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                            <div className="column items-center space-x-4 justify-center">
-                              {/* Tombol Mark as Viewed */}
-                              <button
-                                onClick={() => {
-                                  console.log("Item yang diklik:", item);
-                                  handleMarkAsRead(item);
-                                }}
-                                className="flex items-center space-x-2"
-                              >
-                                <i
-                                  className={`fa fa-eye ${
-                                    item.isRead ? "text-gray-400" : "text-green-600"
-                                  }`}
-                                ></i>
-                                <span
-                                  className={
-                                    item.isRead ? "text-gray-400" : "text-green-600"
-                                  }
-                                >
-                                  {item.isRead ? "Viewed" : "Mark as Viewed"}
-                                </span>
-                              </button>
-                              <button
-                                onClick={() => {
-                                  console.log("View detail untuk item:", item);
-                                  navigate(`/detail-disposisi/${item.no_reg || item.id}`);
-                                }}
-                                className="mt-1 flex items-center space-x-2 text-blue-600 hover:text-blue-800"
-                              >
-                                <i className="fa fa-info-circle"></i>
-                                <span>View Detail</span>
-                              </button>
-
-                            </div>
-                          </td>
-
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td
-                          colSpan="4"
-                          className="px-2 py-3 text-center text-xs font-medium text-gray-900 uppercase tracking-wider"
-                        >
-                          No data available
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
+                            }}
+                            className={`mt-1 flex items-center space-x-2 w-full sm:w-auto md:w-auto ${
+                              item.isRead
+                                ? "text-gray-400 cursor-not-allowed"
+                                : "text-green-600 hover:text-blue-800"
+                            }`}
+                          >
+                            <i
+                              className={`fa fa-info-circle ${
+                                item.isRead ? "text-gray-500" : "text-green-600"
+                              }`}
+                            ></i>
+                            <span
+                              className={
+                                item.isRead ? "text-gray-500" : "text-green-600"
+                              }
+                            >
+                              View Detail Disposisi
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center text-gray-500 text-sm">
+                      Tidak ada notifikasi.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

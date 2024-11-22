@@ -55,12 +55,11 @@ const LacakPermohonan = () => {
     <div>
       <Navbar />
       <Favicon />
-      <h1 className="font-family text-xl font-semibold leading-tight text-gray-800 mt-10 text-center sm:text-left">
-        DATA PERMOHONAN PELAYANAN
-      </h1>
-
-      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-        <div className="font-family bg-white shadow rounded-lg mx-8 py-8">
+      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8 mt-5">
+        <div className="font-family w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-6xl">
+          <h2 className="ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-center text-gray-800 underline h-10">
+            DATA PERMOHONAN LAYANAN
+          </h2>
           <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
