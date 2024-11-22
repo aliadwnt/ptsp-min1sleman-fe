@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from '../../images/logo_man_1.png';
+import Logo from '../../images/logo_min_1.png';
 
 const PdfTemplate = ({ data }) => {
   return (

@@ -238,11 +238,7 @@ const LayananUpdate = () => {
                     type="date"
                     name="tgl"
                     onChange={handleChange}
-                    value={
-                      formData?.tgl
-                        ? new Date(formData?.tgl).toISOString().split("T")[0]
-                        : ""
-                    }
+                    value={formData.tgl}
                   />
                 </div>
               </div>

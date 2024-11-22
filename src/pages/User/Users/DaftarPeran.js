@@ -173,7 +173,7 @@ const DaftarPeran = () => {
                                 ) : item.is_admin === 1 ? (
                                   <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">ADMIN</span>
                                 ) : (
-                                  <span className="bg-kuning-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">USER</span>
+                                  <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">USER</span>
                                 )}
                               </td>
                             </tr>

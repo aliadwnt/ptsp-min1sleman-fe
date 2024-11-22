@@ -185,7 +185,9 @@ const DaftarPengguna = () => {
               <form
                 onSubmit={handleSearch}
                 className={`flex items-center space-x-2 ${
-                  userRole === "2" ? "flex-grow justify-end" : "w-full md:w-auto"
+                  userRole === "2"
+                    ? "flex-grow justify-end"
+                    : "w-full md:w-auto"
                 }`}
               >
                 {userRole === "1" && (
@@ -219,7 +221,6 @@ const DaftarPengguna = () => {
                   } p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500`}
                   placeholder={userRole === "2" ? "Search..." : "Search..."}
                 />
-
                 {userRole === "2" && (
                   <div className="flex space-x-2">
                     <button
