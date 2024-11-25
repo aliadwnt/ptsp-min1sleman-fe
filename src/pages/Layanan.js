@@ -238,13 +238,13 @@ const Layanan = () => {
     <div className="font-family">
       <Navbar />
       <Favicon />
-      <div className="bg-blue-600"></div>
+      <div className="bg-green-600"></div>
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8 mt-5">
-          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-6xl">
-            <h2 className="ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-center text-gray-800 h-10">
-              BUAT PERMOHONAN LAYANAN
-            </h2>
+        <div className="w-full bg-white shadow-2xl rounded-xl px-8 py-10 mx-auto max-w-4xl">
+          <h2 className="text-2xl font-extrabold tracking-wide text-center text-gray-900 mb-8 uppercase">
+            Buat Permohonan Layanan
+          </h2>
             <form
               className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
               onSubmit={handleSubmit}
@@ -459,7 +459,7 @@ const Layanan = () => {
 
               <div className="pl-3 flex items-center justify-end">
                 <button
-                  className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+                  className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
                     loading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   type="submit"

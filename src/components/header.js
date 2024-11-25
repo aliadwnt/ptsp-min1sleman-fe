@@ -119,7 +119,7 @@ const UserProfileMenu = () => {
   };
   return (
     <header
-      className="sticky top-0 bg-[#11ad00] w-full px-6 flex justify-between items-center text-white z-10"
+      className="sticky top-0 bg-green-600 w-full px-6 flex justify-between items-center text-white z-10"
       style={{ paddingTop: "1.75rem", paddingBottom: "1.92rem" }}
     >
       {/* Sidebar */}

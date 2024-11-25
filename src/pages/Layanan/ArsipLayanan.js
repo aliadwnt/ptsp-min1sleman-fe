@@ -36,7 +36,7 @@ const ArsipLayanan = () => {
   };
 
   useEffect(() => {
-    document.title = `PTSP MAN 1 YOGYAKARTA - Arsip Layanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Arsip Layanan`;
     fetchData();
   }, []);
 

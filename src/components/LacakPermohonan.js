@@ -14,7 +14,7 @@ const LacakPermohonanForm = ({ onSearch, loading, error }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-100 via-blue-200 to-blue-300 rounded-lg shadow-lg p-8 max-w-xl mx-auto mt-12 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+    <div className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-lg shadow-lg p-8 max-w-xl mx-auto mt-12 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
       <div className="text-center">
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">
           Lacak Permohonan Layanan
@@ -32,12 +32,12 @@ const LacakPermohonanForm = ({ onSearch, loading, error }) => {
             type="text"
             value={no_reg}
             onChange={handleInputChange}
-            className="w-full p-3 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+            className="w-full p-3 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-green-600 focus:border-green-600 rounded-lg"
             placeholder="Masukkan No. Registrasi"
           />
           <button
             type="submit"
-            className="w-full py-3 text-white font-semibold rounded-lg bg-blue-500 hover:bg-blue-600 focus:outline-none transition duration-200"
+            className="w-full py-3 text-white font-semibold rounded-lg bg-green-600 hover:bg-green-700 focus:outline-none transition duration-200"
             disabled={loading} // Disable button during loading
           >
             {loading ? (

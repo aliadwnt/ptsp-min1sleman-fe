@@ -52,7 +52,7 @@ const LayananList = ({ unitLayanan }) => {
 
   return (
     <div id="layanan" className="mt-12 max-w-7xl mx-auto px-4">
-      <h1 className="text-3xl md:text-4xl font-semibold text-center text-blue-900 mb-8">
+      <h1 className="text-3xl md:text-4xl font-semibold text-center text-green-900 mb-8">
         Daftar Layanan PTSP MIN 1 SLEMAN
       </h1>
       {unitLayanan.length > 0 ? (
@@ -63,7 +63,7 @@ const LayananList = ({ unitLayanan }) => {
                 {unit.name}
               </h2>
               <button
-                className="flex items-center space-x-2 text-gray-600 hover:text-blue-600"
+                className="flex items-center space-x-2 text-gray-600 hover:text-green-600"
                 onClick={() => toggleUnit(unit.name)}
               >
                 <span>{openUnits[unit.name] ? "Tutup" : "Buka"}</span>
@@ -100,7 +100,7 @@ const LayananList = ({ unitLayanan }) => {
                         </div>
                         <div className="flex gap-2 w-full sm:w-auto flex-col sm:flex-row sm:gap-2 sm:mt-0">
                           <button
-                            className="btn bg-blue-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-blue-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
+                            className="btn bg-blue-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
                             onClick={() => openLayananModal(layanan)}
                           >
                             Lihat Syarat
@@ -190,8 +190,7 @@ const LayananList = ({ unitLayanan }) => {
               </ol>
 
               <div className="text-left mt-4 text-gray-500 italic text-sm">
-                *Mohon melengkapi persyaratan di atas sebelum melakukan
-                permohonan layanan.
+                *Mohon menyiapkan file berisi dokumen persyaratan diatas dengan format PDF untuk melakukan permohonan layanan.
               </div>
             </div>
 

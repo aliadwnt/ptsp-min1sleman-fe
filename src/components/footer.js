@@ -4,7 +4,7 @@ import logo from "../images/logo_min_1 copy.png";
 
 const Footer = () => {
   return (
-    <footer className="font-family bg-blue-400 text-white py-12 mt-16">
+    <footer className="font-family bg-green-700 text-white py-12 mt-16">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {/* Logo and Contact Info */}
@@ -28,27 +28,27 @@ const Footer = () => {
             <h6 className="font-bold text-lg text-white mt-10 mb-4">LINK TERKAIT</h6>
             <ul className="space-y-2">
               <li>
-                <Link to="https://min1sleman.sch.id/sejarah-pendirian/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/sejarah-pendirian/" className="hover:text-green-900">
                   Sejarah Singkat
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/visi-misi/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/visi-misi/" className="hover:text-green-900">
                   Visi Misi
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/fasilitas/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/fasilitas/" className="hover:text-green-900">
                   Sarana dan Prasarana
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/gtk/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/gtk/" className="hover:text-green-900">
                   Guru dan Staff
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/struktur-organisasi/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/struktur-organisasi/" className="hover:text-green-900">
                   Struktur MIN 1 Sleman
                 </Link>
               </li>
@@ -60,27 +60,27 @@ const Footer = () => {
           <h6 className="font-bold text-lg text-white mt-10 mb-4">WEBSITE TERKAIT</h6>
             <ul className="space-y-2">
               <li>
-                <Link to="https://idcard.min1sleman.sch.id/login" className="hover:text-blue-900">
+                <Link to="https://idcard.min1sleman.sch.id/login" className="hover:text-green-900">
                   Kartu Digital Siswa
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/e-learning-min-1-sleman/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/e-learning-min-1-sleman/" className="hover:text-green-900">
                   e-learning
                 </Link>
               </li>
               <li>
-                <Link to="https://perpusdigital.min1sleman.sch.id/" className="hover:text-blue-900">
+                <Link to="https://perpusdigital.min1sleman.sch.id/" className="hover:text-green-900">
                   Perpustakaan
                 </Link>
               </li>
               <li>
-                <Link to="https://rapordigital.min1sleman.sch.id/" className="hover:text-blue-900">
+                <Link to="https://rapordigital.min1sleman.sch.id/" className="hover:text-green-900">
                   Rapor Digital
                 </Link>
               </li>
               <li>
-                <Link to="https://min1sleman.sch.id/" className="hover:text-blue-900">
+                <Link to="https://min1sleman.sch.id/" className="hover:text-green-900">
                   Website MIN 1 SLEMAN
                 </Link>
               </li>
@@ -98,7 +98,7 @@ const Footer = () => {
       </div>
 
       {/* Footer Bottom */}
-      <div className="mt-3 bg-blue-800 py-4 text-center text-white">
+      <div className="mt-3 bg-green-800 py-4 text-center text-white">
         <p>
           © {new Date().getFullYear()} <span className="p-2 font-semibold">MIN 1 SLEMAN</span> All Rights Reserved
         </p>

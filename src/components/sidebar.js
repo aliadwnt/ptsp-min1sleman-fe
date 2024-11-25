@@ -15,8 +15,8 @@ const Sidebar = (isOpen) => {
 
   const getLinkClass = (path) => {
     return location.pathname === path
-      ? "block pl-3 pr-4 py-2 text-green-800 font-bold bg-gray-100 rounded-lg hover:shadow-md"
-      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-lg";
+      ? "block pl-3 pr-4 py-2 text-green-800 font-bold bg-green-100 rounded-lg hover:shadow-md"
+      : "block pl-3 pr-4 py-2 text-gray-500 hover:bg-green-100 hover:text-gray-700 rounded-lg";
   };
 
   const toggleDropdown = () => {
@@ -80,7 +80,7 @@ const Sidebar = (isOpen) => {
       >
         <Link
           to="/"
-          className="sidebar-header block p-4 bg-[#006747] shadow-md"
+          className="sidebar-header block p-4 shadow-md" style={{ backgroundColor: "#16A34A" }}
         >
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
           <div>
@@ -90,7 +90,7 @@ const Sidebar = (isOpen) => {
           </div>
         </Link>
         <div
-          className="overflow-y-auto h-full bg-white border-gray-300"
+          className="overflow-y-auto h-full bg-green-50 border-gray-300"  // Ubah bg-white menjadi bg-green-700
           style={{ maxHeight: "calc(100vh - 56px)" }}
         >
           <div className="block w-full pl-3 pr-4 py-3 text-gray-300">
@@ -125,7 +125,7 @@ const Sidebar = (isOpen) => {
               onMouseLeave={() => setOpenDropdown(null)}
               ref={dropdownRef}
             >
-              <div className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-gray-100 w-full text-left cursor-pointer">
+              <div className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-green-100 w-full text-left cursor-pointer">
                 <i className="fas fa-envelope mr-2"></i> Surat Menyurat
               </div>
 

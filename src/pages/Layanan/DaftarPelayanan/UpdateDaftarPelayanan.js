@@ -268,7 +268,7 @@ const LayananUpdate = () => {
                   </label>
                   <input
                     className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
-                    name="tgl"
+                    name="no_hp"
                     type="tel"
                     value={formData.no_hp}
                     onChange={handleChange}

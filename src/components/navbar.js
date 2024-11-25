@@ -71,7 +71,7 @@ const Navbar = () => {
           className={`flex flex-col gap-2 my-2 font-poppins transition-colors duration-300 ease-in-out ${
             location.pathname === path
               ? isMobile
-                ? "text-blue-600 font-bold"
+                ? "text-green-600 font-bold"
                 : "text-white font-bold"
               : isMobile
               ? "text-gray-800 cursor-pointer hover:text-blue-500"
@@ -85,7 +85,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 shadow-lg">
+    <nav className="bg-green-700 shadow-lg">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex items-center space-x-3">
           <img src={logo} alt="PTSP Logo" className="w-12 h-12 rounded-full" />

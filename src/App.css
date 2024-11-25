@@ -97,7 +97,7 @@ html, body {
 }
 .ptsp,
 .man-1 {
-  color: #1875ff;
+  color: #11ad00;
   font-family: "Poppins", sans-serif;
   font-weight: auto; 
   -webkit-text-stroke: 2px #ffffff;
@@ -133,14 +133,17 @@ html, body {
   font-size: 25px;
   font-weight: 400;
   margin-top: 1rem;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7); /* Bayangan teks */
 }
 
 @media (max-width: 641px) {
-.pelayanan-terpadu-satu-pintu{
-  padding-top: 0%;
+  .pelayanan-terpadu-satu-pintu {
+    padding-top: 0%;
     font-size: 10px; 
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Bayangan lebih kecil untuk layar kecil */
   }
 }
+
 
 .box {
   display: flex;

@@ -143,7 +143,7 @@ const LacakBerkas = () => {
       <Navbar />
       <Favicon />
       <div className="BodyLacakBerkas">
-        <div className="bg-blue-600"></div>
+        <div className="bg-green-600"></div>
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="max-w-7xl mx-auto bg-white p-7 rounded-lg shadow-lg">
             {/* Search Bar */}
@@ -157,7 +157,7 @@ const LacakBerkas = () => {
               />
               <button
                 onClick={handleSearch}
-                className="mx-3 w-1/2 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700"
+                className="mx-3 w-1/2 bg-green-500 text-white py-2 rounded-lg hover:bg-green-700"
               >
                 Cari
               </button>
@@ -165,7 +165,7 @@ const LacakBerkas = () => {
 
             <div className="flex flex-col md:flex-row gap-8">
               <div className="w-full md:w-2/3 bg-white-100 p-4 rounded-lg shadow-lg">
-                <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
+                <h2 className="text-xl font-bold mb-3 p-3 bg-green-100">
                   <div className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -176,10 +176,10 @@ const LacakBerkas = () => {
                     >
                       <path
                         d="M15 2.375C13.8188 2.375 12.9844 3.20937 12.5719 4.25H4.6875V27.6875H25.3125V4.25H17.4281C17.0156 3.20937 16.1812 2.375 15 2.375ZM15 4.25C15.5156 4.25 15.9375 4.67188 15.9375 5.1875V6.125H18.75V8H11.25V6.125H14.0625V5.1875C14.0625 4.67188 14.4844 4.25 15 4.25ZM6.5625 6.125H9.375V9.875H20.625V6.125H23.4375V25.8125H6.5625V6.125ZM8.4375 12.6875V14.5625H10.3125V12.6875H8.4375ZM12.1875 12.6875V14.5625H21.5625V12.6875H12.1875ZM8.4375 16.4375V18.3125H10.3125V16.4375H8.4375ZM12.1875 16.4375V18.3125H21.5625V16.4375H12.1875ZM8.4375 20.1875V22.0625H10.3125V20.1875H8.4375ZM12.1875 20.1875V22.0625H21.5625V20.1875H12.1875Z"
-                        fill="#1D8BE5"
+                        fill="#32CD32"
                       />
                     </svg>
-                    <span className="text-blue-500 title mx-2">
+                    <span className="text-green-500 title mx-2">
                       Lacak Permohonan Layanan
                     </span>
                   </div>
@@ -340,7 +340,7 @@ const LacakBerkas = () => {
                 <div>
                   {daftarDisposisi && daftarDisposisi.length > 0 && (
                     <div>
-                      <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100">
+                      <h2 className="text-xl font-bold mb-3 p-3 bg-green-100">
                         <div className="flex items-center">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -351,10 +351,10 @@ const LacakBerkas = () => {
                           >
                             <path
                               d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                              fill="#1D8BE5"
+                              fill="#32CD32"
                             />
                           </svg>
-                          <span className="text-blue-500 title mx-2">
+                          <span className="text-green-500 title mx-2">
                             Riwayat Disposisi
                           </span>
                         </div>
@@ -364,18 +364,23 @@ const LacakBerkas = () => {
                         <div className="bg-white shadow-md rounded-lg p-6">
                           <ul class="timeline">
                             {daftarDisposisi.map((item, index) => (
-                              <li className="timeline-item" key={index}>
-                                <div className="timeline-content">
-                                  <div className="time">
-                                    {new Date(item.time).toLocaleString()}
-                                  </div>
-                                  <div className="name">{item.diteruskan}</div>
-                                  <div className="position">
-                                    {item.keterangan}
-                                  </div>
-                                  <div className="note">{item.disposisi}</div>
-                                </div>
-                              </li>
+                              <div className="timeline-container max-h-96 overflow-y-auto">
+                              <ul className="timeline">
+                                {Array.isArray(daftarDisposisi) &&
+                                  daftarDisposisi.map((item, index) => (
+                                    <li className="timeline-item" key={index}>
+                                      <div className="timeline-content">
+                                        <div className="time">
+                                          {new Date(item.time).toLocaleString()}
+                                        </div>
+                                        <div className="name">{item.diteruskan}</div>
+                                        <div className="position">{item.keterangan}</div>
+                                        <div className="note">{item.disposisi}</div>
+                                      </div>
+                                    </li>
+                                  ))}
+                              </ul>
+                            </div>                            
                             ))}
                           </ul>
                         </div>
@@ -384,7 +389,7 @@ const LacakBerkas = () => {
                   )}
 
                   <div className="bg-white shadow-md rounded-lg p-6 mt-2">
-                    <h2 className="text-xl font-bold mb-3 p-3 bg-blue-100 ">
+                    <h2 className="text-xl font-bold mb-3 p-3 bg-green-100 ">
                       <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -395,10 +400,10 @@ const LacakBerkas = () => {
                         >
                           <path
                             d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                            fill="#1D8BE5"
+                            fill="#32CD32"
                           />
                         </svg>
-                        <span className="text-blue-500 title mx-2">
+                        <span className="text-green-500 title mx-2">
                           Arsip Layanan
                         </span>
                       </div>
@@ -414,7 +419,7 @@ const LacakBerkas = () => {
                             onClick={() =>
                               window.open(arsipLayanan.arsip_masuk, "_blank")
                             }
-                            className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                            className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition w-full"
                           >
                             Lihat Dokumen
                           </button>
@@ -438,7 +443,7 @@ const LacakBerkas = () => {
                             onClick={() =>
                               window.open(arsipLayanan.arsip_keluar, "_blank")
                             }
-                            className="bg-blue-500 text-white font-bold py-1 px-2 rounded hover:bg-blue-700 transition w-full"
+                            className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition w-full"
                           >
                             Lihat Dokumen
                           </button>
@@ -450,6 +455,35 @@ const LacakBerkas = () => {
                             Tidak Tersedia
                           </button>
                         )}
+                      </div>
+                    </div>
+
+                  <div>
+                    <div>
+                      <h2 className="text-xl font-bold mb-3 mt-4 p-3 bg-green-100">
+                        <div className="flex items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            viewBox="0 0 30 30"
+                            fill="none"
+                          >
+                            <path
+                              d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
+                              fill="#2BB02B"
+                            />
+                          </svg>
+                          <span className="text-green-500 title mx-2">
+                            Output Pelayanan
+                          </span>
+                        </div>
+                      </h2>
+                      <div className="grid place-items-center">
+                        <button className="bg-green-500 text-white font-bold py-2 px-4 text-center rounded hover:bg-green-700 transition">
+                          Lihat Output Pelayanan
+                        </button>
+                       </div>
                       </div>
                     </div>
                   </div>

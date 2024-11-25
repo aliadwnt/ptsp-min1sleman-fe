@@ -96,7 +96,7 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Email"
               required
             />
@@ -107,14 +107,14 @@ const LoginForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-blue-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Password"
               required
             />
           </div>
           <button
             type="submit"
-            className="font-family mt-3 w-full py-2 bg-blue-500 text-white font-semibold rounded transition-all duration-300 ease-in-out transform hover:bg-blue-700 hover:scale-105"
+            className="font-family mt-3 w-full py-2 bg-green-500 text-white font-semibold rounded transition-all duration-300 ease-in-out transform hover:bg-green-700 hover:scale-105"
           >
             Login
           </button>
@@ -123,7 +123,7 @@ const LoginForm = () => {
             onClick={() => navigate("/register")}
           >
             Belum punya akun?{" "}
-            <span className="text-blue-500 hover:underline">
+            <span className="text-green-500 hover:underline">
               Daftar di sini
             </span>
           </div>

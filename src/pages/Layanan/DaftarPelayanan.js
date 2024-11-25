@@ -338,7 +338,7 @@ const DaftarPelayanan = () => {
 
                 <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-4 sm:mb-1 mr-auto">
                   <ul
-                    className="flex flex-wrap justify-center w-full text-sm font-medium text-center space-x-4"
+                    className="flex flex-wrap justify-center w-full text-sm font-medium text-center space-x-2"
                     id="default-tab"
                     data-tabs-toggle="#default-tab-content"
                     role="tablist"
@@ -357,7 +357,7 @@ const DaftarPelayanan = () => {
                         role="presentation"
                       >
                         <div
-                          className={`bg-slate-50 p-2 rounded-lg shadow-sm flex flex-col items-center transition-all duration-300 focus:outline-none hover:bg-slate-100 ${
+                          className={`bg-white p-2 rounded-lg flex flex-col items-center transition-all duration-300 focus:outline-none hover:bg-slate-50 ${
                             activeTab === tab
                               ? "text-green-900 font-semibold shadow-lg"
                               : "text-gray-600 hover:text-green-700"
@@ -437,7 +437,6 @@ const DaftarPelayanan = () => {
                             </td>
                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <div className="flex justify-center space-x-2">
-                                {/* Action Buttons */}
                                 <button
                                   onClick={() => handlePreview(item)}
                                   className="focus:outline-none"
@@ -555,7 +554,6 @@ const DaftarPelayanan = () => {
             </div>
           </div>
 
-          {/* Modal */}
           {modalOpen && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white rounded-lg shadow-lg p-6 w-50">
