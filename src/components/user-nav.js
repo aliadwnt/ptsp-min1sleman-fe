@@ -26,8 +26,11 @@ const Navbar = () => {
             console.log("User logged out");
             localStorage.removeItem('name');
             localStorage.removeItem('email');
+            localStorage.removeItem("token");
+            localStorage.removeItem("userRole");
+      
             setUser(null);
-            navigate('/login');
+            window.location.href = "/login";
         } catch (error) {
             console.error("Failed to logout:", error);
         }
@@ -108,7 +111,7 @@ const Navbar = () => {
                     <div className="flex items-center px-4">
                         {user ? (
                             <div>
-                                <div className="text-base font-medium text-gray-800">{user.name}</div> {/* Menampilkan nama lengkap pengguna */}
+                                <div className="text-base font-medium text-gray-800">{user.name}</div>
                                 <div className="text-sm font-medium text-gray-500">{user.email}</div> 
                             </div>
                         ) : (

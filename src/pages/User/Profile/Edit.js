@@ -6,42 +6,46 @@ import UpdatePassword from "./partials/update-password";
 import DeleteAccount from "./partials/delete-account";
 import "../../../App.css";
 import Favicon from "../../../components/Favicon";
+import { UserIcon } from "@heroicons/react/24/solid";
 
-const Profile = ({}) => {
+const Profile = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Edit Profile`;
   }, []);
-  
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 pb-0 m-0een bg-gray-200 pb-0 m-0een bg-gray-200 pb-0 m-0 flex relative">
-      <Favicon/>
+    <div className="select-none min-h-screen bg-gray-50 pb-0 m-0 flex relative">
+      <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
-        <Sidebar toggleSidebar={toggleSidebar} />{" "}
+        <Sidebar toggleSidebar={toggleSidebar} />
       </div>
+
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${
           isSidebarOpen ? "lg:ml-64" : "ml-0"
         } pl-4 lg:pl-64`}
       >
         <Header />
-        <div className="min-h-screen bg-gray-100 pb-0 m-0">
-          <div className="text-xl mt-2 ml-16 font-semibold leading-5 text-gray-800 pt-4 pb-4 px-2 dark:text-gray-900">Profile</div>
-          <div>
-            <form></form>
+        <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-auto">
+          <div className="bg-white shadow-lg rounded-lg p-6 w-full mx-auto">
+            <div className="flex items-center border-b border-gray-300 pb-4 mb-6">
+              <UserIcon className="w-8 h-8 text-gray-800 mr-3" />
+              <h1 className="text-xl font-semibold text-gray-800">Edit Profile</h1>
+            </div>
+            <UpdateProfile />
+            <UpdatePassword />
+            <DeleteAccount />
           </div>
-          <UpdateProfile />
-          <UpdatePassword />
-          <DeleteAccount />
         </div>
       </div>
     </div>

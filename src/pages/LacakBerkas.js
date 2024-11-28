@@ -8,6 +8,12 @@ import {
 } from "../services/lacakBerkasService";
 import { fetchDaftarDisposisiByNoReg } from "../services/daftarDisposisiService";
 import Favicon from "../components/Favicon";
+import { 
+  InformationCircleIcon, 
+  ExclamationCircleIcon, 
+  ClipboardDocumentListIcon,  
+  ClockIcon 
+} from '@heroicons/react/24/outline';
 
 const LacakBerkas = () => {
   const [no_reg, setNoReg] = useState("");
@@ -139,15 +145,13 @@ const LacakBerkas = () => {
   };
 
   return (
-    <div className="font-poppins">
+    <div className="font-family">
       <Navbar />
       <Favicon />
-      <div className="BodyLacakBerkas">
         <div className="bg-green-600"></div>
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="max-w-7xl mx-auto bg-white p-7 rounded-lg shadow-lg">
-            {/* Search Bar */}
-            <div className="mb-6 flex">
+            <div className="select-none mb-6 flex">
               <input
                 type="text"
                 value={no_reg}
@@ -157,7 +161,7 @@ const LacakBerkas = () => {
               />
               <button
                 onClick={handleSearch}
-                className="mx-3 w-1/2 bg-green-500 text-white py-2 rounded-lg hover:bg-green-700"
+                className="mx-3 w-1/2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 select-none"
               >
                 Cari
               </button>
@@ -167,19 +171,8 @@ const LacakBerkas = () => {
               <div className="w-full md:w-2/3 bg-white-100 p-4 rounded-lg shadow-lg">
                 <h2 className="text-xl font-bold mb-3 p-3 bg-green-100">
                   <div className="flex items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="30"
-                      height="31"
-                      viewBox="0 0 30 31"
-                      fill="none"
-                    >
-                      <path
-                        d="M15 2.375C13.8188 2.375 12.9844 3.20937 12.5719 4.25H4.6875V27.6875H25.3125V4.25H17.4281C17.0156 3.20937 16.1812 2.375 15 2.375ZM15 4.25C15.5156 4.25 15.9375 4.67188 15.9375 5.1875V6.125H18.75V8H11.25V6.125H14.0625V5.1875C14.0625 4.67188 14.4844 4.25 15 4.25ZM6.5625 6.125H9.375V9.875H20.625V6.125H23.4375V25.8125H6.5625V6.125ZM8.4375 12.6875V14.5625H10.3125V12.6875H8.4375ZM12.1875 12.6875V14.5625H21.5625V12.6875H12.1875ZM8.4375 16.4375V18.3125H10.3125V16.4375H8.4375ZM12.1875 16.4375V18.3125H21.5625V16.4375H12.1875ZM8.4375 20.1875V22.0625H10.3125V20.1875H8.4375ZM12.1875 20.1875V22.0625H21.5625V20.1875H12.1875Z"
-                        fill="#32CD32"
-                      />
-                    </svg>
-                    <span className="text-green-500 title mx-2">
+                  <ClipboardDocumentListIcon className="h-8 w-8 text-green-600" />
+                    <span className="text-green-600 title mx-2 select-none">
                       Lacak Permohonan Layanan
                     </span>
                   </div>
@@ -188,7 +181,7 @@ const LacakBerkas = () => {
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="register"
                       >
                         No Registrasi
@@ -202,7 +195,7 @@ const LacakBerkas = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="layanan"
                       >
                         Nama Layanan
@@ -217,7 +210,7 @@ const LacakBerkas = () => {
                   </div>
                   <div className="w-full mb-6">
                     <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                       htmlFor="perihal"
                     >
                       Perihal
@@ -232,7 +225,7 @@ const LacakBerkas = () => {
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="pemohon"
                       >
                         Nama Pemohon
@@ -246,7 +239,7 @@ const LacakBerkas = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="alamat"
                       >
                         Alamat
@@ -262,7 +255,7 @@ const LacakBerkas = () => {
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="noHp"
                       >
                         No. HP
@@ -276,7 +269,7 @@ const LacakBerkas = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="pengirim"
                       >
                         Nama Pengirim
@@ -291,7 +284,7 @@ const LacakBerkas = () => {
                   </div>
                   <div className="w-full mb-6">
                     <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                       htmlFor="kelengkapan"
                     >
                       Kelengkapan
@@ -306,7 +299,7 @@ const LacakBerkas = () => {
                   <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="status"
                       >
                         Status
@@ -320,7 +313,7 @@ const LacakBerkas = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="catatan"
                       >
                         Catatan
@@ -342,19 +335,8 @@ const LacakBerkas = () => {
                     <div>
                       <h2 className="text-xl font-bold mb-3 p-3 bg-green-100">
                         <div className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30"
-                            height="30"
-                            viewBox="0 0 30 30"
-                            fill="none"
-                          >
-                            <path
-                              d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                              fill="#32CD32"
-                            />
-                          </svg>
-                          <span className="text-green-500 title mx-2">
+                        <ClockIcon className="h-8 w-8 text-green-600" />
+                          <span className="text-green-600 title mx-2">
                             Riwayat Disposisi
                           </span>
                         </div>
@@ -391,19 +373,8 @@ const LacakBerkas = () => {
                   <div className="bg-white shadow-md rounded-lg p-6 mt-2">
                     <h2 className="text-xl font-bold mb-3 p-3 bg-green-100 ">
                       <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="30"
-                          height="30"
-                          viewBox="0 0 30 30"
-                          fill="none"
-                        >
-                          <path
-                            d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                            fill="#32CD32"
-                          />
-                        </svg>
-                        <span className="text-green-500 title mx-2">
+                      <ExclamationCircleIcon className="h-8 w-8 text-green-600" />
+                        <span className="text-green-600 title mx-2 select-none">
                           Arsip Layanan
                         </span>
                       </div>
@@ -411,7 +382,7 @@ const LacakBerkas = () => {
                     <div className="flex justify-between w-full mt-1 px-2">
                       {/* Arsip Masuk */}
                       <div className="w-1/2 pr-2">
-                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                        <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                           Arsip Masuk
                         </label>
                         {arsipLayanan.arsip_masuk ? (
@@ -435,7 +406,7 @@ const LacakBerkas = () => {
 
                       {/* Arsip Keluar */}
                       <div className="w-1/2 pl-2">
-                        <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                        <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                           Arsip Keluar
                         </label>
                         {arsipLayanan.arsip_keluar ? (
@@ -462,25 +433,14 @@ const LacakBerkas = () => {
                     <div>
                       <h2 className="text-xl font-bold mb-3 mt-4 p-3 bg-green-100">
                         <div className="flex items-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="30"
-                            height="30"
-                            viewBox="0 0 30 30"
-                            fill="none"
-                          >
-                            <path
-                              d="M15 1C7.16344 1 1 7.16344 1 15C1 22.8366 7.16344 29 15 29C22.8366 29 29 22.8366 29 15C29 7.16344 22.8366 1 15 1ZM15 27C8.373 27 3 21.627 3 15C3 8.373 8.373 3 15 3C21.627 3 27 8.373 27 15C27 21.627 21.627 27 15 27ZM15 7H17V15H10V13H15V7ZM15 21H17V19H15V21Z"
-                              fill="#2BB02B"
-                            />
-                          </svg>
-                          <span className="text-green-500 title mx-2">
+                        <InformationCircleIcon className="h-8 w-8 text-green-600" />
+                          <span className="text-green-600 title mx-2 select-none">
                             Output Pelayanan
                           </span>
                         </div>
                       </h2>
                       <div className="grid place-items-center">
-                        <button className="bg-green-500 text-white font-bold py-2 px-4 text-center rounded hover:bg-green-700 transition">
+                        <button className="bg-green-600 text-white font-bold py-2 px-4 text-center rounded hover:bg-green-700 transition">
                           Lihat Output Pelayanan
                         </button>
                        </div>
@@ -492,8 +452,6 @@ const LacakBerkas = () => {
             </div>
           </div>
         </div>
-      </div>
-
       <Footer />
     </div>
   );

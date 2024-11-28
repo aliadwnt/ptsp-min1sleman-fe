@@ -39,7 +39,7 @@ const UserProfileMenu = () => {
           const currentTime = Math.floor(Date.now() / 1000);
           if (exp < currentTime) {
             localStorage.removeItem("token");
-            navigate("/login");
+            window.location.href = "/login";
             return;
           }
           const data = await getUserById(userId);
@@ -95,12 +95,17 @@ const UserProfileMenu = () => {
   const handleLogout = async () => {
     try {
       await logoutPengguna();
+  
       localStorage.removeItem("token");
-      navigate("/login");
+      localStorage.removeItem("userRole");
+
+      window.location.href = "/login"; 
     } catch (error) {
-      console.error("Failed to log out:", error);
+      console.error("Gagal logout:", error.message);
+      alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
     }
   };
+  
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
     let interval = Math.floor(seconds / 31536000);
@@ -119,10 +124,9 @@ const UserProfileMenu = () => {
   };
   return (
     <header
-      className="sticky top-0 bg-green-600 w-full px-6 flex justify-between items-center text-white z-10"
+      className="select-none sticky top-0 bg-green-600 w-full px-6 flex justify-between items-center text-white z-10"
       style={{ paddingTop: "1.75rem", paddingBottom: "1.92rem" }}
     >
-      {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"

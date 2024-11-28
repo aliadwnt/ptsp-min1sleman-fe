@@ -11,6 +11,7 @@ import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
 import { uploadSingle } from "../../services/uploadService";
 import "../../App.css";
 import Favicon from "../../components/Favicon";
+import { ArrowUpTrayIcon, EyeIcon } from "@heroicons/react/24/outline";
 
 const ArsipLayanan = () => {
   const [dataArsipLayanan, setDataArsipLayanan] = useState([]);
@@ -206,7 +207,7 @@ const ArsipLayanan = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -232,7 +233,7 @@ const ArsipLayanan = () => {
         )}
 
         <div className="p-4">
-          <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
+          <div className="select-none w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-4">
               <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
                 <i className="fas fa-archive mr-2"></i> Daftar Arsip Layanan
@@ -262,6 +263,13 @@ const ArsipLayanan = () => {
                   className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search..."
                 />
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                >
+                  <i className="fas fa-sync-alt text-xs"></i>
+                </button>
               </form>
             </div>
 
@@ -310,15 +318,16 @@ const ArsipLayanan = () => {
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.perihal}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               {item.arsip_masuk ? (
                                 <>
                                   <a
                                     href={item.arsip_masuk}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
                                   >
+                                    <EyeIcon className="w-3 h-3" />
                                     Preview
                                   </a>
                                   <input
@@ -354,22 +363,23 @@ const ArsipLayanan = () => {
                                       border: "none",
                                       padding: 0,
                                     }}
-                                    aria-label="Delete"
+                                    aria-label="Upload"
                                   >
-                                    <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                    <ArrowUpTrayIcon className="w-4 h-4 text-green-600 hover:text-green-900" />
                                   </button>
                                 </>
                               )}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               {item.arsip_keluar ? (
                                 <>
                                   <a
                                     href={item.arsip_keluar}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-green-800 hover:bg-green-600 block uppercase tracking-wide text-gray-100 text-xs font-bold mb-2"
+                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
                                   >
+                                    <EyeIcon className="w-3 h-3" />
                                     Preview
                                   </a>
 
@@ -406,14 +416,14 @@ const ArsipLayanan = () => {
                                       border: "none",
                                       padding: 0,
                                     }}
-                                    aria-label="Delete"
+                                    aria-label="Upload"
                                   >
-                                    <i className="fas fa-upload text-green-600 hover:text-green-900"></i>
+                                    <ArrowUpTrayIcon className="w-4 h-4 text-green-600 hover:text-green-900" />
                                   </button>
                                 </>
                               )}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <i className={getStatusIcon(item.status)}></i>
                               <span className="ml-2">{item.status}</span>
                             </td>

@@ -34,7 +34,7 @@ const JenisLayanan = () => {
   };
 
   useEffect(() => {
-    document.title = `PTSP MIN 1 SLEMAN - Daftar Jenis Layanan`;
+    document.title = `PTSP MIN 1 SLEMAN - Jenis Layanan`;
     fetchData();
   }, []);
 
@@ -177,7 +177,7 @@ const JenisLayanan = () => {
             {message.text}
           </div>
         )}
-        <div className="p-4">
+        <div className="select-none p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
               <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">

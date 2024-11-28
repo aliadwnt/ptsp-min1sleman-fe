@@ -14,27 +14,29 @@ const LacakPermohonanForm = ({ onSearch, loading, error }) => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-lg shadow-lg p-8 max-w-xl mx-auto mt-12 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+    <div className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 rounded-xl shadow-lg p-6 max-w-md mx-auto mt-8 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
       <div className="text-center">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+        <h1 className="text-2xl font-bold text-white mb-4 select-none">
           Lacak Permohonan Layanan
         </h1>
-        <p className="text-m text-gray-600 mb-6">
-          Masukkan No. Registrasi untuk melacak Permohonan
+        <p className="text-xs text-white mb-6">
+          Masukkan No. Registrasi untuk melacak Permohonan Anda
         </p>
-        {error && <p className="text-red-500 mb-4">{error}</p>}{" "}
+        {error && <p className="text-red-500 mb-4">{error}</p>} 
         {/* Display error message if any */}
         <form
           onSubmit={handleFormSubmit}
-          className="space-y-4 bg-white shadow-md rounded-lg p-6"
+          className="space-y-6 bg-white shadow-md rounded-sm p-6"
         >
-          <input
-            type="text"
-            value={no_reg}
-            onChange={handleInputChange}
-            className="w-full p-3 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-green-600 focus:border-green-600 rounded-lg"
-            placeholder="Masukkan No. Registrasi"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={no_reg}
+              onChange={handleInputChange}
+              className="w-full p-4 text-sm text-gray-900 border border-gray-300 bg-gray-50 focus:ring-2 focus:ring-green-600 focus:border-green-600 rounded-sm"
+              placeholder="Masukkan No. Registrasi"
+            />
+          </div>
           <button
             type="submit"
             className="w-full py-3 text-white font-semibold rounded-lg bg-green-600 hover:bg-green-700 focus:outline-none transition duration-200"

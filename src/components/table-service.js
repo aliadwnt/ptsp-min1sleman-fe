@@ -40,7 +40,7 @@ const TableService = () => {
   }, []);
 
   return (
-    <div className="bg-white shadow-lg rounded-lg w-full p-6 mx-2">
+    <div className="select-none bg-white shadow-lg rounded-lg w-full p-6 mx-2">
       <b className="text-xl text-gray-900">Tabel Pelayanan</b>
       <div className="overflow-x-auto mt-4">
         <div className="inline-block min-w-full py-2 align-middle">

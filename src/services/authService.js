@@ -28,6 +28,7 @@ const login = async (email, password) => {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('name', response.data.user.name);
             localStorage.setItem('email', response.data.user.email);
+            localStorage.setItem('is_admin', response.data.user.is_admin);
         }
 
         return response.data;
@@ -40,6 +41,7 @@ const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('name');
     localStorage.removeItem('email');
+    localStorage.removeItem('is_admin');
 };
 
 const isAuthenticated = () => {

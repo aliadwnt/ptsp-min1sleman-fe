@@ -87,7 +87,7 @@ const LayananList = ({ unitLayanan }) => {
             </div>
 
             {openUnits[unit.name] && (
-              <div className="mt-6 space-y-6">
+              <div className="select-none mt-6 space-y-6">
                 {unit.layanan.length > 0 ? (
                   unit.layanan.map((layanan) => (
                     <div

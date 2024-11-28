@@ -56,7 +56,7 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    document.title = "PTSP MIN 1 SLEMAN - Home";
+    document.title = "PTSP MIN 1 SLEMAN - Beranda";
     fetchData();
   }, [id]);
 
@@ -83,7 +83,7 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className="select-none">
       <Navbar />
       <Favicon />
       <Jumbotron />

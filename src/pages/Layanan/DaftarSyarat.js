@@ -287,7 +287,7 @@ const DaftarSyarat = () => {
           </div>
         )}
 
-        <div className="p-4">
+        <div className="select-none p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="text-xl font-semibold text-gray-800 mb-2 md:mb-0">
               <i className="fas fa-list-alt mr-2"></i> Daftar Syarat{" "}
@@ -318,14 +318,6 @@ const DaftarSyarat = () => {
                     </option>
                   )}
                 </select>
-
-                <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
-                >
-                  <i className="fas fa-sync-alt text-sm"></i>
-                </button>
               </div>
               <div className="flex items-center space-x-2 w-full md:w-auto">
                 <svg
@@ -349,6 +341,13 @@ const DaftarSyarat = () => {
                   className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search..."
                 />
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="ml-2 mr-2 flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                >
+                  <i className="fas fa-sync-alt text-sm"></i>
+                </button>
               </div>
             </form>
 
@@ -511,7 +510,7 @@ const DaftarSyarat = () => {
                           <div className="space-y-4">
                             <div>
                               <label
-                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                                 htmlFor="unit"
                               >
                                 Nama Layanan
@@ -527,7 +526,7 @@ const DaftarSyarat = () => {
 
                             <div>
                               <label
-                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                                 htmlFor="unit"
                               >
                                 Unit Pengolah
@@ -543,7 +542,7 @@ const DaftarSyarat = () => {
 
                             <div>
                               <label
-                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                                 htmlFor="jenis"
                               >
                                 Jenis
@@ -559,7 +558,7 @@ const DaftarSyarat = () => {
 
                             <div>
                               <label
-                                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                                 htmlFor="daftar_syarat"
                               >
                                 Daftar Syarat
@@ -603,7 +602,7 @@ const DaftarSyarat = () => {
                           </div>
 
                           <div className="md:col-span-1 mt-6 md:mt-0">
-                            <h3 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                            <h3 className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                               Daftar Syarat Layanan
                             </h3>
                             <table className="min-w-full bg-white border border-gray-300">
@@ -647,9 +646,9 @@ const DaftarSyarat = () => {
                                   <tr>
                                     <td
                                       colSpan="3"
-                                      className="px-4 py-2 border border-gray-300 text-center"
+                                      className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                      Tidak ada syarat ditambahkan
+                                        Belum ada daftar syarat yang ditambahkan
                                     </td>
                                   </tr>
                                 )}

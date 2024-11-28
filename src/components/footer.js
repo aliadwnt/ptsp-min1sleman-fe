@@ -4,7 +4,7 @@ import logo from "../images/logo_min_1 copy.png";
 
 const Footer = () => {
   return (
-    <footer className="font-family bg-green-700 text-white py-12 mt-16">
+    <footer className="select-none font-family bg-green-700 text-white py-12 mt-16">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {/* Logo and Contact Info */}

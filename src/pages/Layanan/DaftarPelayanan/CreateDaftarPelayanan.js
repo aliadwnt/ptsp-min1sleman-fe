@@ -129,7 +129,7 @@ const Layanan = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* NOMOR REGISTRASI */}
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     NOMOR REGISTRASI
                   </label>
                   <input
@@ -145,7 +145,7 @@ const Layanan = () => {
 
                 {/* Nama Layanan */}
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Nama Layanan
                   </label>
                   <select
@@ -166,7 +166,7 @@ const Layanan = () => {
 
                 {/* Perihal */}
                 <div className="md:col-span-2">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Perihal
                   </label>
                   <input
@@ -182,7 +182,7 @@ const Layanan = () => {
 
                 {/* No. Surat dan Tanggal */}
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     NOMOR SURAT PERMOHONAN
                   </label>
                   <input
@@ -197,7 +197,7 @@ const Layanan = () => {
                   />
                 </div>
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Tanggal Surat Permohonan
                   </label>
                   <input
@@ -212,7 +212,7 @@ const Layanan = () => {
 
                 {/* Nama Pemohon dan Nomor HP */}
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Nama Pemohon
                   </label>
                   <input
@@ -226,7 +226,7 @@ const Layanan = () => {
                   />
                 </div>
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Nomor Handphone
                   </label>
                   <input
@@ -242,7 +242,7 @@ const Layanan = () => {
 
                 {/* Alamat dan Nama Pengirim */}
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Alamat
                   </label>
                   <input
@@ -256,7 +256,7 @@ const Layanan = () => {
                   />
                 </div>
                 <div>
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Nama Pengirim
                   </label>
                   <input
@@ -272,7 +272,7 @@ const Layanan = () => {
 
                 {/* File Upload */}
                 <div className="md:col-span-2">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     File Lampiran
                   </label>
                   <input
@@ -286,7 +286,7 @@ const Layanan = () => {
 
                 {/* Catatan */}
                 <div className="md:col-span-2">
-                  <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     Catatan
                   </label>
                   <textarea

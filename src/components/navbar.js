@@ -22,7 +22,7 @@ const Navbar = () => {
         const currentTime = Date.now() / 1000;
         if (exp < currentTime) {
           localStorage.removeItem("token");
-          navigate("/login");
+          window.location.href = "/login";
           return;
         }
 
@@ -47,7 +47,8 @@ const Navbar = () => {
     try {
       await logoutPengguna();
       localStorage.removeItem("token");
-      navigate("/login");
+      localStorage.removeItem("userRole");
+      window.location.href = "/login";
     } catch (error) {
       console.error("Failed to log out:", error);
     }
@@ -85,7 +86,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-green-700 shadow-lg">
+    <nav className="bg-green-700 shadow-lg select-none">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex items-center space-x-3">
           <img src={logo} alt="PTSP Logo" className="w-12 h-12 rounded-full" />

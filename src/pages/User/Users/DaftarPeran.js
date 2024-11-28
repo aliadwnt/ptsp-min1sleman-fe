@@ -75,7 +75,7 @@ const DaftarPeran = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col m-0 p-0 relative">
+    <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -122,6 +122,13 @@ const DaftarPeran = () => {
                   className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Search..."
                 />  
+                  <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                >
+                  <i className="fas fa-sync-alt text-xs"></i>
+                </button>
               </form>
               </div>
 

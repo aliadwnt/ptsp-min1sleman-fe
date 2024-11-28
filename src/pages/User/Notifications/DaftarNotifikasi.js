@@ -58,7 +58,6 @@ const Notifications = () => {
 
   const handleMarkAllAsRead = async () => {
     try {
-      // Panggil API untuk menandai semua notifikasi sebagai sudah dibaca
       const unreadNotifications = notifications.filter((notif) => !notif.isRead);
       const promises = unreadNotifications.map((notif) =>
         markNotificationAsRead(notif.id)
@@ -66,7 +65,6 @@ const Notifications = () => {
   
       await Promise.all(promises);
   
-      // Update state
       setNotifications((prevNotifications) =>
         prevNotifications.map((notif) => ({ ...notif, isRead: true }))
       );
@@ -95,7 +93,7 @@ const Notifications = () => {
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col relative">
+    <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col relative">
       <Favicon />
       {/* Sidebar */}
       <div
@@ -117,16 +115,23 @@ const Notifications = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="bg-white shadow-lg rounded-lg px-6 py-8">
-                {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold text-gray-800">
                     <i className="fas fa-list mr-2"></i> Daftar Notifikasi
                   </h2>
+                  <div className="flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                  >
+                    <i className="fas fa-sync-alt text-xs"></i>
+                  </button>
                   <button
                     onClick={handleMarkAllAsRead}
                     className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-transform duration-300 shadow-lg transform ${
                       notifications.some((notif) => !notif.isRead)
-                        ? "bg-green-500 hover:bg-green-600 text-white"
+                        ? "bg-green-600 hover:bg-green-700 text-white"
                         : "bg-gray-300 text-gray-400 cursor-not-allowed"
                     } ${notifications.some((notif) => !notif.isRead) && "hover:scale-105"}`}
                     disabled={!notifications.some((notif) => !notif.isRead)}
@@ -140,6 +145,7 @@ const Notifications = () => {
                     ></i>
                     <span>Tandai Semua Sudah Dibaca</span>
                   </button>
+                  </div>
                 </div>
 
                 {/* Notifications */}
@@ -214,6 +220,23 @@ const Notifications = () => {
 
                         <div className="flex flex-col items-end space-y-2">
                           <button
+                            onClick={() => handleMarkAsRead(item)}
+                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform ${
+                              item.isRead
+                                ? "bg-gray-300 text-gray-400 cursor-not-allowed"
+                                : "bg-blue-600 text-white hover:bg-blue-800"
+                            }`}
+                            style={{ width: "160px" }} 
+                          >
+                            <i
+                              className={`fa fa-check-circle ${
+                                item.isRead ? "text-gray-400" : "text-white"
+                              }`}
+                            ></i>
+                            <span>Tandai Dibaca</span>
+                          </button>
+
+                          <button
                             onClick={() => {
                               const noReg = extractNoReg(item.message.message);
                               if (noReg) {
@@ -226,31 +249,28 @@ const Notifications = () => {
                                 );
                               }
                             }}
-                            className={`mt-1 flex items-center space-x-2 w-full sm:w-auto md:w-auto ${
+                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform ${
                               item.isRead
-                                ? "text-gray-400 cursor-not-allowed"
-                                : "text-green-600 hover:text-blue-800"
+                                ? "bg-gray-300 text-gray-400 cursor-not-allowed"
+                                : "bg-green-600 text-white hover:bg-green-700"
                             }`}
+                            style={{ width: "160px" }}
                           >
                             <i
                               className={`fa fa-info-circle ${
-                                item.isRead ? "text-gray-500" : "text-green-600"
+                                item.isRead ? "text-gray-400" : "text-white"
                               }`}
                             ></i>
-                            <span
-                              className={
-                                item.isRead ? "text-gray-500" : "text-green-600"
-                              }
-                            >
-                              View Detail Disposisi
-                            </span>
+                            <span>Detail Disposisi</span>
                           </button>
                         </div>
-                      </div>
+                        </div>
                     ))
                   ) : (
-                    <div className="text-center text-gray-500 text-sm">
-                      Tidak ada notifikasi.
+                    <div
+                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      No data available
                     </div>
                   )}
                 </div>

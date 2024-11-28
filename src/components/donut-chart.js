@@ -72,7 +72,7 @@ const DiagramPelayanan = () => {
     }, [chartData]);
 
     return (
-        <div className="bg-white shadow rounded-lg w-full md:w-1/2 lg:w-2/3 p-4 text-left mx-auto">
+        <div className="select-none bg-white shadow rounded-lg w-full md:w-1/2 lg:w-2/3 p-4 text-left mx-auto">
             <h2 className="text-lg font-semibold mb-4 text-center md:text-left">Diagram Pelayanan</h2>
             
             <div className="flex flex-wrap items-start justify-center md:justify-start bg-white text-xs mt-2">

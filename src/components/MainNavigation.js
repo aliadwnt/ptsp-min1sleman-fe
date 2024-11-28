@@ -1,14 +1,25 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const MainNavigation = ({ user, logout }) => {
   const [open, setOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate(); 
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleLogout = () => {
+    console.log('Logout button clicked');
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    setDropdownOpen(false);
+    logout();
+    
+    window.location.href = "/login"; 
+  };
+  
   return (
     <nav className="bg-opacity-0 text-white" style={{ fontFamily: 'Poppins, sans-serif' }}>
       <div className="px-4 mx-auto w-full sm:px-6 lg:px-8">
@@ -16,7 +27,7 @@ const MainNavigation = ({ user, logout }) => {
           <div className="flex items-center shrink-0">
             <div className="navbar-brand">
               <Link to="/" className="pl-4 py-2">
-                <img src="/path/to/logo.png" alt="Logo" /> 
+                <img src="/path/to/logo.png" alt="Logo" />
               </Link>
             </div>
           </div>
@@ -61,7 +72,7 @@ const MainNavigation = ({ user, logout }) => {
                     </div>
                     <NavLink to="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100">Dashboard</NavLink>
                     <NavLink to="/user/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</NavLink>
-                    <button onClick={logout} className="block w-full py-2 text-left hover:bg-gray-100">
+                    <button onClick={handleLogout} className="block w-full py-2 text-left hover:bg-gray-100">
                       Log Out
                     </button>
                   </div>
@@ -110,7 +121,7 @@ const MainNavigation = ({ user, logout }) => {
               </div>
               <NavLink to="/user/dashboard" className="block px-4 py-2 hover:bg-gray-100">Dashboard</NavLink>
               <NavLink to="/user/settings" className="block px-4 py-2 hover:bg-gray-100">Settings</NavLink>
-              <button onClick={logout} className="block w-full py-2 text-left hover:bg-gray-100">
+              <button onClick={handleLogout} className="block w-full py-2 text-left hover:bg-gray-100">
                 Log Out
               </button>
             </div>

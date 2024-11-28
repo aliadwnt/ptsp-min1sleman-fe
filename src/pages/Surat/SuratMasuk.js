@@ -173,7 +173,7 @@ const SuratMasuk = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+    <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -216,7 +216,7 @@ const SuratMasuk = () => {
 
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
-              <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">
+              <div className="select-none text-xl font-semibold text-gray-800 mb-4 md:mb-0">
                 <i className="fas fa-inbox mr-2"></i>Daftar Surat Masuk
               </div>
               <form

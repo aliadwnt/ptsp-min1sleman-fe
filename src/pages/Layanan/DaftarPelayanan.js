@@ -15,6 +15,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ClipboardIcon } from '@heroicons/react/24/outline';
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -120,6 +121,14 @@ const DaftarPelayanan = () => {
 
   const handleTabChange = (status) => {
     setActiveTab(status);
+  };
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Nomor registrasi telah disalin!');
+    }).catch(err => {
+      console.error('Gagal menyalin: ', err);
+    });
   };
 
   const handleDelete = async (id) => {
@@ -268,7 +277,7 @@ const DaftarPelayanan = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex flex-col lg:flex-row">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col lg:flex-row">
       <Favicon />
       <div
         className={`fixed inset-y-0 center-0 transform ${
@@ -296,7 +305,7 @@ const DaftarPelayanan = () => {
             {message}
           </div>
         )}
-        <div className="p-4">
+        <div className="select-none p-4">
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
@@ -419,9 +428,14 @@ const DaftarPelayanan = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.no_reg}
-                            </td>
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200 flex items-center justify-center space-x-2">
+                                <span>{item.no_reg}</span>
+                                <button 
+                                  onClick={() => handleCopy(item.no_reg)} 
+                                  className="text-gray-500 hover:text-gray-700 p-1">
+                                  <ClipboardIcon className="w-4 h-4" />
+                                </button>
+                              </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.nama_pelayanan}
                             </td>

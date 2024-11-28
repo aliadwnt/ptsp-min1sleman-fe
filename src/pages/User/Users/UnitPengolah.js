@@ -144,7 +144,7 @@ const UnitPengolah = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+    <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -362,7 +362,7 @@ const UnitPengolah = () => {
                     </button>
                     <button
                       type="submit"
-                      className="bg-green-500 text-white px-4 py-2 rounded"
+                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                       {currentUnitPengolah ? "Update" : "Tambah"}
                     </button>

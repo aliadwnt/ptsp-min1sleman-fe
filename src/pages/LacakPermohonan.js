@@ -52,10 +52,9 @@ const LacakPermohonan = () => {
     return <div className="text-center py-10">Loading...</div>;
   }
   return (
-    <div>
+    <div className="font-family">
       <Navbar />
       <Favicon />
-      <div className="BodyLacakBerkas">
         <div className="bg-green-600"></div>
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
           <div className="mt-3 max-w-4xl mx-auto bg-white p-7 rounded-lg shadow-lg">
@@ -66,7 +65,7 @@ const LacakPermohonan = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="register"
                 >
                   No Registrasi
@@ -81,7 +80,7 @@ const LacakPermohonan = () => {
 
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="layanan"
                 >
                   Nama Layanan
@@ -96,7 +95,7 @@ const LacakPermohonan = () => {
             </div>
             <div className="w-full mb-6 px-2 md:mb-0">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                 htmlFor="perihal"
               >
                 Perihal
@@ -112,7 +111,7 @@ const LacakPermohonan = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="pemohon"
                 >
                   Nama Pemohon
@@ -127,7 +126,7 @@ const LacakPermohonan = () => {
 
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="alamat"
                 >
                   Alamat
@@ -144,7 +143,7 @@ const LacakPermohonan = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="no_hp_pemohon"
                 >
                   NO.HP Pemohon
@@ -159,7 +158,7 @@ const LacakPermohonan = () => {
 
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="pengirim"
                 >
                   Nama Pengirim
@@ -176,7 +175,7 @@ const LacakPermohonan = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="kelengkapan"
                 >
                   Kelengkapan
@@ -191,7 +190,7 @@ const LacakPermohonan = () => {
 
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="status"
                 >
                   Status
@@ -207,7 +206,7 @@ const LacakPermohonan = () => {
 
             <div className="w-full mb-6 px-2 md:mb-0">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                 htmlFor="catatan"
               >
                 Catatan
@@ -230,7 +229,6 @@ const LacakPermohonan = () => {
             </button>
           </div>
         </div>
-      </div>
       </div>
       <Footer />
     </div>

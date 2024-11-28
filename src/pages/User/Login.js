@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../index.css";
 import { loginPengguna } from "../../services/daftarPenggunaService";
-import Navbar from "../../components/navbar";
 import { motion } from "framer-motion";
 import Favicon from "../../components/Favicon";
+import backgroundImage from "../../images/backgroundLoginRegister.jpg";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
-    document.title = "PTSP MIN 1 SLEMAN - Login";
+    document.title = "PTSP MIN 1 SLEMAN - Masuk Akun";
   }, []);
 
   const handleLogin = async (e) => {
@@ -21,39 +23,42 @@ const LoginForm = () => {
     try {
       const data = await loginPengguna({ email, password });
 
-      console.log(data);
-      if (
-        !data ||
-        !data.token ||
-        !data.user ||
-        typeof data.user.is_admin === "undefined"
-      ) {
+      if (!data || !data.token || !data.user || typeof data.user.is_admin === "undefined") {
         throw new Error("Data tidak lengkap");
       }
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userRole", data.user.is_admin);
 
+      console.log("Token disimpan:", localStorage.getItem("token"));
+      console.log("UserRole disimpan:", localStorage.getItem("userRole"));
+
       if (data.user.is_admin === 1 || data.user.is_admin === 2) {
-        navigate("/dashboard");
+        window.location.href = "/dashboard";
       } else {
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
-      setErrorMessage(error.message);
+      if (error.message.includes("email")) {
+        setErrorMessage("Email tidak ditemukan.");
+      } else if (error.message.includes("password")) {
+        setErrorMessage("Password yang Anda masukkan salah.");
+      } else {
+        setErrorMessage("Data yang anda masukkan salah.");
+      }
     }
   };
 
   return (
     <div
-      className="h-screen flex items-center justify-center bg-center bg-cover relative"
+      className="select-none h-screen flex items-center justify-center bg-center bg-cover relative"
       style={{
-        backgroundImage: `url(${require("../../images/backgroundLoginRegister.jpg")})`,
+        backgroundImage: `url(${backgroundImage})`, 
       }}
     >
       <Favicon />
       <motion.div
-        className="bg-white p-5 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
+        className="bg-white p-4 rounded-lg shadow-lg max-w-md w-full mx-auto relative"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -63,30 +68,38 @@ const LoginForm = () => {
             <img
               src={require("../../../src/images/logo_min_1.png")}
               alt="Logo"
-              className="w-16 h-16"
+              className="w-16 h-16 transition-transform transform hover:scale-110 hover:duration-300"
             />
           </div>
         </Link>
 
         <motion.h2
-          className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
+          className="font-family text-2xl font-bold text-center text-gray-800 mb-2 tracking-wide"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          LOGIN
+          PTSP MIN 1 SLEMAN
         </motion.h2>
         <motion.h5
-          className="font-family text-lg font-semibold text-center text-gray-700 mb-2"
+          className="font-family text-sm font-light text-center text-gray-700 mb-3"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          PTSP MIN 1 SLEMAN
+          - Masuk PTSP MIN 1 SLEMAN -
         </motion.h5>
 
         {errorMessage && (
-          <p className="text-red-500 mb-2 font-bold">{errorMessage}</p>
+          <motion.div
+            className="flex items-center bg-red-600 text-white p-3 rounded-md mb-4 font-family"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <ExclamationCircleIcon className="h-6 w-6 mr-2" />
+            <p className="font-normal text-sm">{errorMessage}</p> 
+          </motion.div>
         )}
 
         <form onSubmit={handleLogin}>
@@ -114,16 +127,16 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className="font-family mt-3 w-full py-2 bg-green-500 text-white font-semibold rounded transition-all duration-300 ease-in-out transform hover:bg-green-700 hover:scale-105"
+            className="font-family mt-3 w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
-            Login
+            Masuk
           </button>
           <div
-            className="font-family mt-2 text-center text-gray-700 cursor-pointer transition-colors duration-300"
+            className="font-family mt-4 text-center text-gray-700 cursor-pointer transition-colors duration-300"
             onClick={() => navigate("/register")}
           >
             Belum punya akun?{" "}
-            <span className="text-green-500 hover:underline">
+            <span className="text-green-600 hover:underline">
               Daftar di sini
             </span>
           </div>

@@ -263,7 +263,7 @@ const DetailDisposisi = () => {
                   <div className="flex flex-wrap -mx-3 mb-2">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="register"
                       >
                         No Registrasi
@@ -277,7 +277,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="layanan"
                       >
                         Nama Layanan
@@ -292,7 +292,7 @@ const DetailDisposisi = () => {
                   </div>
                   <div className="w-full mb-3">
                     <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                       htmlFor="perihal"
                     >
                       Perihal
@@ -307,7 +307,7 @@ const DetailDisposisi = () => {
                   <div className="flex flex-wrap -mx-3 mb-2">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="pemohon"
                       >
                         Nama Pemohon
@@ -321,7 +321,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="alamat"
                       >
                         Alamat
@@ -337,7 +337,7 @@ const DetailDisposisi = () => {
                   <div className="flex flex-wrap -mx-3 mb-2">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="noHp"
                       >
                         No. HP
@@ -351,7 +351,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="pengirim"
                       >
                         Nama Pengirim
@@ -367,7 +367,7 @@ const DetailDisposisi = () => {
                   <div className="flex flex-wrap -mx-3 mb-2">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="status"
                       >
                         Status
@@ -381,7 +381,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="kelengkapan"
                       >
                         Kelengkapan
@@ -396,7 +396,7 @@ const DetailDisposisi = () => {
                   </div>
                   <div className="w-full mb-6">
                     <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                       htmlFor="catatan"
                     >
                       Catatan
@@ -433,7 +433,7 @@ const DetailDisposisi = () => {
                 <div className="flex justify-between w-full mt-1 px-2">
                   {/* Arsip Masuk */}
                   <div className="w-1/2 pr-2">
-                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                       Arsip Masuk
                     </label>
                     {arsipLayanan.arsip_masuk ? (
@@ -457,7 +457,7 @@ const DetailDisposisi = () => {
 
                   {/* Arsip Keluar */}
                   <div className="w-1/2 pl-2">
-                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                       Arsip Keluar
                     </label>
                     {arsipLayanan.arsip_keluar ? (
@@ -552,7 +552,7 @@ const DetailDisposisi = () => {
                   <form className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8 bg-white-300">
                     <div className="w-full mb-6">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="diteruskan"
                       >
                         Nama Pejabat / Pegawai
@@ -573,7 +573,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full mb-6">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="disposisi"
                       >
                         Aksi Disposisi
@@ -594,7 +594,7 @@ const DetailDisposisi = () => {
                     </div>
                     <div className="w-full mb-6">
                       <label
-                        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                        className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                         htmlFor="keterangan"
                       >
                         Catatan / Keterangan

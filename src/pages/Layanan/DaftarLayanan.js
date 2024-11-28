@@ -182,7 +182,7 @@ const DaftarLayanan = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+    <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -414,6 +414,9 @@ const DaftarLayanan = () => {
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
+                      <option value="" disabled>
+                        Pilih Unit Pengolah
+                      </option>
                       {unitOptions.map((unit) => (
                         <option key={unit.id} value={unit.name}>
                           {unit.name}
@@ -421,6 +424,7 @@ const DaftarLayanan = () => {
                       ))}
                     </select>
                   </div>
+
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
                       Nama Layanan
@@ -428,6 +432,7 @@ const DaftarLayanan = () => {
                     <input
                       type="text"
                       name="name"
+                      placeholder="Nama Layanan"
                       defaultValue={
                         currentDaftarLayanan ? currentDaftarLayanan.name : ""
                       }
@@ -447,6 +452,9 @@ const DaftarLayanan = () => {
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
+                      <option value="" disabled>
+                        Pilih Jenis Layanan
+                      </option>
                       {jenisOptions.map((jenis) => (
                         <option key={jenis.id} value={jenis.name}>
                           {jenis.name}
@@ -454,6 +462,7 @@ const DaftarLayanan = () => {
                       ))}
                     </select>
                   </div>
+
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
                       Output Layanan
@@ -466,6 +475,9 @@ const DaftarLayanan = () => {
                       required
                       className="w-full px-3 py-2 border border-gray-300 rounded"
                     >
+                      <option value="" disabled>
+                        Pilih output layanan
+                      </option>
                       {outputOptions.map((output) => (
                         <option key={output.id} value={output.name}>
                           {output.name}
@@ -473,22 +485,26 @@ const DaftarLayanan = () => {
                       ))}
                     </select>
                   </div>
+
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Durasi Layanan (Dalam Hari)
-                    </label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Durasi Layanan
+                  </label>
+                  <div className="flex items-center">
                     <input
-                      type="text"
+                      type="number"
                       name="duration"
                       defaultValue={
-                        currentDaftarLayanan
-                          ? currentDaftarLayanan.duration
-                          : ""
+                        currentDaftarLayanan ? currentDaftarLayanan.duration : ""
                       }
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded"
-                      placeholder="Durasi Layanan dalam Hari"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-l-md"
+                      placeholder="Durasi Layanan"
                     />
+                    <span className="px-3 py-2 text-gray-700 bg-gray-200 border-t border-b border-r rounded-r-md">
+                      Hari
+                    </span>
+                  </div>
                   </div>
                   <div className="flex justify-end">
                     <button

@@ -24,7 +24,7 @@ const LoadingPage = () => {
 
         {/* Nama Sistem */}
         <motion.h1
-          className="font-poppins text-3xl font-bold mb-6"
+          className="font-family text-3xl font-bold mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
@@ -34,7 +34,7 @@ const LoadingPage = () => {
 
         {/* Deskripsi Sistem */}
         <motion.h2
-          className="font-poppins text-xl font-medium mb-4"
+          className="font-family text-xl font-medium mb-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1.2, ease: "easeInOut" }}
@@ -44,7 +44,7 @@ const LoadingPage = () => {
 
         {/* Teks Memuat dengan Titik Tiga Berkedip */}
         <motion.div
-          className="font-poppins text-lg font-medium"
+          className="font-family text-lg font-medium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{

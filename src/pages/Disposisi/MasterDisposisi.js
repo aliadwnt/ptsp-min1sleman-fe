@@ -39,7 +39,7 @@ const MasterDisposisi = () => {
   };
 
   useEffect(() => {
-    document.title = `PTSP MIN 1 SLEMAN - Daftar Master Disposisi`;
+    document.title = `PTSP MIN 1 SLEMAN - Master Disposisi`;
     fetchData();
   }, []);
 
@@ -173,7 +173,7 @@ const MasterDisposisi = () => {
           </div>
         )}
 
-        <main className="p-4">
+        <main className="select-none p-4">
           <div className="p-4 w-full shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
               <div className="text-xl font-semibold text-gray-800 mb-4 md:mb-0">

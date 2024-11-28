@@ -14,7 +14,7 @@ const VisiMisi = () => {
       <Favicon />
       <Navbar />
       <div className="p-12 font-family">
-        <h1 className="text-3xl text-center font-semibold">Visi dan Misi</h1>
+        <h1 className="text-3xl text-center font-semibold uppercase select-none">Visi dan Misi</h1>
         <div className="additional-content mt-5 text-center">
           <p className="text-black font-poppins text-start">
             Visi dan juga Misi dari sistem Pelayanan Terpadu Satu Pintu (PTSP) adalah sebagai berikut:

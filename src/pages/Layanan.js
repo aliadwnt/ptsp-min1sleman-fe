@@ -49,7 +49,7 @@ const Layanan = () => {
   };
 
   useEffect(() => {
-    document.title = "PTSP MIN 1 SLEMAN - Layanan";
+    document.title = "PTSP MIN 1 SLEMAN - Buat Layanan";
     fetchData();
   }, []);
 
@@ -164,7 +164,6 @@ const Layanan = () => {
           icon: "success",
           confirmButtonText: "OK",
           didOpen: () => {
-            // Event listener untuk menyalin nomor registrasi
             document
               .getElementById("copyButton")
               .addEventListener("click", () => {
@@ -240,11 +239,11 @@ const Layanan = () => {
       <Favicon />
       <div className="bg-green-600"></div>
       <div className="font-family">
-        <div className="py-2 space-y-2 sm:py-8 sm:space-y-8 mt-5">
+        <div className="py-2 space-y-2 sm:py-8 sm:space-y-8 mt-2">
         <div className="w-full bg-white shadow-2xl rounded-xl px-8 py-10 mx-auto max-w-4xl">
-          <h2 className="text-2xl font-extrabold tracking-wide text-center text-gray-900 mb-8 uppercase">
-            Buat Permohonan Layanan
-          </h2>
+        <h2 className="text-2xl font-extrabold tracking-wide text-center text-gray-900 mb-8 uppercase select-none">
+          Buat Permohonan Layanan
+        </h2>
             <form
               className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
               onSubmit={handleSubmit}
@@ -252,7 +251,7 @@ const Layanan = () => {
               <div className="flex flex-wrap -mx-3 mb-1">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none  select-none"
                     htmlFor="no_reg"
                   >
                     NOMOR REGISTRASI
@@ -270,7 +269,7 @@ const Layanan = () => {
                 </div>
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="nama_pelayanan"
                   >
                     NAMA LAYANAN
@@ -294,7 +293,7 @@ const Layanan = () => {
 
               <div className="w-full md:w-1/1 mb-3 p-1 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="perihal"
                 >
                   PERIHAL
@@ -313,7 +312,7 @@ const Layanan = () => {
               <div className="flex flex-wrap -mx-3">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="no_surat"
                   >
                     NOMOR SURAT PERMOHONAN
@@ -331,7 +330,7 @@ const Layanan = () => {
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="tgl"
                   >
                     TANGGAL SURAT PERMOHONAN
@@ -350,7 +349,7 @@ const Layanan = () => {
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="nama_pemohon"
                   >
                     NAMA PEMOHON
@@ -367,7 +366,7 @@ const Layanan = () => {
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="no_hp"
                   >
                     NO HP PEMOHON
@@ -393,7 +392,7 @@ const Layanan = () => {
               <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="alamat"
                   >
                     ALAMAT
@@ -410,7 +409,7 @@ const Layanan = () => {
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                   <label
-                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                     htmlFor="nama_pengirim"
                   >
                     NAMA PENGIRIM
@@ -429,7 +428,7 @@ const Layanan = () => {
 
               <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="filename"
                 >
                   UPLOAD BERKAS PERSYARATAN (PDF)
@@ -443,7 +442,7 @@ const Layanan = () => {
               </div>
               <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
                 <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                   htmlFor="catatan"
                 >
                   CATATAN

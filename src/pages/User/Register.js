@@ -4,6 +4,7 @@ import { register } from "../../services/authService";
 import { motion } from "framer-motion";
 import backgroundImage from "../../images/backgroundLoginRegister.jpg";
 import Favicon from "../../components/Favicon";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
@@ -13,8 +14,9 @@ const RegisterForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
-    document.title = "PTSP MIN 1 SLEMAN - Register";
+    document.title = "PTSP MIN 1 SLEMAN - Daftar Akun";
   }, []);
 
   const handleRegister = async (e) => {
@@ -59,12 +61,12 @@ const RegisterForm = () => {
 
   return (
     <div
-      className="h-screen flex items-center justify-center bg-center bg-cover"
+      className="select-none h-screen flex items-center justify-center bg-center bg-cover relative"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <Favicon />
       <motion.div
-        className="font-family bg-white pr-6 pl-6 pb-3 pt-3 rounded-lg shadow-lg max-w-md w-full mx-auto mt-6 relative"
+        className="bg-white p-4 rounded-lg shadow-lg max-w-md w-full mx-auto relative"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -74,33 +76,49 @@ const RegisterForm = () => {
             <img
               src={require("../../../src/images/logo_min_1.png")}
               alt="Logo"
-              className="w-16 h-16"
+              className="w-16 h-16 transition-transform transform hover:scale-110 hover:duration-300"
             />
           </div>
         </Link>
 
         <motion.h2
-          className="font-family text-2xl font-extrabold text-center text-gray-800 mb-2 tracking-wide"
+          className="font-family text-2xl font-bold text-center text-gray-800 mb-2 tracking-wide"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          REGISTER
+          PTSP MIN 1 SLEMAN
         </motion.h2>
         <motion.h5
-          className="text-lg font-semibold text-center text-gray-700"
+          className="font-family text-sm font-light text-center text-gray-700 mb-3"
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          PTSP MIN 1 SLEMAN
+          - Buat akun untuk melakukan login -
         </motion.h5>
 
         {errorMessage && (
-          <p className="text-red-500 mb-2 font-bold">{errorMessage}</p>
+          <motion.div
+            className="flex items-center bg-red-600 text-white p-3 rounded-md mb-4 font-family"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <ExclamationCircleIcon className="h-6 w-6 mr-2" />
+            <p className="font-normal text-sm">{errorMessage}</p>
+          </motion.div>
         )}
+
         {successMessage && (
-          <p className="text-green-500 mb-2 font-bold">{successMessage}</p>
+          <motion.div
+            className="flex items-center bg-green-600 text-white p-3 rounded-md mb-4 font-family"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="font-normal text-sm">{successMessage}</p>
+          </motion.div>
         )}
 
         <form onSubmit={handleRegister}>
@@ -110,7 +128,7 @@ const RegisterForm = () => {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="font-family mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Nama Lengkap"
               required
             />
@@ -121,7 +139,7 @@ const RegisterForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="font-family mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Email"
               required
             />
@@ -132,7 +150,7 @@ const RegisterForm = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="font-family mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Password"
               required
             />
@@ -143,23 +161,23 @@ const RegisterForm = () => {
               id="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="font-family mt-2 w-full p-1 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
+              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Ulangi Password"
               required
             />
           </div>
           <button
             type="submit"
-            className="font-family mt-3 w-full py-2 bg-green-500 text-white font-semibold rounded transition-all duration-300 ease-in-out transform hover:bg-green-700 hover:scale-105"
+            className="font-family mt-3 w-full py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
           >
-            Register
+            Daftar
           </button>
           <div
-            className="font-family mt-2 text-center text-gray-700 cursor-pointer transition-colors duration-300"
+            className="font-family mt-4 text-center text-gray-700 cursor-pointer transition-colors duration-300"
             onClick={() => navigate("/login")}
           >
             Sudah punya akun?{" "}
-            <span className="text-green-500 hover:underline">Login di sini</span>
+            <span className="text-green-600 hover:underline">Masuk di sini</span>
           </div>
         </form>
       </motion.div>

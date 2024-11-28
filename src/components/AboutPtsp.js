@@ -35,7 +35,7 @@ const TentangPTSP = () => {
         <div className="bg-green-50 rounded-lg shadow-md p-6 transform hover:scale-105 hover:shadow-lg hover:bg-green-100 transition duration-300">
           <h2 className="text-xl font-semibold text-green-700 mb-4">Sasaran PTSP</h2>
           <p className="text-black mb-4">
-            Sasaran PTSP: Terwujudnya pelayanan publik yang cepat, mudah, transparan, pasti dan akuntabel dalam upaya meningkatkan 
+            Terwujudnya pelayanan publik yang cepat, mudah, transparan, pasti dan akuntabel dalam upaya meningkatkan 
             hak-hak masyarakat terhadap pelayanan publik.
           </p>
           <ul className="list-disc ml-5 text-black space-y-2">

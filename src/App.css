@@ -38,13 +38,6 @@
   color: #ffffff; 
 }
 
-.BodyLayanan {
-  font-family: 'Poppins', sans-serif;
-}
-
-.BodyLacakBerkas {
-  font-family: 'Poppins', sans-serif;
-}
 
 @keyframes typing {
   0% {
@@ -171,26 +164,6 @@ html, body {
   max-width: 300px;
 }
 
-.group,
-.vector,
-.group2,
-.vector2 {
-  width: 20px;
-  height: 25px;
-}
-
-.daftar-pelayanan,
-.lacak-permohonan,
-.buat-permohonan-layanan,
-.help-desk {
-  color: #000000;
-  font-family: "Poppins", sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  margin-top: 0.5rem;
-  text-align: center;
-}
-
 .description {
   color: #000000;
   font-family: "Poppins", sans-serif;
@@ -208,18 +181,6 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  .selamat-datang-di-ptsp,
-  .sma-cerdas-mandiri {
-      font-size: 25px;
-  }
-
-  .daftar-pelayanan,
-  .lacak-permohonan,
-  .buat-permohonan-layanan,
-  .help-desk {
-      font-size: 18px;
-  }
-
   .description {
       font-size: 14px;
   }

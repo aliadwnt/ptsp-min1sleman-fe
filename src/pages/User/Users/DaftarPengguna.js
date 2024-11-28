@@ -150,7 +150,7 @@ const DaftarPengguna = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col m-0 p-0 relative">
+    <div className="select-none min-h-screen w-full flex flex-col m-0 p-0 relative">
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -191,26 +191,23 @@ const DaftarPengguna = () => {
                 }`}
               >
                 {userRole === "1" && (
-                  <div>
-                    {/* Anda bisa menambahkan elemen lain di sini jika perlu untuk role ADMIN */}
+                  <div className="flex space-x-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={3}
+                      stroke="currentColor"
+                      className="w-5 h-5 text-green-700"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11 19a8 8 0 100-16 8 8 0 000 16zm-6-6h.01M16.39 16.39L21 21"
+                      />
+                    </svg>
                   </div>
                 )}
-
-                {/* Ikon SVG jika diperlukan */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={3}
-                  stroke="currentColor"
-                  className="w-5 h-5 text-green-700"
-                >
-                 <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11 19a8 8 0 100-16 8 8 0 000 16zm-6-6h.01M16.39 16.39L21 21"
-                  />
-                </svg>
 
                 <input
                   type="search"
@@ -221,19 +218,19 @@ const DaftarPengguna = () => {
                   } p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500`}
                   placeholder={userRole === "2" ? "Search..." : "Search..."}
                 />
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                >
+                  <i className="fas fa-sync-alt text-xs"></i>
+                </button>
                 {userRole === "2" && (
                   <div className="flex space-x-2">
                     <button
                       type="button"
-                      onClick={() => window.location.reload()}
-                      className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
-                    >
-                      <i className="fas fa-sync-alt text-xs"></i>
-                    </button>
-                    <button
-                      type="button"
                       onClick={handleAdd}
-                      className="flex items-center justify-center bg-green-600 text-white rounded-lg py-1 px-3 hover:bg-green-700"
+                      className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
                     >
                       <i className="fas fa-plus text-xs"></i>
                       <span className="ml-1 text-sm">Tambah</span>
@@ -282,14 +279,20 @@ const DaftarPengguna = () => {
                               {item.email}
                             </td>
                             <td className="max-w-xs truncate px-2 font-bold py-2 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.is_admin === 2 ? (
-                                  <span className="bg-blue-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">SUPER ADMIN</span>
-                                ) : item.is_admin === 1 ? (
-                                  <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">ADMIN</span>
-                                ) : (
-                                  <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">USER</span>
-                                )}
-                              </td>
+                              {item.is_admin === 2 ? (
+                                <span className="bg-blue-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  SUPER ADMIN
+                                </span>
+                              ) : item.is_admin === 1 ? (
+                                <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  ADMIN
+                                </span>
+                              ) : (
+                                <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  USER
+                                </span>
+                              )}
+                            </td>
                             {userRole === "2" && (
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button

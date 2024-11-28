@@ -1,11 +1,15 @@
-import { Navigate } from 'react-router-dom';
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("userRole");
 
-const ProtectedRoute = ({ children }) => {
-  const userRole = localStorage.getItem('userRole'); // Ambil userRole dari localStorage
+  if (!token) {
+    window.location.href = "/login";
+    return null; 
+  }
 
-  // Cek apakah userRole adalah 1 atau 2, jika tidak, arahkan ke halaman utama
-  if (userRole !== '1' && userRole !== '2') {
-    return <Navigate to="/" />;
+  if (allowedRoles && !allowedRoles.includes(userRole)) {
+    window.location.href = "/";
+    return null;
   }
 
   return children;
