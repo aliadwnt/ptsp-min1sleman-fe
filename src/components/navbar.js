@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../images/logo_min_1 copy.png";
 import "../App.css";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
+import NavigationMenu from "./NavigationMenu";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const userRole = localStorage.getItem("userRole");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,71 +20,45 @@ const Navbar = () => {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
         const { userId, exp } = decodedToken;
 
-        const currentTime = Date.now() / 1000;
-        if (exp < currentTime) {
+        if (Date.now() / 1000 > exp) {
           localStorage.removeItem("token");
-          window.location.href = "/login";
+          navigate("/");
           return;
         }
 
         try {
           const data = await getUserById(userId);
           setFormData(data);
+          setIsLoggedIn(true);
+          setUserRole(localStorage.getItem("userRole"));
         } catch (error) {
-          console.error("Error fetching user data:", error);
+          console.error(error);
         }
       }
     };
-
     fetchData();
   }, [navigate]);
 
-  const toggleDropdown = (event) => {
-    event.stopPropagation(); // Prevent closing sidebar
-    setIsOpen((prev) => !prev);
-  };
-
   const handleLogout = async () => {
-    try {
-      await logoutPengguna();
-      localStorage.removeItem("token");
-      localStorage.removeItem("userRole");
-      window.location.href = "/login";
-    } catch (error) {
-      console.error("Failed to log out:", error);
-    }
-  };
+    await logoutPengguna();
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    window.location.href = "/login"; 
+  }; 
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
+  const menuPaths = [
+    { path: "/", label: "Beranda" },
+    { path: "/layanan", label: "Layanan" },
+    { path: "/visi-misi", label: "Visi & Misi" },
+    { path: "/lacak-berkas", label: "Lacak Berkas" },
+    { path: "/zona-integritas", label: "Zona Integritas" },
+  ];
 
-  const renderMenuItems = (isMobile = false) => {
-    const menuPaths = [
-      { path: "/", label: "Beranda" },
-      { path: "/layanan", label: "Layanan" },
-      { path: "/visi-misi", label: "Visi & Misi" },
-      { path: "/lacak-berkas", label: "Lacak Berkas" },
-      { path: "/zona-integritas", label: "Zona Integritas" },
-    ];
-
-    return menuPaths.map(({ path, label }, index) => (
-      <li key={index}>
-        <Link
-          to={path}
-          className={`flex flex-col gap-2 my-2 font-poppins transition-colors duration-300 ease-in-out ${
-            location.pathname === path
-              ? isMobile
-                ? "text-green-600 font-bold"
-                : "text-white font-bold"
-              : isMobile
-              ? "text-gray-800 cursor-pointer hover:text-blue-500"
-              : "text-white hover:text-blue-600"
-          }`}
-        >
-          {label}
-        </Link>
-      </li>
-    ));
-  };
+  const filteredMenuPaths = !isLoggedIn
+    ? menuPaths.filter(({ path }) =>
+        ["/", "/visi-misi", "/zona-integritas"].includes(path)
+      )
+    : menuPaths;
 
   return (
     <nav className="bg-green-700 shadow-lg select-none">
@@ -94,224 +69,85 @@ const Navbar = () => {
         </div>
 
         <div className="relative flex items-center">
-          <button className="md:hidden p-2 text-white" onClick={toggleMenu}>
+          <button
+            className="md:hidden p-2 text-white"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             {menuOpen ? (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor">
+                <path d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
+              <svg className="w-6 h-6" fill="none" stroke="currentColor">
+                <path d="M4 6h16M4 12h16m-7 6h7" />
               </svg>
             )}
           </button>
-          {/* Sidebar for mobile */}
+
+          {/* Menu Mobile */}
           {menuOpen && (
-            <div
-              className="fixed inset-0 z-50 bg-gray-800 bg-opacity-80 md:hidden"
-              onClick={toggleMenu}
+            <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-80 md:hidden flex justify-end">
+              <div
+                className={`relative top-0 right-0 w-3/4 h-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+                  menuOpen ? "translate-x-0" : "translate-x-full"
+                }`}
+              >
+                <button
+            onClick={() => setMenuOpen(false)}
+            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-600 hover:text-red-500 hover:bg-gray-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              className="w-5 h-5"
             >
-              <div className="absolute top-0 right-0 w-3/4 h-screen bg-white shadow-lg transition transform duration-300 ease-in-out">
-                <button className="absolute top-4 right-4" onClick={toggleMenu}>
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+
+                <div className="p-6">
+                  {/* Logo */}
+                  <div className="flex items-center space-x-3 mb-6">
+                    <img
+                      src={logo}
+                      alt="PTSP Logo"
+                      className="w-10 h-10 rounded-full"
                     />
-                  </svg>
-                </button>
-                <ul className="flex flex-col space-y-4 mt-20 px-4">
-                  {renderMenuItems(true)}
-                </ul>{" "}
-                {/* Mobile menu items */}
-                <div className="border-t border-gray-200 my-4"></div>
-                <div className="px-2 py-2">
-                  <button
-                    onClick={toggleDropdown}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    aria-expanded={isOpen}
-                  >
-                    {formData ? formData.name : "Login"}
-                    <svg
-                      className="-mr-1 ml-2 h-5 w-5"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  {isOpen && (
-                    <div className="mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10 transition duration-150 ease-in-out">
-                      <div className="py-1" role="menu">
-                        {formData ? (
-                          <>
-                            <div className="px-4 py-2 bg-gray-100 rounded-t-md">
-                              <div className="text-base font-medium text-gray-800">
-                                {formData.name}
-                              </div>
-                              <div className="text-sm font-medium text-gray-500">
-                                {formData.email}
-                              </div>
-                            </div>
-                            <div className="border-t border-gray-200"></div>
-                            {/* Tampilkan tombol ini hanya jika userRole adalah 1 atau 2 */}
-                            {(userRole === "1" || userRole === "2") && (
-                              <>
-                                <button
-                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                                  onClick={() => navigate("/dashboard")}
-                                >
-                                  Dashboard
-                                </button>
-                                <button
-                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                                  onClick={() => navigate("/user/settings")}
-                                >
-                                  Settings
-                                </button>
-                                <button
-                                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                                  onClick={() => navigate("/profile/edit")}
-                                >
-                                  Profile
-                                </button>
-                              </>
-                            )}
-                            <button
-                              className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                              onClick={handleLogout}
-                            >
-                              Logout
-                            </button>
-                          </>
-                        ) : (
-                          <Link
-                            to="/login"
-                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            Login
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                    <h1 className="text-lg font-bold text-gray-800">
+                      PTSP MIN 1 SLEMAN
+                    </h1>
+                  </div>
+                  {/* Navigation Menu */}
+                  <NavigationMenu menuPaths={filteredMenuPaths} isMobile />
+                  {/* User Dropdown */}
+                  <div className="mt-6">
+                    <UserDropdown
+                      formData={formData}
+                      userRole={userRole}
+                      handleLogout={handleLogout}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           )}
-          {/* Desktop view */}
-          <ul className="hidden md:flex space-x-5">{renderMenuItems()}</ul>{" "}
-          {/* Desktop menu items */}
-          {/* User dropdown in desktop view */}
-          <div className="hidden md:inline-block relative ml-4">
-            <button
-              onClick={toggleDropdown}
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              aria-expanded={isOpen}
-            >
-              {formData ? formData.name : "Login"}
-              <svg
-                className="-mr-1 ml-2 h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-            {isOpen && (
-              <div className="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div className="py-1" role="menu">
-                  {formData ? (
-                    <>
-                      <div className="px-4 py-2 bg-gray-100 rounded-t-md">
-                        <div className="text-base font-medium text-gray-800">
-                          {formData.name}
-                        </div>
-                        <div className="text-sm font-medium text-gray-500">
-                          {formData.email}
-                        </div>
-                      </div>
-                      <div className="border-t border-gray-200"></div>
-                      {/* Tampilkan tombol ini hanya jika userRole adalah 1 atau 2 */}
-                      {(userRole === "1" || userRole === "2") && (
-                        <>
-                          <button
-                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                            onClick={() => navigate("/dashboard")}
-                          >
-                            Dashboard
-                          </button>
-                          <button
-                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                            onClick={() => navigate("/user/settings")}
-                          >
-                            Settings
-                          </button>
-                          <button
-                            className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                            onClick={() => navigate("/profile/edit")}
-                          >
-                            Profile
-                          </button>
-                        </>
-                      )}
-                      <button
-                        className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                        onClick={handleLogout}
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <Link
-                      to="/login"
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Login
-                    </Link>
-                  )}
-                </div>
-              </div>
-            )}
+
+
+          {/* Menu Desktop */}
+          <div className="hidden md:flex md:items-center space-x-8">
+            <NavigationMenu menuPaths={filteredMenuPaths} />
+            <UserDropdown
+              formData={formData}
+              userRole={userRole}
+              handleLogout={handleLogout}
+            />
           </div>
         </div>
       </div>

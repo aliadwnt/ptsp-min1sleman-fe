@@ -99,13 +99,13 @@ const UserProfileMenu = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userRole");
 
-      window.location.href = "/login"; 
+      window.location.href = "/home"; 
     } catch (error) {
       console.error("Gagal logout:", error.message);
       alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
     }
   };
-  
+
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
     let interval = Math.floor(seconds / 31536000);

@@ -30,7 +30,7 @@ const Navbar = () => {
             localStorage.removeItem("userRole");
       
             setUser(null);
-            window.location.href = "/login";
+            window.location.href = "/home";
         } catch (error) {
             console.error("Failed to logout:", error);
         }

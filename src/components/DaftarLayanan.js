@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { handleSearch } from "../services/lacakPermohonanService"; // Assuming this is your search function
 
 const LayananList = ({ unitLayanan }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentData, setCurrentData] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [openUnits, setOpenUnits] = useState({});
   const navigate = useNavigate();
+
+  // Check the user's role from localStorage (you can replace this with your own logic/context)
+  const userRole = localStorage.getItem("userRole");  // Assuming "userRole" is stored in localStorage
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -24,24 +24,6 @@ const LayananList = ({ unitLayanan }) => {
   const handleNavigate = () => {
     navigate("/layanan");
   };
-
-  // const handleSearchRequest = async (no_reg) => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const result = await handleSearch(no_reg);
-  //     if (result) {
-  //       navigate(`/lacak-permohonan/${no_reg}`);
-  //     } else {
-  //       setError("Data tidak ditemukan.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Error fetching data:", err);
-  //     setError("No registrasi belum terdaftar");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const toggleUnit = (unitName) => {
     setOpenUnits((prevState) => ({
@@ -100,17 +82,10 @@ const LayananList = ({ unitLayanan }) => {
                         </div>
                         <div className="flex gap-2 w-full sm:w-auto flex-col sm:flex-row sm:gap-2 sm:mt-0">
                           <button
-                            className="btn bg-blue-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
+                            className="btn bg-green-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
                             onClick={() => openLayananModal(layanan)}
                           >
                             Lihat Syarat
-                          </button>
-
-                          <button
-                            className="btn bg-green-500 text-white font-semibold py-1.5 px-5 text-sm rounded-lg hover:bg-green-600 transition duration-300 w-full sm:w-auto mt-2 sm:mt-0"
-                            onClick={handleNavigate}
-                          >
-                            Buat Permohonan
                           </button>
                         </div>
                       </div>
@@ -194,14 +169,33 @@ const LayananList = ({ unitLayanan }) => {
               </div>
             </div>
 
-            <div className="mt-5 border-t border-gray-300 pt-4 flex justify-end">
-              <button
-                type="button"
-                className="font-semibold bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg transition duration-200"
-                onClick={closeModal}
-              >
-                Tutup
-              </button>
+            <div className="mt-5 border-t border-gray-300 pt-4 flex justify-between">
+              {userRole ? (
+                <>
+                  <button
+                    type="button"
+                    className="font-semibold bg-green-600 text-white hover:bg-green-700 px-6 py-2 rounded-lg transition duration-200"
+                    onClick={handleNavigate}
+                  >
+                    Buat Permohonan
+                  </button>
+                  <button
+                    type="button"
+                    className="font-semibold bg-red-600 text-white hover:bg-green-700 px-6 py-2 ml-5 rounded-lg transition duration-200"
+                    onClick={closeModal}
+                  >
+                    Tutup
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  className="font-semibold bg-red-600 text-white hover:bg-red-700 px-6 py-2 rounded-lg transition duration-200"
+                  onClick={closeModal}
+                >
+                  Tutup
+                </button>
+              )}
             </div>
           </div>
         </div>

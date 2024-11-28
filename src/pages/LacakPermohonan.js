@@ -223,7 +223,7 @@ const LacakPermohonan = () => {
             <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200"></h2>
             <button
               onClick={handleExportPDF}
-              className="font-family bg-[#FFA500] hover:bg-[#FFA500] text-white font-bold py-2 px-4 rounded w-4/5 sm:w-auto sm:max-w-xs mx-auto"
+              className="font-family bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-4/5 sm:w-auto sm:max-w-xs mx-auto"
             >
               Cetak Bukti Permohonan
             </button>

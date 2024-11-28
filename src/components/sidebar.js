@@ -79,7 +79,7 @@ const Sidebar = (isOpen) => {
         aria-label="Sidebar"
       >
         <Link
-          to="/"
+          to="/dashboard"
           className="sidebar-header block p-4 shadow-md" style={{ backgroundColor: "#16A34A" }}
         >
           <img src={logo} alt="Logo" className="h-14 mx-auto" />
