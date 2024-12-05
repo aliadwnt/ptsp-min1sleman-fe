@@ -165,7 +165,7 @@ function UpdateProfile() {
                     Your email address is unverified.
                     <button
                       type="button"
-                      className="text-sm text-green-600 underline hover:text-green-900"
+                      className="ml-4 text-xs text-green-600 hover:text-green-900"
                       onClick={handleResendVerification}
                     >
                       Click here to re-send the verification email.

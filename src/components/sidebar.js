@@ -101,7 +101,7 @@ const Sidebar = () => {
         aria-label="Sidebar"
       >
         <Link
-          to="/dashboard"
+          to="/"
           className="sidebar-header block p-4 shadow-md"
           style={{ backgroundColor: "#16A34A" }}
         >
@@ -117,8 +117,6 @@ const Sidebar = () => {
           className="px-3 py-3 overflow-y-auto h-full bg-green-50 border-gray-300"
           style={{ maxHeight: "calc(100vh - 56px)" }}
         >
-
-          {/* Menu untuk admin dan superadmin */}
           {(userRole === "admin" || userRole === "superadmin") && (
             <>
              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
@@ -278,7 +276,7 @@ const Sidebar = () => {
           )}
 
           {/* Settings untuk admin */}
-          {(userRole === "admin" || userRole === "superadmin" || userRole === "staff") && (
+          {(userRole === "admin" || userRole === "superadmin" || userRole === "staff" || userRole === "kepala madrasah") && (
             <div className="sidebar-content pb-10">
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Settings</b>

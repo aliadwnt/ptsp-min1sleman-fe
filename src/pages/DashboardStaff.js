@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import Header from "../components/header";
-import DonutChart from "../components/donut-chart";
-import TableService from "../components/table-service";
 import AppCard from "../components/app-card";
 import Card from "../components/card";
 import { fetchSuratMasuk } from "../services/suratMasukService";
@@ -106,15 +104,14 @@ const DashboardAdmin = () => {
                   />
                 </section>
                 <div className="flex flex-col lg:flex-row gap-4 mx-auto max-w-7xl sm:px-0 lg:px-8 my-6">
-                  <DonutChart />
-                  <TableService />
+                </div>
                 </div>
                 <div className="py-4 space-y-4 sm:py-8 sm:space-y-8 w-full">
                   <AppCard
                     title="Welcome to PTSP MIN 1 SLEMAN"
                     description={`You're logged in as ${getRoleText(userRole)}.`}
                   />
-                </div>
+             
               </div>
             </div>
           </div>

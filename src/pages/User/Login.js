@@ -43,10 +43,11 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     try {
       const data = await loginPengguna({ email, password });
-
+  
+      // Memastikan data lengkap dan memiliki role
       if (
         !data ||
         !data.token ||
@@ -55,18 +56,23 @@ const LoginForm = () => {
       ) {
         throw new Error("Data tidak lengkap");
       }
-
+  
       localStorage.setItem("token", data.token);
       localStorage.setItem("userRole", data.user.role);
-
+  
       setUserName(data.user.name);
+  
       setShowModal(true);
+  
       setTimeout(() => {
         if (
-          data.user.role === "admin" ||
-          data.user.role === "superadmin" ||
           data.user.role === "staff" ||
           data.user.role === "kepala madrasah"
+        ) {
+          window.location.href = "/dashboard-staff";
+        } else if (
+          data.user.role === "admin" ||
+          data.user.role === "superadmin"
         ) {
           window.location.href = "/dashboard";
         } else {
@@ -83,7 +89,7 @@ const LoginForm = () => {
       }
     }
   };
-
+  
   return (
     <div
       className="select-none h-screen flex items-center justify-center bg-center bg-cover relative"

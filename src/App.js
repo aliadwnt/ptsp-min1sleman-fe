@@ -99,8 +99,10 @@ function App() {
           path="/"
           element={
             isAuthenticated() ? (
-              isAdmin() || isKepalaMadrasah() || isStaff() ? (
+              isAdmin() || isSuperAdmin() ? (
                 <Navigate to="/dashboard" />
+              ) : isKepalaMadrasah() || isStaff() ? (
+                <Navigate to="/dashboard-staff" />
               ) : (
                 <Navigate to="/home" />
               )
@@ -120,10 +122,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path="/lacak-permohonan" element={<LacakPermohonan />} />
-              <Route
-                path="/lacak-permohonan/:no_reg"
-                element={<LacakPermohonan />}
-              />
+              <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />} />
               <Route path="/layanan" element={<Layanan />} />
               <Route path="/visi-misi" element={<VisiMisi />} />
               <Route path="/lacak-berkas" element={<LacakBerkas />} />
@@ -133,8 +132,8 @@ function App() {
           )}
 
         {/* Halaman untuk admin */}
-        {isAuthenticated() && isAdmin() && (
-          <>
+        {isAuthenticated() && (isAdmin() || isSuperAdmin()) && (
+  <>
            <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/layanan/daftar-pelayanan" element={<DaftarPelayanan />}/>
@@ -157,23 +156,27 @@ function App() {
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/create-daftar-pelayanan" element={<CreateDaftarPelayanan />}/>
             <Route path="/update-daftar-pelayanan/:id" element={<UpdateDaftarPelayanan />}/>
+            <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
           </>
         )}
 
         {/* Halaman untuk kepala madrasah */}
         {isAuthenticated() && isKepalaMadrasah() && (
           <>
+            <Route path="/" element={<DashboardStaff />} />
             <Route path="/dashboard-staff" element={<DashboardStaff />} />
             <Route path="/surat/surat-masuk" element={<SuratMasuk />} />
             <Route path="/surat/surat-keluar" element={<SuratKeluar />} />
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/user/settings" element={<Settings />} />
+            <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
           </>
         )}
 
         {/* Halaman untuk staff */}
         {isAuthenticated() && isStaff() && (
           <>
+            <Route path="/" element={<DashboardStaff />} />
             <Route path="/dashboard-staff" element={<DashboardStaff />} />
             <Route path="/surat/surat-masuk" element={<SuratMasuk />} />
             <Route path="/surat/surat-keluar" element={<SuratKeluar />} />

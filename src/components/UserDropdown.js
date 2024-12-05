@@ -19,11 +19,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
   const location = useLocation();
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-
-  const confirmLogout = () => {
-    setShowModal(false);
-    handleLogout();
-  };
+  const isActive = (path) => (location.pathname === path ? "bg-green-600 text-white" : "bg-white text-gray-800 hover:bg-green-500 hover:text-white");
 
   const handleLogout = async () => {
     try {
@@ -37,10 +33,15 @@ const UserDropdown = ({ userRole: propUserRole }) => {
     }
   };
 
-  const isActive = (path) =>
-    location.pathname === path
-      ? "bg-green-600 text-white"
-      : "bg-white text-gray-800 hover:bg-green-500 hover:text-white";
+  const confirmLogout = () => {
+    setShowModal(false);
+    handleLogout();
+  };
+
+  const handleShowModal = () => {
+    setIsOpen(false);
+    setShowModal(true);
+  };
 
   useEffect(() => {
     const storedRole = propUserRole || localStorage.getItem("userRole");
@@ -52,20 +53,21 @@ const UserDropdown = ({ userRole: propUserRole }) => {
         if (token) {
           const decodedToken = JSON.parse(atob(token.split(".")[1]));
           const { userId, exp } = decodedToken;
-
           const currentTime = Math.floor(Date.now() / 1000);
+
           if (exp < currentTime) {
             localStorage.removeItem("token");
             localStorage.removeItem("userRole");
             window.location.href = "/login";
             return;
           }
+
           const data = await getUserById(userId);
           setFormData(data);
         }
       } catch (error) {
         console.error("Error fetching user data:", error.message);
-        setFormData(null); // Handle case when fetching user data 
+        setFormData(null);
       }
     };
 
@@ -81,12 +83,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
             className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             {formData.name}
-            <svg
-              className="-mr-1 ml-2 h-5 w-5"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
+            <svg className="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -95,7 +92,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
             </svg>
           </button>
           {isOpen && (
-            <div className="absolute right-0 z-10 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            <div className="absolute right-0 z-10 mt-2 w-72 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
               <div className="py-2 px-3">
                 <div className="px-4 py-3 bg-green-50 rounded-lg">
                   <div className="text-base font-semibold text-green-700">
@@ -113,37 +110,31 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                     )}`}
                     onClick={() => navigate("/edit-user")}
                   >
-                    <FaRegEdit className="w-5 h-5 inline-block mr-2" /> Edit
-                    Profile
+                    <FaRegEdit className="w-5 h-5 inline-block mr-2" /> Edit Profile
                   </button>
                 )}
-                {(userRole === "admin" ||
-                  userRole === "superadmin" ||
-                  userRole === "kepala madrasah" ||
-                  userRole === "staff") && (
+                {(userRole === "admin" || userRole === "superadmin" || userRole === "kepala madrasah" || userRole === "staff") && (
                   <>
                     <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
-                        "/dashboard"
-                      )}`}
-                      onClick={() => navigate("/dashboard")}
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/dashboard")}`}
+                      onClick={() => {
+                        if (userRole === "admin" || userRole === "superadmin") {
+                          navigate("/dashboard");
+                        } else if (userRole === "staff" || userRole === "kepala madrasah") {
+                          navigate("/dashboard-staff");
+                        }
+                      }}
                     >
-                      <FaTachometerAlt className="w-5 h-5 inline-block mr-2" />{" "}
-                      Dashboard
+                      <FaTachometerAlt className="w-5 h-5 inline-block mr-2" /> Dashboard
                     </button>
                     <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
-                        "/user/settings"
-                      )}`}
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/user/settings")}`}
                       onClick={() => navigate("/user/settings")}
                     >
-                      <FaUserCog className="w-5 h-5 inline-block mr-2" />{" "}
-                      Settings
+                      <FaUserCog className="w-5 h-5 inline-block mr-2" /> Settings
                     </button>
                     <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
-                        "/profile/edit"
-                      )}`}
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/profile/edit")}`}
                       onClick={() => navigate("/profile/edit")}
                     >
                       <FaUser className="w-5 h-5 inline-block mr-2" /> Profile
@@ -152,7 +143,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                 )}
                 <button
                   className="block w-full px-4 py-2 p-2 text-sm text-gray-700 hover:bg-gray-200"
-                  onClick={() => setShowModal(true)}
+                  onClick={handleShowModal}
                 >
                   <FaSignOutAlt className="w-5 h-5 inline-block mr-2" /> Logout
                 </button>
@@ -179,9 +170,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
           >
             <div className="flex justify-between items-center mb-5">
-              <h2 className="text-2xl font-bold text-gray-900">
-                Konfirmasi Logout
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900">Konfirmasi Logout</h2>
               <button
                 className="text-gray-500 hover:text-gray-700 focus:outline-none"
                 onClick={() => setShowModal(false)}
@@ -202,9 +191,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                 </svg>
               </button>
             </div>
-            <p className="text-lg text-gray-700 mb-6">
-              Apakah Anda yakin ingin logout?
-            </p>
+            <p className="text-lg text-gray-700 mb-6">Apakah Anda yakin ingin logout?</p>
             <div className="flex justify-between gap-4">
               <button
                 className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all transform hover:scale-105"
@@ -216,7 +203,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                 className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all transform hover:scale-105"
                 onClick={confirmLogout}
               >
-                Ya
+                Ya, Logout
               </button>
             </div>
           </motion.div>

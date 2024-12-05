@@ -1,10 +1,10 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import Notifications from "./Notifications";
 import UserDropdown from "./UserDropdown";
 
-const Header = () => {
+const Header = ({ userRole, isAdmin }) => { // Pastikan userRole dan isAdmin diterima sebagai props
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -29,9 +29,13 @@ const Header = () => {
       </button>
 
       <div className="ml-auto flex items-center space-x-3">
-        <Notifications />
-        <UserDropdown />
-      </div>
+      {(userRole === "admin" || userRole === "superadmin" || isAdmin) && (
+        <>
+          <Notifications />
+        </>
+      )}
+      <UserDropdown />
+    </div>
     </header>
   );
 };
