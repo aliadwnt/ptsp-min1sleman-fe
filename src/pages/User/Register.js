@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../services/authService";
+import { fetchSettings } from "../../services/settingsService";
 import { motion } from "framer-motion";
 import backgroundImage from "../../images/backgroundLoginRegister.jpg";
 import Favicon from "../../components/Favicon";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import DEFAULT_LOGO_URL from "../../images/logo_min_1 copy.png";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [logo, setLogo] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -17,6 +20,29 @@ const RegisterForm = () => {
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Daftar Akun";
+  }, []);
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetchSettings();
+
+        if (Array.isArray(response)) {
+          const logoSetting = response.find((item) => item.key === "app_logo");
+
+          if (logoSetting && logoSetting.value) {
+            setLogo(logoSetting.value);
+          } else {
+            setLogo(DEFAULT_LOGO_URL);
+          }
+        } else {
+          setLogo(DEFAULT_LOGO_URL);
+        }
+      } catch (error) {
+        setLogo(DEFAULT_LOGO_URL);
+      }
+    };
+    fetchLogo();
   }, []);
 
   const handleRegister = async (e) => {
@@ -74,8 +100,8 @@ const RegisterForm = () => {
         <Link to="/">
           <div className="flex justify-center mb-2">
             <img
-              src={require("../../../src/images/logo_min_1.png")}
-              alt="Logo"
+              src={logo}
+              alt="App Logo"
               className="w-16 h-16 transition-transform transform hover:scale-110 hover:duration-300"
             />
           </div>
@@ -177,7 +203,9 @@ const RegisterForm = () => {
             onClick={() => navigate("/login")}
           >
             Sudah punya akun?{" "}
-            <span className="text-green-600 hover:underline">Masuk di sini</span>
+            <span className="text-green-600 hover:underline">
+              Masuk di sini
+            </span>
           </div>
         </form>
       </motion.div>

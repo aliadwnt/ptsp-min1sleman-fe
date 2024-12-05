@@ -4,10 +4,12 @@ import Footer from "../components/footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchLacakPermohonan } from "../services/lacakPermohonanService";
 import { exportpdf } from "../services/layananService";
+import { fetchSettings } from "../services/settingsService";
 import PdfTemplate from "./pdf/TemplatePelayanan";
 import ReactDOMServer from "react-dom/server";
 import "../index.css";
 import Favicon from "../components/Favicon";
+import DEFAULT_LOGO_URL from "../images/logo_min_1.png";
 
 const LacakPermohonan = () => {
   const { no_reg } = useParams();
@@ -33,18 +35,37 @@ const LacakPermohonan = () => {
     fetchData();
   }, [no_reg, navigate]);
 
+  const fetchKop = async () => {
+    try {
+      const response = await fetchSettings();
+
+      if (Array.isArray(response)) {
+        const logoSetting = response.find((item) => item.key === "kop_surat");
+
+        if (logoSetting && logoSetting.value) {
+          return logoSetting.value;
+        } else {
+          return DEFAULT_LOGO_URL;
+        }
+      } else {
+        return DEFAULT_LOGO_URL;
+      }
+    } catch (error) {
+      console.error("Error fetching logo:", error);
+      return DEFAULT_LOGO_URL;
+    }
+  };
+
   const handleExportPDF = async () => {
     if (!formData) {
       console.error("No form data available for PDF export.");
       return;
     }
-
+    const logo = await fetchKop();
     const htmlTemplate = (
-      <PdfTemplate noReg={formData.no_reg} data={formData} />
+      <PdfTemplate noReg={formData.no_reg} data={formData} logo={logo} />
     );
-
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
-
     await exportpdf(htmlString, formData.no_reg);
   };
 
@@ -55,9 +76,9 @@ const LacakPermohonan = () => {
     <div className="font-family">
       <Navbar />
       <Favicon />
-        <div className="bg-green-600"></div>
-        <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
-          <div className="mt-3 max-w-4xl mx-auto bg-white p-7 rounded-lg shadow-lg">
+      <div className="bg-green-600"></div>
+      <div className="py-2 space-y-2 sm:py-8 sm:space-y-8">
+        <div className="mt-3 max-w-4xl mx-auto bg-white p-7 rounded-lg shadow-lg">
           <h2 className="ml-8 mt-6 mb-3 text-xl font-bold leading-tight text-center text-gray-800 h-10">
             DATA PERMOHONAN LAYANAN
           </h2>

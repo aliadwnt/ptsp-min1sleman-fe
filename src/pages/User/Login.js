@@ -2,19 +2,43 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../index.css";
 import { loginPengguna } from "../../services/daftarPenggunaService";
+import { fetchSettings } from "../../services/settingsService";
 import { motion } from "framer-motion";
 import Favicon from "../../components/Favicon";
 import backgroundImage from "../../images/backgroundLoginRegister.jpg";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import DEFAULT_LOGO_URL from "../../images/logo_min_1 copy.png";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [logo, setLogo] = useState(DEFAULT_LOGO_URL); 
   const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Masuk Akun";
+  }, []);
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetchSettings();
+
+        if (Array.isArray(response)) {
+          const logoSetting = response.find((item) => item.key === "app_logo");
+
+          if (logoSetting && logoSetting.value) {
+            setLogo(logoSetting.value); 
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching logo:", error); 
+      }
+    };
+    fetchLogo();
   }, []);
 
   const handleLogin = async (e) => {
@@ -23,28 +47,39 @@ const LoginForm = () => {
     try {
       const data = await loginPengguna({ email, password });
 
-      if (!data || !data.token || !data.user || typeof data.user.is_admin === "undefined") {
+      if (
+        !data ||
+        !data.token ||
+        !data.user ||
+        typeof data.user.role === "undefined"
+      ) {
         throw new Error("Data tidak lengkap");
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userRole", data.user.is_admin);
+      localStorage.setItem("userRole", data.user.role);
 
-      console.log("Token disimpan:", localStorage.getItem("token"));
-      console.log("UserRole disimpan:", localStorage.getItem("userRole"));
-
-      if (data.user.is_admin === 1 || data.user.is_admin === 2) {
-        window.location.href = "/dashboard";
-      } else {
-        window.location.href = "/";
-      }
+      setUserName(data.user.name);
+      setShowModal(true);
+      setTimeout(() => {
+        if (
+          data.user.role === "admin" ||
+          data.user.role === "superadmin" ||
+          data.user.role === "staff" ||
+          data.user.role === "kepala madrasah"
+        ) {
+          window.location.href = "/dashboard";
+        } else {
+          window.location.href = "/";
+        }
+      }, 3000);
     } catch (error) {
       if (error.message.includes("email")) {
         setErrorMessage("Email tidak ditemukan.");
       } else if (error.message.includes("password")) {
         setErrorMessage("Password yang Anda masukkan salah.");
       } else {
-        setErrorMessage("Data yang anda masukkan salah.");
+        setErrorMessage("Data yang Anda masukkan salah.");
       }
     }
   };
@@ -53,7 +88,7 @@ const LoginForm = () => {
     <div
       className="select-none h-screen flex items-center justify-center bg-center bg-cover relative"
       style={{
-        backgroundImage: `url(${backgroundImage})`, 
+        backgroundImage: `url(${backgroundImage})`,
       }}
     >
       <Favicon />
@@ -66,8 +101,8 @@ const LoginForm = () => {
         <Link to="/">
           <div className="flex justify-center mb-2">
             <img
-              src={require("../../../src/images/logo_min_1.png")}
-              alt="Logo"
+              src={logo}
+              alt="App Logo"
               className="w-16 h-16 transition-transform transform hover:scale-110 hover:duration-300"
             />
           </div>
@@ -98,7 +133,7 @@ const LoginForm = () => {
             transition={{ duration: 0.5 }}
           >
             <ExclamationCircleIcon className="h-6 w-6 mr-2" />
-            <p className="font-normal text-sm">{errorMessage}</p> 
+            <p className="font-normal text-sm">{errorMessage}</p>
           </motion.div>
         )}
 
@@ -111,7 +146,6 @@ const LoginForm = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Email"
-              required
             />
           </div>
           <div className="mb-2">
@@ -122,7 +156,6 @@ const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Password"
-              required
             />
           </div>
           <button
@@ -142,6 +175,56 @@ const LoginForm = () => {
           </div>
         </form>
       </motion.div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <motion.div
+            className="bg-white rounded-2xl shadow-2xl p-8 text-center max-w-sm w-full"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            <div className="flex justify-center items-center mb-4">
+              <motion.img
+                src={logo}
+                alt="App Logo"
+                className="w-16 h-16 rounded-full shadow-md"
+                initial={{ rotate: -45, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              />
+            </div>
+            <motion.h2
+              className="font-family text-3xl font-bold text-green-600 mb-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Welcome Back!
+            </motion.h2>
+            <motion.p
+              className="font-family text-gray-700 text-sm mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              Hi,{" "}
+              <span className="text-green-600 font-semibold">{userName}</span>!
+              Selamat datang kembali.
+            </motion.p>
+            <motion.div
+              className="w-12 h-12 mx-auto mb-3 border-4 border-green-500 rounded-full border-t-transparent animate-spin"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.4 }}
+            ></motion.div>
+            <p className="font-family text-xs text-gray-500">
+              Anda akan diarahkan ke halaman selanjutnya...
+            </p>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

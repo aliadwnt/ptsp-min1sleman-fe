@@ -3,6 +3,7 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { createDaftarPelayanan } from "../services/layananService";
 import { fetchJenisLayanan } from "../services/jenisLayananService";
+import { uploadMultiple } from "../services/uploadService";
 import { uploadSingle } from "../services/uploadService";
 import { addNotification } from "../services/notificationService";
 import Swal from "sweetalert2";
@@ -53,15 +54,6 @@ const Layanan = () => {
     fetchData();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "filename") {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
   function copyToClipboard(text) {
     const textarea = document.createElement("textarea");
     textarea.value = text;
@@ -78,8 +70,27 @@ const Layanan = () => {
       messageElement.style.display = "none";
     }, 2000);
   }
-
   window.copyToClipboard = copyToClipboard;
+
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+
+    if (files && files.length > 0) {
+      const newFiles = Array.from(files);
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: [...(prevData[name] || []), ...newFiles],
+      }));
+
+      e.target.value = "";
+    } else if (value !== undefined) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -87,17 +98,16 @@ const Layanan = () => {
     setLoading(true);
 
     try {
-      let uploadedFileUrl = "";
+      let uploadedFileUrls = [];
 
-      if (formData.filename && formData.filename instanceof File) {
-        uploadedFileUrl = await uploadSingle(formData.filename);
+      if (formData.filename && formData.filename.length > 0) {
+        uploadedFileUrls = await uploadMultiple(formData.filename);
       }
 
       const dataToSend = {
         ...formData,
-        filename: uploadedFileUrl,
+        filename: JSON.stringify(uploadedFileUrls),
       };
-
       const responseData = await createDaftarPelayanan(dataToSend);
       console.log("Response Data:", responseData);
 
@@ -120,26 +130,6 @@ const Layanan = () => {
           console.error("Gagal menambahkan notifikasi:", notificationError);
         }
 
-        const copyToClipboard = (text) => {
-          navigator.clipboard
-            .writeText(text)
-            .then(() => {
-              MySwal.fire({
-                title: "Disalin!",
-                text: "Nomor Registrasi telah disalin ke clipboard.",
-                icon: "success",
-                confirmButtonText: "OK",
-              });
-            })
-            .catch((err) => {
-              MySwal.fire({
-                title: "Gagal!",
-                text: "Tidak dapat menyalin nomor registrasi.",
-                icon: "error",
-                confirmButtonText: "OK",
-              });
-            });
-        };
         MySwal.fire({
           title: "Layanan Berhasil Diproses!",
           html: `
@@ -213,7 +203,7 @@ const Layanan = () => {
         no_hp: "",
         nama_pengirim: "",
         catatan: "",
-        filename: null,
+        filename: [],
       });
 
       setSuccessMessage("Data berhasil disimpan!");
@@ -233,6 +223,13 @@ const Layanan = () => {
       await exportpdf(htmlString, item.no_reg);
     };
   };
+  const handleDelete = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      filename: prevData.filename.filter((_, i) => i !== index),
+    }));
+  };
+
   return (
     <div className="font-family">
       <Navbar />
@@ -240,42 +237,38 @@ const Layanan = () => {
       <div className="bg-green-600"></div>
       <div className="font-family">
         <div className="py-2 space-y-2 sm:py-8 sm:space-y-8 mt-2">
-        <div className="w-full bg-white shadow-2xl rounded-xl px-8 py-10 mx-auto max-w-4xl">
-        <h2 className="text-2xl font-extrabold tracking-wide text-center text-gray-900 mb-8 uppercase select-none">
-          Buat Permohonan Layanan
-        </h2>
+          <div className="w-full bg-white shadow-2xl rounded-xl px-8 py-10 mx-auto max-w-4xl">
+            <h2 className="text-2xl font-extrabold tracking-wide text-center text-gray-900 mb-8 uppercase select-none">
+              Buat Permohonan Layanan
+            </h2>
             <form
               className="w-full mx-auto max-w-7xl sm:px-6 lg:px-8"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-wrap -mx-3 mb-1">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none  select-none"
-                    htmlFor="no_reg"
-                  >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* NOMOR REGISTRASI */}
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     NOMOR REGISTRASI
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="no_reg"
                     type="text"
                     placeholder="Nomor Registrasi"
-                    value={formData.no_reg}
                     onChange={handleChange}
-                    required
                     readOnly
+                    required
                   />
                 </div>
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="nama_pelayanan"
-                  >
-                    NAMA LAYANAN
+
+                {/* Nama Layanan */}
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Nama Layanan
                   </label>
                   <select
-                    className="block appearance-none w-full bg-gray-200 text-gray-700 border border-gray-200 pr-8 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="nama_pelayanan"
                     value={formData.nama_pelayanan}
                     onChange={handleChange}
@@ -289,54 +282,45 @@ const Layanan = () => {
                     ))}
                   </select>
                 </div>
-              </div>
 
-              <div className="w-full md:w-1/1 mb-3 p-1 md:mb-0">
-                <label
-                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                  htmlFor="perihal"
-                >
-                  PERIHAL
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
-                  name="perihal"
-                  type="text"
-                  placeholder="Perihal"
-                  value={formData.perihal}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+                {/* Perihal */}
+                <div className="md:col-span-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Perihal
+                  </label>
+                  <input
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+                    name="perihal"
+                    type="text"
+                    placeholder="Perihal"
+                    value={formData.perihal}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <div className="flex flex-wrap -mx-3">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="no_surat"
-                  >
+                {/* No. Surat */}
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
                     NOMOR SURAT PERMOHONAN
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="w-full bg-gray-200 text-gray-700 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="no_surat"
                     type="text"
                     placeholder="Nomor Surat"
                     value={formData.no_surat}
                     onChange={handleChange}
-                    required
                     readOnly
+                    required
                   />
                 </div>
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="tgl"
-                  >
-                    TANGGAL SURAT PERMOHONAN
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Tanggal Surat Permohonan
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="tgl"
                     type="date"
                     value={formData.tgl}
@@ -344,18 +328,14 @@ const Layanan = () => {
                     required
                   />
                 </div>
-              </div>
 
-              <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="nama_pemohon"
-                  >
-                    NAMA PEMOHON
+                {/* Nama Pemohon dan Nomor HP */}
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Nama Pemohon
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="nama_pemohon"
                     type="text"
                     placeholder="Nama Pemohon"
@@ -364,41 +344,28 @@ const Layanan = () => {
                     required
                   />
                 </div>
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="no_hp"
-                  >
-                    NO HP PEMOHON
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Nomor Handphone
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="no_hp"
                     type="tel"
                     placeholder="Nomor HP"
                     value={formData.no_hp}
                     onChange={handleChange}
                     required
-                    pattern="^[0-9]{10,}$"
-                    minLength="10"
-                    onInvalid={(e) => {
-                      e.preventDefault();
-                      alert("Nomor HP harus berupa angka dan minimal 10 digit");
-                    }}
                   />
                 </div>
-              </div>
 
-              <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="alamat"
-                  >
-                    ALAMAT
+                {/* Alamat dan Nama Pengirim */}
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Alamat
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="alamat"
                     type="text"
                     placeholder="Alamat"
@@ -407,15 +374,12 @@ const Layanan = () => {
                     required
                   />
                 </div>
-                <div className="w-full md:w-1/2 px-3">
-                  <label
-                    className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                    htmlFor="nama_pengirim"
-                  >
-                    NAMA PENGIRIM
+                <div>
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Nama Pengirim
                   </label>
                   <input
-                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
                     name="nama_pengirim"
                     type="text"
                     placeholder="Nama Pengirim"
@@ -424,44 +388,89 @@ const Layanan = () => {
                     required
                   />
                 </div>
-              </div>
 
-              <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
-                <label
-                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                  htmlFor="filename"
-                >
-                  UPLOAD BERKAS PERSYARATAN (PDF)
-                </label>
-                <input
-                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
-                  name="filename"
-                  type="file"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="w-full md:w-1/1 mb-6 p-1 md:mb-0">
-                <label
-                  className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                  htmlFor="catatan"
-                >
-                  CATATAN
-                </label>
-                <textarea
-                  className="mb-3 appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
-                  name="catatan"
-                  placeholder="Catatan"
-                  value={formData.catatan}
-                  onChange={handleChange}
-                />
-              </div>
+                <div className="md:col-span-2">
+                  <label
+                    className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
+                    htmlFor="filename"
+                  >
+                    UPLOAD BERKAS PERSYARATAN (PDF)
+                  </label>
+                  <input
+                    className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 transform transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-300"
+                    name="filename"
+                    type="file"
+                    onChange={handleChange}
+                    accept=".pdf"
+                    multiple
+                  />
+                  <p className="mt-2 text-sm text-gray-500">
+                    {formData.filename.length > 0
+                      ? `${formData.filename.length} file(s) uploaded`
+                      : "No files uploaded yet."}
+                  </p>
 
-              <div className="pl-3 flex items-center justify-end">
+                  {formData.filename && formData.filename.length > 0 && (
+                    <div className="overflow-x-auto mt-4">
+                      <table className="min-w-full table-auto">
+                        <thead>
+                          <tr className="bg-gray-200">
+                            <th className="px-4 py-2 text-left text-xs font-bold">
+                              No
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-bold">
+                              File Name
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-bold">
+                              Size (KB)
+                            </th>
+                            <th className="px-4 py-2 text-left text-xs font-bold">
+                              Action
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {formData.filename.map((file, index) => (
+                            <tr key={index} className="border-t">
+                              <td className="px-4 py-2 text-xs">{index + 1}</td>
+                              <td className="px-4 py-2 text-xs">{file.name}</td>
+                              <td className="px-4 py-2 text-xs">
+                                {(file.size / 1024).toFixed(2)} KB
+                              </td>
+                              <td className="px-4 py-2 text-xs">
+                                <button
+                                  onClick={() => handleDelete(index)}
+                                  className="text-red-500 hover:text-red-700 text-xs px-2 py-1 rounded"
+                                >
+                                  <i className="fa fa-times text-sm"></i>{" "}
+                                  {/* Icon X */}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                    Catatan
+                  </label>
+                  <textarea
+                    className="w-full bg-gray-200 border border-gray-300 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500"
+                    name="catatan"
+                    value={formData.catatan}
+                    onChange={handleChange}
+                    placeholder="Catatan"
+                  />
+                </div>
+              </div>
+              <div className="mt-6 justify-end">
                 <button
-                  className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
                   type="submit"
+                  className="px-6 py-2 text-white bg-green-500 rounded-lg hover:bg-green-700 transition duration-200"
                   disabled={loading}
                 >
                   {loading ? "Loading..." : "Simpan"}

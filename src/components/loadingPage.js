@@ -1,8 +1,30 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import logo from '../images/logo_min_1.png';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { fetchSettings } from "../services/settingsService";
+import DEFAULT_LOGO_URL from "../images/logo_min_1.png";
 
 const LoadingPage = () => {
+  const [logo, setLogo] = useState(DEFAULT_LOGO_URL); 
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetchSettings();
+
+        if (Array.isArray(response)) {
+          const logoSetting = response.find((item) => item.key === "app_logo");
+
+          if (logoSetting && logoSetting.value) {
+            setLogo(logoSetting.value); 
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching logo:", error); 
+      }
+    };
+    fetchLogo();
+  }, []);
+
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
       <motion.div
@@ -15,7 +37,7 @@ const LoadingPage = () => {
         {/* Logo */}
         <motion.img
           src={logo}
-          alt="Logo MIN 1"
+          alt="App Logo"
           className="w-24 h-24 mb-4"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -24,7 +46,7 @@ const LoadingPage = () => {
 
         {/* Nama Sistem */}
         <motion.h1
-          className="font-family text-3xl font-bold mb-6"
+          className="font-sans text-center text-3xl font-bold mb-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
@@ -34,7 +56,7 @@ const LoadingPage = () => {
 
         {/* Deskripsi Sistem */}
         <motion.h2
-          className="font-family text-xl font-medium mb-4"
+          className="font-sans text-xl font-medium mb-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1.2, ease: "easeInOut" }}
@@ -44,15 +66,13 @@ const LoadingPage = () => {
 
         {/* Teks Memuat dengan Titik Tiga Berkedip */}
         <motion.div
-          className="font-family text-lg font-medium"
+          className="font-sans text-lg font-medium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
             delay: 0.3,
             duration: 0.8,
             ease: "easeInOut",
-            repeat: Infinity,
-            repeatType: "reverse"
           }}
         >
           Memuat
@@ -61,31 +81,37 @@ const LoadingPage = () => {
             animate={{ opacity: [0, 1] }}
             transition={{
               repeat: Infinity,
-              repeatType: "loop",
               duration: 1,
-              times: [0, 0.33, 0.66, 1],
+              ease: "easeInOut",
+              delay: 0.1,
             }}
-          >.</motion.span>
+          >
+            .
+          </motion.span>
           <motion.span
             className="inline-block ml-1"
             animate={{ opacity: [0, 1] }}
             transition={{
               repeat: Infinity,
-              repeatType: "loop",
               duration: 1,
-              times: [0, 0.33, 0.66, 1],
+              ease: "easeInOut",
+              delay: 0.2,
             }}
-          >.</motion.span>
+          >
+            .
+          </motion.span>
           <motion.span
             className="inline-block ml-1"
             animate={{ opacity: [0, 1] }}
             transition={{
               repeat: Infinity,
-              repeatType: "loop",
               duration: 1,
-              times: [0, 0.33, 0.66, 1],
+              ease: "easeInOut",
+              delay: 0.3,
             }}
-          >.</motion.span>
+          >
+            .
+          </motion.span>
         </motion.div>
       </motion.div>
     </div>

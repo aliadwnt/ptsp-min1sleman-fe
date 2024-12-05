@@ -280,7 +280,7 @@ const SuratMasuk = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Surat
                         </th>
-                        <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                        <th className="px-9 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
                         </th>
                       </tr>

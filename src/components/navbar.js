@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../images/logo_min_1 copy.png";
+import { useNavigate } from "react-router-dom";
+import DEFAULT_LOGO_URL from "../images/logo_min_1 copy.png";
 import "../App.css";
 import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
+import { fetchSettings } from "../services/settingsService";
 import NavigationMenu from "./NavigationMenu";
 import UserDropdown from "./UserDropdown";
 
@@ -12,6 +13,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [logo, setLogo] = useState(DEFAULT_LOGO_URL);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,8 +22,9 @@ const Navbar = () => {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
         const { userId, exp } = decodedToken;
 
-        if (Date.now() / 1000 > exp) {
+        if (Date.now() / 3000 > exp) {
           localStorage.removeItem("token");
+          localStorage.removeItem("userRole");
           navigate("/");
           return;
         }
@@ -39,12 +42,31 @@ const Navbar = () => {
     fetchData();
   }, [navigate]);
 
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const response = await fetchSettings();
+  
+        if (Array.isArray(response)) {
+          const logoSetting = response.find((item) => item.key === "app_logo");
+  
+          if (logoSetting && logoSetting.value) {
+            setLogo(logoSetting.value);
+          }
+        }
+      } catch (error) {
+        console.error("Gagal memuat logo:", error);
+      }
+    };
+    fetchLogo();
+  }, []);
+
   const handleLogout = async () => {
     await logoutPengguna();
     localStorage.removeItem("token");
     localStorage.removeItem("userRole");
-    window.location.href = "/login"; 
-  }; 
+    window.location.href = "/login";
+  };
 
   const menuPaths = [
     { path: "/", label: "Beranda" },
@@ -64,7 +86,7 @@ const Navbar = () => {
     <nav className="bg-green-700 shadow-lg select-none">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         <div className="flex items-center space-x-3">
-          <img src={logo} alt="PTSP Logo" className="w-12 h-12 rounded-full" />
+          <img src={logo} alt="App Logo" className="w-12 h-12 rounded-full" />
           <h1 className="text-lg font-bold text-white">PTSP MIN 1 SLEMAN</h1>
         </div>
 
@@ -93,24 +115,11 @@ const Navbar = () => {
                 }`}
               >
                 <button
-            onClick={() => setMenuOpen(false)}
-            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-600 hover:text-red-500 hover:bg-gray-200 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-gray-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+                  onClick={() => setMenuOpen(false)}
+                  className=" right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-600 hover:text-red-500 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  <i className="fa fa-times text-lg"></i>
+                </button>
 
                 <div className="p-6">
                   {/* Logo */}
@@ -138,7 +147,6 @@ const Navbar = () => {
               </div>
             </div>
           )}
-
 
           {/* Menu Desktop */}
           <div className="hidden md:flex md:items-center space-x-8">

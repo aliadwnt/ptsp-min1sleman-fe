@@ -58,22 +58,26 @@ const Notifications = () => {
 
   const handleMarkAllAsRead = async () => {
     try {
-      const unreadNotifications = notifications.filter((notif) => !notif.isRead);
+      const unreadNotifications = notifications.filter(
+        (notif) => !notif.isRead
+      );
       const promises = unreadNotifications.map((notif) =>
         markNotificationAsRead(notif.id)
       );
-  
+
       await Promise.all(promises);
-  
+
       setNotifications((prevNotifications) =>
         prevNotifications.map((notif) => ({ ...notif, isRead: true }))
       );
       console.log("Semua notifikasi telah ditandai sebagai sudah dibaca.");
     } catch (error) {
-      console.error("Gagal menandai semua notifikasi sebagai sudah dibaca:", error);
+      console.error(
+        "Gagal menandai semua notifikasi sebagai sudah dibaca:",
+        error
+      );
     }
   };
-  
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -119,32 +123,35 @@ const Notifications = () => {
                   <h2 className="text-xl font-semibold text-gray-800">
                     <i className="fas fa-list mr-2"></i> Daftar Notifikasi
                   </h2>
-                  <div className="flex space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => window.location.reload()}
-                    className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
-                  >
-                    <i className="fas fa-sync-alt text-xs"></i>
-                  </button>
-                  <button
-                    onClick={handleMarkAllAsRead}
-                    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-transform duration-300 shadow-lg transform ${
-                      notifications.some((notif) => !notif.isRead)
-                        ? "bg-green-600 hover:bg-green-700 text-white"
-                        : "bg-gray-300 text-gray-400 cursor-not-allowed"
-                    } ${notifications.some((notif) => !notif.isRead) && "hover:scale-105"}`}
-                    disabled={!notifications.some((notif) => !notif.isRead)}
-                  >
-                    <i
-                      className={`fas fa-check-circle ${
+                  <div className="flex space-x-2 mt-2">
+                    <button
+                      type="button"
+                      onClick={() => window.location.reload()}
+                      className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                    >
+                      <i className="fas fa-sync-alt text-xs"></i>
+                    </button>
+                    <button
+                      onClick={handleMarkAllAsRead}
+                      className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg text-sm font-medium transition-transform duration-300 shadow-lg transform ${
                         notifications.some((notif) => !notif.isRead)
-                          ? "text-white"
-                          : "text-gray-400"
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-gray-300 text-gray-400 cursor-not-allowed"
+                      } ${
+                        notifications.some((notif) => !notif.isRead) &&
+                        "hover:scale-105"
                       }`}
-                    ></i>
-                    <span>Tandai Semua Sudah Dibaca</span>
-                  </button>
+                      disabled={!notifications.some((notif) => !notif.isRead)}
+                    >
+                      <i
+                        className={`fas fa-check-circle ${
+                          notifications.some((notif) => !notif.isRead)
+                            ? "text-white"
+                            : "text-gray-400"
+                        }`}
+                      ></i>
+                      <span>Tandai Semua Sudah Dibaca</span>
+                    </button>
                   </div>
                 </div>
 
@@ -160,7 +167,6 @@ const Notifications = () => {
                             : "bg-white border-l-4 border-green-500"
                         }`}
                       >
-                        {/* Icon */}
                         <div className="flex-shrink-0">
                           <span
                             className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${
@@ -203,12 +209,12 @@ const Notifications = () => {
                                   "Tidak ada pesan layanan"}
                               </h4>
                               <p className="text-gray-500 text-xs mb-1">
-                                Nomor Surat : 
+                                Nomor Surat :
                                 {item.message.no_surat ||
                                   "Tidak ada nomor surat"}
                               </p>
                               <p className="text-gray-500 text-xs mb-1">
-                                Perihal : 
+                                Perihal :
                                 {item.message.perihal || "Tidak ada perihal"}
                               </p>
                               <span className="text-xs text-gray-500">
@@ -221,12 +227,11 @@ const Notifications = () => {
                         <div className="flex flex-col items-end space-y-2">
                           <button
                             onClick={() => handleMarkAsRead(item)}
-                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform ${
+                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
                               item.isRead
                                 ? "bg-gray-300 text-gray-400 cursor-not-allowed"
-                                : "bg-blue-600 text-white hover:bg-blue-800"
+                                : "bg-green-600 text-white hover:bg-green-800"
                             }`}
-                            style={{ width: "160px" }} 
                           >
                             <i
                               className={`fa fa-check-circle ${
@@ -249,12 +254,11 @@ const Notifications = () => {
                                 );
                               }
                             }}
-                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform ${
+                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
                               item.isRead
                                 ? "bg-gray-300 text-gray-400 cursor-not-allowed"
-                                : "bg-green-600 text-white hover:bg-green-700"
+                                : "bg-blue-600 text-white hover:bg-blue-800"
                             }`}
-                            style={{ width: "160px" }}
                           >
                             <i
                               className={`fa fa-info-circle ${
@@ -264,12 +268,10 @@ const Notifications = () => {
                             <span>Detail Disposisi</span>
                           </button>
                         </div>
-                        </div>
+                      </div>
                     ))
                   ) : (
-                    <div
-                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
-                    >
+                    <div className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                       No data available
                     </div>
                   )}

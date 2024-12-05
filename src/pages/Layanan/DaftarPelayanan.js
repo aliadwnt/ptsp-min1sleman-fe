@@ -6,16 +6,17 @@ import {
   createDaftarPelayanan,
   updateDaftarPelayanan,
   deleteDaftarPelayanan,
-  previewPdf,
 } from "../../services/daftarPelayananService";
 import { exportpdf } from "../../services/layananService";
+import { fetchSettings } from "../../services/settingsService";
 import PdfTemplate from "../pdf/TemplatePelayanan";
 import "../../App.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
-import { ClipboardIcon } from '@heroicons/react/24/outline';
+import { ClipboardIcon } from "@heroicons/react/24/outline";
+import DEFAULT_LOGO_URL from "../../images/logo_min_1.png";
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -26,6 +27,7 @@ const DaftarPelayanan = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarPelayanan, setCurrentDaftarPelayanan] = useState(null);
   const [activeTab, setActiveTab] = useState("Semua");
+  const [logo, setLogo] = useState(null);
   const [counts, setCounts] = useState({
     SemuaCount: 0,
     baruCount: 0,
@@ -78,6 +80,7 @@ const DaftarPelayanan = () => {
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pelayanan`;
     fetchData();
+    // fetchLogo();
     if (location.state) {
       setMessage(location.state.message);
       setIsError(location.state.isError);
@@ -124,11 +127,14 @@ const DaftarPelayanan = () => {
   };
 
   const handleCopy = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Nomor registrasi telah disalin!');
-    }).catch(err => {
-      console.error('Gagal menyalin: ', err);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        alert("Nomor registrasi telah disalin!");
+      })
+      .catch((err) => {
+        console.error("Gagal menyalin: ", err);
+      });
   };
 
   const handleDelete = async (id) => {
@@ -183,12 +189,37 @@ const DaftarPelayanan = () => {
     navigate("/create-daftar-pelayanan");
   };
 
+  const fetchKop = async () => {
+    try {
+      const response = await fetchSettings();
+
+      if (Array.isArray(response)) {
+        const logoSetting = response.find((item) => item.key === "kop_surat");
+
+        if (logoSetting && logoSetting.value) {
+          return logoSetting.value;
+        } else {
+          return DEFAULT_LOGO_URL;
+        }
+      } else {
+        return DEFAULT_LOGO_URL;
+      }
+    } catch (error) {
+      console.error("Error fetching logo:", error);
+      return DEFAULT_LOGO_URL;
+    }
+  };
+
   const handleExportPDF = async (item) => {
     if (!item) {
       console.error("No item data available for PDF export.");
       return;
     }
-    const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
+    const logo = await fetchKop();
+
+    const htmlTemplate = (
+      <PdfTemplate noReg={item.no_reg} data={item} logo={logo} />
+    );
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
     await exportpdf(htmlString, item.no_reg);
   };
@@ -198,24 +229,39 @@ const DaftarPelayanan = () => {
       console.error("No item data available for PDF preview.");
       return;
     }
-
-    const htmlTemplate = <PdfTemplate noReg={item.no_reg} data={item} />;
+  
+    const logo = await fetchKop();
+    const htmlTemplate = (
+      <PdfTemplate noReg={item.no_reg} data={item} logo={logo} />
+    );
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
+  
     const previewWindow = window.open("", "_blank");
+  
     if (previewWindow) {
       previewWindow.document.write(`
-            ${htmlString}
-          <button onclick="window.print();" style="margin-top: 20px; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer;">
-            Print
-          </button>
-        </body>
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Preview - ${item.no_reg}</title> <!-- Using the item.no_reg -->
+          </head>
+          <body>
+            <div id="pdf-content">
+              ${htmlString}
+            </div>
+            <button onclick="window.print();" style="margin-top: 20px; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer;">
+              Print
+            </button>
+          </body>
         </html>
       `);
       previewWindow.document.close();
     } else {
       console.error("Failed to open preview window.");
     }
-  };
+  };  
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -277,7 +323,7 @@ const DaftarPelayanan = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col lg:flex-row">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row">
       <Favicon />
       <div
         className={`fixed inset-y-0 center-0 transform ${
@@ -347,7 +393,7 @@ const DaftarPelayanan = () => {
 
                 <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-4 sm:mb-1 mr-auto">
                   <ul
-                    className="flex flex-wrap justify-center w-full text-sm font-medium text-center space-x-2"
+                    className="flex flex-nowrap justify-center sm:justify-start w-full text-sm font-medium text-center sm:text-left space-x-2 sm:space-x-4 overflow-x-auto"
                     id="default-tab"
                     data-tabs-toggle="#default-tab-content"
                     role="tablist"
@@ -362,7 +408,7 @@ const DaftarPelayanan = () => {
                     ].map((tab) => (
                       <li
                         key={tab}
-                        className="mb-4 sm:mb-0 flex-auto text-center relative group"
+                        className="mb-4 sm:mb-0 flex-shrink-0 flex-grow-0 text-center relative group"
                         role="presentation"
                       >
                         <div
@@ -394,6 +440,7 @@ const DaftarPelayanan = () => {
                     ))}
                   </ul>
                 </div>
+
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
@@ -429,13 +476,14 @@ const DaftarPelayanan = () => {
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200 flex items-center justify-center space-x-2">
-                                <span>{item.no_reg}</span>
-                                <button 
-                                  onClick={() => handleCopy(item.no_reg)} 
-                                  className="text-gray-500 hover:text-gray-700 p-1">
-                                  <ClipboardIcon className="w-4 h-4" />
-                                </button>
-                              </td>
+                              <span>{item.no_reg}</span>
+                              <button
+                                onClick={() => handleCopy(item.no_reg)}
+                                className="text-gray-500 hover:text-gray-700 p-1"
+                              >
+                                <ClipboardIcon className="w-4 h-4" />
+                              </button>
+                            </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.nama_pelayanan}
                             </td>

@@ -24,7 +24,7 @@ const DaftarPengguna = () => {
   const userRole = localStorage.getItem("userRole");
   const [formValues, setFormValues] = useState({
     password: "",
-    is_admin: null,
+    role: null,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -67,34 +67,36 @@ const DaftarPengguna = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, is_admin } = e.target.elements;
+
+    const { name, email, password } = e.target.elements;
+    const role = formValues.role;
 
     const DaftarPengguna = {
       name: name.value,
       email: email.value,
       password: password.value,
-      is_admin: is_admin.value,
+      role: role,
     };
 
-    console.log("Data yang akan dikirim:", DaftarPengguna); // Log untuk debugging
+    console.log("Data yang akan dikirim:", DaftarPengguna);
 
     try {
       if (currentDaftarPengguna && currentDaftarPengguna.id) {
         console.log("Updating user with ID:", currentDaftarPengguna.id);
         await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
         setSuccessMessage("Data berhasil diperbarui");
-        setIsLoading(true);
       } else {
         await createDaftarPengguna(DaftarPengguna);
         setSuccessMessage("Data berhasil ditambahkan");
-        setIsLoading(true);
       }
 
+      setIsLoading(false);
       fetchData();
       handleModalClose();
     } catch (error) {
       console.error("Failed to save data:", error);
       setErrorMessage(error.message);
+      setIsLoading(false);
     }
   };
 
@@ -185,12 +187,12 @@ const DaftarPengguna = () => {
               <form
                 onSubmit={handleSearch}
                 className={`flex items-center space-x-2 ${
-                  userRole === "2"
+                  userRole === "superadmin"
                     ? "flex-grow justify-end"
                     : "w-full md:w-auto"
                 }`}
               >
-                {userRole === "1" && (
+                {userRole === "admin" && (
                   <div className="flex space-x-2">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -214,7 +216,9 @@ const DaftarPengguna = () => {
                   value={searchTerm}
                   onChange={handleSearch}
                   className={`${
-                    userRole === "2" ? "w-full md:w-64" : "w-full md:w-48"
+                    userRole === "superadmin"
+                      ? "w-full md:w-64"
+                      : "w-full md:w-48"
                   } p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500`}
                   placeholder={userRole === "2" ? "Search..." : "Search..."}
                 />
@@ -225,7 +229,7 @@ const DaftarPengguna = () => {
                 >
                   <i className="fas fa-sync-alt text-xs"></i>
                 </button>
-                {userRole === "2" && (
+                {userRole === "superadmin" && (
                   <div className="flex space-x-2">
                     <button
                       type="button"
@@ -279,21 +283,32 @@ const DaftarPengguna = () => {
                               {item.email}
                             </td>
                             <td className="max-w-xs truncate px-2 font-bold py-2 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.is_admin === 2 ? (
+                              {item.role === "superadmin" ? (
                                 <span className="bg-blue-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
                                   SUPER ADMIN
                                 </span>
-                              ) : item.is_admin === 1 ? (
+                              ) : item.role === "admin" ? (
                                 <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
                                   ADMIN
                                 </span>
-                              ) : (
+                              ) : item.role === "staff" ? (
                                 <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  STAFF
+                                </span>
+                              ) : item.role === "kepala madrasah" ? (
+                                <span className="bg-red-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  KEPALA MADRASAH
+                                </span>
+                              ) : (
+                                <span className="bg-gray-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
                                   USER
                                 </span>
                               )}
                             </td>
-                            {userRole === "2" && (
+                            {(userRole === "admin" ||
+                              userRole === "superadmin" ||
+                              userRole === "kepala madrasah" ||
+                              userRole === "staff") && (
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button
                                   onClick={() => {
@@ -439,9 +454,7 @@ const DaftarPengguna = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700">Password</label>
                   <input
                     type="password"
                     name="password"
@@ -456,6 +469,8 @@ const DaftarPengguna = () => {
                         password: e.target.value,
                       }));
                     }}
+                    pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    title="Password harus terdiri dari minimal 8 karakter, mengandung huruf besar dan kecil."
                     required={
                       !currentDaftarPengguna || !currentDaftarPengguna.password
                     }
@@ -466,46 +481,25 @@ const DaftarPengguna = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Peran Pengguna
                   </label>
-                  <div>
-                    <label className="inline-flex items-center mr-4">
-                      <input
-                        type="radio"
-                        name="is_admin"
-                        value="1" // nilai 1 untuk admin
-                        onChange={(e) => {
-                          setFormValues((prev) => ({
-                            ...prev,
-                            is_admin: Number(e.target.value),
-                          }));
-                        }}
-                        className="form-radio"
-                        defaultChecked={
-                          currentDaftarPengguna &&
-                          currentDaftarPengguna.is_admin === 1
-                        }
-                      />
-                      <span className="ml-2">Admin</span>
-                    </label>
-                    <label className="inline-flex items-center">
-                      <input
-                        type="radio"
-                        name="is_admin"
-                        value="2" // nilai 2 untuk super admin
-                        onChange={(e) => {
-                          setFormValues((prev) => ({
-                            ...prev,
-                            is_admin: Number(e.target.value),
-                          }));
-                        }}
-                        className="form-radio"
-                        defaultChecked={
-                          currentDaftarPengguna &&
-                          currentDaftarPengguna.is_admin === 2
-                        }
-                      />
-                      <span className="ml-2">Super Admin</span>
-                    </label>
-                  </div>
+                  <select
+                    name="role"
+                    value={formValues.role || ""}
+                    onChange={(e) => {
+                      setFormValues((prev) => ({
+                        ...prev,
+                        role: e.target.value, // Simpan nilai role yang dipilih
+                      }));
+                    }}
+                    className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
+                  >
+                    <option value="" disabled>
+                      Pilih Peran
+                    </option>
+                    <option value="admin">Admin</option>
+                    <option value="superadmin">Super Admin</option>
+                    <option value="staff">Staff</option>
+                    <option value="kepala madrasah">Kepala Madrasah</option>
+                  </select>
                 </div>
 
                 <div className="flex justify-end">

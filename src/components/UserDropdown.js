@@ -1,11 +1,76 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { logoutPengguna, getUserById } from "../services/daftarPenggunaService";
+import {
+  FaUser,
+  FaRegEdit,
+  FaUserCog,
+  FaTachometerAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
-const UserDropdown = ({ formData, userRole, handleLogout }) => {
+const UserDropdown = ({ userRole: propUserRole }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const confirmLogout = () => {
+    setShowModal(false);
+    handleLogout();
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutPengguna();
+      localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
+      window.location.href = "/home";
+    } catch (error) {
+      console.error("Gagal logout:", error.message);
+      alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
+    }
+  };
+
+  const isActive = (path) =>
+    location.pathname === path
+      ? "bg-green-600 text-white"
+      : "bg-white text-gray-800 hover:bg-green-500 hover:text-white";
+
+  useEffect(() => {
+    const storedRole = propUserRole || localStorage.getItem("userRole");
+    setUserRole(storedRole);
+
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const decodedToken = JSON.parse(atob(token.split(".")[1]));
+          const { userId, exp } = decodedToken;
+
+          const currentTime = Math.floor(Date.now() / 1000);
+          if (exp < currentTime) {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userRole");
+            window.location.href = "/login";
+            return;
+          }
+          const data = await getUserById(userId);
+          setFormData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error.message);
+        setFormData(null); // Handle case when fetching user data 
+      }
+    };
+
+    fetchData();
+  }, [propUserRole]);
 
   return (
     <div className="relative">
@@ -30,52 +95,66 @@ const UserDropdown = ({ formData, userRole, handleLogout }) => {
             </svg>
           </button>
           {isOpen && (
-            <div className="absolute right-0 z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-              <div className="py-1">
-                <div className="px-4 py-2 bg-gray-100 rounded-t-md">
-                  <div className="text-base font-medium text-gray-800">
-                    {formData.name}
+            <div className="absolute right-0 z-10 mt-2 w-56 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div className="py-2 px-3">
+                <div className="px-4 py-3 bg-green-50 rounded-lg">
+                  <div className="text-base font-semibold text-green-700">
+                    Hi, {formData.name}!
                   </div>
-                  <div className="text-xs font-medium text-gray-500">
+                  <div className="text-xs font-medium text-green-600">
                     {formData.email}
                   </div>
                 </div>
-                <div className="border-t border-gray-200"></div>
-                {userRole === "0" && (
+                <div className="border-t border-gray-200 my-2"></div>
+                {userRole === "user" && (
                   <button
-                    className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                    className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                      "/edit-user"
+                    )}`}
                     onClick={() => navigate("/edit-user")}
                   >
-                    Edit Profile
+                    <FaRegEdit className="w-5 h-5 inline-block mr-2" /> Edit
+                    Profile
                   </button>
                 )}
-                {(userRole === "1" || userRole === "2") && (
+                {(userRole === "admin" ||
+                  userRole === "superadmin" ||
+                  userRole === "kepala madrasah" ||
+                  userRole === "staff") && (
                   <>
                     <button
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                        "/dashboard"
+                      )}`}
                       onClick={() => navigate("/dashboard")}
                     >
+                      <FaTachometerAlt className="w-5 h-5 inline-block mr-2" />{" "}
                       Dashboard
                     </button>
                     <button
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                        "/user/settings"
+                      )}`}
                       onClick={() => navigate("/user/settings")}
                     >
+                      <FaUserCog className="w-5 h-5 inline-block mr-2" />{" "}
                       Settings
                     </button>
                     <button
-                      className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                        "/profile/edit"
+                      )}`}
                       onClick={() => navigate("/profile/edit")}
                     >
-                      Profile
+                      <FaUser className="w-5 h-5 inline-block mr-2" /> Profile
                     </button>
                   </>
                 )}
                 <button
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                  onClick={handleLogout}
+                  className="block w-full px-4 py-2 p-2 text-sm text-gray-700 hover:bg-gray-200"
+                  onClick={() => setShowModal(true)}
                 >
-                  Logout
+                  <FaSignOutAlt className="w-5 h-5 inline-block mr-2" /> Logout
                 </button>
               </div>
             </div>
@@ -88,6 +167,60 @@ const UserDropdown = ({ formData, userRole, handleLogout }) => {
         >
           LOGIN
         </Link>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">
+          <motion.div
+            className="bg-white rounded-2xl shadow-2xl p-8 w-96 max-w-lg"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Konfirmasi Logout
+              </h2>
+              <button
+                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                onClick={() => setShowModal(false)}
+              >
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <p className="text-lg text-gray-700 mb-6">
+              Apakah Anda yakin ingin logout?
+            </p>
+            <div className="flex justify-between gap-4">
+              <button
+                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all transform hover:scale-105"
+                onClick={() => setShowModal(false)}
+              >
+                Tidak
+              </button>
+              <button
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all transform hover:scale-105"
+                onClick={confirmLogout}
+              >
+                Ya
+              </button>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate dari react-router-dom
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
 import DonutChart from "../../components/donut-chart";
@@ -17,7 +17,8 @@ const DashboardAdmin = () => {
   const [totalDiterima, setTotalDiterima] = useState(0);
   const [totalDitolak, setTotalDitolak] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate(); // Pastikan penggunaan navigate benar
+  const [userRole, setUserRole] = useState(""); // state for userRole
+  const navigate = useNavigate();
 
   const toggleSidebar = () => setSidebarOpen((prevState) => !prevState);
 
@@ -25,28 +26,42 @@ const DashboardAdmin = () => {
     try {
       const dataPelayanan = await fetchDaftarPelayanan();
       setTotalPendaftar(dataPelayanan.length);
-      setTotalDiproses(
-        dataPelayanan.filter((item) => item.status === "Proses").length
-      );
-      setTotalDiterima(
-        dataPelayanan.filter((item) => item.status === "Diambil").length
-      );
-      setTotalDitolak(
-        dataPelayanan.filter((item) => item.status === "Ditolak").length
-      );
+      setTotalDiproses(dataPelayanan.filter((item) => item.status === "Proses").length);
+      setTotalDiterima(dataPelayanan.filter((item) => item.status === "Diambil").length);
+      setTotalDitolak(dataPelayanan.filter((item) => item.status === "Ditolak").length);
+      setIsLoading(false); // Make sure this is called after data is fetched
     } catch (error) {
       console.error("Failed to fetch data", error);
-    } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Disable loading if there is an error
     }
   };
 
   useEffect(() => {
-    console.log("useEffect triggered");
-    document.title = `PTSP MIN 1 SLEMAN - Dashboard`;
+    // Get token and userRole from localStorage
+    const token = localStorage.getItem("token");
+    if (token) {
+      const userRoleFromStorage = localStorage.getItem("userRole");
+      setUserRole(userRoleFromStorage); // Set the userRole from localStorage
+    }
+
+    // Fetch data if needed
     fetchData();
-  }, []);
-  
+    document.title = `PTSP MIN 1 SLEMAN - Dashboard`;
+  }, []); // Empty dependency array so it runs only once
+
+  const getRoleText = (role) => {
+    switch(role) {
+      case "0":
+        return "User";
+      case "1":
+        return "Admin";
+      case "2":
+        return "Superadmin";
+      default:
+        return "Unknown Role";
+    }
+  };
+
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -55,16 +70,12 @@ const DashboardAdmin = () => {
     <div className="h-screen flex relative">
       <Favicon />
       <div
-        className={`fixed inset-y-0 left-0 transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
+        className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 transition-transform duration-300 ease-in-out bg-white shadow-lg w-64 z-50`}
       >
         <Sidebar toggleSidebar={toggleSidebar} />
       </div>
       <div
-        className={`flex-1 transition-all duration-300 ease-in-out ${
-          isSidebarOpen ? "lg:ml-64" : "ml-0"
-        } pl-0 lg:pl-64`}
+        className={`flex-1 transition-all duration-300 ease-in-out ${isSidebarOpen ? "lg:ml-64" : "ml-0"} pl-0 lg:pl-64`}
       >
         <Header />
         <div className="p-4">
@@ -109,7 +120,10 @@ const DashboardAdmin = () => {
                   <TableService />
                 </div>
                 <div className="py-4 space-y-4 sm:py-8 sm:space-y-8 w-full">
-                  <AppCard title="Welcome to PTSP MIN 1 SLEMAN" />
+                  <AppCard
+                    title="Welcome to PTSP MIN 1 SLEMAN"
+                    description={`You're logged in as ${getRoleText(userRole)}.`}
+                  />
                 </div>
               </div>
             </div>

@@ -6,8 +6,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ExclamationCircleIcon } from '@heroicons/react/20/solid'; 
-import NotFoundPage from './components/NotFoundPage';
+import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+import NotFoundPage from "./components/NotFoundPage";
 
 // Komponen Halaman
 import Home from "./pages/Home";
@@ -50,15 +50,23 @@ import UpdateDaftarPelayanan from "./pages/Layanan/DaftarPelayanan/UpdateDaftarP
 
 import DaftarNotifikasi from "./pages/User/Notifications/DaftarNotifikasi";
 
-// Utils untuk autentikasi
-import { isAdmin, isAuthenticated, isNotUser } from "./utils/auth";
+import DaftarSettings from "./pages/Settings/DaftarSettings";
+import DashboardStaff from "./pages/DashboardStaff"
+import {
+  isSuperAdmin,
+  isAuthenticated,
+  isAdmin,
+  isKepalaMadrasah,
+  isStaff,
+  isNotUser,
+} from "./utils/auth";
 
 function App() {
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userRole = localStorage.getItem("userRole");
+    // const token = localStorage.getItem("token");
+    // const userRole = localStorage.getItem("userRole");
 
-    console.log("Token:", token, "Role:", userRole);
+    // console.log("Token:", token, "Role:", userRole);
 
     // Jika user tidak valid, hapus data token
     if (isNotUser()) {
@@ -78,44 +86,56 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/lacak-permohonan" element={<LacakPermohonan />} />
-            <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />}/>
+            <Route
+              path="/lacak-permohonan/:no_reg"
+              element={<LacakPermohonan />}
+            />
             <Route path="/visi-misi" element={<VisiMisi />} />
             <Route path="/zona-integritas" element={<ZonaIntegritas />} />
           </>
         )}
 
-        {/* Halaman Utama */}
-        <Route path="/" element={isAuthenticated() ? ( isAdmin() || isAdmin(2) ? ( 
+        <Route
+          path="/"
+          element={
+            isAuthenticated() ? (
+              isAdmin() || isKepalaMadrasah() || isStaff() ? (
                 <Navigate to="/dashboard" />
               ) : (
                 <Navigate to="/home" />
               )
             ) : (
-              <Login />
+              <Home />
             )
           }
         />
 
-        {/* Halaman untuk user atau is_admin = 0*/}
-        {isAuthenticated() && !isAdmin() && (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/lacak-permohonan" element={<LacakPermohonan />} />
-            <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />}/>
-            <Route path="/layanan" element={<Layanan />} />
-            <Route path="/visi-misi" element={<VisiMisi />} />
-            <Route path="/lacak-berkas" element={<LacakBerkas />} />
-            <Route path="/zona-integritas" element={<ZonaIntegritas />} />
-            <Route path="/edit-user" element={<EditUser />} />
-          </>
-        )}
+        {/* Halaman untuk user */}
+        {isAuthenticated() &&
+          !isSuperAdmin () &&
+          !isAdmin() &&
+          !isKepalaMadrasah() &&
+          !isStaff() && (
+            <>
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/lacak-permohonan" element={<LacakPermohonan />} />
+              <Route
+                path="/lacak-permohonan/:no_reg"
+                element={<LacakPermohonan />}
+              />
+              <Route path="/layanan" element={<Layanan />} />
+              <Route path="/visi-misi" element={<VisiMisi />} />
+              <Route path="/lacak-berkas" element={<LacakBerkas />} />
+              <Route path="/zona-integritas" element={<ZonaIntegritas />} />
+              <Route path="/edit-user" element={<EditUser />} />
+            </>
+          )}
 
-        {/* Halaman untuk admin (is_admin 1 atau 2) */}
-        {isAuthenticated() && (isAdmin() || isAdmin(2)) && (
+        {/* Halaman untuk admin */}
+        {isAuthenticated() && isAdmin() && (
           <>
-            <Route path="/" element={<Dashboard />} />
+           <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/layanan/daftar-pelayanan" element={<DaftarPelayanan />}/>
             <Route path="/layanan/arsip-layanan" element={<ArsipLayanan />} />
@@ -140,8 +160,30 @@ function App() {
           </>
         )}
 
-            <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+        {/* Halaman untuk kepala madrasah */}
+        {isAuthenticated() && isKepalaMadrasah() && (
+          <>
+            <Route path="/dashboard-staff" element={<DashboardStaff />} />
+            <Route path="/surat/surat-masuk" element={<SuratMasuk />} />
+            <Route path="/surat/surat-keluar" element={<SuratKeluar />} />
+            <Route path="/profile/edit" element={<EditProfile />} />
+            <Route path="/user/settings" element={<Settings />} />
+          </>
+        )}
+
+        {/* Halaman untuk staff */}
+        {isAuthenticated() && isStaff() && (
+          <>
+            <Route path="/dashboard-staff" element={<DashboardStaff />} />
+            <Route path="/surat/surat-masuk" element={<SuratMasuk />} />
+            <Route path="/surat/surat-keluar" element={<SuratKeluar />} />
+            <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
+            <Route path="/user/settings" element={<Settings />} />
+            <Route path="/profile/edit" element={<EditProfile/>} />
+          </>
+        )}
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </Router>
   );
 }

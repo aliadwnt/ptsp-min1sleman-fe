@@ -3,7 +3,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const userRole = localStorage.getItem("userRole");
 
   if (!token) {
-    window.location.href = "/login";
+    window.location.href = "/";
     return null; 
   }
 
