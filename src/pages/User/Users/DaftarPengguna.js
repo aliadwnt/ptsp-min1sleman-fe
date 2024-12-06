@@ -487,7 +487,7 @@ const DaftarPengguna = () => {
                     onChange={(e) => {
                       setFormValues((prev) => ({
                         ...prev,
-                        role: e.target.value, // Simpan nilai role yang dipilih
+                        role: e.target.value, 
                       }));
                     }}
                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
@@ -495,6 +495,7 @@ const DaftarPengguna = () => {
                     <option value="" disabled>
                       Pilih Peran
                     </option>
+                    <option value="user">User</option>
                     <option value="admin">Admin</option>
                     <option value="superadmin">Super Admin</option>
                     <option value="staff">Staff</option>

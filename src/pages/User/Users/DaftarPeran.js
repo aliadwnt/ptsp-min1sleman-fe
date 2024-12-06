@@ -175,14 +175,28 @@ const DaftarPeran = () => {
                                 {item.name}
                               </td>
                               <td className="max-w-xs truncate px-2 font-bold py-2 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.is_admin === 2 ? (
-                                  <span className="bg-blue-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">SUPER ADMIN</span>
-                                ) : item.is_admin === 1 ? (
-                                  <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">ADMIN</span>
-                                ) : (
-                                  <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">USER</span>
-                                )}
-                              </td>
+                              {item.role === "superadmin" ? (
+                                <span className="bg-blue-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  SUPER ADMIN
+                                </span>
+                              ) : item.role === "admin" ? (
+                                <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  ADMIN
+                                </span>
+                              ) : item.role === "staff" ? (
+                                <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  STAFF
+                                </span>
+                              ) : item.role === "kepala madrasah" ? (
+                                <span className="bg-red-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  KEPALA MADRASAH
+                                </span>
+                              ) : (
+                                <span className="bg-gray-500 text-white py-0.5 px-1.5 text-[10px] rounded-full">
+                                  USER
+                                </span>
+                              )}
+                            </td>
                             </tr>
                           ))
                         ) : (
