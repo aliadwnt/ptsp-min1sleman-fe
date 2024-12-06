@@ -65,6 +65,26 @@ const DaftarPengguna = () => {
     return <LoadingPage />;
   }
 
+  const formatTimeElapsed = (lastAccess) => {
+    const now = new Date();
+    const accessDate = new Date(lastAccess);
+    const diffInSeconds = Math.floor((now - accessDate) / 1000);
+  
+    const days = Math.floor(diffInSeconds / (24 * 60 * 60));
+    const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
+    const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
+    const seconds = diffInSeconds % 60;
+  
+    // Bangun string waktu yang telah berlalu
+    let elapsed = "";
+    if (days > 0) elapsed += `${days}d `;
+    if (hours > 0) elapsed += `${hours}h `;
+    if (minutes > 0) elapsed += `${minutes}m `;
+    if (seconds > 0) elapsed += `${seconds}s `;
+  
+    return elapsed.trim() + " ago";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -262,7 +282,12 @@ const DaftarPengguna = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Peran User
                         </th>
-                        {userRole === "2" && (
+                        {userRole === "admin" && (
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Last Access
+                          </th>
+                        )}
+                        {userRole === "superadmin" && (
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Aksi
                           </th>
@@ -305,10 +330,16 @@ const DaftarPengguna = () => {
                                 </span>
                               )}
                             </td>
-                            {(userRole === "admin" ||
-                              userRole === "superadmin" ||
-                              userRole === "kepala madrasah" ||
-                              userRole === "staff") && (
+                            {userRole === "admin" && (
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.last_access ? (
+                                  formatTimeElapsed(item.last_access) 
+                                ) : (
+                                  <span className="text-gray-400 italic">No last access data available</span> 
+                                )}
+                              </td>
+                            )}              
+                            {(userRole === "superadmin") && (
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button
                                   onClick={() => {
