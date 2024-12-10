@@ -209,7 +209,14 @@ const MasterSyarat = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Master Syarat : 
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {dataMasterSyarat.length}
+                    </text>
+                    Data.
+                  </text>
+                <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
                       <tr>

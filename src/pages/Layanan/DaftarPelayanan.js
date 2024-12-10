@@ -391,7 +391,7 @@ const DaftarPelayanan = () => {
                   </form>
                 </div>
 
-                <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 mb-4 sm:mb-1 mr-auto">
+                <div className="flex flex-col w-full sm:w-2/3 lg:w-3/5 xl:w-2/3 sm:px-4 lg:px-1 sm:mb-1 mr-auto">
                   <ul
                     className="flex flex-nowrap justify-center sm:justify-start w-full text-sm font-medium text-center sm:text-left space-x-2 sm:space-x-4 overflow-x-auto"
                     id="default-tab"
@@ -442,7 +442,14 @@ const DaftarPelayanan = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
+                  <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Pelayanan : 
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {counts.Semua}
+                    </text>
+                    Data.
+                  </text>
+                  <table className="mt-2 min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">

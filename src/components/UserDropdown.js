@@ -46,24 +46,35 @@ const UserDropdown = ({ userRole: propUserRole }) => {
   useEffect(() => {
     const storedRole = propUserRole || localStorage.getItem("userRole");
     setUserRole(storedRole);
-
+  
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        if (token) {
-          const decodedToken = JSON.parse(atob(token.split(".")[1]));
-          const { userId, exp } = decodedToken;
-          const currentTime = Math.floor(Date.now() / 1000);
-
-          if (exp < currentTime) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userRole");
-            window.location.href = "/login";
-            return;
-          }
-
-          const data = await getUserById(userId);
+        if (!token) {
+          console.warn("Token not found. Redirecting to login.");
+          localStorage.removeItem("userRole");
+          window.location.href = "/login";
+          return;
+        }
+  
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const { userId, exp } = decodedToken;
+        const currentTime = Math.floor(Date.now() / 1000);
+  
+        // Periksa apakah token telah kedaluwarsa
+        if (exp < currentTime) {
+          console.warn("Token expired. Redirecting to login.");
+          localStorage.removeItem("token");
+          localStorage.removeItem("userRole");
+          window.location.href = "/login";
+          return;
+        }
+        const data = await getUserById(userId);
+        if (data) {
           setFormData(data);
+        } else {
+          console.warn("User data not found. Clearing formData.");
+          setFormData(null);
         }
       } catch (error) {
         console.error("Error fetching user data:", error.message);
@@ -98,7 +109,13 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                   <div className="text-base font-semibold text-green-700">
                     Hi, {formData.name}!
                   </div>
-                  <div className="text-xs font-medium text-green-600">
+                  <div
+                    className="text-xs font-medium text-green-600 truncate"
+                    style={{
+                      fontSize: "clamp(9px, 1vw, 12px)", 
+                      maxWidth: "200px",
+                    }}
+                  >
                     {formData.email}
                   </div>
                 </div>
@@ -109,6 +126,7 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                       "/edit-user"
                     )}`}
                     onClick={() => navigate("/edit-user")}
+                    style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
                   >
                     <FaRegEdit className="w-5 h-5 inline-block mr-2" /> Edit Profile
                   </button>
@@ -116,7 +134,9 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                 {(userRole === "admin" || userRole === "superadmin" || userRole === "kepala madrasah" || userRole === "staff") && (
                   <>
                     <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/dashboard")}`}
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                        "/dashboard"
+                      )}`}
                       onClick={() => {
                         if (userRole === "admin" || userRole === "superadmin") {
                           navigate("/dashboard");
@@ -124,26 +144,37 @@ const UserDropdown = ({ userRole: propUserRole }) => {
                           navigate("/dashboard-staff");
                         }
                       }}
+                      style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
                     >
                       <FaTachometerAlt className="w-5 h-5 inline-block mr-2" /> Dashboard
                     </button>
+
+                      {
+                        (userRole === "superadmin" || userRole === "admin" || userRole === "staff" || userRole === "kepala madrasah") && (
+                          <button
+                            className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/profile/edit")}`}
+                            onClick={() => navigate("/profile/edit")}
+                            style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
+                          >
+                            <FaRegEdit className="w-5 h-5 inline-block mr-2" /> Edit Profile
+                          </button>
+                        )
+                      }
                     <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/user/settings")}`}
+                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive(
+                        "/user/settings"
+                      )}`}
                       onClick={() => navigate("/user/settings")}
+                      style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
                     >
                       <FaUserCog className="w-5 h-5 inline-block mr-2" /> Settings
-                    </button>
-                    <button
-                      className={`mb-2 block w-full px-4 py-2 text-sm font-medium rounded-lg shadow-md transition duration-300 ${isActive("/profile/edit")}`}
-                      onClick={() => navigate("/profile/edit")}
-                    >
-                      <FaUser className="w-5 h-5 inline-block mr-2" /> Profile
                     </button>
                   </>
                 )}
                 <button
                   className="block w-full px-4 py-2 p-2 text-sm text-gray-700 hover:bg-gray-200"
                   onClick={handleShowModal}
+                  style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
                 >
                   <FaSignOutAlt className="w-5 h-5 inline-block mr-2" /> Logout
                 </button>
@@ -155,10 +186,11 @@ const UserDropdown = ({ userRole: propUserRole }) => {
         <Link
           to="/login"
           className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          style={{ fontSize: "clamp(12px, 1.5vw, 14px)" }}
         >
           LOGIN
         </Link>
-      )}
+      )}  
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md">

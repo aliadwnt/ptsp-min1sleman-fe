@@ -266,7 +266,14 @@ const DaftarPengguna = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
-                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Pengguna : 
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {dataDaftarPengguna.length}
+                    </text>
+                    Data.
+                  </text>
+                <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
@@ -282,11 +289,9 @@ const DaftarPengguna = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Peran User
                         </th>
-                        {userRole === "admin" && (
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Last Access
                           </th>
-                        )}
                         {userRole === "superadmin" && (
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Aksi
@@ -330,15 +335,13 @@ const DaftarPengguna = () => {
                                 </span>
                               )}
                             </td>
-                            {userRole === "admin" && (
                               <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                                 {item.last_access ? (
                                   formatTimeElapsed(item.last_access) 
                                 ) : (
                                   <span className="text-gray-400 italic">No last access data available</span> 
                                 )}
-                              </td>
-                            )}              
+                              </td>            
                             {(userRole === "superadmin") && (
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button

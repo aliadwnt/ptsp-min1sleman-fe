@@ -82,7 +82,6 @@ const Notifications = () => {
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   
-    // Hitung jumlah jam, menit, dan detik
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;

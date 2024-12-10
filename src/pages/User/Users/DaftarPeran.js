@@ -7,7 +7,7 @@ import LoadingPage from "../../../components/loadingPage";
 import Favicon from "../../../components/Favicon";
 
 const DaftarPeran = () => {
-  const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
+  const [dataDaftarPeran, setdataDaftarPeran] = useState([]);
   const [message, setMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,11 +17,11 @@ const DaftarPeran = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = dataDaftarPengguna.slice(
+  const currentData = dataDaftarPeran.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
-  const totalPages = Math.ceil(dataDaftarPengguna.length / itemsPerPage);
+  const totalPages = Math.ceil(dataDaftarPeran.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
@@ -38,7 +38,7 @@ const DaftarPeran = () => {
     try {
       const response = await fetchDaftarPengguna();
       console.log("Data fetched:", response);
-      setDataDaftarPengguna(response);
+      setdataDaftarPeran(response);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Pengguna:", error);
@@ -57,7 +57,7 @@ const DaftarPeran = () => {
     if (!value) {
       fetchData();
     } else {
-      const filteredData = dataDaftarPengguna.filter(
+      const filteredData = dataDaftarPeran.filter(
         (item) =>
           String(item.name || "")
             .toLowerCase()
@@ -66,7 +66,7 @@ const DaftarPeran = () => {
             .toLowerCase()
             .includes(value.toLowerCase())
       );
-      setDataDaftarPengguna(filteredData);
+      setdataDaftarPeran(filteredData);
     }
   };
 
@@ -149,7 +149,14 @@ const DaftarPeran = () => {
               )}
               <div className="flex justify-center">
                 <div className="w-full max-w-5xl">
-                  <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Peran : 
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {dataDaftarPeran.length}
+                    </text>
+                    Data.
+                  </text>
+                  <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
