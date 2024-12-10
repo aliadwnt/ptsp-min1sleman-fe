@@ -4,7 +4,6 @@ import Footer from "../components/footer";
 import { createDaftarPelayanan } from "../services/layananService";
 import { fetchJenisLayanan } from "../services/jenisLayananService";
 import { uploadMultiple } from "../services/uploadService";
-import { uploadSingle } from "../services/uploadService";
 import { addNotification } from "../services/notificationService";
 import Swal from "sweetalert2";
 import { exportpdf } from "../services/layananService";

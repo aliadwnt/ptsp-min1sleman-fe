@@ -52,14 +52,27 @@ const NotificationMenu = () => {
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-
-    if (interval > 1) return `${interval} hari yang lalu`;
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) return `${interval} jam yang lalu`;
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) return `${interval} menit yang lalu`;
-    return `${seconds} detik yang lalu`;
+  
+    // Hitung jumlah jam, menit, dan detik
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+  
+    let timeString = "";
+    
+    if (hours > 0) {
+      timeString += `${hours}h `;
+    }
+  
+    if (minutes > 0) {
+      timeString += `${minutes}m `;
+    }
+  
+    if (remainingSeconds > 0) {
+      timeString += `${remainingSeconds}s`;
+    }
+  
+    return `${timeString} ago`;
   };
 
   const handleNotificationClick = (notificationId) => {
@@ -68,45 +81,45 @@ const NotificationMenu = () => {
 
   return (
     <div className="relative">
-          <button
-            className="relative p-1 focus:outline-none"
-            onClick={toggleModal}
-            style={{ backgroundColor: "transparent" }}
+        <button
+          className="relative p-1 focus:outline-none"
+          onClick={toggleModal}
+          style={{ backgroundColor: "transparent" }}
+        >
+          <svg
+            className="h-6 w-6 text-black-700"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="white"
           >
-            <svg
-              className="h-6 w-6 text-black-700"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="white"
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            />
+          </svg>
+          {newNotifications.length > 0 && (
+            <span
+              style={{
+                position: "absolute",
+                top: "0",
+                right: "0",
+                backgroundColor: "red",
+                color: "white",
+                fontSize: "0.625rem", 
+                borderRadius: "9999px",
+                height: "1rem", 
+                width: "1rem", 
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-              />
-            </svg>
-            {newNotifications.length > 0 && (
-              <span
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  right: "0",
-                  backgroundColor: "red",
-                  color: "white",
-                  fontSize: "0.625rem", 
-                  borderRadius: "9999px",
-                  height: "1rem", 
-                  width: "1rem", 
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {newNotifications.length}
-              </span>
-            )}
-          </button>
+              {newNotifications.length}
+            </span>
+          )}
+        </button>
 
       {isModalOpen && (
           <div
@@ -118,13 +131,12 @@ const NotificationMenu = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex flex-col items-center justify-between p-2 bg-white rounded-lg shadow-lg ">
-                <h2 className="text-s font-semibold text-gray-800 mb-3 flex items-center space-x-2">
-                  <span role="img" aria-label="bell" className="text-yellow-500">🔔</span>
+                <h2 className="text-s font-semibold text-gray-800 mb-3">
                   <span>Anda mendapatkan {newNotifications.length} notifikasi baru</span>
                 </h2>
                 
                 <button
-                  className="text-sm bg-green-600 text-center text-white hover:bg-green-700 p-2  rounded-md transition duration-200 ease-in-out"
+                  className="text-sm bg-green-600 text-center text-white hover:bg-green-700 p-2 rounded-md transition duration-200 ease-in-out"
                   onClick={() => {
                     navigate("/user/daftar-notifikasi");
                     console.log("Melihat semua notifikasi:", notifications);
@@ -155,12 +167,10 @@ const NotificationMenu = () => {
                           {notification.message.no_surat && (
                             <>
                               <p className="text-sm text-gray-700">
-                                <strong>No Surat:</strong>{" "}
-                                {notification.message.no_surat}
+                                <strong>No Surat:</strong> {notification.message.no_surat}
                               </p>
                               <p className="text-sm text-gray-700">
-                                <strong>Perihal:</strong>{" "}
-                                {notification.message.perihal}
+                                <strong>Perihal:</strong> {notification.message.perihal}
                               </p>
                             </>
                           )}
@@ -168,13 +178,10 @@ const NotificationMenu = () => {
                           {notification.message.type === "disposisi" && (
                             <>
                               <p className="text-sm text-gray-700">
-                                <strong>Diteruskan:</strong>{" "}
-                                {notification.message.diteruskan}
+                                <strong>Diteruskan:</strong> {notification.message.diteruskan}
                               </p>
                               <p className="text-sm text-gray-700">
-                                <strong>Disposisi:</strong>{" "}
-                                {notification.message.disposisi ||
-                                  "Tidak ada data"}
+                                <strong>Disposisi:</strong> {notification.message.disposisi || "Tidak ada data"}
                               </p>
                             </>
                           )}

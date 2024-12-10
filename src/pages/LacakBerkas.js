@@ -428,24 +428,6 @@ const LacakBerkas = () => {
                         )}
                       </div>
                     </div>
-
-                  <div>
-                    <div>
-                      <h2 className="text-xl font-bold mb-3 mt-4 p-3 bg-green-100">
-                        <div className="flex items-center">
-                        <InformationCircleIcon className="h-8 w-8 text-green-600" />
-                          <span className="text-green-600 title mx-2 select-none">
-                            Output Pelayanan
-                          </span>
-                        </div>
-                      </h2>
-                      <div className="grid place-items-center">
-                        <button className="bg-green-600 text-white font-bold py-2 px-4 text-center rounded hover:bg-green-700 transition">
-                          Lihat Output Pelayanan
-                        </button>
-                       </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

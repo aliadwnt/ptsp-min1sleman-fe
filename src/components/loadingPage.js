@@ -4,7 +4,7 @@ import { fetchSettings } from "../services/settingsService";
 import DEFAULT_LOGO_URL from "../images/logo_min_1.png";
 
 const LoadingPage = () => {
-  const [logo, setLogo] = useState(DEFAULT_LOGO_URL); 
+  const [logo, setLogo] = useState(DEFAULT_LOGO_URL);
 
   useEffect(() => {
     const fetchLogo = async () => {
@@ -15,11 +15,11 @@ const LoadingPage = () => {
           const logoSetting = response.find((item) => item.key === "app_logo");
 
           if (logoSetting && logoSetting.value) {
-            setLogo(logoSetting.value); 
+            setLogo(logoSetting.value);
           }
         }
       } catch (error) {
-        console.error("Error fetching logo:", error); 
+        console.error("Error fetching logo:", error);
       }
     };
     fetchLogo();
@@ -46,7 +46,7 @@ const LoadingPage = () => {
 
         {/* Nama Sistem */}
         <motion.h1
-          className="font-sans text-center text-3xl font-bold mb-6"
+          className="font-family text-center text-3xl font-bold mb-6"  
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
@@ -56,7 +56,7 @@ const LoadingPage = () => {
 
         {/* Deskripsi Sistem */}
         <motion.h2
-          className="font-sans text-xl font-medium mb-4"
+          className="font-family text-xl font-medium mb-4"  
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1.2, ease: "easeInOut" }}
@@ -66,7 +66,7 @@ const LoadingPage = () => {
 
         {/* Teks Memuat dengan Titik Tiga Berkedip */}
         <motion.div
-          className="font-sans text-lg font-medium"
+          className="font-family text-lg font-medium"  
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{

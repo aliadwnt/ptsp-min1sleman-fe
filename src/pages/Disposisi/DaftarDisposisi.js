@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
 import { useNavigate } from "react-router-dom";
-import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
+import { fetchSuratMasuk } from "../../services/suratMasukService";
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { fetchDaftarDisposisi } from "../../services/daftarDisposisiService";
+import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
 
 const DaftarDisposisi = () => {
   const [dataDaftarDisposisi, setDataDaftarDisposisi] = useState([]);
@@ -39,14 +41,69 @@ const DaftarDisposisi = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetchDaftarPelayanan();
-      setDataDaftarDisposisi(response);
-      setFilteredData(response); // Initialize filtered data
+      const suratData = await fetchSuratMasuk();
+      const disposisiData = await fetchDaftarDisposisi();
+      const pelayananData = await fetchDaftarPelayanan();
+
+      const disposisiGrouped = disposisiData.reduce((acc, disposisi) => {
+        const key = disposisi.no_reg || disposisi.id_sm;
+        if (!acc[key]) {
+          acc[key] = [];
+        }
+        acc[key].push(disposisi);
+        return acc;
+      }, {});
+
+      // Menggabungkan data Surat Masuk dan Pelayanan
+      const suratGrouped = [...pelayananData, ...suratData];
+
+      const updatedData = suratGrouped.map((surat) => {
+        const disposisiItems = surat.no_reg
+          ? disposisiGrouped[surat.no_reg] || []
+          : disposisiGrouped[surat.id] || [];
+        const status =
+          disposisiItems.length > 0 ? "Didisposisikan" : "Menunggu";
+
+        const pelayananItem = surat.no_reg
+          ? pelayananData.find((pelayanan) => pelayanan.no_reg === surat.no_reg)
+          : null;
+
+        const disposisiDataForSurat = surat.no_reg
+          ? disposisiGrouped[surat.no_reg] || []
+          : disposisiGrouped[surat.id] || [];
+
+        return {
+          ...surat,
+
+          status: status,
+          disposisiItems:
+            disposisiDataForSurat.length > 0
+              ? disposisiDataForSurat
+                  .map((item) => JSON.parse(item.disposisi))
+                  .join(" , ")
+              : "-",
+          pelayanan: pelayananItem ? pelayananItem.nama : "Tidak ada pelayanan",
+        };
+      });
+
+      setDataDaftarDisposisi(updatedData);
+      setFilteredData(updatedData);
     } catch (error) {
       console.error("Error fetching Daftar Disposisi:", error);
       setMessage("Error fetching data. Please try again later.");
     } finally {
-      setIsLoading(false); // Data loading completed
+      setIsLoading(false);
+    }
+  };
+
+  const handleDetail = (no_reg, id) => {
+    setCurrentDaftarDisposisi(null);
+    setModalOpen(true);
+
+    if (no_reg) {
+      navigate(`/disposisi/detail-pelayanan/${no_reg}`);
+    } else {
+      navigate(`/disposisi/detail-disposisi/${id}`);
     }
   };
 
@@ -59,35 +116,18 @@ const DaftarDisposisi = () => {
     } else {
       const filteredData = dataDaftarDisposisi.filter((item) => {
         return (
-          String(item.no_surat || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(item.nama_pengirim || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(item.no_reg || "")
+          String(item.status || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
           String(item.perihal || "")
             .toLowerCase()
             .includes(value.toLowerCase()) ||
-          String(item.diteruskan || "")
-            .toLowerCase()
-            .includes(value.toLowerCase()) ||
-          String(item.waktu || "")
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          String(item.disposisi || "")
         );
       });
 
       setFilteredData(filteredData);
     }
-  };
-
-  const handleDetail = (no_reg) => {
-    setCurrentDaftarDisposisi(null);
-    setModalOpen(true);
-    navigate(`/disposisi/detail-disposisi/${no_reg}`);
   };
 
   const toggleSidebar = () => {
@@ -122,38 +162,38 @@ const DaftarDisposisi = () => {
                   <i className="fas fa-list mr-2"></i> Daftar Disposisi
                 </div>
                 <form
-                onSubmit={handleSearch}
-                className="flex items-center space-x-2 w-full md:w-auto"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={3}
-                  stroke="currentColor"
-                  className="w-5 h-5 text-green-700"
+                  onSubmit={handleSearch}
+                  className="flex items-center space-x-2 w-full md:w-auto"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11 19a8 8 0 100-16 8 8 0 000 16zm-6-6h.01M16.39 16.39L21 21"
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={3}
+                    stroke="currentColor"
+                    className="w-5 h-5 text-green-700"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11 19a8 8 0 100-16 8 8 0 000 16zm-6-6h.01M16.39 16.39L21 21"
+                    />
+                  </svg>
+                  <input
+                    type="search"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Search..."
                   />
-                </svg>
-                <input
-                  type="search"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  className="w-full md:w-48 p-2 pl-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Search..."
-                />
                   <button
-                  type="button"
-                  onClick={() => window.location.reload()}
-                  className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
-                >
-                  <i className="fas fa-sync-alt text-xs"></i>
-                </button>
-              </form>
+                    type="button"
+                    onClick={() => window.location.reload()}
+                    className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                  >
+                    <i className="fas fa-sync-alt text-xs"></i>
+                  </button>
+                </form>
               </div>
 
               {message && (
@@ -175,25 +215,19 @@ const DaftarDisposisi = () => {
                             No
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            No Surat
+                            Status
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Pengirim
+                            no reg / no agenda
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Tgl Surat
+                            Diterima Tgl.
+                          </th>
+                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                            Disposisi Jabatan/Pegawai
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Perihal
-                          </th>
-                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Diteruskan Ke-
-                          </th>
-                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Waktu Disposisi
-                          </th>
-                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Catatan
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Aksi
@@ -207,38 +241,56 @@ const DaftarDisposisi = () => {
                               <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                                 {(currentPage - 1) * itemsPerPage + index + 1}
                               </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.no_surat}
-                              </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.nama_pengirim}
-                              </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {new Date(item.tgl).toLocaleDateString(
-                                  "id-ID",
-                                  {
-                                    day: "2-digit",
-                                    month: "long",
-                                    year: "numeric",
-                                  }
+                              <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                                {item.status === "Menunggu" ? (
+                                  <span className="bg-yellow-500 text-white py-0.5 px-1.5 text-[10px] rounded-full flex items-center gap-1">
+                                    <i className="fa fa-clock"></i> Menunggu
+                                  </span>
+                                ) : (
+                                  <span className="bg-green-500 text-white py-0.5 px-1.5 text-[10px] rounded-full flex items-center gap-1">
+                                    <i className="fa fa-check-circle"></i>{" "}
+                                    Didisposisikan
+                                  </span>
                                 )}
                               </td>
                               <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.no_reg || item.no_agenda}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.diterima
+                                  ? new Date(item.diterima).toLocaleDateString(
+                                      "id-ID",
+                                      {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      }
+                                    )
+                                  : item.tgl
+                                  ? new Date(item.tgl).toLocaleDateString(
+                                      "id-ID",
+                                      {
+                                        day: "2-digit",
+                                        month: "long",
+                                        year: "numeric",
+                                      }
+                                    )
+                                  : "-"}{" "}
+                              </td>
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                {item.disposisiItems || "-"}
+                              </td>
+
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                                 {item.perihal}
-                              </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.diteruskan}
-                              </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.waktu}
-                              </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.catatan}
                               </td>
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button
-                                  onClick={() => handleDetail(item.no_reg)}
-                                  className="focus:outline-none"
+                                  onClick={() =>
+                                    handleDetail(item.no_reg, item.id)
+                                  }
+                                  className="focu
+                                  s:outline-none"
                                   style={{
                                     background: "none",
                                     border: "none",
@@ -253,7 +305,7 @@ const DaftarDisposisi = () => {
                         ) : (
                           <tr>
                             <td
-                              colSpan="9"
+                              colSpan="7"
                               className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200"
                             >
                               No data available

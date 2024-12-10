@@ -50,13 +50,15 @@ const DashboardAdmin = () => {
   }, []); // Empty dependency array so it runs only once
 
   const getRoleText = (role) => {
-    switch(role) {
-      case "0":
-        return "User";
-      case "1":
+    switch (role) {
+      case "admin":
         return "Admin";
-      case "2":
-        return "Superadmin";
+      case "superadmin":
+          return "Super Admin";
+      case "staff":
+        return "Staff Sekolah";
+      case "kepala madrasah":
+        return "Kepala Madrasah";
       default:
         return "Unknown Role";
     }

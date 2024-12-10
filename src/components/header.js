@@ -1,14 +1,20 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import Notifications from "./Notifications";
 import UserDropdown from "./UserDropdown";
 
-const Header = ({ userRole, isAdmin }) => { // Pastikan userRole dan isAdmin diterima sebagai props
+const Header = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
+  useEffect(() => {
+    const role = localStorage.getItem("userRole"); 
+    setUserRole(role);
+    console.log("User Role from localStorage:", role); 
+  }, []); 
 
   return (
     <header className="select-none sticky top-0 bg-green-600 w-full px-6 flex justify-between items-center text-white z-10" style={{ paddingTop: "1.75rem", paddingBottom: "1.92rem" }}>
@@ -29,13 +35,9 @@ const Header = ({ userRole, isAdmin }) => { // Pastikan userRole dan isAdmin dit
       </button>
 
       <div className="ml-auto flex items-center space-x-3">
-      {(userRole === "admin" || userRole === "superadmin" || isAdmin) && (
-        <>
-          <Notifications />
-        </>
-      )}
-      <UserDropdown />
-    </div>
+        {(userRole === "admin" || userRole === "superadmin") && <Notifications />}
+        <UserDropdown />
+      </div>
     </header>
   );
 };

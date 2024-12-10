@@ -2,43 +2,37 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "../../components/sidebar";
 import Header from "../../components/header";
-import { fetchLoadArsip } from "../../services/lacakBerkasService";
 import {
-  updateDaftarDisposisi,
-  fetchDaftarDisposisiByIdSm,
+  fetchLacakBerkas,
+  fetchLoadArsip,
+} from "../../services/lacakBerkasService";
+import {
+  fetchDaftarDisposisiByNoReg,
+  updateDaftarDisposisiPelayanan,
 } from "../../services/daftarDisposisiService";
 import { fetchMasterDisposisi } from "../../services/masterDisposisiService";
-import { fetchSuratMasukById } from "../../services/suratMasukService";
 import { fetchDaftarPengguna } from "../../services/daftarPenggunaService";
 import { addNotification } from "../../services/notificationService";
 import "../../App";
 import Favicon from "../../components/Favicon";
 
 const DetailDisposisi = () => {
-  const { id } = useParams();
   const { no_reg } = useParams();
   const [disposisiOptions, setDisposisiOptions] = useState([]);
   const [penggunaOptions, setPenggunaOptions] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
-    id_sm: "",
-    id_pelayanan: "",
-    no_surat: "",
-    tgl_surat: "",
-    diterima: "",
-    instansi_pengirim: "",
-    no_agenda: "",
-    klasifikasi: "",
+    no_reg: "",
+    nama_pelayanan: "",
     perihal: "",
-    lampiran: "",
+    nama_pemohon: "",
+    alamat: "",
+    no_hp: "",
+    nama_pengirim: "",
+    kelengkapan: "",
     status: "",
-    sifat: "",
-    file_surat: "",
-    tindakan: "",
-    disposisi: "",
     catatan: "",
   });
-
   const [arsipLayanan, setArsipLayanan] = useState({
     arsip_masuk: "",
     arsip_keluar: "",
@@ -46,17 +40,15 @@ const DetailDisposisi = () => {
 
   const resetFields = () => {
     setFormData({
-      no_surat: "",
-      tgl_surat: ",",
-      diterima: "",
-      instansi_pengirim: "",
-      no_agenda: "",
-      klasifikasi: "",
+      nama_pelayanan: "",
       perihal: "",
-      lampiran: "",
+      nama_pemohon: "",
+      alamat: "",
+      no_hp: "",
+      nama_pengirim: "",
+      kelengkapan: "",
       status: "",
-      sifat: "",
-      file_surat: "",
+      catatan: "",
     });
     setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
   };
@@ -66,42 +58,36 @@ const DetailDisposisi = () => {
     disposisi: "",
     catatan: "",
   });
+
   const fetchDetail = async () => {
     try {
-      if (!id) {
-        console.warn("ID tidak ditemukan di URL.");
-        return;
-      }
+      const pelayananData = await fetchLacakBerkas(no_reg);
 
-      const suratData = await fetchSuratMasukById(id);
-
-      if (suratData) {
+      if (pelayananData) {
         setFormData({
-          id_sm: suratData.id || "",
-          no_surat: suratData.no_surat || "",
-          tgl_surat: suratData.tgl_surat || "",
-          diterima: suratData.diterima || "",
-          instansi_pengirim: suratData.instansi_pengirim || "",
-          no_agenda: suratData.no_agenda || "",
-          klasifikasi: suratData.klasifikasi || "",
-          perihal: suratData.perihal || "",
-          lampiran: suratData.lampiran || "",
-          status: suratData.status || "",
-          sifat: suratData.sifat || "",
-          file_surat: suratData.file_surat || "",
+          no_reg: pelayananData.no_reg || "",
+          nama_pelayanan: pelayananData.nama_pelayanan || "",
+          perihal: pelayananData.perihal || "",
+          nama_pemohon: pelayananData.nama_pemohon || "",
+          alamat: pelayananData.alamat,
+          no_hp: pelayananData.no_hp,
+          nama_pengirim: pelayananData.nama_pengirim,
+          kelengkapan: pelayananData.kelengkapan,
+          status: pelayananData.status,
+          catatan: pelayananData.keterangan,
         });
       } else {
         resetFields();
-        alert("Data surat tidak ditemukan.");
+        alert("Data pelayanan tidak ditemukan");
+        return;
       }
     } catch (error) {
-      console.error("Error fetching data surat masuk: ", error);
-      alert("Terjadi kesalahan saat mengambil data surat masuk.");
+      console.error("Error fetching data pelayanan: ", error);
+      alert("Terjadi kesalahan saat mengambil data pelayanan");
     }
 
     try {
-      // Fetch data disposisi berdasarkan ID
-      const disposisiData = await fetchDaftarDisposisiByIdSm(id);
+      const disposisiData = await fetchDaftarDisposisiByNoReg(no_reg);
       console.log("Disposisi Data:", disposisiData);
 
       if (
@@ -119,7 +105,7 @@ const DetailDisposisi = () => {
               disposisi,
               catatan: catatanArray[index] || "",
               tindakan: tindakanArray[index] || "",
-              time: item.created_at,
+              time: item.createdAt,
             }));
 
             return dataItems;
@@ -128,12 +114,14 @@ const DetailDisposisi = () => {
 
         setDaftarDisposisi(mappedData);
       } else {
-        console.warn("Data disposisi tidak ditemukan untuk ID:", id);
+        console.warn(
+          "Data disposisi tidak ditemukan untuk nomor registrasi:",
+          no_reg
+        );
         setDaftarDisposisi([]);
       }
     } catch (error) {
       console.error("Error fetching data disposisi: ", error);
-      // alert("Terjadi kesalahan saat mengambil data disposisi");
     }
 
     try {
@@ -148,13 +136,16 @@ const DetailDisposisi = () => {
           arsip_keluar: arsipData.arsipKeluar || "",
         });
       } else {
-        console.warn("Data arsip tidak ditemukan untuk ID:", id);
+        console.warn(
+          "Data arsip tidak ditemukan untuk nomor registrasi:",
+          no_reg
+        );
         setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
       }
     } catch (error) {
       console.error("Error fetching data arsip: ", error);
       console.warn(
-        "Data arsip tidak dapat diambil, tetapi surat tetap tampil."
+        "Data arsip tidak dapat diambil, tetapi pelayanan tetap tampil."
       );
       setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
     }
@@ -189,18 +180,18 @@ const DetailDisposisi = () => {
 
   const handleUpdateDisposisi = async () => {
     if (
-      !formData.id_sm ||
+      !formData.no_reg ||
       !formData.tindakan ||
       !formData.disposisi ||
       !formData.catatan
     ) {
-      alert("Semua field harus diisi!");
+      alert("Silakan pilih pejabat dan aksi disposisi sebelum mengirim.");
       return;
     }
 
     try {
-      const updatedData = await updateDaftarDisposisi(
-        formData.id_sm,
+      const updatedData = await updateDaftarDisposisiPelayanan(
+        formData.no_reg,
         formData.tindakan,
         formData.disposisi,
         formData.catatan
@@ -208,8 +199,8 @@ const DetailDisposisi = () => {
       console.log("Update berhasil:", updatedData);
 
       const notificationMessage = {
-        message: `Disposisi #${formData.disposisi} `,
-        tindakan: formData.tindakan,
+        message: `Disposisi #${formData.no_reg} `,
+        diteruskan: formData.diteruskan,
         disposisi: formData.disposisi,
         type: "disposisi",
       };
@@ -236,11 +227,12 @@ const DetailDisposisi = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+
   useEffect(() => {
     fetchDetail();
     fetchDisposisi();
     fetchPengguna();
-  }, [id]);
+  }, [no_reg]);
 
   return (
     <div className="bodyadmin flex relative">
@@ -278,7 +270,7 @@ const DetailDisposisi = () => {
                       />
                     </svg>
                     <span className="text-green-500 title mx-2">
-                      Detail Surat Masuk
+                      Detail Pelayanan Publik
                     </span>
                   </div>
                 </h2>
@@ -287,28 +279,28 @@ const DetailDisposisi = () => {
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="no_agenda"
+                        htmlFor="register"
                       >
-                        No Agenda
+                        No Registrasi
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        value={formData.no_agenda}
+                        value={formData.no_reg}
                         readOnly
                       />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="no_surat"
+                        htmlFor="layanan"
                       >
-                        No Surat
+                        Nama Layanan
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        value={formData.no_surat}
+                        value={formData.nama_pelayanan}
                         readOnly
                       />
                     </div>
@@ -316,14 +308,14 @@ const DetailDisposisi = () => {
                   <div className="w-full mb-3">
                     <label
                       className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                      htmlFor="instansi_pengiriman"
+                      htmlFor="perihal"
                     >
-                      Instansi Surat
+                      Perihal
                     </label>
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       type="text"
-                      value={formData.instansi_pengirim}
+                      value={formData.perihal}
                       readOnly
                     />
                   </div>
@@ -331,42 +323,28 @@ const DetailDisposisi = () => {
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="tgl_surat"
+                        htmlFor="pemohon"
                       >
-                        Tanggal Surat
+                        Nama Pemohon
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        type="date"
-                        value={
-                          formData?.tgl_surat &&
-                          !isNaN(new Date(formData?.tgl_surat).getTime()) // Memastikan nilai tgl_surat valid
-                            ? new Date(formData?.tgl_surat)
-                                .toISOString()
-                                .split("T")[0]
-                            : ""
-                        }
+                        type="text"
+                        value={formData.nama_pemohon}
                         readOnly
                       />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="diterima"
+                        htmlFor="alamat"
                       >
-                        Diterima
+                        Alamat
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                        type="date"
-                        value={
-                          formData?.diterima &&
-                          !isNaN(new Date(formData?.diterima).getTime()) // Memastikan nilai tgl_surat valid
-                            ? new Date(formData?.tgl_surat)
-                                .toISOString()
-                                .split("T")[0]
-                            : ""
-                        }
+                        type="text"
+                        value={formData.alamat}
                         readOnly
                       />
                     </div>
@@ -375,28 +353,28 @@ const DetailDisposisi = () => {
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="klasifikasi"
+                        htmlFor="noHp"
                       >
-                        Klasifikasi
+                        No. HP
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        value={formData.klasifikasi}
+                        value={formData.no_hp}
                         readOnly
                       />
                     </div>
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="perihal"
+                        htmlFor="pengirim"
                       >
-                        Perihal
+                        Nama Pengirim
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        value={formData.perihal}
+                        value={formData.nama_pengirim}
                         readOnly
                       />
                     </div>
@@ -419,33 +397,19 @@ const DetailDisposisi = () => {
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label
                         className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                        htmlFor="sifat"
+                        htmlFor="kelengkapan"
                       >
-                        Sifat
+                        Kelengkapan
                       </label>
                       <input
                         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                         type="text"
-                        value={formData.sifat}
+                        value={formData.kelengkapan}
                         readOnly
                       />
                     </div>
                   </div>
-                  <div className="w-full mb-3">
-                    <label
-                      className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
-                      htmlFor="lampiran"
-                    >
-                      Lampiran
-                    </label>
-                    <input
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      type="text"
-                      value={formData.lampiran}
-                      readOnly
-                    />
-                  </div>
-                  {/* <div className="w-full mb-6">
+                  <div className="w-full mb-6">
                     <label
                       className=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none"
                       htmlFor="catatan"
@@ -455,10 +419,10 @@ const DetailDisposisi = () => {
                     <input
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       type="text"
-                      value={formData.catatan}
+                      value={formData.keterangan}
                       readOnly
                     />
-                  </div> */}
+                  </div>
                 </form>
               </div>
               <div className="bg-white shadow-md rounded-lg p-4 mt-4">
@@ -477,20 +441,20 @@ const DetailDisposisi = () => {
                       />
                     </svg>
                     <span className="text-green-500 title mx-2">
-                      File Surat
+                      Arsip Pelayanan
                     </span>
                   </div>
                 </h2>
                 <div className="flex justify-between w-full mt-1 px-2">
-                  {/* File surat */}
+                  {/* Arsip Masuk */}
                   <div className="w-1/2 pr-2">
-                    <label className="text-center block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
-                      File Surat Masuk
+                    <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
+                      Arsip Masuk
                     </label>
-                    {formData.file_surat ? (
+                    {arsipLayanan.arsip_masuk ? (
                       <button
                         onClick={() =>
-                          window.open(formData.file_surat, "_blank")
+                          window.open(arsipLayanan.arsip_masuk, "_blank")
                         }
                         className="bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-700 transition w-full"
                       >
@@ -509,7 +473,7 @@ const DetailDisposisi = () => {
                   {/* Arsip Keluar */}
                   <div className="w-1/2 pl-2">
                     <label className="text-center  block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 select-none">
-                      Disposisi
+                      Arsip Keluar
                     </label>
                     {arsipLayanan.arsip_keluar ? (
                       <button

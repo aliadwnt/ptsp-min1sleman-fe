@@ -10,7 +10,7 @@ const Sidebar = () => {
   const location = useLocation();
   const dropdownRef = useRef(null);
   const [logo, setLogo] = useState(DEFAULT_LOGO_URL);
-  const userRole = localStorage.getItem("userRole"); 
+  const userRole = localStorage.getItem("userRole");
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -119,12 +119,12 @@ const Sidebar = () => {
         >
           {(userRole === "admin" || userRole === "superadmin") && (
             <>
-             <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
-            <b>Home</b>
-          </div>
-          <Link to="/dashboard" className={getLinkClass("/dashboard")}>
-            <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
-          </Link>
+              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
+                <b>Home</b>
+              </div>
+              <Link to="/dashboard" className={getLinkClass("/dashboard")}>
+                <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
+              </Link>
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Kelola Pelayanan</b>
               </div>
@@ -141,7 +141,7 @@ const Sidebar = () => {
                 <i className="fas fa-archive mr-2"></i> Arsip Pelayanan
               </Link>
 
-              {/* <div
+              <div
                 className="relative"
                 onMouseEnter={() => setOpenDropdown("surat")}
                 onMouseLeave={() => setOpenDropdown(null)}
@@ -170,7 +170,7 @@ const Sidebar = () => {
                     <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
                   </Link>
                 </div>
-              </div> */}
+              </div>
 
               {/* Menu untuk admin */}
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
@@ -251,12 +251,15 @@ const Sidebar = () => {
           {/* Menu untuk staff dan kepala madrasah */}
           {(userRole === "staff" || userRole === "kepala madrasah") && (
             <>
-          <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
-            <b>Home</b>
-          </div>
-          <Link to="/dashboard-staff" className={getLinkClass("/dashboard-staff")}>
-            <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
-          </Link>
+              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
+                <b>Home</b>
+              </div>
+              <Link
+                to="/dashboard-staff"
+                className={getLinkClass("/dashboard-staff")}
+              >
+                <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
+              </Link>
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Kelola Pelayanan</b>
               </div>
@@ -272,11 +275,23 @@ const Sidebar = () => {
               >
                 <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
               </Link>
+              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
+                <b>Kelola Disposisi</b>
+              </div>
+              <Link
+                to="/disposisi/daftar-disposisi"
+                className={getLinkClass("/disposisi/daftar-disposisi")}
+              >
+                <i className="fas fa-list mr-2"></i> Daftar Disposisi
+              </Link>
             </>
           )}
 
           {/* Settings untuk admin */}
-          {(userRole === "admin" || userRole === "superadmin" || userRole === "staff" || userRole === "kepala madrasah") && (
+          {(userRole === "admin" ||
+            userRole === "superadmin" ||
+            userRole === "staff" ||
+            userRole === "kepala madrasah") && (
             <div className="sidebar-content pb-10">
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Settings</b>

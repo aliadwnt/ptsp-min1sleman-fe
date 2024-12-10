@@ -3,9 +3,9 @@ import axios from 'axios';
 const API_URL = '/api_s/layanan'; 
 
 // Fetch all daftar pelayanan
-export const fetchDaftarPelayanan = async (DaftarLayanan) => {
+export const fetchDaftarPelayanan = async () => {
     try {
-        const response = await axios.get(`${API_URL}`, DaftarLayanan); 
+        const response = await axios.get(API_URL);
         return response.data; 
     } catch (error) {
         console.error('Error fetching Daftar Pelayanan:', error);

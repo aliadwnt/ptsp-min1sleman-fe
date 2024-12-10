@@ -81,17 +81,27 @@ const Notifications = () => {
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-    if (interval > 1) return `${interval} tahun yang lalu`;
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) return `${interval} bulan yang lalu`;
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) return `${interval} hari yang lalu`;
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) return `${interval} jam yang lalu`;
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) return `${interval} menit yang lalu`;
-    return `${seconds} detik yang lalu`;
+  
+    // Hitung jumlah jam, menit, dan detik
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+  
+    let timeString = "";
+  
+    if (hours > 0) {
+      timeString += `${hours} hour${hours > 1 ? 's' : ''} `;
+    }
+  
+    if (minutes > 0) {
+      timeString += `${minutes} minute${minutes > 1 ? 's' : ''} `;
+    }
+  
+    if (remainingSeconds > 0) {
+      timeString += `${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+    }
+  
+    return `${timeString} ago`;
   };
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);

@@ -11,6 +11,15 @@ export const fetchSuratMasuk = async () => {
     throw error;
   }
 };
+export const fetchSuratMasukById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/${id}`,);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Surat Masuk:", error);
+    throw error;
+  }
+};
 
 export const createSuratMasuk = async (SuratMasuk) => {
   const token = localStorage.getItem("token");

@@ -30,6 +30,7 @@ import SuratKeluar from "./pages/Surat/SuratKeluar";
 import MasterDisposisi from "./pages/Disposisi/MasterDisposisi";
 import DaftarDisposisi from "./pages/Disposisi/DaftarDisposisi";
 import DetailDisposisi from "./pages/Disposisi/DetailDisposisi";
+import DetailPelayanan from "./pages/Disposisi/DetailPelayanan";
 
 import DaftarPengguna from "./pages/User/Users/DaftarPengguna";
 import DaftarPeran from "./pages/User/Users/DaftarPeran";
@@ -147,7 +148,8 @@ function App() {
             <Route path="/surat/surat-keluar" element={<SuratKeluar />} />
             <Route path="/disposisi/master-disposisi" element={<MasterDisposisi />}/>
             <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />}/>
-            <Route path="/disposisi/detail-disposisi/:no_reg" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:id" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-pelayanan/:no_reg" element={<DetailPelayanan />}/>
             <Route path="/user/users" element={<DaftarPengguna />} />
             <Route path="/user/users/daftar-peran" element={<DaftarPeran />} />
             <Route path="/user/unit-pengolah" element={<UnitPengolah />} />
@@ -170,6 +172,9 @@ function App() {
             <Route path="/profile/edit" element={<EditProfile />} />
             <Route path="/user/settings" element={<Settings />} />
             <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
+            <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:id" element={<DetailDisposisi />}/>
+            <Route path="/user/daftar-notifikasi" element={<DaftarNotifikasi />}/>
           </>
         )}
 
@@ -183,6 +188,7 @@ function App() {
             <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
             <Route path="/user/settings" element={<Settings />} />
             <Route path="/profile/edit" element={<EditProfile/>} />
+            <Route path="/user/daftar-notifikasi" element={<DaftarNotifikasi />}/>
           </>
         )}
         <Route path="*" element={<NotFoundPage />} />
