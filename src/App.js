@@ -64,15 +64,10 @@ import {
 
 function App() {
   useEffect(() => {
-    // const token = localStorage.getItem("token");
-    // const userRole = localStorage.getItem("userRole");
-
-    // console.log("Token:", token, "Role:", userRole);
-
-    // Jika user tidak valid, hapus data token
     if (isNotUser()) {
       localStorage.removeItem("token");
       localStorage.removeItem("userRole");
+      localStorage.removeItem("lastAccess");
       console.log("User tidak dikenali, data dihapus.");
     }
   }, []);
@@ -87,10 +82,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
-            <Route
-              path="/lacak-permohonan/:no_reg"
-              element={<LacakPermohonan />}
-            />
+            <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />}/>
             <Route path="/visi-misi" element={<VisiMisi />} />
             <Route path="/zona-integritas" element={<ZonaIntegritas />} />
           </>
@@ -98,7 +90,7 @@ function App() {
 
         <Route
           path="/"
-          element={
+          element={ 
             isAuthenticated() ? (
               isAdmin() || isSuperAdmin() ? (
                 <Navigate to="/dashboard" />
@@ -134,8 +126,7 @@ function App() {
 
         {/* Halaman untuk admin */}
         {isAuthenticated() && (isAdmin() || isSuperAdmin()) && (
-  <>
-           <Route path="/" element={<Dashboard />} />
+          <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/layanan/daftar-pelayanan" element={<DaftarPelayanan />}/>
             <Route path="/layanan/arsip-layanan" element={<ArsipLayanan />} />
@@ -148,7 +139,7 @@ function App() {
             <Route path="/surat/surat-keluar" element={<SuratKeluar />} />
             <Route path="/disposisi/master-disposisi" element={<MasterDisposisi />}/>
             <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />}/>
-            <Route path="/disposisi/detail-disposisi/:id" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:id_sm" element={<DetailDisposisi />}/>
             <Route path="/disposisi/detail-pelayanan/:no_reg" element={<DetailPelayanan />}/>
             <Route path="/user/users" element={<DaftarPengguna />} />
             <Route path="/user/users/daftar-peran" element={<DaftarPeran />} />
@@ -173,7 +164,9 @@ function App() {
             <Route path="/user/settings" element={<Settings />} />
             <Route path="/settings/daftar-settings" element={<DaftarSettings/>}/>
             <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />}/>
-            <Route path="/disposisi/detail-disposisi/:id" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:id_sm" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:no_reg" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-pelayanan/:no_reg" element={<DetailPelayanan />}/>
             <Route path="/user/daftar-notifikasi" element={<DaftarNotifikasi />}/>
           </>
         )}
@@ -189,6 +182,9 @@ function App() {
             <Route path="/user/settings" element={<Settings />} />
             <Route path="/profile/edit" element={<EditProfile/>} />
             <Route path="/user/daftar-notifikasi" element={<DaftarNotifikasi />}/>
+            <Route path="/disposisi/daftar-disposisi" element={<DaftarDisposisi />}/>
+            <Route path="/disposisi/detail-disposisi/:id_sm" element={<DetailDisposisi />}/>
+            <Route path="/disposisi/detail-pelayanan/:no_reg" element={<DetailPelayanan />}/>
           </>
         )}
         <Route path="*" element={<NotFoundPage />} />

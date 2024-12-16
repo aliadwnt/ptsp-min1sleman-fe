@@ -1,6 +1,6 @@
 import React from "react";
 
-const PdfTemplate = ({ data, logo }) => {
+const PdfTemplate = ({ data, settingsData }) => {
   return (
     <div className="a-4-1">
       <style>{`
@@ -83,23 +83,27 @@ const PdfTemplate = ({ data, logo }) => {
             top: 19.2px;
         }
 
-        .kop {
-            display: flex;
-            flex-direction: row;
-            gap: 9.6px;
-            align-items: center;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-            flex-shrink: 0;
-            width: 446.4px;
-            position: relative;
-            border-bottom: 2px solid #000; 
-        }
+       .kop {
+          display: flex;
+          flex-direction: row;
+          gap: 9.6px;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          flex-shrink: 0;
+          width: 100%; /* Memenuhi lebar penuh */
+          position: relative;
+          border-bottom: 2px solid #000; /* Garis bawah */
+          margin: 0; /* Hilangkan margin default */
+          padding: 0; /* Hilangkan padding default */
+      }
 
         .logo-geschool-bulat-3 {
-            width: 50px;
-            height: 50px;
+            width: 70px;
+            height: 70px;
             position: absolute;
+            margin-left: 10px;
+            margin-bottom: 5px;
         }
 
         .text {
@@ -124,8 +128,9 @@ const PdfTemplate = ({ data, logo }) => {
         .pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span {
             color: #000000;
             font-family: "Inter-Regular", sans-serif;
-            font-size: 19.200000762939453px;
+            font-size: 16px;
             font-weight: 400;
+            margin-left: 50px;
         }
 
         .pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span2 {
@@ -133,14 +138,15 @@ const PdfTemplate = ({ data, logo }) => {
             font-family: "Inter-SemiBold", sans-serif;
             font-size: 19px;
             font-weight: 600;
-            margin-left: 50px;
+            margin-left: 90px;
+            text-align: center;
         }
 
         .address {
             color: #000000;
             text-align: center;
             font-family: "Inter-Light", sans-serif;
-            font-size: 8.000000953674316px;
+            font-size:10px;
             font-weight: 300;
             position: relative;
             margin-left: 100px;
@@ -160,6 +166,8 @@ const PdfTemplate = ({ data, logo }) => {
         }
 
         .div-w-full {
+            width: 100%;
+            padding: 20px;
             padding: 0px 10px 0px 10px;
             display: flex;
             flex-direction: row;
@@ -172,8 +180,8 @@ const PdfTemplate = ({ data, logo }) => {
         }
 
         .label {
-            padding: 10;
-            /* Menghapus padding yang tidak perlu */
+            font-weight: bold;
+            padding: 5;
             display: flex;
             flex-direction: row;
             gap: 10px;
@@ -210,6 +218,7 @@ const PdfTemplate = ({ data, logo }) => {
           justify-content: center;
           flex: 1;
           position: relative;
+          margin-bottom: 1px;
           margin-top: 5px;
       }
 
@@ -348,11 +357,10 @@ const PdfTemplate = ({ data, logo }) => {
           }
 
           .tanggal-surat {
-              color: var(--ppdbman1yogyakartaschidpendaftaran21edit-prestasi1512x851default-oxford-blue,
-                      #374151);
-              text-align: left;
+              color: var(--ppdbman1yogyakartaschidpendaftaran21edit-prestasi1512x851default-oxford-blue, #374151);
+              text-align: right; /* Mengatur teks dalam elemen ke kanan */
               font-family: "Inter-Bold", sans-serif;
-              font-size: 9.157268524169922px;
+              font-size: 9.16px;
               line-height: 12.21px;
               letter-spacing: 0.23px;
               font-weight: 700;
@@ -360,8 +368,8 @@ const PdfTemplate = ({ data, logo }) => {
               position: relative;
               max-width: 415.13px;
               display: flex;
-              align-items: center;
-              justify-content: flex-start;
+              align-items: flex-end; /* Untuk poros silang, jika diperlukan */
+              justify-content: flex-end; /* Untuk poros utama */
           }
 
 
@@ -417,7 +425,6 @@ const PdfTemplate = ({ data, logo }) => {
               align-items: center;
               justify-content: flex-start;
           }
-
 
           .waktu-masuk-surat {
               color: var(--ppdbman1yogyakartaschidpendaftaran21edit-prestasi1512x851default-oxford-blue,
@@ -499,7 +506,7 @@ const PdfTemplate = ({ data, logo }) => {
           }
           
           .sistem {
-            margin-top: 100px;
+            margin-top: 80px;
             margin-left: 30px;
           }
 
@@ -512,12 +519,12 @@ const PdfTemplate = ({ data, logo }) => {
               flex-direction: row;
               gap: 84.8px;
               align-items: flex-end;
-              justify-content: flex-start;
+              justify-content: flex-center;
               flex-wrap: wrap;
               flex-shrink: 0;
               width: 446.4px;
               position: relative;
-              margin-top:40px;
+              margin-top:2px;
           }
 
           .line-2 {
@@ -528,7 +535,29 @@ const PdfTemplate = ({ data, logo }) => {
               overflow: visible;
           }
 
-          .untuk-pemohon-jangan-sampai-hilang {
+        .divider {
+          height: 27cm; /* Menentukan tinggi elemen sesuai ukuran kertas A4 */
+          border-left: 1px dashed black; /* Membuat garis putus-putus */
+          width: 0; /* Lebar garis 0, karena hanya garis vertikal */
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+          .tempel-diberkas {
+              color: #000000;
+              text-align: left;
+              font-family: "Inter-Bold", sans-serif;
+              font-size: 11.20000171661377px;
+              line-height: 15.26px;
+              font-weight: 700;
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              margin-right :120px;
+          }
+
+              .untuk-pemohon-jangan-sampai-hilang {
               color: #000000;
               text-align: left;
               font-family: "Inter-Bold", sans-serif;
@@ -543,15 +572,15 @@ const PdfTemplate = ({ data, logo }) => {
 
             .yogyakarta-23-juni-2024 {
               color: #000000;
-              text-align: left;
+              text-align: right;
               font-family: "Inter-Regular", sans-serif;
               font-size: 11.20000171661377px;
               line-height: 15.26px;
               font-weight: 400;
               position: relative;
               display: flex;
-              align-items: center;
-              justify-content: flex-start;
+              align-items: right;
+              justify-content: flex-right;
               text-transform: none; /* Ensures text is not converted to uppercase */
             }
 
@@ -607,6 +636,19 @@ const PdfTemplate = ({ data, logo }) => {
           padding: 2px 0;
         }
 
+        .separator {
+            display: flex;
+            flex-direction: row;
+            gap: 9.6px;
+            align-items: center;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            width: 446.4px;
+            position: relative;
+            border: 1px solid #000;
+        }
+
         .label {
           text-align: left;
           font-weight: bold;
@@ -617,15 +659,25 @@ const PdfTemplate = ({ data, logo }) => {
             }
 
         .tanggal-surat {
-          text-align: left;
+          text-align: right;
           }
 
+        ..a4-size {
+          width: 21cm; /* Lebar kertas A4 */
+          height: 29.7cm; /* Tinggi kertas A4 */
+          padding: 5px; /* Padding seperti yang Anda inginkan */
+          box-sizing: border-box; /* Menambahkan padding ke dalam ukuran elemen */
+        }
 
 `}</style>
-      <div className="w-full p-5">
+      <div className="a4-size">
         <div className="form-1">
           <div className="kop">
-            <img className="logo-geschool-bulat-3" src={logo} alt="Logo" />
+            <img
+              className="logo-geschool-bulat-3"
+              src={settingsData.kop_surat}
+              alt="kop surat"
+            />
 
             <div className="text">
               <div className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta">
@@ -635,18 +687,23 @@ const PdfTemplate = ({ data, logo }) => {
                     <br />
                   </span>
                   <span className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span2">
-                    MADRASAH IBTIDAIYAH NEGERI 1 SLEMAN
+                    {settingsData.nama_lembaga}
                   </span>
                 </span>
               </div>
               <div className="address text-center">
-                Jl. Magelang Km. 4, Sinduadi, Mlati, Sleman, Daerah Istimewa
-                Yogyakarta, Indonesia
+                {settingsData.alamat}
                 <br />
-                Telepon (0274) 557464
+                Telepon {settingsData.telp}
                 <br />
-                Laman :  <a href="https://min1sleman.sch.id/" className="text-blue-500 ml-3">https://min1sleman.sch.id/    </a> 
-                Email :  <a href="mailto:minsatu.yk@gmail.com" className="text-blue-500">minsatu.yk@gmail.com</a>
+                Laman :{" "}
+                <a href={settingsData.website} className="text-blue-500">
+                  {settingsData.website}{" "}
+                </a>
+                Email :{" "}
+                <a href={settingsData.email} className="text-blue-500">
+                  {settingsData.email}
+                </a>
               </div>
             </div>
           </div>
@@ -725,31 +782,35 @@ const PdfTemplate = ({ data, logo }) => {
               </div>
             </div>
           </div>
+
           <div className="paraf">
-          <div className="tanggal-surat">
-            <div className="yogyakarta-23-juni-2024">
-              Yogyakarta, {new Date().toLocaleDateString()}
-            </div>
-          </div>
             <div className="petugas-penerima">Petugas Penerima,</div>
             <div className="sistem">Sistem</div>
           </div>
+
+          <div className="separator"></div>
 
           <div className="footer">
             <div className="untuk-pemohon-jangan-sampai-hilang">
               *Untuk Pemohon, Jangan Sampai Hilang!
             </div>
+            <div className="tanggal-surat">
+              <div className="yogyakarta-23-juni-2024">
+                Yogyakarta, {new Date().toLocaleDateString()}
+              </div>
             </div>
+          </div>
         </div>
-        <div className="relative w-full my-8">
-        <div
-          className="absolute w-full border-t-2 border-dashed border-white"
-          style={{ top: "50%" }}
-        ></div>
-      </div>
+
+        <div className="divider"></div>
+
         <div className="form-2">
           <div className="kop">
-            <img className="logo-geschool-bulat-3" src={logo} alt="" />
+            <img
+              className="logo-geschool-bulat-3"
+              src={settingsData.kop_surat}
+              alt="kop surat"
+            />
             <div className="text">
               <div className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta">
                 <span>
@@ -758,18 +819,23 @@ const PdfTemplate = ({ data, logo }) => {
                     <br />
                   </span>
                   <span className="pemerintah-kota-yogyakarta-sma-cerdas-mandiri-yogyakarta-span2">
-                    MADRASAH IBTIDAIYAH NEGERI 1 SLEMAN
+                    {settingsData.nama_lembaga}
                   </span>
                 </span>
               </div>
               <div className="address text-center">
-                Jl. Magelang Km. 4, Sinduadi, Mlati, Sleman, Daerah Istimewa
-                Yogyakarta, Indonesia
+                {settingsData.alamat}
                 <br />
-                Telepon (0274) 557464
+                Telepon {settingsData.telp}
                 <br />
-                Laman :  <a href="https://min1sleman.sch.id/" className="text-blue-500 ml-3">https://min1sleman.sch.id/</a> 
-                Email : <a href="mailto:minsatu.yk@gmail.com" className="text-blue-500">minsatu.yk@gmail.com</a>
+                Laman :{" "}
+                <a href={settingsData.website} className="text-blue-500 ml-3">
+                  {settingsData.website}{" "}
+                </a>
+                Email :{" "}
+                <a href={settingsData.email} className="text-blue-500">
+                  {settingsData.email}
+                </a>
               </div>
             </div>
           </div>
@@ -849,21 +915,22 @@ const PdfTemplate = ({ data, logo }) => {
               </div>
             </div>
           </div>
+
           <div className="paraf">
-          <div className="tanggal-surat">
-            <div className="yogyakarta-23-juni-2024">
-              Yogyakarta, {new Date().toLocaleDateString()}
-            </div>
-          </div>
             <div className="petugas-penerima">Petugas Penerima,</div>
             <div className="sistem">Sistem</div>
           </div>
 
+          <div className="separator"></div>
+
           <div className="footer">
-            <div className="untuk-pemohon-jangan-sampai-hilang">
-              *Tempel di Berkas
+            <div className="tempel-diberkas">*Tempel di Berkas!</div>
+            <div className="tanggal-surat">
+              <div className="yogyakarta-23-juni-2024">
+                Yogyakarta, {new Date().toLocaleDateString()}
+              </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     </div>

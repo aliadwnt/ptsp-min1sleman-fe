@@ -9,6 +9,12 @@ import {
 } from "../../services/suratKeluarService";
 import "../../App.css";
 import Favicon from "../../components/Favicon";
+import DEFAULT_LOGO_URL from "../../images/logo_min_1.png";
+import { fetchSettings } from "../../services/settingsService";
+import PdfTemplate from "../pdf/TemplateSuratKeluar";
+import ReactDOMServer from "react-dom/server";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const SuratKeluar = () => {
   const [dataSuratKeluar, setDataSuratKeluar] = useState([]);
@@ -25,7 +31,18 @@ const SuratKeluar = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentData = dataSuratKeluar.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(dataSuratKeluar.length / itemsPerPage);
-
+  const [formData, setFormData] = useState({
+    no_surat: "",
+    tgl_surat: "",
+    ditujukan: "",
+    isi_surat: "",
+    lampiran: "",
+    sifat: "",
+    perihal: "",
+    tembusan: "",
+    jenis_surat: "",
+    // file_surat: null,  // Jika ada input file
+  });
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
@@ -35,7 +52,20 @@ const SuratKeluar = () => {
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Surat Keluar`;
     fetchData();
-  }, []);
+    if (currentSuratKeluar) {
+      setFormData({
+        no_surat: currentSuratKeluar.no_surat || "",
+        tgl_surat: currentSuratKeluar.tgl_surat || "",
+        ditujukan: currentSuratKeluar.ditujukan || "",
+        // isi_surat: currentSuratKeluar.isi_surat || "",
+        lampiran: currentSuratKeluar.lampiran || "",
+        sifat: currentSuratKeluar.sifat || "",
+        perihal: currentSuratKeluar.perihal || "",
+        tembusan: currentSuratKeluar.tembusan || "",
+        jenis_surat: currentSuratKeluar.jenis_surat || "",
+      });
+    }
+  }, [currentSuratKeluar]);
 
   const fetchData = async () => {
     try {
@@ -85,17 +115,38 @@ const SuratKeluar = () => {
     setCurrentSuratKeluar(null);
     setModalOpen(true);
   };
+  const [isiSurat, setIsiSurat] = useState(currentSuratKeluar?.isi_surat || "");
+
+  const handleChange = (value) => {
+    setIsiSurat(value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { no_surat, tgl_surat, ditujukan, isi_surat } = e.target.elements;
+
+    const {
+      no_surat,
+      tgl_surat,
+      ditujukan,
+      lampiran,
+      sifat,
+      perihal,
+      tembusan,
+      jenis_surat,
+    } = e.target.elements;
 
     const SuratKeluar = {
       no_surat: no_surat.value,
       tgl_surat: tgl_surat.value,
       ditujukan: ditujukan.value,
-      isi_surat: isi_surat.value,
+      isi_surat: isiSurat, // Menggunakan nilai dari state isiSurat
+      lampiran: lampiran.value,
+      sifat: sifat.value,
+      perihal: perihal.value,
+      tembusan: tembusan.value,
+      jenis_surat: jenis_surat.value,
     };
+
     try {
       if (currentSuratKeluar) {
         await updateSuratKeluar(currentSuratKeluar.id, SuratKeluar);
@@ -109,6 +160,89 @@ const SuratKeluar = () => {
     } catch (error) {
       console.error("Failed to save data:", error);
       setMessage({ type: "error", text: "Gagal menyimpan data" });
+    }
+  };
+
+  const fetchSettingsData = async () => {
+    try {
+      const response = await fetchSettings();
+
+      if (Array.isArray(response)) {
+        const settingsData = {};
+
+        response.forEach((item) => {
+          settingsData[item.key] = item.value;
+        });
+
+        return settingsData;
+      } else {
+        return {};
+      }
+    } catch (error) {
+      console.error("Error fetching settings data:", error);
+      return {};
+    }
+  };
+
+  const handlePreview = async (item) => {
+    if (!item) {
+      console.error("No item data available for PDF preview.");
+      return;
+    }
+
+    const {
+      kop_surat = DEFAULT_LOGO_URL,
+      email,
+      telp,
+      nama_lembaga,
+      alamat,
+      kepala_kantor,
+      jabatan,
+      website,
+    } = await fetchSettingsData();
+    const htmlTemplate = (
+      <PdfTemplate
+        no_surat={item.no_surat}
+        data={item}
+        settingsData={{
+          kop_surat,
+          email,
+          telp,
+          nama_lembaga,
+          alamat,
+          kepala_kantor,
+          jabatan,
+          website,
+        }}
+      />
+    );
+    const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
+
+    const printWindow = window.open("", "_self");
+
+    if (printWindow) {
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Preview - ${item.no_surat}</title> <!-- Using the item.no_reg -->
+          </head>
+          <body>
+            <div id="pdf-content">
+              ${htmlString}
+            </div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+
+      printWindow.onload = () => {
+        printWindow.print();
+      };
+    } else {
+      console.error("Failed to open print window.");
     }
   };
 
@@ -191,14 +325,14 @@ const SuratKeluar = () => {
             </div>
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Surat Keluar : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataSuratKeluar.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Surat Keluar :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataSuratKeluar.length}
                   </text>
-                <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
+                  Data.
+                </text>
+                <div className="overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
@@ -215,7 +349,7 @@ const SuratKeluar = () => {
                           Ditujukan Kepada
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Isi Ringkas
+                          Isi Surat
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
@@ -245,8 +379,13 @@ const SuratKeluar = () => {
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.ditujukan}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.isi_surat}
+                            <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <div
+                                className="break-words"
+                                dangerouslySetInnerHTML={{
+                                  __html: item.isi_surat || "", 
+                                }}
+                              />
                             </td>
                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button
@@ -273,6 +412,19 @@ const SuratKeluar = () => {
                                 }}
                               >
                                 <i className="fas fa-trash text-red-600 hover:text-red-900"></i>
+                              </button>
+
+                              <button
+                                onClick={() => handlePreview(item)}
+                                className="focus:outline-black"
+                                style={{
+                                  background: "none",
+                                  border: "none",
+                                  padding: 0,
+                                }}
+                                aria-label="Preview"
+                              >
+                                <i className="fas fa-file-alt text-blue-600 hover:text-blue-900"></i>
                               </button>
                             </td>
                           </tr>
@@ -341,8 +493,8 @@ const SuratKeluar = () => {
           {/* Modal */}
           {modalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-md">
-                <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-2xl">
+                <h2 className="text-xl font-semibold mb-2 flex items-center">
                   <i
                     className={`mr-2 p-2 rounded-full text-white ${
                       currentSuratKeluar
@@ -352,73 +504,157 @@ const SuratKeluar = () => {
                   ></i>
                   {currentSuratKeluar
                     ? "Edit Surat Keluar"
-                    : "Tambah Surat Keluar"}
+                    : "Buat Surat Keluar"}
                 </h2>
                 <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      No. Surat
-                    </label>
-                    <input
-                      name="no_surat"
-                      defaultValue={currentSuratKeluar?.no_surat || ""}
-                      placeholder="No Surat"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-1"
-                    />
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        No. Surat
+                      </label>
+                      <input
+                        defaultValue={currentSuratKeluar?.no_surat || ""}
+                        type="text"
+                        name="no_surat"
+                        placeholder="No. Surat"
+                        readOnly
+                        required
+                        className="w-full bg-gray-200  rounded py-2 px-4"
+                      />
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Tgl Surat
+                      </label>
+                      <input
+                        defaultValue={
+                          currentSuratKeluar?.tgl_surat
+                            ? new Date(currentSuratKeluar?.tgl_surat)
+                                .toISOString()
+                                .split("T")[0]
+                            : ""
+                        }
+                        type="date"
+                        name="tgl_surat"
+                        required
+                        class="block w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
                   </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Tanggal Surat
-                    </label>
-                    <input
-                      type="date"
-                      name="tgl_surat"
-                      defaultValue={
-                        currentSuratKeluar?.tgl_surat
-                          ? new Date(currentSuratKeluar?.tgl_surat)
-                              .toISOString()
-                              .split("T")[0]
-                          : ""
-                      }
-                      placeholder="Tanggal Surat"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-1"
-                    />
+                  <div class="grid grid-cols-2 gap-4 mt-1 ">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Perihal
+                      </label>
+                      <input
+                        defaultValue={currentSuratKeluar?.perihal || ""}
+                        type="text"
+                        placeholder="Perihal"
+                        name="perihal"
+                        required
+                        class="block w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Tembusan
+                      </label>
+                      <input
+                        defaultValue={currentSuratKeluar?.tembusan || ""}
+                        type="text"
+                        name="tembusan"
+                        placeholder="Tembusan"
+                        // onChange={handleChange}
+                        required
+                        className="block w-full p-2 border border-gray-300 rounded"
+                      />
+                    </div>
                   </div>
-                  <div className="mb-3">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ditujukan Kepada
+
+                  <div class="grid grid-cols-3 gap-4 mt-1">
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Jenis Surat
+                      </label>
+                      <select
+                        defaultValue={currentSuratKeluar?.jenis_surat || ""}
+                        name="jenis_surat"
+                        // onChange={handleChange}
+                        required
+                        class="block w-full p-2 border border-gray-300 rounded"
+                      >
+                        <option value="">Pilih Jenis</option>
+                        <option value="penting">TTE</option>
+                        <option value="biasa">Biasa</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Sifat
+                      </label>
+                      <select
+                        defaultValue={currentSuratKeluar?.sifat || ""}
+                        name="sifat"
+                        // onChange={handleChange}
+                        required
+                        class="block w-full p-2 border border-gray-300 rounded"
+                      >
+                        <option value="">Pilih Sifat</option>
+                        <option value="penting">Penting</option>
+                        <option value="biasa">Biasa</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-1">
+                        Lampiran
+                      </label>
+                      <select
+                        defaultValue={currentSuratKeluar?.lampiran || ""}
+                        name="lampiran"
+                        // onChange={handleChange}
+                        required
+                        class="block w-full p-2 border border-gray-300 rounded"
+                      >
+                        <option value="">Pilih Lampiran</option>
+                        <option value="lampiran 1">Lampiran 1</option>
+                        <option value="lampiran 2">Lampiran 2</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="mb-1 mt-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Kepada
                     </label>
                     <input
+                      type="text"
                       name="ditujukan"
+                      // onChange={handleChange}
                       defaultValue={currentSuratKeluar?.ditujukan || ""}
-                      placeholder="Ditujukan Kepada"
+                      placeholder="Ditujukkan kepada"
                       required
-                      className="block w-full p-2 border border-gray-300 rounded mb-1"
+                      className="block w-full p-2 border border-gray-300 rounded"
                     />
+                    <p className="text-xs text-red-500 mt-1">
+                      *Pisahkan dengan titik koma (;) jika penerima lebih dari
+                      satu
+                    </p>
                   </div>
-                  <div className="mb-3">
+                  <div className="mb-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ringkasan Surat
+                      Isi Surat
                     </label>
-                    <textarea
-                      name="isi_surat"
+                    <ReactQuill
                       defaultValue={currentSuratKeluar?.isi_surat || ""}
-                      placeholder="Isi Ringkas"
-                      required
-                      className="block w-full p-2 border border-gray-300 rounded mb-1"
+                      name="isi_surat"
+                      onChange={handleChange}
+                      placeholder="Isi Ringkas Surat"
+                      theme="snow" 
+                      className="mb-14"
+                      style={{ height: "80px", fontSize: "10px" }}
                     />
                   </div>
-                  {/* ubah input text menjadi ikon download */}
-                  {/* <input
-                    type="text"
-                    name="download"
-                    defaultValue={currentSuratKeluar?.download || ""}
-                    placeholder="Download"
-                    required
-                    className="block w-full p-2 border border-gray-300 rounded mb-4"
-                  /> */}
+
                   <div className="flex justify-end space-x-2">
                     <button
                       type="button"

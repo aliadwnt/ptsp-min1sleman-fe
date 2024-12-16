@@ -8,6 +8,7 @@ import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 import { fetchDaftarDisposisi } from "../../services/daftarDisposisiService";
 import { fetchDaftarPelayanan } from "../../services/daftarPelayananService";
+import { CalendarIcon } from '@heroicons/react/24/solid';
 
 const DaftarDisposisi = () => {
   const [dataDaftarDisposisi, setDataDaftarDisposisi] = useState([]);
@@ -96,16 +97,17 @@ const DaftarDisposisi = () => {
     }
   };
 
-  const handleDetail = (no_reg, id) => {
+  const handleDetail = (no_reg, id_sm) => {
     setCurrentDaftarDisposisi(null);
     setModalOpen(true);
 
     if (no_reg) {
       navigate(`/disposisi/detail-pelayanan/${no_reg}`);
     } else {
-      navigate(`/disposisi/detail-disposisi/${id}`);
+      navigate(`/disposisi/detail-disposisi/${id_sm}`);
     }
   };
+
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -207,13 +209,13 @@ const DaftarDisposisi = () => {
               )}
               <div className="flex justify-center">
                 <div className="w-full max-w-5xl">
-                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                  Total Daftar Disposisi : 
-                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                    {dataDaftarDisposisi.length}
+                  <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Disposisi :
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {dataDaftarDisposisi.length}
+                    </text>
+                    Data.
                   </text>
-                  Data.
-                </text>
                   <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                       <thead className="bg-gray-50">
@@ -228,7 +230,7 @@ const DaftarDisposisi = () => {
                             no reg / no agenda
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Diterima Tgl.
+                            Tgl Diterima
                           </th>
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Disposisi Jabatan/Pegawai
@@ -261,51 +263,64 @@ const DaftarDisposisi = () => {
                                 )}
                               </td>
                               <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.no_reg || item.no_agenda}
+                              {item.no_reg ? (
+                                <div className="flex items-center gap-1">
+                                  <span className="px-1 py-0 text-[10px] font-medium text-white bg-gray-500 rounded-full uppercase">
+                                    No Reg
+                                  </span>
+                                  <span className="truncate text-xs text-gray-900">{item.no_reg}</span>
+                                </div>                              
+                                ) : item.no_agenda ? (
+                                  <div className="flex items-center gap-1">
+                                    <span className="px-1 py-0 text-[10px] font-medium text-white bg-gray-600 rounded-full uppercase">
+                                      No Agenda
+                                    </span>
+                                    <span className="truncate text-xs text-gray-900">{item.no_agenda}</span>
+                                  </div>
+                                ) : (
+                                  <div className="flex flex-col items-center">
+                                    <span className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                      Tidak Tersedia
+                                    </span>
+                                  </div>
+                                )}
                               </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.diterima
-                                  ? new Date(item.diterima).toLocaleDateString(
-                                      "id-ID",
-                                      {
-                                        day: "2-digit",
-                                        month: "long",
-                                        year: "numeric",
-                                      }
-                                    )
-                                  : item.tgl
-                                  ? new Date(item.tgl).toLocaleDateString(
-                                      "id-ID",
-                                      {
-                                        day: "2-digit",
-                                        month: "long",
-                                        year: "numeric",
-                                      }
-                                    )
-                                  : "-"}{" "}
+                              <td className="max-w-xs truncate px-2 py-3 text-xs text-left text-gray-900 border border-gray-200">
+                                <div className="flex items-center justify-start space-x-2">
+                                  <CalendarIcon className="w-4 h-4 ml-2 text-gray-500" />
+                                  <span>
+                                    {item.diterima
+                                      ? new Date(item.diterima).toLocaleDateString("id-ID", {
+                                          day: "2-digit",
+                                          month: "numeric",
+                                          year: "numeric",
+                                        })
+                                      : item.tgl
+                                      ? new Date(item.tgl).toLocaleDateString("id-ID", {
+                                          day: "2-digit",
+                                          month: "numeric",
+                                          year: "numeric",
+                                        })
+                                      : "-"}
+                                  </span>
+                                </div>
                               </td>
                               <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                                 {item.disposisiItems || "-"}
                               </td>
-
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.perihal}
+                              <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                                <div className="break-words">{item.perihal}</div>
                               </td>
-                              <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
-                                <button
-                                  onClick={() =>
-                                    handleDetail(item.no_reg, item.id)
-                                  }
-                                  className="focu
-                                  s:outline-none"
-                                  style={{
-                                    background: "none",
-                                    border: "none",
-                                    padding: 0,
-                                  }}
-                                >
-                                  <i className="fa fa-eye text-green-600 hover:text-green-900"></i>
-                                </button>
+                              <td className="w-24 text-center px-2 py-2 whitespace-nowrap text-xs font-medium border border-gray-200">
+                              <button
+                                onClick={() => handleDetail(item.no_reg, item.id)}
+                                className="focus:outline-none py-1 rounded-full border-none bg-green-500 hover:bg-green-600"
+                              >
+                                <div className="flex items-center justify-center space-x-1.5 hover:text-white">
+                                  <i className="fa fa-eye text-white hover:text-white text-xs"></i>
+                                  <span className="text-white hover:text-white text-[10px] ">Detail</span>
+                                </div>
+                              </button>
                               </td>
                             </tr>
                           ))

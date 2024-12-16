@@ -35,24 +35,24 @@ const LacakPermohonan = () => {
     fetchData();
   }, [no_reg, navigate]);
 
-  const fetchKop = async () => {
+  const fetchSettingsData = async () => {
     try {
       const response = await fetchSettings();
 
       if (Array.isArray(response)) {
-        const logoSetting = response.find((item) => item.key === "kop_surat");
+        const settingsData = {};
 
-        if (logoSetting && logoSetting.value) {
-          return logoSetting.value;
-        } else {
-          return DEFAULT_LOGO_URL;
-        }
+        response.forEach((item) => {
+          settingsData[item.key] = item.value;
+        });
+
+        return settingsData;
       } else {
-        return DEFAULT_LOGO_URL;
+        return {};
       }
     } catch (error) {
-      console.error("Error fetching logo:", error);
-      return DEFAULT_LOGO_URL;
+      console.error("Error fetching settings data:", error);
+      return {};
     }
   };
 
@@ -61,9 +61,28 @@ const LacakPermohonan = () => {
       console.error("No form data available for PDF export.");
       return;
     }
-    const logo = await fetchKop();
+    const {
+      kop_surat = DEFAULT_LOGO_URL,
+      email,
+      telp,
+      nama_lembaga,
+      alamat,
+      website,
+    } = await fetchSettingsData();
+
     const htmlTemplate = (
-      <PdfTemplate noReg={formData.no_reg} data={formData} logo={logo} />
+      <PdfTemplate
+        noReg={formData.no_reg}
+        data={formData}
+        settingsData={{
+          kop_surat,
+          email,
+          telp,
+          nama_lembaga,
+          alamat,
+          website,
+        }}
+      />
     );
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
     await exportpdf(htmlString, formData.no_reg);

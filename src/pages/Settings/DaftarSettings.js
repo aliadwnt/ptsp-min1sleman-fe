@@ -235,13 +235,13 @@ const Settings = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Settings : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataSettings.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Settings :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataSettings.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
@@ -267,10 +267,10 @@ const Settings = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="w-24 truncate px-2 py-3 text-xs text-center text-gray-900 border text-bold border-gray-200">
                               {item.key}
                             </td>
-                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm space-x-2 border border-gray-200">
                               {item.key === "kop_surat" ||
                               item.key === "app_logo" ? (
                                 item.value && (
@@ -278,16 +278,24 @@ const Settings = () => {
                                     href={item.value}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
+                                    className=" items-center gap-2 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
                                   >
                                     <i className="fa fa-eye text-white-600 hover:text-white-900 w-3 h-3"></i>
-                                    Preview
+                                    <span className="ml-1 truncate">
+                                      Preview
+                                    </span>
                                   </a>
                                 )
                               ) : (item.key === "surat_tahun" && item.value) ||
                                 (item.key === "surat_prefix" && item.value) ||
-                                (item.key === "surat_start_no" &&
-                                  item.value) ? (
+                                (item.key === "surat_start_no" && item.value) ||
+                                (item.key === "nama_lembaga" && item.value) ||
+                                (item.key === "telp" && item.value) ||
+                                (item.key === "email" && item.value) ||
+                                (item.key === "alamat" && item.value) ||
+                                (item.key === "website" && item.value) ||
+                                (item.key === "kepala_kantor" && item.value) ||
+                                (item.key === "jabatan" && item.value) ? (
                                 <span className="text-xs text-gray-900">
                                   {item.value}
                                 </span> // Tampilkan value untuk surat
@@ -400,7 +408,7 @@ const Settings = () => {
                         : "bg-green-600 fas fa-plus"
                     }`}
                   ></i>
-                  {currentSettings ? "Edit" : "Tambah Settings"}
+                  {currentSettings ? "Edit Settings" : "Tambah Settings"}
                 </h2>
                 <form onSubmit={handleSubmit}>
                   <div className="mb-4">
@@ -421,11 +429,26 @@ const Settings = () => {
                       <option value="" disabled>
                         Pilih Tipe
                       </option>
-                      <option value="surat_prefix">Prefix Surat</option>
-                      <option value="surat_tahun">Tahun Surat</option>
-                      <option value="surat_start_no">Nomor Awal Surat</option>
-                      <option value="kop_surat">Kop Surat</option>
-                      <option value="app_logo">Logo Aplikasi</option>
+                      <optgroup label="Surat">
+                        <option value="surat_prefix">Prefix Surat</option>
+                        <option value="surat_tahun">Tahun Surat</option>
+                        <option value="surat_start_no">Nomor Awal Surat</option>
+                      </optgroup>
+                      <optgroup label="Identitas">
+                        <option value="kop_surat">Kop Surat</option>
+                        <option value="app_logo">Logo Aplikasi</option>
+                        <option value="nama_lembaga">Nama Lembaga</option>
+                      </optgroup>
+                      <optgroup label="Kontak">
+                        <option value="telp">No Telp</option>
+                        <option value="email">Email</option>
+                        <option value="alamat">Alamat</option>
+                        <option value="website">Website</option>
+                      </optgroup>
+                      <optgroup label="Kepala Kantor">
+                        <option value="kepala_kantor">Kepala Kantor</option>
+                        <option value="jabatan">Jabatan</option>
+                      </optgroup>
                     </select>
                   </div>
 
@@ -462,6 +485,13 @@ const Settings = () => {
                         {formData.key === "surat_tahun" && "Tahun Surat"}
                         {formData.key === "surat_start_no" &&
                           "Nomor Awal Surat"}
+                        {formData.key === "nama_lembaga" && "Nama Lembaga"}
+                        {formData.key === "telp" && "No Telp"}
+                        {formData.key === "email" && "Email"}
+                        {formData.key === "alamat" && "Alamat"}
+                        {formData.key === "website" && "Website"}
+                        {formData.key === "kepala_kantor" && "Kepala Kantor"}
+                        {formData.key === "jabatan" && "Jabatan"}
                       </label>
                       <input
                         type="text"

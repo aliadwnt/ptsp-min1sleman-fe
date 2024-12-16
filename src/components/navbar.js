@@ -46,10 +46,10 @@ const Navbar = () => {
     const fetchLogo = async () => {
       try {
         const response = await fetchSettings();
-  
+
         if (Array.isArray(response)) {
           const logoSetting = response.find((item) => item.key === "app_logo");
-  
+
           if (logoSetting && logoSetting.value) {
             setLogo(logoSetting.value);
           }

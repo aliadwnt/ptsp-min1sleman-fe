@@ -24,7 +24,7 @@ const DaftarPengguna = () => {
   const userRole = localStorage.getItem("userRole");
   const [formValues, setFormValues] = useState({
     password: "",
-    role: null,
+    role: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -65,37 +65,16 @@ const DaftarPengguna = () => {
     return <LoadingPage />;
   }
 
-  const formatTimeElapsed = (lastAccess) => {
-    const now = new Date();
-    const accessDate = new Date(lastAccess);
-    const diffInSeconds = Math.floor((now - accessDate) / 1000);
-  
-    const days = Math.floor(diffInSeconds / (24 * 60 * 60));
-    const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / (60 * 60));
-    const minutes = Math.floor((diffInSeconds % (60 * 60)) / 60);
-    const seconds = diffInSeconds % 60;
-  
-    // Bangun string waktu yang telah berlalu
-    let elapsed = "";
-    if (days > 0) elapsed += `${days}d `;
-    if (hours > 0) elapsed += `${hours}h `;
-    if (minutes > 0) elapsed += `${minutes}m `;
-    if (seconds > 0) elapsed += `${seconds}s `;
-  
-    return elapsed.trim() + " ago";
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { name, email, password } = e.target.elements;
-    const role = formValues.role;
+    const { name, email, password, role } = e.target.elements;
 
     const DaftarPengguna = {
       name: name.value,
       email: email.value,
       password: password.value,
-      role: role,
+      role: role.value,
     };
 
     console.log("Data yang akan dikirim:", DaftarPengguna);
@@ -266,13 +245,13 @@ const DaftarPengguna = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Pengguna : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataDaftarPengguna.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Pengguna :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataDaftarPengguna.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
@@ -289,9 +268,6 @@ const DaftarPengguna = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Peran User
                         </th>
-                          <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                            Last Access
-                          </th>
                         {userRole === "superadmin" && (
                           <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                             Aksi
@@ -335,14 +311,7 @@ const DaftarPengguna = () => {
                                 </span>
                               )}
                             </td>
-                              <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                                {item.last_access ? (
-                                  formatTimeElapsed(item.last_access) 
-                                ) : (
-                                  <span className="text-gray-400 italic">No last access data available</span> 
-                                )}
-                              </td>            
-                            {(userRole === "superadmin") && (
+                            {userRole === "superadmin" && (
                               <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                                 <button
                                   onClick={() => {
@@ -488,7 +457,9 @@ const DaftarPengguna = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">Password</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
                   <input
                     type="password"
                     name="password"
@@ -503,7 +474,7 @@ const DaftarPengguna = () => {
                         password: e.target.value,
                       }));
                     }}
-                    pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    pattern="(?=.*[a-z])(?=.*[A-Z]).{8,}"
                     title="Password harus terdiri dari minimal 8 karakter, mengandung huruf besar dan kecil."
                     required={
                       !currentDaftarPengguna || !currentDaftarPengguna.password
@@ -517,11 +488,14 @@ const DaftarPengguna = () => {
                   </label>
                   <select
                     name="role"
-                    value={formValues.role || ""}
+                    defaultValue={
+                      (currentDaftarPengguna && currentDaftarPengguna.role) ||
+                      ""
+                    }
                     onChange={(e) => {
                       setFormValues((prev) => ({
                         ...prev,
-                        role: e.target.value, 
+                        role: e.target.value,
                       }));
                     }}
                     className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"

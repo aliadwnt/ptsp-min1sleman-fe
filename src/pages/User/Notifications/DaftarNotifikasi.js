@@ -7,6 +7,8 @@ import {
   markNotificationAsRead,
 } from "../../../services/notificationService";
 import { useNavigate, useParams } from "react-router-dom";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import { DocumentIcon } from "@heroicons/react/24/outline";
 
 const Notifications = () => {
   const { id } = useParams();
@@ -43,16 +45,23 @@ const Notifications = () => {
     }
   };
 
-  const handleDetail = (no_reg) => {
-    console.log("Value of no_reg:", no_reg);
-    if (!no_reg) {
-      console.error("no_reg is undefined or null");
-      return;
+  const handleDetail = (no_reg, id_sm) => {
+    if (no_reg) {
+      console.log("no_reg:", no_reg, "id_sm:", id_sm);
+      navigate(`/disposisi/detail-pelayanan/${no_reg}`);
+    } else if (id_sm) {
+      navigate(`/disposisi/detail-disposisi/${id_sm}`);
     }
-    navigate(`/disposisi/detail-disposisi/${no_reg}`);
   };
+
+  const extractIdSm = (message) => {
+    const match = message.match(/Disposisi #(\d+)/);
+    return match ? match[1] : null;
+  };
+
   const extractNoReg = (message) => {
-    const match = message.match(/#(\d+)/);
+    const match = message.match(/Layanan #(\d+)/);
+    console.log("extractNoReg match:", match); // Debugging output
     return match ? match[1] : null;
   };
 
@@ -81,25 +90,27 @@ const Notifications = () => {
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-  
+
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const remainingSeconds = seconds % 60;
-  
+
     let timeString = "";
-  
+
     if (hours > 0) {
-      timeString += `${hours} hour${hours > 1 ? 's' : ''} `;
+      timeString += `${hours} hour${hours > 1 ? "s" : ""} `;
     }
-  
+
     if (minutes > 0) {
-      timeString += `${minutes} minute${minutes > 1 ? 's' : ''} `;
+      timeString += `${minutes} minute${minutes > 1 ? "s" : ""} `;
     }
-  
+
     if (remainingSeconds > 0) {
-      timeString += `${remainingSeconds} second${remainingSeconds > 1 ? 's' : ''}`;
+      timeString += `${remainingSeconds} second${
+        remainingSeconds > 1 ? "s" : ""
+      }`;
     }
-  
+
     return `${timeString} ago`;
   };
 
@@ -128,27 +139,26 @@ const Notifications = () => {
           <div className="flex justify-center">
             <div className="w-full max-w-5xl">
               <div className="bg-white shadow-lg rounded-lg px-6 py-8">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-4">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                   <h2 className="text-xl font-semibold text-gray-800">
                     <i className="fas fa-list mr-2"></i> Daftar Notifikasi
                   </h2>
-                  <div className="flex space-x-2 mt-2">
+                  <div className="flex space-x-2 mt-4 md:mt-0">
                     <button
                       type="button"
                       onClick={() => window.location.reload()}
-                      className="flex items-center justify-center bg-green-600 text-white rounded-lg p-2 hover:bg-green-700 transition-colors duration-200"
+                      className="flex items-center justify-center bg-green-600 text-white rounded-lg p-3 hover:bg-green-700 transition-colors duration-200 transform hover:scale-105"
                     >
                       <i className="fas fa-sync-alt text-xs"></i>
                     </button>
                     <button
                       onClick={handleMarkAllAsRead}
-                      className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg text-sm font-medium transition-transform duration-300 shadow-lg transform ${
+                      className={`flex items-center justify-center gap-1 px-3 py-1 rounded-lg text-xs font-medium transition-transform duration-300 shadow-md transform ${
                         notifications.some((notif) => !notif.isRead)
                           ? "bg-green-600 hover:bg-green-700 text-white"
                           : "bg-gray-300 text-gray-400 cursor-not-allowed"
                       } ${
-                        notifications.some((notif) => !notif.isRead) &&
-                        "hover:scale-105"
+                        notifications.some((notif) => !notif.isRead) && "hover:scale-105"
                       }`}
                       disabled={!notifications.some((notif) => !notif.isRead)}
                     >
@@ -165,81 +175,111 @@ const Notifications = () => {
                 </div>
 
                 {/* Notifications */}
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {notifications.length > 0 ? (
                     notifications.map((item) => (
                       <div
                         key={item.id}
-                        className={`p-4 rounded-lg shadow-md flex items-center space-x-4 transition-all duration-300 ${
+                        className={`p-6 rounded-lg shadow-lg flex items-center space-x-6 transition-all duration-300 ease-in-out transform ${
                           item.isRead
                             ? "bg-gray-50 border border-gray-300"
-                            : "bg-white border-l-4 border-green-500"
+                            : "bg-white border-l-4 border-green-600"
                         }`}
                       >
                         <div className="flex-shrink-0">
                           <span
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${
+                            className={`w-10 h-10 rounded-full flex items-center justify-center text-white ${
                               item.isRead ? "bg-gray-400" : "bg-green-500"
                             }`}
                           >
                             <i
                               className={`fas ${
                                 item.isRead ? "fa-check" : "fa-bell"
-                              } text-sm`}
+                              } text-lg`}
                             ></i>
                           </span>
                         </div>
 
-                        {/* Content */}
                         <div className="flex-1">
                           {item.message.type === "disposisi" ? (
                             <div>
-                              <h4 className="font-bold text-gray-800 text-sm">
-                                {item.message.message ||
-                                  "Tidak ada pesan disposisi"}
-                                :
-                              </h4>
-                              <p className="text-gray-500 text-xs mb-1">
-                                {item.message.disposisi ||
-                                  "Tidak ada informasi disposisi"}
-                              </p>
-                              <p className="text-gray-500 text-xs mb-1">
-                                {item.message.diteruskan ||
-                                  "Tidak ada informasi diteruskan"}
-                              </p>
-                              <span className="text-xs text-gray-500">
-                                {timeAgo(item.created_at)}
-                              </span>
+                              <span>
+                              {item.message.message.startsWith("Disposisi") ? (
+                                <>
+                                  <span className="bg-green-700 text-white px-2 py-1 text-xs font-bold rounded-full uppercase">
+                                    Disposisi
+                                  </span>
+                                  {extractIdSm(item.message.message) && (
+                                    <span className="text-gray-600 ml-2 text-sm font-bold">
+                                      #{extractIdSm(item.message.message)}
+                                    </span>
+                                  )}
+                                </>
+                              ) : (
+                                <span>{item.message.message || "Tidak ada pesan disposisi"}</span>
+                              )}
+                            </span>
+                            <p className="text-gray-600 text-xs mb-2 mt-2 flex items-center">
+                              <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                              <span className="font-semibold text-gray-800">Disposisi:</span>
+                              <span className="text-gray-700 ml-1">{item.message.disposisi || "Tidak ada informasi disposisi"}</span>
+                            </p>
+                            <p className="text-gray-600 text-xs mb-2 flex items-center">
+                              <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                              <span className="font-semibold text-gray-800">Diteruskan:</span>
+                              <span className="text-gray-700 ml-1">{item.message.diteruskan || "Tidak ada informasi diteruskan"}</span>
+                            </p>
+                            <span className="text-xs text-gray-500 flex items-center">
+                              <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
+                              {timeAgo(item.created_at)}
+                            </span>
                             </div>
                           ) : (
                             <div>
-                              <h4 className="font-bold text-gray-800 text-sm">
-                                {item.message.message ||
-                                  "Tidak ada pesan layanan"}
-                              </h4>
-                              <p className="text-gray-500 text-xs mb-1">
-                                Nomor Surat :
-                                {item.message.no_surat ||
-                                  "Tidak ada nomor surat"}
+                              <span>
+                                {item.message.message.startsWith("Layanan") ? (
+                                  <>
+                                    <span className="bg-green-500 text-white px-2 py-1 text-xs font-bold rounded-full uppercase">
+                                      Layanan
+                                    </span>
+                                    {extractNoReg(item.message.message) && (
+                                      <span className="text-gray-800 ml-2 text-sm font-bold">
+                                        #{extractNoReg(item.message.message)}
+                                      </span>
+                                    )}
+                                  </>
+                                ) : (
+                                  <span className="bg-green-500 text-white px-4 py-1 text-sm font-bold rounded-full">
+                                    {item.message.message || "Tidak ada pesan layanan"}
+                                  </span>
+                                )}
+                              </span>
+                              <p className="text-gray-600 text-xs mb-2 mt-2 flex items-center">
+                                <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                                <span className="font-semibold text-gray-800">Nomor Surat :</span>
+                                <span className="text-gray-700 ml-1">{item.message.no_surat || "Tidak ada nomor surat"}</span>
                               </p>
-                              <p className="text-gray-500 text-xs mb-1">
-                                Perihal :
-                                {item.message.perihal || "Tidak ada perihal"}
+                              <p className="text-gray-600 text-xs mb-2 flex items-center">
+                                <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                                <span className="font-semibold text-gray-800">Perihal :</span>
+                                <span className="text-gray-700 ml-1">{item.message.perihal || "Tidak ada perihal"}</span>
                               </p>
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs text-gray-500 flex items-center">
+                                <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
                                 {timeAgo(item.created_at)}
                               </span>
                             </div>
                           )}
                         </div>
 
-                        <div className="flex flex-col items-end space-y-2">
+                        {/* Actions */}
+                        <div className="flex flex-col items-end space-y-3">
                           <button
                             onClick={() => handleMarkAsRead(item)}
-                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
+                            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
                               item.isRead
                                 ? "bg-gray-300 text-gray-400 cursor-not-allowed"
-                                : "bg-green-600 text-white hover:bg-green-800"
+                                : "bg-green-600 text-white hover:bg-green-700"
                             }`}
                           >
                             <i
@@ -252,18 +292,13 @@ const Notifications = () => {
 
                           <button
                             onClick={() => {
+                              const idSm = extractIdSm(item.message.message);
                               const noReg = extractNoReg(item.message.message);
-                              if (noReg) {
-                                handleMarkAsRead(item);
-                                handleDetail(noReg);
-                              } else {
-                                console.error(
-                                  "No registration number found in message:",
-                                  item.message.message
-                                );
+                              if (noReg || idSm) {
+                                handleDetail(noReg, idSm);
                               }
                             }}
-                            className={`flex items-center justify-center gap-1 px-3 py-1 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
+                            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-medium transition-transform duration-300 shadow-md transform w-full ${
                               item.isRead
                                 ? "bg-gray-300 text-gray-400 cursor-not-allowed"
                                 : "bg-blue-600 text-white hover:bg-blue-800"
@@ -274,7 +309,7 @@ const Notifications = () => {
                                 item.isRead ? "text-gray-400" : "text-white"
                               }`}
                             ></i>
-                            <span>Detail Disposisi</span>
+                            <span>Detail</span>
                           </button>
                         </div>
                       </div>

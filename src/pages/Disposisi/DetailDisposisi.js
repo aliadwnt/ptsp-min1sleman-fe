@@ -13,15 +13,18 @@ import { fetchDaftarPengguna } from "../../services/daftarPenggunaService";
 import { addNotification } from "../../services/notificationService";
 import "../../App";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DetailDisposisi = () => {
-  const { id } = useParams();
+  const { id_sm } = useParams();
   const { no_reg } = useParams();
   const [disposisiOptions, setDisposisiOptions] = useState([]);
   const [penggunaOptions, setPenggunaOptions] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
     id_sm: "",
+    // no_reg: "",
     id_pelayanan: "",
     no_surat: "",
     tgl_surat: "",
@@ -68,13 +71,11 @@ const DetailDisposisi = () => {
   });
   const fetchDetail = async () => {
     try {
-      if (!id) {
+      if (!id_sm) {
         console.warn("ID tidak ditemukan di URL.");
         return;
       }
-
-      const suratData = await fetchSuratMasukById(id);
-
+      const suratData = await fetchSuratMasukById(id_sm);
       if (suratData) {
         setFormData({
           id_sm: suratData.id || "",
@@ -92,16 +93,16 @@ const DetailDisposisi = () => {
         });
       } else {
         resetFields();
-        alert("Data surat tidak ditemukan.");
+        toast.error("Data surat tidak ditemukan.");
       }
     } catch (error) {
       console.error("Error fetching data surat masuk: ", error);
-      alert("Terjadi kesalahan saat mengambil data surat masuk.");
+      toast.error("Terjadi kesalahan saat mengambil data surat masuk.");
     }
 
     try {
       // Fetch data disposisi berdasarkan ID
-      const disposisiData = await fetchDaftarDisposisiByIdSm(id);
+      const disposisiData = await fetchDaftarDisposisiByIdSm(id_sm);
       console.log("Disposisi Data:", disposisiData);
 
       if (
@@ -128,12 +129,11 @@ const DetailDisposisi = () => {
 
         setDaftarDisposisi(mappedData);
       } else {
-        console.warn("Data disposisi tidak ditemukan untuk ID:", id);
+        console.warn("Data disposisi tidak ditemukan untuk ID:", id_sm);
         setDaftarDisposisi([]);
       }
     } catch (error) {
       console.error("Error fetching data disposisi: ", error);
-      // alert("Terjadi kesalahan saat mengambil data disposisi");
     }
 
     try {
@@ -148,7 +148,7 @@ const DetailDisposisi = () => {
           arsip_keluar: arsipData.arsipKeluar || "",
         });
       } else {
-        console.warn("Data arsip tidak ditemukan untuk ID:", id);
+        console.warn("Data arsip tidak ditemukan untuk no_reg", no_reg);
         setArsipLayanan({ arsip_masuk: "", arsip_keluar: "" });
       }
     } catch (error) {
@@ -194,7 +194,7 @@ const DetailDisposisi = () => {
       !formData.disposisi ||
       !formData.catatan
     ) {
-      alert("Semua field harus diisi!");
+      toast.error("Semua field harus diisi!");
       return;
     }
 
@@ -208,7 +208,7 @@ const DetailDisposisi = () => {
       console.log("Update berhasil:", updatedData);
 
       const notificationMessage = {
-        message: `Disposisi #${formData.disposisi} `,
+        message: `Disposisi #${formData.id_sm} `,
         tindakan: formData.tindakan,
         disposisi: formData.disposisi,
         type: "disposisi",
@@ -216,11 +216,11 @@ const DetailDisposisi = () => {
       addNotification(notificationMessage);
 
       resetFields();
-      alert("Disposisi berhasil diperbarui.");
+      toast.success("Disposisi berhasil diperbarui.");
       fetchDetail();
     } catch (error) {
       console.error("Gagal update disposisi:", error);
-      alert("Terjadi kesalahan saat memperbarui disposisi.");
+      toast.error("Terjadi kesalahan saat memperbarui disposisi.");
     }
   };
 
@@ -240,7 +240,7 @@ const DetailDisposisi = () => {
     fetchDetail();
     fetchDisposisi();
     fetchPengguna();
-  }, [id]);
+  }, [id_sm]);
 
   return (
     <div className="bodyadmin flex relative">
@@ -668,6 +668,13 @@ const DetailDisposisi = () => {
                     >
                       Disposisikan
                     </button>
+
+                    <ToastContainer
+                      position="top-center" // Ubah posisi menjadi top-center atau bottom-center
+                      autoClose={5000}
+                      hideProgressBar={false}
+                      closeOnClick
+                    />
                   </form>
                 </div>
               </div>

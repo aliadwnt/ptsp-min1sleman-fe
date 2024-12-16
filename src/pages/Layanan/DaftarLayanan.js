@@ -293,19 +293,35 @@ const DaftarLayanan = () => {
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.unit}
+                              <div className="break-words">{item.unit}</div>
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs break-words px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.name}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs break-words px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.jenis}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs break-words px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.output}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.duration} Hari
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 flex items-center justify-center space-x-1">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-4 h-4 text-green-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              <span className="bg-green-100 text-green-600 px-2 py-1 rounded-full font-medium">
+                                {item.duration} Hari
+                              </span>
                             </td>
                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button

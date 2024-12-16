@@ -17,6 +17,7 @@ import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
 import DEFAULT_LOGO_URL from "../../images/logo_min_1.png";
+import { ToastContainer, toast } from "react-toastify";
 
 const DaftarPelayanan = () => {
   const [dataDaftarPelayanan, setDataDaftarPelayanan] = useState([]);
@@ -80,11 +81,9 @@ const DaftarPelayanan = () => {
   useEffect(() => {
     document.title = `PTSP MIN 1 SLEMAN - Daftar Pelayanan`;
     fetchData();
-    // fetchLogo();
     if (location.state) {
       setMessage(location.state.message);
       setIsError(location.state.isError);
-
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate]);
@@ -130,7 +129,7 @@ const DaftarPelayanan = () => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        alert("Nomor registrasi telah disalin!");
+        toast.success("Nomor registrasi telah disalin!");
       })
       .catch((err) => {
         console.error("Gagal menyalin: ", err);
@@ -140,12 +139,14 @@ const DaftarPelayanan = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
-        await deleteDaftarPelayanan(id);
+        await deleteDaftarPelayanan(id); 
         setMessage("Data berhasil dihapus");
         fetchData();
+        toast.success("Data berhasil dihapus"); // Menampilkan toast sukses
       } catch (error) {
         console.error("Failed to delete data:", error);
         setMessage("Failed to delete data");
+        toast.error("Terjadi kesalahan saat menghapus data"); // Menampilkan toast error
       }
     }
   };
@@ -189,24 +190,24 @@ const DaftarPelayanan = () => {
     navigate("/create-daftar-pelayanan");
   };
 
-  const fetchKop = async () => {
+  const fetchSettingsData = async () => {
     try {
       const response = await fetchSettings();
 
       if (Array.isArray(response)) {
-        const logoSetting = response.find((item) => item.key === "kop_surat");
+        const settingsData = {};
 
-        if (logoSetting && logoSetting.value) {
-          return logoSetting.value;
-        } else {
-          return DEFAULT_LOGO_URL;
-        }
+        response.forEach((item) => {
+          settingsData[item.key] = item.value;
+        });
+
+        return settingsData;
       } else {
-        return DEFAULT_LOGO_URL;
+        return {};
       }
     } catch (error) {
-      console.error("Error fetching logo:", error);
-      return DEFAULT_LOGO_URL;
+      console.error("Error fetching settings data:", error);
+      return {};
     }
   };
 
@@ -215,10 +216,28 @@ const DaftarPelayanan = () => {
       console.error("No item data available for PDF export.");
       return;
     }
-    const logo = await fetchKop();
+    const {
+      kop_surat = DEFAULT_LOGO_URL,
+      email,
+      telp,
+      nama_lembaga,
+      alamat,
+      website,
+    } = await fetchSettingsData();
 
     const htmlTemplate = (
-      <PdfTemplate noReg={item.no_reg} data={item} logo={logo} />
+      <PdfTemplate
+        noReg={item.no_reg}
+        data={item}
+        settingsData={{
+          kop_surat,
+          email,
+          telp,
+          nama_lembaga,
+          alamat,
+          website,
+        }}
+      />
     );
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
     await exportpdf(htmlString, item.no_reg);
@@ -229,17 +248,35 @@ const DaftarPelayanan = () => {
       console.error("No item data available for PDF preview.");
       return;
     }
-  
-    const logo = await fetchKop();
+
+    const {
+      kop_surat = DEFAULT_LOGO_URL,
+      email,
+      telp,
+      nama_lembaga,
+      alamat,
+      website,
+    } = await fetchSettingsData();
     const htmlTemplate = (
-      <PdfTemplate noReg={item.no_reg} data={item} logo={logo} />
+      <PdfTemplate
+        noReg={item.no_reg}
+        data={item}
+        settingsData={{
+          kop_surat,
+          email,
+          telp,
+          nama_lembaga,
+          alamat,
+          website,
+        }}
+      />
     );
     const htmlString = ReactDOMServer.renderToStaticMarkup(htmlTemplate);
-  
-    const previewWindow = window.open("", "_blank");
-  
-    if (previewWindow) {
-      previewWindow.document.write(`
+
+    const printWindow = window.open("", "_self");
+
+    if (printWindow) {
+      printWindow.document.write(`
         <!DOCTYPE html>
         <html lang="en">
           <head>
@@ -251,17 +288,19 @@ const DaftarPelayanan = () => {
             <div id="pdf-content">
               ${htmlString}
             </div>
-            <button onclick="window.print();" style="margin-top: 20px; padding: 10px; background-color: blue; color: white; border: none; cursor: pointer;">
-              Print
-            </button>
           </body>
         </html>
       `);
-      previewWindow.document.close();
+      printWindow.document.close();
+
+      // Menunggu halaman selesai dimuat sebelum memanggil window.print()
+      printWindow.onload = () => {
+        printWindow.print();
+      };
     } else {
-      console.error("Failed to open preview window.");
+      console.error("Failed to open print window.");
     }
-  };  
+  };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -412,9 +451,9 @@ const DaftarPelayanan = () => {
                         role="presentation"
                       >
                         <div
-                          className={`bg-white p-2 rounded-lg flex flex-col items-center transition-all duration-300 focus:outline-none hover:bg-slate-50 ${
+                          className={`bg-white p-2 rounded-lg flex flex-col items-center transition-all duration-300 focus:outline-none hover:bg-green-100 shadow-md hover:shadow-lg ${
                             activeTab === tab
-                              ? "text-green-900 font-semibold shadow-lg"
+                              ? "text-green-900 font-semibold"
                               : "text-gray-600 hover:text-green-700"
                           }`}
                           id={`${tab}-tab`}
@@ -429,7 +468,7 @@ const DaftarPelayanan = () => {
                             <span className="text-base">{counts[tab]}</span>
                           </div>
                           <div
-                            className={`h-[2px] transition-all duration-300 mt-1 rounded-full ${
+                            className={`h-[3px] transition-all duration-300 mt-2 rounded-full ${
                               activeTab === tab
                                 ? "bg-green-700 w-12"
                                 : "bg-gray-300 w-8"
@@ -443,7 +482,7 @@ const DaftarPelayanan = () => {
 
                 <div className="overflow-x-auto">
                   <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Pelayanan : 
+                    Total Daftar Pelayanan :
                     <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
                       {counts.Semua}
                     </text>
@@ -470,7 +509,7 @@ const DaftarPelayanan = () => {
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Status
                         </th>
-                        <th className="px-12 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
+                        <th className="px-10 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
                         </th>
                       </tr>
@@ -482,25 +521,43 @@ const DaftarPelayanan = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200 flex items-center justify-center space-x-2">
-                              <span>{item.no_reg}</span>
-                              <button
-                                onClick={() => handleCopy(item.no_reg)}
-                                className="text-gray-500 hover:text-gray-700 p-1"
-                              >
-                                <ClipboardIcon className="w-4 h-4" />
-                              </button>
+                            <td className="max-w-xs truncate px-4 py-3 text-xs text-center text-gray-900 flex items-center justify-center space-x-3">
+                              <div className="flex items-center justify-center space-x-2">
+                                <span className="px-3 py-1 text-[10px] font-medium text-white bg-gray-600 rounded-full uppercase">
+                                  {item.no_reg}
+                                </span>
+                                <button
+                                  onClick={() => handleCopy(item.no_reg)}
+                                  className="text-gray-500 hover:text-gray-700 p-2 rounded-full transition-colors duration-200"
+                                >
+                                  <ClipboardIcon className="w-4 h-4" />
+                                  <ToastContainer
+                                    position="top-center"
+                                    autoClose={5000}
+                                    hideProgressBar={false}
+                                    closeOnClick
+                                  />
+                                </button>
+                              </div>
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.nama_pelayanan}
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <div className="break-words">{item.nama_pelayanan}</div>
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.perihal}
+                            <td className="px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <div className="break-words">{item.perihal}</div>
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.kelengkapan}
+                            <td className="max-w-xs truncate px-2 py-1 text-center text-gray-900 border border-gray-200">
+                              {item.kelengkapan === "Sudah Lengkap" ? (
+                                <span className="inline-flex items-center justify-center font-medium text-green-600 bg-green-100 px-1 py-0.5 rounded-full" style={{ fontSize: '0.625rem' }}>
+                                  <i className="fas fa-check-circle mr-1" style={{ fontSize: '0.625rem' }}></i>Lengkap
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center justify-center font-medium text-red-600 bg-red-100 px-1 py-0.5 rounded-full" style={{ fontSize: '0.625rem' }}>
+                                  <i className="fas fa-times-circle mr-1" style={{ fontSize: '0.625rem' }}></i> Belum Lengkap
+                                </span>
+                              )}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                            <td className="max-w-xs truncate px-4 py-3 text-xs text-left text-gray-900 border border-gray-200">
                               <i className={getStatusIcon(item.status)}></i>
                               <span className="ml-2">{item.status}</span>
                             </td>

@@ -13,7 +13,7 @@ const Header = () => {
   useEffect(() => {
     const role = localStorage.getItem("userRole"); 
     setUserRole(role);
-    console.log("User Role from localStorage:", role); 
+    // console.log("User Role from localStorage:", role); 
   }, []); 
 
   return (

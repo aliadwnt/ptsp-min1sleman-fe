@@ -129,25 +129,10 @@ const NotificationMenu = () => {
               className="bg-white rounded-lg shadow-lg p-3 w-full max-w-md"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex flex-col items-center justify-between p-2 bg-white rounded-lg shadow-lg ">
-                <h2 className="text-s font-semibold text-gray-800 mb-3">
-                  <span>Anda mendapatkan {newNotifications.length} notifikasi baru</span>
-                </h2>
-                
-                <button
-                  className="text-sm bg-green-600 text-center text-white hover:bg-green-700 p-2 rounded-md transition duration-200 ease-in-out"
-                  onClick={() => {
-                    navigate("/user/daftar-notifikasi");
-                    console.log("Melihat semua notifikasi:", notifications);
-                  }}
-                >
-                  Lihat Semua
-                </button>
-              </div>
-
-              <hr className="w-full border-t-2 border-gray-400 my-2" />
+            <p className="text-gray-800 font-semibold ml-2">Daftar Notifikasi</p>
+            <hr className="w-full border-t-2 border-gray-400 my-2" />
               <div className="flex items-start">
-                <ul className="mt-2">
+                <ul className="mt-1">
                   {sortedNotifications.length > 0 ? (
                     (showAllNotifications
                       ? sortedNotifications
@@ -159,17 +144,13 @@ const NotificationMenu = () => {
                       >
                         <ExclamationCircleIcon className="h-10 w-10 text-yellow-500 mr-4 transform translate-y-2" />
                         <div>
-                          <p className="text-s text-gray-700">
-                            <strong> {notification.message.message}</strong>
-                          </p>
-
+                        <p className="text-xs text-gray-700 uppercase font-semibold">
+                          <strong>{notification.message.message}</strong>
+                        </p>
                           {notification.message.no_surat && (
                             <>
-                              <p className="text-sm text-gray-700">
-                                <strong>No Surat:</strong> {notification.message.no_surat}
-                              </p>
-                              <p className="text-sm text-gray-700">
-                                <strong>Perihal:</strong> {notification.message.perihal}
+                              <p className="text-xs text-gray-700">
+                                 {notification.message.perihal}
                               </p>
                             </>
                           )}
@@ -177,18 +158,21 @@ const NotificationMenu = () => {
                           {notification.message.type === "disposisi" && (
                             <>
                               <p className="text-sm text-gray-700">
-                                <strong>Diteruskan:</strong> {notification.message.diteruskan}
+                                <strong>Disposisi:</strong> {notification.message.disposisi}
                               </p>
                               <p className="text-sm text-gray-700">
-                                <strong>Disposisi:</strong> {notification.message.disposisi || "Tidak ada data"}
+                                <strong>Tindakan:</strong> {notification.message.tindakan || "Tidak ada data"}
                               </p>
                             </>
                           )}
+                         
                           <p className="text-xs text-gray-500">
                             {timeAgo(notification.created_at).toLocaleString()}
                           </p>
                         </div>
                       </li>
+                      
+                      
                     ))
                   ) : (
                     <li className="text-m font-bold text-gray-700">
@@ -197,21 +181,29 @@ const NotificationMenu = () => {
                   )}
                 </ul>
               </div>
-
-              <hr className="w-full border-t-2 border-gray-400 my-2" />
-
               {newNotifications.length > 1 && (
-                <div className="mt-4 flex justify-center">
+                <div className="mt-1 flex justify-center">
                   <p
                     onClick={toggleShowAll}
-                    className="text-sm font-semibold text-gray-800 underline hover:text-blue-600"
+                    className="text-xs font-semibold text-gray-800 hover:text-green-600 text-center"
                   >
                     {showAllNotifications
-                      ? "Sembunyikan"
-                      : "Tampilkan Semua Notifikasi"}
+                      ? `Sembunyikan (${newNotifications.length})`
+                      : `Tampilkan Semua Notifikasi (${newNotifications.length})`}
                   </p>
                 </div>
               )}
+               <div className="flex flex-col items-center justify-between p-2">   
+                <button
+                  className="text-xs bg-green-600 text-center text-white hover:bg-green-700 p-2 rounded-md transition duration-200 ease-in-out"
+                  onClick={() => {
+                    navigate("/user/daftar-notifikasi");
+                    console.log("Melihat semua notifikasi:", notifications);
+                  }}
+                >
+                  Lihat Semua
+                </button>
+              </div>
             </div>
           </div>
         )}

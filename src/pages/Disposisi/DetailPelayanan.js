@@ -15,6 +15,8 @@ import { fetchDaftarPengguna } from "../../services/daftarPenggunaService";
 import { addNotification } from "../../services/notificationService";
 import "../../App";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
+
 
 const DetailDisposisi = () => {
   const { no_reg } = useParams();
@@ -78,12 +80,12 @@ const DetailDisposisi = () => {
         });
       } else {
         resetFields();
-        alert("Data pelayanan tidak ditemukan");
+        toast.error("Data pelayanan tidak ditemukan");
         return;
       }
     } catch (error) {
       console.error("Error fetching data pelayanan: ", error);
-      alert("Terjadi kesalahan saat mengambil data pelayanan");
+      toast.error("Terjadi kesalahan saat mengambil data pelayanan");
     }
 
     try {
@@ -185,7 +187,7 @@ const DetailDisposisi = () => {
       !formData.disposisi ||
       !formData.catatan
     ) {
-      alert("Silakan pilih pejabat dan aksi disposisi sebelum mengirim.");
+      toast.error("Semua field harus diisi!");
       return;
     }
 
@@ -199,19 +201,19 @@ const DetailDisposisi = () => {
       console.log("Update berhasil:", updatedData);
 
       const notificationMessage = {
-        message: `Disposisi #${formData.no_reg} `,
-        diteruskan: formData.diteruskan,
+        message: `Layanan #${formData.no_reg} `,
+        tindakan: formData.tindakan,
         disposisi: formData.disposisi,
         type: "disposisi",
       };
       addNotification(notificationMessage);
 
       resetFields();
-      alert("Disposisi berhasil diperbarui.");
+      toast.success("Disposisi berhasil diperbarui.");
       fetchDetail();
     } catch (error) {
       console.error("Gagal update disposisi:", error);
-      alert("Terjadi kesalahan saat memperbarui disposisi.");
+      toast.error("Terjadi kesalahan saat memperbarui disposisi.");
     }
   };
 
@@ -625,13 +627,22 @@ const DetailDisposisi = () => {
                         onChange={handleChange}
                       />
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleUpdateDisposisi}
-                      className="w-full mb-6 bg-green-500 text-white rounded-lg py-2 hover:bg-green-700"
-                    >
-                      Disposisikan
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={handleUpdateDisposisi}
+                        className="w-full mb-6 bg-green-500 text-white rounded-lg py-2 hover:bg-green-700"
+                      >
+                        Disposisikan
+                      </button>
+
+                      <ToastContainer
+                        position="top-center" // Ubah posisi menjadi top-center atau bottom-center
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        closeOnClick
+                      />
+                    </div>
                   </form>
                 </div>
               </div>

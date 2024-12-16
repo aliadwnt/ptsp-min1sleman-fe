@@ -1,6 +1,6 @@
 import React from "react";
 
-const PDFTemplate = ({ logo, data }) => {
+const PDFTemplate = ({ settingsData, data }) => {
   return (
     <div className="pdf-container">
       <style>
@@ -62,37 +62,31 @@ const PDFTemplate = ({ logo, data }) => {
 
                     .disposisi-details {
                         display: grid;
-                        grid-template-columns: 1fr 1fr; /* Membuat 2 kolom */
+                        grid-template-columns: 1.5fr 1fr; /* Membuat 2 kolom */
                         grid-gap: 0px; /* Tidak ada gap antar elemen */
-                        border: 1px solid #000;
+                        border-top: 1px solid #000;
+                        border-left: 1px solid #000;
                         padding: 0px;
                     }
 
                     .disposisi-item {
                         display: flex;
-                        justify-content: space-between;
+                        justify-content: space-left;
                         padding: 10px;
                         border-right: 1px solid #000; /* Garis pemisah antar kolom */
-                    }
-
-                    .disposisi-item:last-child {
-                        border-right: none; /* Menghapus border kanan untuk kolom terakhir */
+                        border-bottom: 0.5px solid #000; 
                     }
 
                     .disposisi-item p {
                         margin: 0;
                     }
 
-                    /* Menambahkan garis bawah pada no_surat dan tgl_surat */
-                    .disposisi-item.with-bottom-border {
-                        border-bottom: 1px solid #000; /* Garis bawah */
-                    }
-
+                
                     /* Input Kolom Nama */
                     .input-nama {
                         grid-column: span 2; /* Membuat kolom nama mengambil dua kolom */
                         padding: 10px;
-                        border-top: 1px solid #000;
+                        border-right: 1px solid #000;
                     }
 
                     .input-tgl {
@@ -100,6 +94,7 @@ const PDFTemplate = ({ logo, data }) => {
                         padding: 10px;
                         border-top: 1px solid #000;
                         border-bottom: 1px solid #000;
+                        border-right: 1px solid #000;
                         display: flex;
                         justify-content: space-between; /* Membuat elemen sejajar */
                         align-items: center; /* Memastikan konten sejajar vertikal */
@@ -120,22 +115,40 @@ const PDFTemplate = ({ logo, data }) => {
                     .footer p {
                         margin: 5px 0;
                     }
+                         .label {
+                  min-width: 120x; /* Menetapkan lebar minimum untuk label agar seragam */
+                  display: inline-block;
+                  margin-right: 20px; /* Jarak antara label dan nilai */
+                  font-weight: bold; /* Membuat label lebih tegas */
+                }
                 `}
       </style>
       <header className="header">
         <div className="logo">
-          <img src={logo} alt="Logo" className="logo-image" />{" "}
+          <img
+            src={settingsData.kop_surat}
+            alt="Kop Surat"
+            className="logo-image"
+          />{" "}
           {/* Ganti dengan logo */}
         </div>
         <div className="header-details">
           <h2>Pemerintah Kota Yogyakarta</h2>
-          <h2>MADRASAH IBTIDAIYAH NEGERI 1 SLEMAN</h2>
-          <address>
-            Jl. Magelang Km. 4, Sinduadi, Mlati, Sleman, Daerah Istimewa
-            Yogyakarta, Indonesia
-          </address>
-          <p>Telepon (0274) 557464</p>
-          <p>Laman : https://min1sleman.sch.id/Email : minsatu.yk@gmail.com</p>
+          <h2>{settingsData.nama_lembaga}</h2>
+          <address>{settingsData.alamat}</address>
+          <p>Telepon {settingsData.telp}</p>
+          <p>
+            Laman :{" "}
+            <a
+              href={settingsData.website}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {settingsData.website}
+            </a>{" "}
+            & Email :{" "}
+            <a href={`mailto:${settingsData.email}`}>{settingsData.email}</a>
+          </p>
         </div>
       </header>
 
@@ -147,24 +160,25 @@ const PDFTemplate = ({ logo, data }) => {
       </div>
 
       <div className="disposisi-details">
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item">
           <p>
-            <strong>No Surat:</strong>
+            <strong className="label">No Surat</strong>
           </p>
-          <p className="value">{data.no_surat}</p>
+          <p className="value">: {data.no_surat}</p>
         </div>
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item">
           <p>
-            <strong>Status:</strong>
+            <strong className="label">Status</strong>
           </p>
-          <p className="value">{data.status}</p>
+          <p className="value">: {data.status}</p>
         </div>
 
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item">
           <p>
-            <strong>Tanggal Surat:</strong>
+            <strong className="label">Tgl Surat</strong>
           </p>
           <p className="value">
+            :{" "}
             {data.tgl_surat
               ? new Date(data.tgl_surat).toLocaleDateString("id-ID", {
                   day: "2-digit",
@@ -175,23 +189,24 @@ const PDFTemplate = ({ logo, data }) => {
           </p>
         </div>
 
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item ">
           <p>
-            <strong>Sifat:</strong>
+            <strong className="label">Sifat</strong>
           </p>
-          <p className="value">{data.sifat}</p>
+          <p className="value">: {data.sifat}</p>
         </div>
-        <div className="input-tgl with-bottom-border">
+        <div className="input-tgl">
           <p>
-            <strong>Lampiran</strong>
+            <strong className="label">Lampiran</strong>
           </p>
-          <p className="value">{data.lampiran}</p>
+          <p className="value">: {data.lampiran}</p>
         </div>
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item ">
           <p>
-            <strong>Diterima Tanggal:</strong>
+            <strong className="label">Diterima Tgl</strong>
           </p>
           <p className="value">
+            :{" "}
             {data.diterima
               ? new Date(data.diterima).toLocaleDateString("id-ID", {
                   day: "2-digit",
@@ -201,55 +216,54 @@ const PDFTemplate = ({ logo, data }) => {
               : "-"}
           </p>
         </div>
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item ">
           <p>
-            <strong>No Agenda</strong>
+            <strong className="label">No Agenda</strong>
           </p>
-          <p className="value">{data.no_agenda}</p>
+          <p className="value">: {data.no_agenda}</p>
         </div>
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item ">
           <p>
-            <strong>Dari Instansi:</strong>
+            <strong className="label">Dari Instansi:</strong>
           </p>
-          <p className="value">{data.instansi}</p>
+          <p className="value">: {data.instansi_pengirim}</p>
         </div>
-        <div className="disposisi-item with-bottom-border">
+        <div className="disposisi-item ">
           <p>
-            <strong>Klasifikasi</strong>
+            <strong className="label">Klasifikasi</strong>
           </p>
-          <p className="value">{data.klasifikasi}</p>
+          <p className="value">: {data.klasifikasi}</p>
         </div>
 
-        {/* Input Nama Kolom - Satu Kolom */}
-        <div className="input-nama">
-          <label>
-            <strong>Perihal</strong>
-            <p className="value">{data.perihal}</p>
-          </label>
+        <div className="input-tgl">
+          <p>
+            <strong className="label">Perihal</strong>
+          </p>
+          <p className="value">: {data.perihal}</p>
         </div>
         {/* Input Nama Kolom - Satu Kolom */}
         <div className="input-tgl">
           <p>
-            <strong>Disposisi Kepada:</strong>
+            <strong className="label">Disposisi Kepada</strong>
           </p>
-          <p className="value">{data.disposisi}</p>
+          <p className="value">: {data.disposisi}</p>
         </div>
         {/* <div className="input-tgl">
           <p className="value">{data.created_at}</p>
           <p></p>
-          <strong>Pada tanggal:</strong>
+            <strong className="label">Pada tanggal:</strong>
         </div> */}
         <div className="input-nama">
           <label>
-            <strong>Disposisi aksi:</strong>
-            <p className="value">{data.tindakan}</p>
+            <strong className="label">Disposisi aksi</strong>
+            <p className="value">: {data.tindakan}</p>
           </label>
         </div>
         <div className="input-tgl">
           <p>
-            <strong>Catatan:</strong>
+            <strong className="label">Catatan</strong>
           </p>
-          <p className="value">{data.catatan}</p>
+          <p className="value">: {data.catatan}</p>
         </div>
       </div>
 

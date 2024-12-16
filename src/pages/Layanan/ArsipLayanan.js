@@ -12,6 +12,7 @@ import { uploadSingle } from "../../services/uploadService";
 import "../../App.css";
 import Favicon from "../../components/Favicon";
 import { ArrowUpTrayIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { ToastContainer, toast } from "react-toastify";
 
 const ArsipLayanan = () => {
   const [dataArsipLayanan, setDataArsipLayanan] = useState([]);
@@ -97,6 +98,7 @@ const ArsipLayanan = () => {
 
   const handleChange = (e, type, id) => {
     const { files } = e.target;
+
     if (files.length > 0) {
       const updatedData = dataArsipLayanan.map((item) => {
         if (item.id === id) {
@@ -107,9 +109,18 @@ const ArsipLayanan = () => {
         }
         return item;
       });
+
       setDataArsipLayanan(updatedData);
 
-      handleSubmit(e, files[0], type, id);
+      try {
+        handleSubmit(e, files[0], type, id);
+        toast.success("File berhasil diunggah!");
+      } catch (error) {
+        console.error("Gagal mengunggah file:", error);
+        toast.error("Terjadi kesalahan saat mengunggah file.");
+      }
+    } else {
+      toast.warn("Tidak ada file yang dipilih.");
     }
   };
 
@@ -222,16 +233,14 @@ const ArsipLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className="p-4 m-8 text-sm text-green-800 rounded-lg bg-green-50"
-            role="alert"
-          >
-            <span className="font-medium">Sukses </span>
-            {message}
-          </div>
-        )}
-
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
         <div className="p-4">
           <div className="select-none w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-4">
@@ -276,7 +285,7 @@ const ArsipLayanan = () => {
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
                 <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                  Total Daftar Arsip Layanan : 
+                  Total Daftar Arsip Layanan :
                   <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
                     {dataArsipLayanan.length}
                   </text>
@@ -316,14 +325,16 @@ const ArsipLayanan = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.no_reg}
+                            <div className="flex items-center justify-center max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900">
+                              <span className="px-2 py-1 text-[10px] font-medium text-white bg-gray-600 rounded-full uppercase">
+                                {item.no_reg}
+                              </span>
+                            </div>
+                            <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <div className="break-words">{item.nama_pelayanan}</div>
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.nama_pelayanan}
-                            </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.perihal}
+                            <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              <div className="break-words">{item.perihal}</div>
                             </td>
                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               {item.arsip_masuk ? (
@@ -332,7 +343,7 @@ const ArsipLayanan = () => {
                                     href={item.arsip_masuk}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
+                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-full text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
                                   >
                                     <EyeIcon className="w-3 h-3" />
                                     Preview
@@ -384,7 +395,7 @@ const ArsipLayanan = () => {
                                     href={item.arsip_keluar}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
+                                    className="flex items-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-full text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
                                   >
                                     <EyeIcon className="w-3 h-3" />
                                     Preview
@@ -430,9 +441,11 @@ const ArsipLayanan = () => {
                                 </>
                               )}
                             </td>
-                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
+                            <td className="w-24 text-left px-3 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <i className={getStatusIcon(item.status)}></i>
-                              <span className="ml-2">{item.status}</span>
+                              <span className="max-w-xs truncate text-xs text-center text-gray-900">
+                                {item.status}
+                              </span>
                             </td>
                           </tr>
                         ))

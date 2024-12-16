@@ -4,7 +4,7 @@ import "../App.css";
 import { fetchSettings } from "../services/settingsService";
 import DEFAULT_LOGO_URL from "../images/logo_min_1 copy.png";
 
-const Sidebar = () => {
+const Sidebar = (isOpen) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const location = useLocation();
@@ -96,7 +96,7 @@ const Sidebar = () => {
 
       <aside
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full"
         } sm:translate-x-0 bg-white`}
         aria-label="Sidebar"
       >
@@ -260,21 +260,36 @@ const Sidebar = () => {
               >
                 <i className="fas fa-tachometer-alt mr-2"></i> Dashboard
               </Link>
-              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
-                <b>Kelola Pelayanan</b>
+              <div
+                className="relative"
+                onMouseEnter={() => setOpenDropdown("surat")}
+                onMouseLeave={() => setOpenDropdown(null)}
+                ref={dropdownRef}
+              >
+                <div className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-green-100 w-full text-left cursor-pointer">
+                  <i className="fas fa-envelope mr-2"></i> Surat Menyurat
+                </div>
+                <div
+                  className={`${
+                    openDropdown === "surat" || window.innerWidth < 640
+                      ? "block"
+                      : "hidden"
+                  } ml-4 space-y-2`}
+                >
+                  <Link
+                    to="/surat/surat-masuk"
+                    className={getLinkClass("/surat/surat-masuk")}
+                  >
+                    <i className="fas fa-inbox mr-2"></i> Surat Masuk
+                  </Link>
+                  <Link
+                    to="/surat/surat-keluar"
+                    className={getLinkClass("/surat/surat-keluar")}
+                  >
+                    <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
+                  </Link>
+                </div>
               </div>
-              <Link
-                to="/surat/surat-masuk"
-                className={getLinkClass("/surat/surat-masuk")}
-              >
-                <i className="fas fa-inbox mr-2"></i> Surat Masuk
-              </Link>
-              <Link
-                to="/surat/surat-keluar"
-                className={getLinkClass("/surat/surat-keluar")}
-              >
-                <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
-              </Link>
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Kelola Disposisi</b>
               </div>
