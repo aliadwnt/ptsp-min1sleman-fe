@@ -169,6 +169,12 @@ const Sidebar = (isOpen) => {
                   >
                     <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
                   </Link>
+                  <Link
+                    to="/settings/daftar-settings"
+                    className={getLinkClass("/settings")}
+                  >
+                    <i className="fas fa-cogs mr-2"></i> Settings Surat
+                  </Link>
                 </div>
               </div>
 
@@ -266,9 +272,10 @@ const Sidebar = (isOpen) => {
                 onMouseLeave={() => setOpenDropdown(null)}
                 ref={dropdownRef}
               >
-                <div className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-green-100 w-full text-left cursor-pointer">
+                  <div className="block pl-3 pr-4 py-2 text-gray-500 hover:bg-green-100 w-full text-left cursor-pointer">
                   <i className="fas fa-envelope mr-2"></i> Surat Menyurat
                 </div>
+
                 <div
                   className={`${
                     openDropdown === "surat" || window.innerWidth < 640
@@ -288,7 +295,14 @@ const Sidebar = (isOpen) => {
                   >
                     <i className="fas fa-paper-plane mr-2"></i> Surat Keluar
                   </Link>
+                  <Link
+                    to="/settings/daftar-settings"
+                    className={getLinkClass("/settings")}
+                  >
+                    <i className="fas fa-cogs mr-2"></i> Settings Surat
+                  </Link>
                 </div>
+
               </div>
               <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
                 <b>Kelola Disposisi</b>
@@ -300,24 +314,6 @@ const Sidebar = (isOpen) => {
                 <i className="fas fa-list mr-2"></i> Daftar Disposisi
               </Link>
             </>
-          )}
-
-          {/* Settings untuk admin */}
-          {(userRole === "admin" ||
-            userRole === "superadmin" ||
-            userRole === "staff" ||
-            userRole === "kepala madrasah") && (
-            <div className="sidebar-content pb-10">
-              <div className="block w-full pl-3 pr-4 py-3 text-gray-600">
-                <b>Settings</b>
-              </div>
-              <Link
-                to="/settings/daftar-settings"
-                className={getLinkClass("/settings")}
-              >
-                <i className="fas fa-cog mr-2"></i> Settings
-              </Link>
-            </div>
           )}
 
           <div className="mt-5"></div>

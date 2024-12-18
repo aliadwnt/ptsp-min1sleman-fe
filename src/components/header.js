@@ -35,7 +35,7 @@ const Header = () => {
       </button>
 
       <div className="ml-auto flex items-center space-x-3">
-        {(userRole === "admin" || userRole === "superadmin") && <Notifications />}
+      <Notifications />
         <UserDropdown />
       </div>
     </header>

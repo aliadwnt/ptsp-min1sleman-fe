@@ -17,8 +17,8 @@ import "../../App";
 import Favicon from "../../components/Favicon";
 import { ToastContainer, toast } from "react-toastify";
 
-
 const DetailDisposisi = () => {
+  const userRole = localStorage.getItem("userRole");
   const { no_reg } = useParams();
   const [disposisiOptions, setDisposisiOptions] = useState([]);
   const [penggunaOptions, setPenggunaOptions] = useState([]);
@@ -199,14 +199,15 @@ const DetailDisposisi = () => {
         formData.catatan
       );
       console.log("Update berhasil:", updatedData);
-
-      const notificationMessage = {
-        message: `Layanan #${formData.no_reg} `,
-        tindakan: formData.tindakan,
-        disposisi: formData.disposisi,
-        type: "disposisi",
-      };
-      addNotification(notificationMessage);
+      if (userRole === "staff" || userRole === "kepala madrasah") {
+        const notificationMessage = {
+          message: `Layanan #${formData.no_reg} `,
+          tindakan: formData.tindakan,
+          disposisi: formData.disposisi,
+          type: "disposisi",
+        };
+        addNotification(notificationMessage);
+      }
 
       resetFields();
       toast.success("Disposisi berhasil diperbarui.");

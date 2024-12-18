@@ -15,6 +15,7 @@ import Favicon from "../components/Favicon";
 
 const MySwal = withReactContent(Swal);
 const Layanan = () => {
+  const userRole = localStorage.getItem("userRole");
   const [formData, setFormData] = useState({
     no_reg: "",
     nama_pelayanan: "",
@@ -119,12 +120,18 @@ const Layanan = () => {
           no_surat: generatedNoSurat,
         };
         try {
-          await addNotification({
-            message: `Layanan #${generatedNoReg}`,
-            no_surat: `${generatedNoSurat}`,
-            perihal: formData.perihal,
-            type: "pelayanan",
-          });
+          if (userRole === "superadmin" || userRole === "admin") {
+            try {
+              await addNotification({
+                message: `Layanan #${generatedNoReg}`,
+                no_surat: `${generatedNoSurat}`,
+                perihal: formData.perihal,
+                type: "pelayanan",
+              });
+            } catch (notificationError) {
+              console.error("Gagal menambahkan notifikasi:", notificationError);
+            }
+          }
         } catch (notificationError) {
           console.error("Gagal menambahkan notifikasi:", notificationError);
         }

@@ -83,6 +83,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<Home />} />
             <Route path="/lacak-permohonan/:no_reg" element={<LacakPermohonan />}/>
+            <Route path="/layanan" element={<Layanan />} />
+            <Route path="/lacak-berkas" element={<LacakBerkas />} />
             <Route path="/visi-misi" element={<VisiMisi />} />
             <Route path="/zona-integritas" element={<ZonaIntegritas />} />
           </>

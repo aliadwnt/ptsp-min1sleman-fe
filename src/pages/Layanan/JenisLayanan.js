@@ -10,11 +10,11 @@ import {
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const JenisLayanan = () => {
   const [dataJenisLayanan, setDataJenisLayanan] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [currentJenisLayanan, setCurrentJenisLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -70,19 +70,11 @@ const JenisLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteJenisLayanan(id);
-        setMessage({
-          type: "success", // Menentukan tipe pesan sukses
-          text: "Data berhasil dihapus",
-        });
-        setIsLoading(true);
+        toast.success("Data berhasil dihapus");
         await fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage({
-          type: "error", // Menentukan tipe pesan error
-          text: "Gagal menghapus data",
-        });
-        setIsLoading(false);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -101,35 +93,31 @@ const JenisLayanan = () => {
     };
 
     const isDuplicate = dataJenisLayanan.some(
-      (item) =>
-        item.name.toLowerCase() === JenisLayanan.name.toLowerCase() &&
-        (!currentJenisLayanan || item.id !== currentJenisLayanan.id)
+      (item) => item.name.toLowerCase() === JenisLayanan.name.toLowerCase()
     );
 
     if (isDuplicate) {
-      setMessage({
-        text: "Nama layanan sudah ada. Silakan gunakan nama lain.",
-        type: "error",
-      });
+      toast.error(
+        "Jenis Layanan Sudah tersedia, Masukkan Jenis Layanan yang belum tersedia"
+      );
       return;
     }
 
     try {
       if (currentJenisLayanan) {
         await updateJenisLayanan(currentJenisLayanan.id, JenisLayanan);
-        setMessage({ text: "Data berhasil diupdate", type: "success" });
-        setIsLoading(true);
+        toast.success("Data berhasil diupdate");
       } else {
         await createJenisLayanan(JenisLayanan);
-        setMessage({ text: "Data berhasil ditambahkan", type: "success" });
-        setIsLoading(true);
+        toast.success("Data berhasil ditambahkan");
       }
-      fetchData();
-      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage({ text: "Failed to save data", type: "error" });
-      setIsLoading(false);
+      toast.error("Gagal menyimpan data");
     }
   };
 
@@ -148,6 +136,12 @@ const JenisLayanan = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pb-0 m-0een m-0 flex relative">
+      <ToastContainer
+        position="top-center" // Ubah posisi menjadi top-center atau bottom-center
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -162,21 +156,6 @@ const JenisLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              message.type === "success"
-                ? "text-green-800 bg-green-50"
-                : "text-red-800 bg-red-50"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {message.type === "success" ? "Sukses: " : "Error: "}
-            </span>
-            {message.text}
-          </div>
-        )}
         <div className="select-none p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -216,13 +195,13 @@ const JenisLayanan = () => {
             </div>
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Jenis Layanan : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataJenisLayanan.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Jenis Layanan :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataJenisLayanan.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">

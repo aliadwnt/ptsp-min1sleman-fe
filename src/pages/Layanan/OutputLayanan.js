@@ -10,11 +10,11 @@ import {
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const OutputLayanan = () => {
   const [dataOutputLayanan, setOutputLayanan] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [currentOutputLayanan, setCurrentOutputLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -71,14 +71,11 @@ const OutputLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteOutputLayanan(id);
-        setMessage({ text: "Data berhasil dihapus", type: "success" });
-        setIsLoading(true);
-        await fetchData();
+        toast.success("Data berhasil dihapus");
+        fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage({ text: "Gagal menghapus data", type: "error" });
-      } finally {
-        setIsLoading(false);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -98,28 +95,25 @@ const OutputLayanan = () => {
     );
 
     if (isDuplicate) {
-      setMessage({
-        type: "error",
-        text: "Data sudah ada, Masukkan Data yang lain",
-      });
+      toast.error("Data sudah ada, Masukkan Data yang lain");
       return;
     }
 
     try {
       if (currentOutputLayanan) {
         await updateOutputLayanan(currentOutputLayanan.id, OutputLayanan);
-        setMessage({ type: "success", text: "Data berhasil diupdate" });
-        setIsLoading(true);
+        toast.success("Data berhasil diupdate");
       } else {
         await createOutputLayanan(OutputLayanan);
-        setMessage({ type: "success", text: "Data berhasil ditambahkan" });
-        setIsLoading(true);
+        toast.success("Data berhasil ditambahkan");
       }
-      fetchData();
-      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Gagal menyimpan data:", error);
-      setMessage({ type: "error", text: "Gagal menyimpan data" });
+      toast.error("Gagal menyimpan data");
     }
   };
 
@@ -138,6 +132,12 @@ const OutputLayanan = () => {
 
   return (
     <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -152,21 +152,6 @@ const OutputLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              message.type === "success"
-                ? "text-green-800 bg-green-50"
-                : "text-red-800 bg-red-50"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {message.type === "success" ? "Sukses: " : "Error: "}
-            </span>
-            {message.text}
-          </div>
-        )}
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -207,13 +192,13 @@ const OutputLayanan = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Output Layanan : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataOutputLayanan.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Output Layanan :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataOutputLayanan.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">

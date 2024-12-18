@@ -16,6 +16,7 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+  const userRole = localStorage.getItem("userRole");
   useEffect(() => {
     fetchData(id);
   }, [id]);
@@ -87,6 +88,15 @@ const Notifications = () => {
       );
     }
   };
+  const filteredNotifications = notifications.filter((notification) => {
+    if (notification.message.type === "disposisi") {
+      return userRole === "staff" || userRole === "kepala madrasah";
+    }
+    if (notification.message.type === "pelayanan") {
+      return userRole === "admin" || userRole === "superadmin";
+    }
+    return false;
+  });
 
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -158,7 +168,8 @@ const Notifications = () => {
                           ? "bg-green-600 hover:bg-green-700 text-white"
                           : "bg-gray-300 text-gray-400 cursor-not-allowed"
                       } ${
-                        notifications.some((notif) => !notif.isRead) && "hover:scale-105"
+                        notifications.some((notif) => !notif.isRead) &&
+                        "hover:scale-105"
                       }`}
                       disabled={!notifications.some((notif) => !notif.isRead)}
                     >
@@ -176,8 +187,8 @@ const Notifications = () => {
 
                 {/* Notifications */}
                 <div className="space-y-6">
-                  {notifications.length > 0 ? (
-                    notifications.map((item) => (
+                  {filteredNotifications.length > 0 ? (
+                    filteredNotifications.map((item) => (
                       <div
                         key={item.id}
                         className={`p-6 rounded-lg shadow-lg flex items-center space-x-6 transition-all duration-300 ease-in-out transform ${
@@ -204,35 +215,50 @@ const Notifications = () => {
                           {item.message.type === "disposisi" ? (
                             <div>
                               <span>
-                              {item.message.message.startsWith("Disposisi") ? (
-                                <>
-                                  <span className="bg-green-700 text-white px-2 py-1 text-xs font-bold rounded-full uppercase">
-                                    Disposisi
-                                  </span>
-                                  {extractIdSm(item.message.message) && (
-                                    <span className="text-gray-600 ml-2 text-sm font-bold">
-                                      #{extractIdSm(item.message.message)}
+                                {item.message.message.startsWith(
+                                  "Disposisi"
+                                ) ? (
+                                  <>
+                                    <span className="bg-green-700 text-white px-2 py-1 text-xs font-bold rounded-full uppercase">
+                                      Disposisi
                                     </span>
-                                  )}
-                                </>
-                              ) : (
-                                <span>{item.message.message || "Tidak ada pesan disposisi"}</span>
-                              )}
-                            </span>
-                            <p className="text-gray-600 text-xs mb-2 mt-2 flex items-center">
-                              <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
-                              <span className="font-semibold text-gray-800">Disposisi:</span>
-                              <span className="text-gray-700 ml-1">{item.message.disposisi || "Tidak ada informasi disposisi"}</span>
-                            </p>
-                            <p className="text-gray-600 text-xs mb-2 flex items-center">
-                              <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
-                              <span className="font-semibold text-gray-800">Diteruskan:</span>
-                              <span className="text-gray-700 ml-1">{item.message.diteruskan || "Tidak ada informasi diteruskan"}</span>
-                            </p>
-                            <span className="text-xs text-gray-500 flex items-center">
-                              <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
-                              {timeAgo(item.created_at)}
-                            </span>
+                                    {extractIdSm(item.message.message) && (
+                                      <span className="text-gray-600 ml-2 text-sm font-bold">
+                                        #{extractIdSm(item.message.message)}
+                                      </span>
+                                    )}
+                                  </>
+                                ) : (
+                                  <span>
+                                    {item.message.message ||
+                                      "Tidak ada pesan disposisi"}
+                                  </span>
+                                )}
+                              </span>
+                              <p className="text-gray-600 text-xs mb-2 mt-2 flex items-center">
+                                <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                                <span className="font-semibold text-gray-800">
+                                  Disposisi:
+                                </span>
+                                <span className="text-gray-700 ml-1">
+                                  {item.message.disposisi ||
+                                    "Tidak ada informasi disposisi"}
+                                </span>
+                              </p>
+                              <p className="text-gray-600 text-xs mb-2 flex items-center">
+                                <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
+                                <span className="font-semibold text-gray-800">
+                                  Tindakan:
+                                </span>
+                                <span className="text-gray-700 ml-1">
+                                  {item.message.tindakan ||
+                                    "Tidak ada informasi diteruskan"}
+                                </span>
+                              </p>
+                              <span className="text-xs text-gray-500 flex items-center">
+                                <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />
+                                {timeAgo(item.created_at)}
+                              </span>
                             </div>
                           ) : (
                             <div>
@@ -250,19 +276,29 @@ const Notifications = () => {
                                   </>
                                 ) : (
                                   <span className="bg-green-500 text-white px-4 py-1 text-sm font-bold rounded-full">
-                                    {item.message.message || "Tidak ada pesan layanan"}
+                                    {item.message.message ||
+                                      "Tidak ada pesan layanan"}
                                   </span>
                                 )}
                               </span>
                               <p className="text-gray-600 text-xs mb-2 mt-2 flex items-center">
                                 <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
-                                <span className="font-semibold text-gray-800">Nomor Surat :</span>
-                                <span className="text-gray-700 ml-1">{item.message.no_surat || "Tidak ada nomor surat"}</span>
+                                <span className="font-semibold text-gray-800">
+                                  Nomor Surat :
+                                </span>
+                                <span className="text-gray-700 ml-1">
+                                  {item.message.no_surat ||
+                                    "Tidak ada nomor surat"}
+                                </span>
                               </p>
                               <p className="text-gray-600 text-xs mb-2 flex items-center">
                                 <DocumentIcon className="h-4 w-4 text-gray-700 mr-2" />
-                                <span className="font-semibold text-gray-800">Perihal :</span>
-                                <span className="text-gray-700 ml-1">{item.message.perihal || "Tidak ada perihal"}</span>
+                                <span className="font-semibold text-gray-800">
+                                  Perihal :
+                                </span>
+                                <span className="text-gray-700 ml-1">
+                                  {item.message.perihal || "Tidak ada perihal"}
+                                </span>
                               </p>
                               <span className="text-xs text-gray-500 flex items-center">
                                 <ClockIcon className="h-4 w-4 mr-2 text-gray-500" />

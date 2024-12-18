@@ -10,12 +10,11 @@ import {
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const MasterSyarat = () => {
   const [dataMasterSyarat, setDataMasterSyarat] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterSyarat, setCurrentMasterSyarat] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -70,13 +69,11 @@ const MasterSyarat = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteMasterSyarat(id);
-        setMessage("Data berhasil dihapus");
-        setIsLoading(true);
+        toast.success("Data berhasil dihapus");
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
-        setIsError(true);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -95,10 +92,9 @@ const MasterSyarat = () => {
     );
 
     if (isDuplicate) {
-      setMessage(
+      toast.error(
         "Master Syarat sudah tersedia, Masukkan master syarat yang belum tersedia."
       );
-      setIsError(true);
       return;
     }
 
@@ -109,20 +105,18 @@ const MasterSyarat = () => {
     try {
       if (currentMasterSyarat) {
         await updateMasterSyarat(currentMasterSyarat.id, MasterSyarat);
-        setMessage("Data berhasil diupdate");
-        setIsLoading(true);
+        toast.success("Data berhasil diupdate");
       } else {
         await createMasterSyarat(MasterSyarat);
-        setMessage("Data berhasil ditambahkan");
-        setIsLoading(true);
+        toast.success("Data berhasil ditambahkan");
       }
-      setIsError(false);
-      fetchData();
-      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-      setIsError(true);
+      toast.error("Failed to save data");
     }
   };
 
@@ -141,6 +135,12 @@ const MasterSyarat = () => {
 
   return (
     <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -155,19 +155,6 @@ const MasterSyarat = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {isError ? "Error" : "Sukses"}:{" "}
-            </span>
-            {message}
-          </div>
-        )}
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -209,13 +196,13 @@ const MasterSyarat = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Master Syarat : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataMasterSyarat.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Master Syarat :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataMasterSyarat.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">

@@ -10,15 +10,14 @@ import {
 import "../../../App.css";
 import LoadingPage from "../../../components/loadingPage";
 import Favicon from "../../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const DaftarPengguna = () => {
   const [dataDaftarPengguna, setDataDaftarPengguna] = useState([]);
-  const [message, setMessage] = useState("");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarPengguna, setCurrentDaftarPengguna] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const userRole = localStorage.getItem("userRole");
@@ -83,18 +82,22 @@ const DaftarPengguna = () => {
       if (currentDaftarPengguna && currentDaftarPengguna.id) {
         console.log("Updating user with ID:", currentDaftarPengguna.id);
         await updateDaftarPengguna(currentDaftarPengguna.id, DaftarPengguna);
-        setSuccessMessage("Data berhasil diperbarui");
+        toast.success("Data berhasil diperbarui");
       } else {
         await createDaftarPengguna(DaftarPengguna);
-        setSuccessMessage("Data berhasil ditambahkan");
+        toast.success("Data berhasil ditambahkan");
       }
 
+      setTimeout(() => {
+        fetchData();
+        setModalOpen(false);
+      }, 1000);
       setIsLoading(false);
       fetchData();
       handleModalClose();
     } catch (error) {
       console.error("Failed to save data:", error);
-      setErrorMessage(error.message);
+      toast.error("Gagal menyimpan data");
       setIsLoading(false);
     }
   };
@@ -108,11 +111,11 @@ const DaftarPengguna = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deletePengguna(id);
-        setSuccessMessage("Data berhasil dihapus");
+        toast.success("Data berhasil dihapus");
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setErrorMessage("Failed to delete data");
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -143,7 +146,6 @@ const DaftarPengguna = () => {
   const handleModalClose = () => {
     setModalOpen(false);
     setCurrentDaftarPengguna(null);
-    setMessage("");
   };
 
   const toggleSidebar = () => {
@@ -152,6 +154,12 @@ const DaftarPengguna = () => {
 
   return (
     <div className="select-none min-h-screen w-full flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center" // Ubah posisi menjadi top-center atau bottom-center
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -166,17 +174,6 @@ const DaftarPengguna = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {successMessage && (
-          <div
-            className="flex justify-center items-center p-2 m-4 text-sm text-green-800 rounded-lg bg-green-50 mb-2"
-            role="alert"
-          >
-            <div className="text-center">
-              <p className="font-medium">Sukses!</p>
-              <p>{successMessage}</p>
-            </div>
-          </div>
-        )}
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">

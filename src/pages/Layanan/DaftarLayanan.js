@@ -13,6 +13,7 @@ import { fetchOutputLayanan } from "../../services/outputLayananService";
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const DaftarLayanan = () => {
   const [dataDaftarLayanan, setDataDaftarLayanan] = useState([]);
@@ -20,7 +21,6 @@ const DaftarLayanan = () => {
   const [jenisOptions, setJenisOptions] = useState([]);
   const [outputOptions, setOutputOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentDaftarLayanan, setCurrentDaftarLayanan] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -125,12 +125,12 @@ const DaftarLayanan = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteDaftarLayanan(id);
-        setMessage({ type: "success", text: "Data berhasil dihapus" });
-        setIsLoading(true);
+        toast.success("Data berhasil dihapus");
+        fetchData();
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage({ type: "error", text: "Gagal menghapus data" });
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -153,18 +153,18 @@ const DaftarLayanan = () => {
     try {
       if (currentDaftarLayanan) {
         await updateDaftarLayanan(currentDaftarLayanan.id, daftarLayanan);
-        setMessage({ type: "success", text: "Data berhasil diupdate" });
-        setIsLoading(true);
+        toast.success("Data berhasil diupdate");
       } else {
         await createDaftarLayanan(daftarLayanan);
-        setMessage({ type: "success", text: "Data berhasil ditambahkan" });
-        setIsLoading(true);
+        toast.success("Data berhasil ditambahkan");
       }
-      fetchData();
-      handleModalClose();
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage({ type: "error", text: "Gagal menyimpan data" });
+      toast.error("Gagal menyimpan data");
     }
   };
 
@@ -183,6 +183,12 @@ const DaftarLayanan = () => {
 
   return (
     <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -197,21 +203,6 @@ const DaftarLayanan = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              message.type === "success"
-                ? "text-green-800 bg-green-50"
-                : "text-red-800 bg-red-50"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {message.type === "success" ? "Sukses: " : "Error: "}
-            </span>
-            {message.text}
-          </div>
-        )}
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-5xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -251,13 +242,13 @@ const DaftarLayanan = () => {
             </div>
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Layanan : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataDaftarLayanan.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Layanan :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataDaftarLayanan.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
@@ -510,24 +501,26 @@ const DaftarLayanan = () => {
                   </div>
 
                   <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Durasi Layanan
-                  </label>
-                  <div className="flex items-center">
-                    <input
-                      type="number"
-                      name="duration"
-                      defaultValue={
-                        currentDaftarLayanan ? currentDaftarLayanan.duration : ""
-                      }
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-l-md"
-                      placeholder="Durasi Layanan"
-                    />
-                    <span className="px-3 py-2 text-gray-700 bg-gray-200 border-t border-b border-r rounded-r-md">
-                      Hari
-                    </span>
-                  </div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Durasi Layanan
+                    </label>
+                    <div className="flex items-center">
+                      <input
+                        type="number"
+                        name="duration"
+                        defaultValue={
+                          currentDaftarLayanan
+                            ? currentDaftarLayanan.duration
+                            : ""
+                        }
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-l-md"
+                        placeholder="Durasi Layanan"
+                      />
+                      <span className="px-3 py-2 text-gray-700 bg-gray-200 border-t border-b border-r rounded-r-md">
+                        Hari
+                      </span>
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button

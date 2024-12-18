@@ -10,17 +10,15 @@ import {
 import "../../App.css";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const MasterDisposisi = () => {
   const [dataMasterDisposisi, setDataMasterDisposisi] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentMasterDisposisi, setCurrentMasterDisposisi] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
@@ -76,13 +74,11 @@ const MasterDisposisi = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteMasterDisposisi(id);
-        setMessage("Data berhasil dihapus");
-        setIsError(false);
+        toast.success("Data berhasil dihapus");
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
-        setIsError(true);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -91,7 +87,6 @@ const MasterDisposisi = () => {
     setCurrentMasterDisposisi(null);
     setModalOpen(true);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name } = e.target.elements;
@@ -104,29 +99,28 @@ const MasterDisposisi = () => {
       (item) => item.name.toLowerCase() === MasterDisposisi.name.toLowerCase()
     );
     if (isDuplicate) {
-      setMessage(
+      toast.error(
         "Master Disposisi Sudah tersedia, Masukkan Master Disposisi yang belum tersedia"
       );
-      setIsError(true);
       return;
     }
 
     try {
       if (currentMasterDisposisi) {
         await updateMasterDisposisi(currentMasterDisposisi.id, MasterDisposisi);
-        setMessage("Data berhasil diupdate");
+        toast.success("Data berhasil diupdate");
       } else {
         await createMasterDisposisi(MasterDisposisi);
-        setMessage("Data berhasil ditambahkan");
+        toast.success("Data berhasil ditambahkan");
       }
-      setIsError(false);
-      fetchData();
-      setModalOpen(false);
-      setIsLoading(true);
+
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData(); 
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-      setIsError(true);
+      toast.error("Gagal menyimpan data");
     }
   };
 
@@ -145,6 +139,12 @@ const MasterDisposisi = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center" 
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -159,20 +159,6 @@ const MasterDisposisi = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
-            } rounded-lg`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {isError ? "Error" : "Sukses"}:{" "}
-            </span>
-            {message}
-          </div>
-        )}
-
         <main className="select-none p-4">
           <div className="p-4 w-full shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -215,13 +201,13 @@ const MasterDisposisi = () => {
             <div className="">
               <div className="flex justify-center">
                 <div className="w-full max-w-4xl">
-                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                  Total Daftar Master Disposisi : 
-                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                    {dataMasterDisposisi.length}
+                  <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                    Total Daftar Master Disposisi :
+                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      {dataMasterDisposisi.length}
+                    </text>
+                    Data.
                   </text>
-                  Data.
-                </text>
                   <div className="mt-2  overflow-x-auto border border-gray-200 md:rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                       <thead className="bg-gray-50">

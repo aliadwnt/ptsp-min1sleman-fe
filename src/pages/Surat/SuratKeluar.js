@@ -35,7 +35,9 @@ const SuratKeluar = () => {
     no_surat: "",
     tgl_surat: "",
     ditujukan: "",
+    ditujukan_alamat: "",
     isi_surat: "",
+    isi_singkat: "",
     lampiran: "",
     sifat: "",
     perihal: "",
@@ -57,7 +59,8 @@ const SuratKeluar = () => {
         no_surat: currentSuratKeluar.no_surat || "",
         tgl_surat: currentSuratKeluar.tgl_surat || "",
         ditujukan: currentSuratKeluar.ditujukan || "",
-        // isi_surat: currentSuratKeluar.isi_surat || "",
+        ditujukan_alamat: currentSuratKeluar.ditujukan_alamat || "",
+        isi_singkat: currentSuratKeluar.isi_singkat || "",
         lampiran: currentSuratKeluar.lampiran || "",
         sifat: currentSuratKeluar.sifat || "",
         perihal: currentSuratKeluar.perihal || "",
@@ -128,6 +131,8 @@ const SuratKeluar = () => {
       no_surat,
       tgl_surat,
       ditujukan,
+      ditujukan_alamat,
+      isi_singkat,
       lampiran,
       sifat,
       perihal,
@@ -139,7 +144,9 @@ const SuratKeluar = () => {
       no_surat: no_surat.value,
       tgl_surat: tgl_surat.value,
       ditujukan: ditujukan.value,
-      isi_surat: isiSurat, // Menggunakan nilai dari state isiSurat
+      ditujukan_alamat: ditujukan_alamat.value,
+      isi_singkat: isi_singkat.value,
+      isi_surat: isiSurat, 
       lampiran: lampiran.value,
       sifat: sifat.value,
       perihal: perihal.value,
@@ -197,6 +204,8 @@ const SuratKeluar = () => {
       nama_lembaga,
       alamat,
       kepala_kantor,
+      jenis_identitas,
+      no_identitas,
       jabatan,
       website,
     } = await fetchSettingsData();
@@ -211,6 +220,8 @@ const SuratKeluar = () => {
           nama_lembaga,
           alamat,
           kepala_kantor,
+          jenis_identitas,
+          no_identitas,
           jabatan,
           website,
         }}
@@ -349,7 +360,7 @@ const SuratKeluar = () => {
                           Ditujukan Kepada
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Isi Surat
+                          Isi Singkat / Deskripsi Surat
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
@@ -363,15 +374,21 @@ const SuratKeluar = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              {item.no_surat}
+                            <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {item.no_surat ? (
+                                <span className="inline-block px-2 py-1 bg-green-100 text-green-700 font-medium text-xs uppercase rounded-full">
+                                  {item.no_surat}
+                                </span>
+                              ) : (
+                                <span className="text-gray-500">Tidak ada data</span>
+                              )}
                             </td>
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {new Date(item.tgl_surat).toLocaleDateString(
                                 "id-ID",
                                 {
                                   day: "2-digit",
-                                  month: "long",
+                                  month: "numeric",
                                   year: "numeric",
                                 }
                               )}
@@ -379,13 +396,8 @@ const SuratKeluar = () => {
                             <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {item.ditujukan}
                             </td>
-                            <td className="max-w-xs px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
-                              <div
-                                className="break-words"
-                                dangerouslySetInnerHTML={{
-                                  __html: item.isi_surat || "", 
-                                }}
-                              />
+                            <td className="max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900 border border-gray-200 break-words">
+                              {item.isi_singkat}
                             </td>
                             <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm font-medium space-x-2 border border-gray-200">
                               <button
@@ -639,6 +651,28 @@ const SuratKeluar = () => {
                       *Pisahkan dengan titik koma (;) jika penerima lebih dari
                       satu
                     </p>
+                    <label className="mt-1 block text-sm font-medium text-gray-700">
+                      Alamat Tujuan
+                    </label>
+                    <input
+                      type="text"
+                      name="ditujukan_alamat"
+                      defaultValue={currentSuratKeluar?.ditujukan_alamat || ""}
+                      placeholder="Alamat Tujuan"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded"
+                    />
+                    <label className="mt-1 block text-sm font-medium text-gray-700">
+                      Isi Singkat / Deskripsi Surat
+                    </label>
+                    <input
+                      type="text"
+                      name="isi_singkat"
+                      defaultValue={currentSuratKeluar?.isi_singkat || ""}
+                      placeholder="Deskripsi Surat"
+                      required
+                      className="block w-full p-2 border border-gray-300 rounded"
+                    />
                   </div>
                   <div className="mb-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">

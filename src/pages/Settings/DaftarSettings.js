@@ -11,14 +11,13 @@ import {
   deleteSettings,
 } from "../../services/settingsService.js";
 import { uploadSingle } from "../../services/uploadService.js";
+import { ToastContainer, toast } from "react-toastify";
 
 const Settings = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [dataSettings, setDataSettings] = useState({});
   const [currentSettings, setCurrentSettings] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,18 +94,18 @@ const Settings = () => {
 
       if (currentSettings) {
         await updateSettings(currentSettings.id, dataToSend);
-        setMessage("Data Berhasil diupdate");
+        toast.success("Data Berhasil diupdate");
       } else {
         await createSettings(dataToSend);
-        setMessage("Data Berhasil ditambahkan");
+        toast.success("Data Berhasil ditambahkan");
       }
-      setIsError(false);
-      fetchData();
-      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-      setIsError(true);
+      toast.error("Failed to save data");
     }
   };
 
@@ -114,10 +113,11 @@ const Settings = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteSettings(id);
+        toast.success("Data berhasil dihapus");
         fetchData();
-        setIsLoading(false);
       } catch (error) {
-        console.error("Error deleting daftar settings:", error);
+        console.error("Failed to delete data:", error);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -147,6 +147,9 @@ const Settings = () => {
       const filteredData = dataSettings.filter((item) =>
         String(item.key || "")
           .toLowerCase()
+          .includes(value.toLowerCase()) ||
+          String(item.value || "")
+          .toLowerCase()
           .includes(value.toLowerCase())
       );
       setDataSettings(filteredData);
@@ -168,6 +171,12 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -182,19 +191,6 @@ const Settings = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
-            }`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {isError ? "Error" : "Sukses"}:{" "}
-            </span>
-            {message}
-          </div>
-        )}
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -250,10 +246,10 @@ const Settings = () => {
                           No
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Key
+                          Kata Kunci
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
-                          Value
+                          Isi / Value
                         </th>
                         <th className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border border-gray-200">
                           Aksi
@@ -267,26 +263,9 @@ const Settings = () => {
                             <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
-                            <td className="w-24 truncate px-2 py-3 text-xs text-center text-gray-900 border text-bold border-gray-200">
-                              {item.key}
-                            </td>
-                            <td className="w-24 text-center px-2 py-3 whitespace-nowrap text-sm space-x-2 border border-gray-200">
-                              {item.key === "kop_surat" ||
-                              item.key === "app_logo" ? (
-                                item.value && (
-                                  <a
-                                    href={item.value}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className=" items-center gap-2 bg-green-600 hover:bg-green-500 px-2 py-1 rounded-md text-gray-100 text-xs font-medium mb-2 shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
-                                  >
-                                    <i className="fa fa-eye text-white-600 hover:text-white-900 w-3 h-3"></i>
-                                    <span className="ml-1 truncate">
-                                      Preview
-                                    </span>
-                                  </a>
-                                )
-                              ) : (item.key === "surat_tahun" && item.value) ||
+                            <td className="w-12 px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">
+                              {(
+                                (item.key === "surat_tahun" && item.value) ||
                                 (item.key === "surat_prefix" && item.value) ||
                                 (item.key === "surat_start_no" && item.value) ||
                                 (item.key === "nama_lembaga" && item.value) ||
@@ -295,14 +274,64 @@ const Settings = () => {
                                 (item.key === "alamat" && item.value) ||
                                 (item.key === "website" && item.value) ||
                                 (item.key === "kepala_kantor" && item.value) ||
-                                (item.key === "jabatan" && item.value) ? (
-                                <span className="text-xs text-gray-900">
-                                  {item.value}
-                                </span> // Tampilkan value untuk surat
-                              ) : (
-                                <span className="text-gray-500 text-xs">
-                                  Tidak ada data
+                                (item.key === "jabatan" && item.value) ||
+                                (item.key === "jenis_identitas" && item.value) ||
+                                (item.key === "no_identitas" && item.value)
+                              ) ? (
+                                <span className="text-xs text-gray-900 break-words">
+                                  {
+                                    {
+                                      surat_tahun: 'Tahun Surat',
+                                      surat_prefix: 'Prefix Surat',
+                                      surat_start_no: 'Nomor Awal Surat',
+                                      nama_lembaga: 'Nama Lembaga',
+                                      telp: 'Telepon',
+                                      email: 'Email',
+                                      alamat: 'Alamat',
+                                      website: 'Website',
+                                      kepala_kantor: 'Kepala Kantor',
+                                      jabatan: 'Jabatan',
+                                      jenis_identitas: 'Jenis Identitas',
+                                      no_identitas: 'Nomor Identitas'
+                                    }[item.key] || item.key
+                                  }
                                 </span>
+                              ) : (
+                                <span className="text-xs text-gray-500">Tidak ada data</span>
+                              )}
+                            </td>
+
+                            <td className="w-24 text-center px-2 py-3 whitespace-normal break-words text-sm border border-gray-200">
+                              {item.key === "kop_surat" || item.key === "app_logo" ? (
+                                item.value && (
+                                  <a
+                                    href={item.value}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center justify-center gap-1 bg-green-600 hover:bg-green-500 px-2 py-1 rounded text-gray-100 text-xs font-medium shadow-sm transition duration-300 ease-in-out transform hover:scale-105"
+                                  >
+                                    <i className="fa fa-eye w-3 h-3"></i>
+                                    <span>Preview</span>
+                                  </a>
+                                )
+                              ) : 
+                                (item.key === "surat_tahun" && item.value) ||
+                                (item.key === "surat_prefix" && item.value) ||
+                                (item.key === "surat_start_no" && item.value) ||
+                                (item.key === "nama_lembaga" && item.value) ||
+                                (item.key === "telp" && item.value) ||
+                                (item.key === "email" && item.value) ||
+                                (item.key === "alamat" && item.value) ||
+                                (item.key === "website" && item.value) ||
+                                (item.key === "kepala_kantor" && item.value) ||
+                                (item.key === "jabatan" && item.value) ||
+                                (item.key === "jenis_identitas" && item.value) ||
+                                (item.key === "no_identitas" && item.value) ? (
+                                <span className="text-xs text-gray-900 break-words">
+                                  {item.value}
+                                </span>
+                              ) : (
+                                <span className="text-gray-500 text-xs">Tidak ada data</span>
                               )}
                             </td>
 
@@ -424,30 +453,32 @@ const Settings = () => {
                       value={formData.key}
                       onChange={handleChange}
                       required
-                      className="block w-full p-2 border border-gray-300 rounded"
+                      className="block w-full p-3 pl-4 pr-8 text-sm font-medium text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white shadow-sm transition duration-300 ease-in-out hover:bg-gray-50"
                     >
-                      <option value="" disabled>
+                      <option value="" disabled className="text-gray-500">
                         Pilih Tipe
                       </option>
-                      <optgroup label="Surat">
+                      <optgroup label="Surat" className="text-xs font-medium text-gray-700">
                         <option value="surat_prefix">Prefix Surat</option>
                         <option value="surat_tahun">Tahun Surat</option>
                         <option value="surat_start_no">Nomor Awal Surat</option>
                       </optgroup>
-                      <optgroup label="Identitas">
+                      <optgroup label="Identitas" className="text-xs font-medium text-gray-700">
                         <option value="kop_surat">Kop Surat</option>
                         <option value="app_logo">Logo Aplikasi</option>
                         <option value="nama_lembaga">Nama Lembaga</option>
                       </optgroup>
-                      <optgroup label="Kontak">
+                      <optgroup label="Kontak" className="text-xs font-medium text-gray-700">
                         <option value="telp">No Telp</option>
                         <option value="email">Email</option>
                         <option value="alamat">Alamat</option>
                         <option value="website">Website</option>
                       </optgroup>
-                      <optgroup label="Kepala Kantor">
+                      <optgroup label="Kepala Kantor" className="text-xs font-medium text-gray-700">
                         <option value="kepala_kantor">Kepala Kantor</option>
                         <option value="jabatan">Jabatan</option>
+                        <option value="jenis_identitas">Jenis Nomor Identitas</option>
+                        <option value="no_identitas">Nomor Identitas</option>
                       </optgroup>
                     </select>
                   </div>
@@ -476,33 +507,72 @@ const Settings = () => {
                     </div>
                   ) : formData.key ? (
                     <div className="mb-4">
-                      <label
-                        htmlFor="value"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        {formData.key === "surat_prefix" &&
-                          "Prefix Nomor Surat"}
-                        {formData.key === "surat_tahun" && "Tahun Surat"}
-                        {formData.key === "surat_start_no" &&
-                          "Nomor Awal Surat"}
-                        {formData.key === "nama_lembaga" && "Nama Lembaga"}
-                        {formData.key === "telp" && "No Telp"}
-                        {formData.key === "email" && "Email"}
-                        {formData.key === "alamat" && "Alamat"}
-                        {formData.key === "website" && "Website"}
-                        {formData.key === "kepala_kantor" && "Kepala Kantor"}
-                        {formData.key === "jabatan" && "Jabatan"}
-                      </label>
-                      <input
-                        type="text"
-                        name="value"
-                        id="value"
-                        value={formData.value}
-                        onChange={handleChange}
-                        required
-                        className="block w-full p-2 border border-gray-300 rounded"
-                      />
-                    </div>
+  <label
+    htmlFor="value"
+    className="block text-sm font-medium text-gray-700 mb-2"
+  >
+    {
+      {
+        "surat_prefix": "Prefix Nomor Surat",
+        "surat_tahun": "Tahun Surat",
+        "surat_start_no": "Nomor Awal Surat",
+        "nama_lembaga": "Nama Lembaga",
+        "telp": "No Telp",
+        "email": "Email",
+        "alamat": "Alamat",
+        "website": "Website",
+        "kepala_kantor": "Kepala Kantor",
+        "jabatan": "Jabatan",
+        "jenis_identitas": "Jenis Identitas",
+        "no_identitas": "Nomor Identitas"
+      }[formData.key] || "Masukkan Data"
+    }
+  </label>
+  <input
+    type="text"
+    name="value"
+    id="value"
+    value={formData.value}
+    onChange={handleChange}
+    required
+    className="block w-full p-2 border border-gray-300 rounded"
+    placeholder={
+      formData.key === "surat_prefix"
+        ? "Masukkan Prefix Nomor Surat"
+        : formData.key === "surat_tahun"
+        ? "Masukkan Tahun Surat"
+        : formData.key === "surat_start_no"
+        ? "Masukkan Nomor Awal Surat"
+        : formData.key === "nama_lembaga"
+        ? "Masukkan Nama Lembaga"
+        : formData.key === "telp"
+        ? "Masukkan Nomor Telepon"
+        : formData.key === "email"
+        ? "Masukkan Email"
+        : formData.key === "alamat"
+        ? "Masukkan Alamat"
+        : formData.key === "website"
+        ? "Masukkan Website"
+        : formData.key === "kepala_kantor"
+        ? "Masukkan Kepala Kantor"
+        : formData.key === "jabatan"
+        ? "Masukkan Jabatan"
+        : formData.key === "jenis_identitas"
+        ? "Jenis No. Identitas (NIP / Jenis No Identitas Lain)"
+        : formData.key === "no_identitas"
+        ? "Masukkan Nomor Identitas"
+        : "Masukkan Data"
+    }
+  />
+  {(formData.key === "surat_tahun" ||
+    formData.key === "surat_start_no" ||
+    formData.key === "no_identitas") && (
+    <p className="text-xs text-red-500 mt-1">
+      {isNaN(formData.value) ? "Harus berupa angka" : ""}
+    </p>
+  )}
+</div>
+
                   ) : null}
                   <div className="flex justify-end space-x-2">
                     <button

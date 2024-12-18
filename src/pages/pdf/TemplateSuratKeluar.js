@@ -54,10 +54,21 @@ const SuratTemplate = ({ settingsData, data }) => {
                     margin: 0;
                     }
 
-                    .surat-info {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 20px;
+                  .surat-info {
+                      display: flex;
+                      justify-content: space-between; /* Membuat ruang antara kolom kiri dan kanan */
+                      align-items: flex-start; /* Menyelaraskan elemen-elemen di atas */
+                    }
+
+                    .left-column {
+                      flex: 1.5; /* Kolom kiri lebih lebar (dua kali lebih lebar dari kanan) */
+                      text-align: left; /* Menyelaraskan teks di kolom kiri ke kiri */
+                    }
+
+                    .right-column {
+                      flex: 1; /* Kolom kanan lebih kecil */
+                      text-align: right; /* Menyelaraskan teks di kolom kanan ke kanan */
+                      margin-left: 20px; /* Memberikan sedikit jarak antara kolom kiri dan kanan */
                     }
 
                     .nomor,
@@ -72,20 +83,17 @@ const SuratTemplate = ({ settingsData, data }) => {
                     margin-bottom: 20px;
                     }
 
-                    .left-column,
-                    .right-column {
-                    width: 48%;
-                    }
+                   
 
                     .p {
-                    font-size: 14px;
-                    margin: 0;
+                      font-size: 14px;
+                      margin: 0;
                     }
 
                     .isi-surat {
                     margin-top: 20px;
+                    font-size: 14px;
                     }
-
                 
                     .surat {
                       padding: 20px;
@@ -148,21 +156,20 @@ const SuratTemplate = ({ settingsData, data }) => {
                 }
 
                 .p {
+                  font-size: 14px;
                   display: flex;
                   align-items: baseline; /* Memastikan teks label dan value sejajar secara vertikal */
                   margin-bottom: 10px; /* Jarak antar baris */
                 }
 
                 .label {
-                  min-width: 120px; /* Menetapkan lebar minimum untuk label agar seragam */
-                  display: inline-block;
-                  margin-right: 10px; /* Jarak antara label dan nilai */
-                  font-weight: bold; /* Membuat label lebih tegas */
-                }
-       
-                .isi-surat {
-                    margin-top: 20px;
+                    min-width: 120px; /* Menetapkan lebar minimum untuk label agar seragam */
+                    display: inline-block;
+                    margin-left: 3px; /* Jarak antara label dan nilai */
+                    font-size: 14px; /* Mengatur ukuran font menjadi 12px */
+                    font-weight: normal; /* Mengatur font menjadi biasa (bukan tebal atau ringan) */
                   }
+       
                   .footer-bar {
                   display: flex;
                   justify-content: space-between;
@@ -173,6 +180,11 @@ const SuratTemplate = ({ settingsData, data }) => {
                   .tembusan {
                   font-size: 14px;
                   font-weight: bold;
+                  width: 50%; /* Menyesuaikan lebar dengan layout */
+                  }
+
+                  .tembusan {
+                  font-size: 14px;
                   width: 50%; /* Menyesuaikan lebar dengan layout */
                   }
 
@@ -188,17 +200,42 @@ const SuratTemplate = ({ settingsData, data }) => {
 
                 .ttd-name {
                   font-size: 14px;
-                //  border-top: 1px solid #000;
                   margin-top: 70px;
                   text-align: right;
                   width: 100%;
+                  text-transform: uppercase; /* Mengubah teks menjadi huruf kapital */
+                  text-decoration: underline; /* Menambahkan garis bawah pada teks */
                 }
 
+                .kepada {
+                  font-size:14px;
+                }
+                
+                .tempat-penerima {
+                  font-size: 14px;
+                  max-width: 50%; /* Membatasi lebar maksimal hanya 50% dari lebar kontainer */
+                  word-wrap: break-word; /* Membuat teks terpotong dan pindah baris jika melebihi lebar */
+                  white-space: normal; /* Membolehkan teks untuk melanjutkan ke baris baru jika perlu */
+                  margin: 0;
+                }
 
                 .ttd {
                 text-align: right;
                 margin-top: 50px;
                 border-top:2px
+                }
+
+                .pemerintah-kota-yogyakarta {
+                  text-align: center;
+                  font-size: 18px;
+                }
+
+                .alamat-lembaga {
+                   text-align: center;
+                   font-size: 20px;
+                }
+                no-identitas-kepala-kantor {
+                  font-size:12px;
                 }
 
 `}
@@ -211,12 +248,11 @@ const SuratTemplate = ({ settingsData, data }) => {
             alt="Kop Surat"
             className="logo-image"
           />{" "}
-          {/* Ganti dengan logo */}
         </div>
         <div className="header-details">
-          <h2>Pemerintah Kota Yogyakarta</h2>
+          <p className="pemerintah-kota-yogyakarta">Pemerintah Kota Yogyakarta</p>
           <h2>{settingsData.nama_lembaga}</h2>
-          <address>{settingsData.alamat}</address>
+          <p className="alamat-lembaga">{settingsData.alamat}</p>
           <p>{settingsData.telp}</p>
           <p>
             Laman :{" "}
@@ -227,65 +263,65 @@ const SuratTemplate = ({ settingsData, data }) => {
             >
               {settingsData.website}
             </a>{" "}
-            & Email :{" "}
+           Email :{" "}
             <a href={`mailto:${settingsData.email}`}>{settingsData.email}</a>
           </p>
         </div>
       </header>
       <div className="surat-info">
-        <p className="nomor">Nomor Surat: {data.no_surat}</p>
-        <p className="tanggal">
-          {data.tgl_surat
-            ? new Date(data.tgl_surat).toLocaleDateString("id-ID", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-              })
-            : "-"}
-        </p>
-      </div>
-      <div className="content">
         <div className="left-column">
-          <p className="p">
-            <strong className="label">Sifat</strong> : {data.sifat}
-          </p>
-          <p className="p">
-            <strong className="label">Lampiran</strong> : {data.lampiran}
-          </p>
-          <p className="p">
-            <strong className="label">Perihal</strong> : {data.perihal}
+        <p className="p">
+        <strong className="label">Nomor</strong>: {data.no_surat}
+        </p>
+        <p className="p">
+          <strong className="label">Sifat</strong>: {data.sifat}
+        </p>
+        <p className="p">
+          <strong className="label">Lampiran</strong>: {data.lampiran}
+        </p>
+        <p className="p">
+          <strong className="label">Perihal</strong>: {data.perihal}
+        </p>
+        </div>
+        <div className="right-column">
+          <p className="tanggal">
+            {data.tgl_surat
+              ? `Yogyakarta, ${new Date(data.tgl_surat).toLocaleDateString("id-ID", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}`
+              : "Yogyakarta, -"}
           </p>
         </div>
+      </div>
 
-        <div className="right-column">
-          <p className="p">
-            <strong>Kepada Yth.</strong>
-          </p>
+      <div className="penerima">
+       <p className="kepada">Kepada Yth.</p>
           {data.ditujukan.split(";").map((nama, index) => (
             <p key={index} className="p">
               {nama.trim()}
             </p>
           ))}
-        </div>
+       <p className="tempat-penerima">{data.ditujukan_alamat}</p>
       </div>
       <div className="isi-surat">
-        <p className="p">Assalamualaikum,</p>
-        <p
+        <p className="isi-surat"
           dangerouslySetInnerHTML={{
             __html: data.isi_surat || "",
           }}
         />
 
-        <p className="p">Wassalam,</p>
       </div>
       <div className="footer-bar">
         <div className="tembusan">
           Tembusan:
-          <p className="p">{data.tembusan}</p>
+          <p className="isi-tembusan">{data.tembusan}</p>
         </div>
         <div class="kepala">
           {settingsData.jabatan}
           <div class="ttd-name">{settingsData.kepala_kantor}</div>
+          <div class="no-identitas-kepala-kantor">{settingsData.jenis_identitas}.{settingsData.no_identitas}</div>
         </div>
       </div>
     </div>

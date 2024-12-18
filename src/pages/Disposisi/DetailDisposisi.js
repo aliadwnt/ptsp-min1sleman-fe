@@ -17,6 +17,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DetailDisposisi = () => {
+  const userRole = localStorage.getItem("userRole");  
   const { id_sm } = useParams();
   const { no_reg } = useParams();
   const [disposisiOptions, setDisposisiOptions] = useState([]);
@@ -207,13 +208,15 @@ const DetailDisposisi = () => {
       );
       console.log("Update berhasil:", updatedData);
 
-      const notificationMessage = {
-        message: `Disposisi #${formData.id_sm} `,
-        tindakan: formData.tindakan,
-        disposisi: formData.disposisi,
-        type: "disposisi",
-      };
-      addNotification(notificationMessage);
+      if (userRole === "staff" || userRole === "kepala madrasah") {
+        const notificationMessage = {
+          message: `Disposisi #${formData.id_sm}`,
+          tindakan: formData.tindakan,
+          disposisi: formData.disposisi,
+          type: "disposisi",
+        };
+        addNotification(notificationMessage);
+      }
 
       resetFields();
       toast.success("Disposisi berhasil diperbarui.");

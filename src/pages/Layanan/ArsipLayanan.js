@@ -326,7 +326,7 @@ const ArsipLayanan = () => {
                               {(currentPage - 1) * itemsPerPage + index + 1}
                             </td>
                             <div className="flex items-center justify-center max-w-xs truncate px-2 py-3 text-xs text-center text-gray-900">
-                              <span className="px-2 py-1 text-[10px] font-medium text-white bg-gray-600 rounded-full uppercase">
+                              <span className="inline-block px-2 py-1 bg-green-100 text-green-700 font-medium text-xs uppercase rounded-full">
                                 {item.no_reg}
                               </span>
                             </div>

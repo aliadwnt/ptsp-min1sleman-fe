@@ -14,6 +14,7 @@ import "../../App.css";
 import { useParams } from "react-router-dom";
 import LoadingPage from "../../components/loadingPage";
 import Favicon from "../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const DaftarSyarat = () => {
   const { id } = useParams();
@@ -94,12 +95,11 @@ const DaftarSyarat = () => {
       });
 
       setDataDaftarSyarat(combinedData);
-      setError(null);
-      setSuccess("Data berhasil diambil!");
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching Daftar Syarat:", error);
-      setSuccess(null);
-      setError("Terjadi kesalahan saat mengambil data.");
+      toast.error("Terjadi kesalahan saat mengambil data.");
+      setIsLoading(false);
     }
   };
 
@@ -207,19 +207,17 @@ const DaftarSyarat = () => {
 
     try {
       await updateDaftarSyarat(data);
-      setMessage("Data berhasil diupdate");
-      setIsLoading(true);
-      await fetchData();
-      handleModalClose();
+      toast.success("Data berhasil diupdate");
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error(
         "Error detail:",
         error.response ? error.response.data : error.message
       );
-      setError(
-        "Error submitting data: " +
-          (error.response ? error.response.data : error.message)
-      );
+      toast.error("Failed to save data");
     }
   };
 
@@ -229,7 +227,7 @@ const DaftarSyarat = () => {
         (item) => item === selectedSyarat
       );
       if (alreadyExists) {
-        alert("Syarat sudah ditambahkan!");
+        toast.error("Syarat sudah ditambahkan!");
         return;
       }
       setDaftarSyaratLayanan((prev) => [...prev, selectedSyarat]);
@@ -250,9 +248,18 @@ const DaftarSyarat = () => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -267,26 +274,6 @@ const DaftarSyarat = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className="flex items-center justify-center p-4 m-2 text-sm text-green-800 rounded-lg bg-green-50"
-            role="alert"
-          >
-            <span className="font-medium">Sukses: </span>
-            {message}
-          </div>
-        )}
-
-        {error && (
-          <div
-            className="flex items-center justify-center p-4 m-2 text-sm text-red-800 rounded-lg bg-red-50"
-            role="alert"
-          >
-            <span className="font-medium">Error: </span>
-            {error}
-          </div>
-        )}
-
         <div className="select-none p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="text-xl font-semibold text-gray-800 mb-2 md:mb-0">
@@ -353,13 +340,13 @@ const DaftarSyarat = () => {
 
             <div className="flex justify-center">
               <div className="w-full max-w-5xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Syarat : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataDaftarSyarat.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Syarat :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataDaftarSyarat.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">
@@ -655,7 +642,7 @@ const DaftarSyarat = () => {
                                       colSpan="3"
                                       className="px-2 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
-                                        Belum ada daftar syarat yang ditambahkan
+                                      Belum ada daftar syarat yang ditambahkan
                                     </td>
                                   </tr>
                                 )}

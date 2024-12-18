@@ -46,10 +46,8 @@ const Navbar = () => {
     const fetchLogo = async () => {
       try {
         const response = await fetchSettings();
-
         if (Array.isArray(response)) {
           const logoSetting = response.find((item) => item.key === "app_logo");
-
           if (logoSetting && logoSetting.value) {
             setLogo(logoSetting.value);
           }
@@ -75,12 +73,6 @@ const Navbar = () => {
     { path: "/lacak-berkas", label: "Lacak Berkas" },
     { path: "/zona-integritas", label: "Zona Integritas" },
   ];
-
-  const filteredMenuPaths = !isLoggedIn
-    ? menuPaths.filter(({ path }) =>
-        ["/", "/visi-misi", "/zona-integritas"].includes(path)
-      )
-    : menuPaths;
 
   return (
     <nav className="bg-green-700 shadow-lg select-none">
@@ -120,9 +112,7 @@ const Navbar = () => {
                 >
                   <i className="fa fa-times text-lg"></i>
                 </button>
-
                 <div className="p-6">
-                  {/* Logo */}
                   <div className="flex items-center space-x-3 mb-6">
                     <img
                       src={logo}
@@ -134,13 +124,14 @@ const Navbar = () => {
                     </h1>
                   </div>
                   {/* Navigation Menu */}
-                  <NavigationMenu menuPaths={filteredMenuPaths} isMobile />
+                  <NavigationMenu menuPaths={menuPaths} isMobile />
                   {/* User Dropdown */}
                   <div className="mt-6">
                     <UserDropdown
                       formData={formData}
                       userRole={userRole}
                       handleLogout={handleLogout}
+                      isLoggedIn={isLoggedIn}
                     />
                   </div>
                 </div>
@@ -150,11 +141,12 @@ const Navbar = () => {
 
           {/* Menu Desktop */}
           <div className="hidden md:flex md:items-center space-x-8">
-            <NavigationMenu menuPaths={filteredMenuPaths} />
+            <NavigationMenu menuPaths={menuPaths} />
             <UserDropdown
               formData={formData}
               userRole={userRole}
               handleLogout={handleLogout}
+              isLoggedIn={isLoggedIn}
             />
           </div>
         </div>

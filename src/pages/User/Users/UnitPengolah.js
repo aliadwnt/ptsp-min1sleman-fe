@@ -10,12 +10,11 @@ import {
 import "../../../App.css";
 import LoadingPage from "../../../components/loadingPage";
 import Favicon from "../../../components/Favicon";
+import { ToastContainer, toast } from "react-toastify";
 
 const UnitPengolah = () => {
   const [dataUnitPengolah, setDataUnitPengolah] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [message, setMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentUnitPengolah, setCurrentUnitPengolah] = useState(null);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -70,15 +69,11 @@ const UnitPengolah = () => {
     if (window.confirm("Yakin ingin menghapus data?")) {
       try {
         await deleteUnitPengolah(id);
-        setMessage("Data berhasil dihapus");
-        setIsError(false);
-        setIsLoading(true);
+        toast.success("Data berhasil dihapus");
         fetchData();
       } catch (error) {
         console.error("Failed to delete data:", error);
-        setMessage("Failed to delete data");
-        setIsError(true);
-        setIsLoading(false);
+        toast.error("Failed to delete data");
       }
     }
   };
@@ -94,43 +89,36 @@ const UnitPengolah = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
     const { name } = e.target.elements;
-
+    const UnitPengolah = {
+      name: name.value,
+    };
     const isDuplicate = dataUnitPengolah.some(
-      (item) =>
-        item.name.toLowerCase() === name.value.toLowerCase() &&
-        currentUnitPengolah?.id !== item.id
+      (item) => item.name.toLowerCase() === UnitPengolah.name.toLowerCase()
     );
 
     if (isDuplicate) {
-      setMessage(
+      toast.error(
         "Unit Pengolah sudah tersedia, Masukkan unit pengolah yang belum tersedia"
-      ); // Error message for duplicates
-      setIsError(true);
+      );
       return;
     }
 
-    formData.append("name", name.value);
-
     try {
       if (currentUnitPengolah) {
-        await updateUnitPengolah(currentUnitPengolah.id, formData);
-        setMessage("Data berhasil diupdate");
-        setIsLoading(true);
+        await updateUnitPengolah(currentUnitPengolah.id, UnitPengolah);
+        toast.success("Data berhasil diupdate");
       } else {
-        await createUnitPengolah(formData);
-        setMessage("Data berhasil ditambahkan");
-        setIsLoading(true);
+        await createUnitPengolah(UnitPengolah);
+        toast.success("Data berhasil ditambahkan");
       }
-      setIsError(false);
-      fetchData();
-      setModalOpen(false);
+      setTimeout(() => {
+        setModalOpen(false);
+        fetchData();
+      }, 1000);
     } catch (error) {
       console.error("Failed to save data:", error);
-      setMessage("Failed to save data");
-      setIsError(true);
+      toast.error("Failed to save data");
     }
   };
 
@@ -143,8 +131,17 @@ const UnitPengolah = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
   return (
     <div className="select-none min-h-screen w-full bg-gray-50 flex flex-col m-0 p-0 relative">
+      <ToastContainer
+        position="top-center" // Ubah posisi menjadi top-center atau bottom-center
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+      />{" "}
       <Favicon />
       <div
         className={`fixed inset-y-0 left-0 transform ${
@@ -159,19 +156,7 @@ const UnitPengolah = () => {
         } pl-4 lg:pl-64`}
       >
         <Header />
-        {message && (
-          <div
-            className={`flex justify-center items-center p-4 m-2 text-sm ${
-              isError ? "text-red-800 bg-red-50" : "text-green-800 bg-green-50"
-            } rounded-lg`}
-            role="alert"
-          >
-            <span className="font-medium">
-              {isError ? "Error" : "Sukses"}:{" "}
-            </span>
-            {message}
-          </div>
-        )}
+
         <div className="p-4">
           <div className="w-full bg-white shadow-lg rounded-lg px-6 py-8 mx-auto max-w-4xl">
             <div className="flex flex-col md:flex-row justify-between items-center mb-2">
@@ -212,13 +197,13 @@ const UnitPengolah = () => {
             </div>
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-              <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
-                    Total Daftar Unit Pengolah : 
-                    <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
-                      {dataUnitPengolah.length}
-                    </text>
-                    Data.
+                <text className="text-center text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Total Daftar Unit Pengolah :
+                  <text className="px-2 py-3 text-center text-xs font-bold text-gray-900 uppercase tracking-wider">
+                    {dataUnitPengolah.length}
                   </text>
+                  Data.
+                </text>
                 <div className="mt-2 overflow-x-auto border border-gray-200 md:rounded-lg">
                   <table className="min-w-full divide-y divide-gray-200 border-collapse border border-gray-200">
                     <thead className="bg-gray-50">

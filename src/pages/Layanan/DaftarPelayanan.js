@@ -523,21 +523,24 @@ const DaftarPelayanan = () => {
                             </td>
                             <td className="max-w-xs truncate px-4 py-3 text-xs text-center text-gray-900 flex items-center justify-center space-x-3">
                               <div className="flex items-center justify-center space-x-2">
-                                <span className="px-3 py-1 text-[10px] font-medium text-white bg-gray-600 rounded-full uppercase">
-                                  {item.no_reg}
-                                </span>
-                                <button
+                              <span className="inline-block px-2 py-1 bg-green-100 text-green-700 font-medium text-xs uppercase rounded-full">
+                                {item.no_reg}
+                              </span>
+                                <div 
                                   onClick={() => handleCopy(item.no_reg)}
-                                  className="text-gray-500 hover:text-gray-700 p-2 rounded-full transition-colors duration-200"
+                                  onKeyPress={(e) => e.key === 'Enter' && handleCopy(item.no_reg)}
+                                  className="cursor-pointer text-gray-500 hover:text-gray-700 p-1 rounded-nont transition-colors duration-200"
+                                  tabIndex="0"
+                                  role="button"
                                 >
-                                  <ClipboardIcon className="w-4 h-4" />
+                                  <ClipboardIcon className="w-3 h-3" />
                                   <ToastContainer
                                     position="top-center"
                                     autoClose={5000}
                                     hideProgressBar={false}
                                     closeOnClick
                                   />
-                                </button>
+                              </div>
                               </div>
                             </td>
                             <td className="px-2 py-3 text-xs text-center text-gray-900 border border-gray-200">

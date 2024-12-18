@@ -6,7 +6,7 @@ import { fetchSettings } from "../../services/settingsService";
 import { motion } from "framer-motion";
 import Favicon from "../../components/Favicon";
 import backgroundImage from "../../images/backgroundLoginRegister.jpg";
-import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import { ExclamationCircleIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import DEFAULT_LOGO_URL from "../../images/logo_min_1 copy.png";
 
 const LoginForm = () => {
@@ -17,6 +17,7 @@ const LoginForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     document.title = "PTSP MIN 1 SLEMAN - Masuk Akun";
@@ -154,15 +155,26 @@ const LoginForm = () => {
               placeholder="Email"
             />
           </div>
-          <div className="mb-2">
+          <div className="flex items-center w-full">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="font-family mt-2 w-full p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
+              className="font-family mt-2 flex-1 p-2 border-b border-gray-300 text-base focus:outline-none focus:ring-0 focus:border-green-500"
               placeholder="Password"
             />
+            <span
+              role="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="ml-3 mt-2 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
+            >
+              {showPassword ? (
+                <EyeSlashIcon className="w-5 h-5" />
+              ) : (
+                <EyeIcon className="w-5 h-5" />
+              )}
+            </span>
           </div>
           <button
             type="submit"
